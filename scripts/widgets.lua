@@ -29,6 +29,16 @@
 --      $Id$
 
 
+DefineButtonStyle("menu", {
+  Size = {130, 24},
+  Default = {
+    File = "ui/menu_button_1.png"
+  },
+  Clicked = {
+    File = "ui/menu_button_2.png"
+  },
+})
+
 DefineButtonStyle("main", {
   Size = {128, 20},
   Font = "game",
