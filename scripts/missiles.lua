@@ -189,12 +189,6 @@ DefineMissileType("missile-hit",
   { Size = {15, 15}, DrawLevel = 150,
   Class = "missile-class-hit", Sleep = 1, Speed = 1, Range = 16 } )
 
-DefineMissileType("missile-critter-explosion",
-  { File = "missiles/catapult_rock.png", Size = {32, 32}, Frames = 15, NumDirections = 5,
-  ImpactSound = "explosion", DrawLevel = 50,
-  Class = "missile-class-hit", Sleep = 1, Speed = 16, Range = 2,
-  ImpactMissile = "missile-impact", CanHitOwner = true } )
-
 DefineBurningBuilding(
   {"percent", 0, "missile", "missile-big-fire"},
   {"percent", 50, "missile", "missile-small-fire"},

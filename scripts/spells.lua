@@ -36,7 +36,6 @@ DefineBoolFlags("isundead", "organic", "hero", "volatile")
 --  way would be to define can-cast-spell outside unit definitions, not much of an improvement.
 DefineUnitType("unit-revealer", {})
 DefineUnitType("unit-eye-of-vision", {})
-DefineUnitType("unit-critter", {})
 DefineUnitType("unit-skeleton", {})
 
 -- And declare upgrade for dependency...
@@ -51,7 +50,6 @@ DefineUpgrade("upgrade-flame-shield")
 DefineUpgrade("upgrade-fireball")
 DefineUpgrade("upgrade-slow")
 DefineUpgrade("upgrade-invisibility")
-DefineUpgrade("upgrade-polymorph")
 DefineUpgrade("upgrade-blizzard")
 -- For orc
 DefineUpgrade("upgrade-eye-of-kilrogg")
@@ -236,21 +234,6 @@ DefineSpell("spell-flame-shield",
 	"sound-when-cast", "flame shield",
 	"depend-upgrade", "upgrade-flame-shield"
 --	"autocast", {range 6 condition (coward false)},
-)
-
-DefineSpell("spell-polymorph",
-	"showname", "polymorph",
-	"manacost", 200,
-	"range", 10,
-	"target", "unit",
-	"action", {{"polymorph", "new-form", "unit-critter", "player-neutral"},
-		{"spawn-missile", "missile", "missile-normal-spell",
-			"start-point", {"base", "target"}}},
-	"condition", {"organic", "only"},
-	"sound-when-cast", "polymorph",
-	"depend-upgrade", "upgrade-polymorph"
-	--  Only cast on the strongest units!!!
---	"autocast", {range 10 condition (alliance false min-hp-percent 75)},
 )
 
 DefineSpell("spell-blizzard",

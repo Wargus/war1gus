@@ -367,13 +367,6 @@ DefineButton( { Pos = 9, Level = 2, Icon = "icon-cancel",
 
 -- orc buildings commands -----------------------------------------------------
 
-if (extensions) then
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-critter",
-  Action = "train-unit", Value = "unit-critter",
-  Key = "c", Hint = "TRAIN ~!CRITTER",
-  ForUnit = {"unit-pig-farm"} } )
-end
-
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-peon",
   Action = "train-unit", Value = "unit-peon",
   Allowed = "check-no-research",

@@ -160,36 +160,6 @@ DefineUnitType("unit-revealer", { Name = "Dummy unit",
   DetectCloak = true,
   Sounds = {} } )
 
-DefineUnitType("unit-critter", { Name = "Critter",
-  Files = {"tileset-forest", "tilesets/critter.png"},
-  Size = {32, 32},
-  Animations = "animations-critter", Icon = "icon-critter",
-  NeutralMinimapColor = {192, 192, 192},
-  Speed = 3,
-  HitPoints = 5,
-  DrawLevel = 35,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 2, ComputerReactionRange = 20, PersonReactionRange = 10,
-  BasicDamage = 80, PiercingDamage = 0, Missile = "missile-critter-explosion",
-  MaxAttackRange = 1,
-  Priority = 37,
-  Points = 1,
-  Demand = 1,
-  Type = "land",
-  RightMouseAction = "move",
-  CanTargetLand = true,
-  LandUnit = true,
-  RandomMovementProbability = 100,
-  ClicksToExplode = 10,
-  organic = true,
-  Sounds = {
-    "selected", "critter-selected",
-    "acknowledge", "critter-acknowledge",
-    "ready", "critter-ready",
-    "help", "critter-help",
-    "dead", "critter-dead",
-    "attack", "critter-attack"} } )
-
 -- Load the different races
 Load("scripts/human/units.lua")
 Load("scripts/orc/units.lua")

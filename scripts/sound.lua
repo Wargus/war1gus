@@ -163,7 +163,6 @@ MakeSound("holy vision", "spells/holy_vision.wav")
 MakeSound("blizzard", "spells/blizzard.wav")
 MakeSound("invisibility", "spells/invisibility.wav")
 MakeSound("eye of vision", "spells/eye_of_kilrogg.wav")
-MakeSound("polymorph", "spells/polymorph.wav")
 MakeSound("slow", "spells/slow.wav")
 MakeSound("unholy armor", "spells/unholy_armor.wav")
 MakeSound("whirlwind", "spells/whirlwind.wav")
@@ -812,9 +811,6 @@ MapSound("skeleton-attack", "fist")
 --	MapSound("orc-guard-tower-attack")
 --	MapSound("human-cannon-tower-attack")
 --	MapSound("orc-cannon-tower-attack")
-
-MapSound("critter-help", "basic orc voices help 1")
-MapSound("critter-dead", "explosion")
 
 
 --	Define sounds used by game
