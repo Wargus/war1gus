@@ -29,7 +29,7 @@
 --      $Id$
 
 Credits(
-  "background", "ui/Credits_background.png",
+  "background", "ui/title_screen.png",
   "title", "Programmers:",
   "name", "  Andreas 'Ari' Arens",
   "name", "  Lutz 'Johns' Sammer",
