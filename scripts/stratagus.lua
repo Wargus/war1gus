@@ -89,7 +89,7 @@ SetColorCycleAll(true)
 --  and setting. Might also be used for multiplayer.
 SetGameName("wc1")
 --  set the default map file.
-SetDefaultMap("maps/default.pud")
+SetDefaultMap("campaigns/human/01.cm")
 
 
 SetSelectionStyle("corners")
@@ -262,7 +262,7 @@ SetShowCommandKey(true)
 
 --  Choose your default fog of war state (enabled #t/disabled #f).
 --    disabled is a C&C like fog of war.
-SetFogOfWar(true)
+SetFogOfWar(false)
 --SetFogOfWar(false)
 
 --  Choose your default for minimap with/without terrain.
