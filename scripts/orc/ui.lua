@@ -216,9 +216,9 @@ function OrcScreen(screen_width, screen_height)
     "menu-panels", {
       "panel1", "ui/orc/panel_1.png",
       "panel2", "ui/orc/panel_2.png",
-      "panel3", "ui/orc/panel_3.png",
-      "panel4", "ui/orc/panel_4.png",
-      "panel5", "ui/orc/panel_5.png"},
+      "panel3", "ui/orc/panel_2.png",
+      "panel4", "ui/orc/panel_2.png",
+      "panel5", "ui/orc/panel_2.png"},
 
     "victory-background", "ui/orc/victory.png",
     "defeat-background", "ui/orc/defeat.png")

@@ -216,9 +216,9 @@ function HumanScreen(screen_width, screen_height)
     "menu-panels", {
       "panel1", "ui/human/panel_1.png",
       "panel2", "ui/human/panel_2.png",
-      "panel3", "ui/human/panel_3.png",
-      "panel4", "ui/human/panel_4.png",
-      "panel5", "ui/human/panel_5.png"},
+      "panel3", "ui/human/panel_2.png",
+      "panel4", "ui/human/panel_2.png",
+      "panel5", "ui/human/panel_2.png"},
 
     "victory-background", "ui/human/victory.png",
     "defeat-background", "ui/human/defeat.png")
