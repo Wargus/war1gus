@@ -5,12 +5,12 @@
 --     /_______  /|__|  |__|  (____  /__| (____  /\___  /|____//____  >
 --             \/                  \/          \//_____/            \/ 
 --  ______________________                           ______________________
---			  T H E   W A R   B E G I N S
---	   Stratagus - A free fantasy real time strategy game engine
+--                        T H E   W A R   B E G I N S
+--         Stratagus - A free fantasy real time strategy game engine
 --
---	ui.ccl		-	Define the orc user interface
+--      ui.ccl - Define the orc user interface
 --
---	(c) Copyright 2001-2003 by Lutz Sammer and Jimmy Salmon
+--      (c) Copyright 2001-2004 by Lutz Sammer and Jimmy Salmon
 --
 --      This program is free software; you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 --      along with this program; if not, write to the Free Software
 --      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 --
---	$Id$
+--      $Id$
 
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 --	* Race orc.
@@ -37,24 +37,24 @@ function OrcScreen(screen_width, screen_height)
   info_panel_y = 160
 
   DefineUI("orc", screen_width, screen_height,
-    "normal-font-color", "yellow",
-    "reverse-font-color", "white",
+    "normal-font-color", "white",
+    "reverse-font-color", "yellow",
 
     "filler", {
-      File = "ui/orc/" ..  screen_width .. "x" .. screen_height .. "/filler-right.png",
-      Pos = { screen_width - 16, 0}},
-    "filler", {
-      File = "ui/orc/" ..  screen_width .. "x" .. screen_height .. "/resource.png",
-      Pos = {176, 0}},
-    "filler", {
-      File = "ui/orc/" ..  screen_width .. "x" .. screen_height .. "/statusline.png",
-      Pos = { 176, screen_height - 16}},
-    "filler", {
-      File = "ui/orc/menubutton.png",
+      File = "ui/orc/minimap.png",
       Pos = {0, 0}},
     "filler", {
-      File = "ui/orc/minimap.png",
-      Pos = {0, 24}},
+      File = "ui/orc/left_panel.png",
+      Pos = {0, 144}},
+    "filler", {
+      File = "ui/orc/top_resource_bar.png",
+      Pos = {144, 0}},
+    "filler", {
+      File = "ui/orc/right_panel.png",
+      Pos = {624, 0}},
+    "filler", {
+      File = "ui/orc/bottom_panel.png",
+      Pos = {144, 376}},
 
     "resources", {
       "gold", { File = "ui/gold,wood,oil,mana.png", Frame = 0,
@@ -69,26 +69,28 @@ function OrcScreen(screen_width, screen_height)
         Pos = { screen_width - 16 - 68, 0}, Size = {14, 14}, TextPos = { (screen_width - 16 - 68) + 18, 1}}},
 
     "info-panel", {
+--[[
       "panel", {
         "file", "ui/orc/infopanel.png",
         "pos", { info_panel_x, info_panel_y},
         "size", {176, 176}
       },
+]]
       "selected", {
         "single", {
           "icon", {
-            "pos", {  9, 169}, "style", "icon"}},
+            "pos", {  6, 166}, "style", "icon"}},
         "multiple", {
           "icons", {
-            { "pos", {  9, 169}, "style", "icon"},
-            { "pos", { 65, 169}, "style", "icon"},
-            { "pos", {121, 169}, "style", "icon"},
-            { "pos", {  9, 223}, "style", "icon"},
-            { "pos", { 65, 223}, "style", "icon"},
-            { "pos", {121, 223}, "style", "icon"},
-            { "pos", {  9, 277}, "style", "icon"},
-            { "pos", { 65, 277}, "style", "icon"},
-            { "pos", {121, 277}, "style", "icon"}},
+            { "pos", {  6, 166}, "style", "icon"},
+            { "pos", { 62, 166}, "style", "icon"},
+            { "pos", {118, 166}, "style", "icon"},
+            { "pos", {  6, 220}, "style", "icon"},
+            { "pos", { 62, 220}, "style", "icon"},
+            { "pos", {118, 220}, "style", "icon"},
+            { "pos", {  6, 274}, "style", "icon"},
+            { "pos", { 62, 274}, "style", "icon"},
+            { "pos", {118, 274}, "style", "icon"}},
           "max-text", {
             "font", "game",
             "pos", { info_panel_x + 10, info_panel_y + 10}}}
@@ -100,16 +102,16 @@ function OrcScreen(screen_width, screen_height)
             "font", "game",
             "pos", { info_panel_x + 37, info_panel_y + 8 + 78}},
           "icon", {
-            "pos", { info_panel_x + 110, info_panel_y + 11 + 70},
+            "pos", { info_panel_x + 107, info_panel_y + 8 + 70},
             "style", "icon"}},
         "multiple", {
           "icons", {
-            { "pos", {  9, 219}, "style", "icon"},
-            { "pos", { 65, 219}, "style", "icon"},
-            { "pos", {121, 219}, "style", "icon"},
-            { "pos", {  9, 266}, "style", "icon"},
-            { "pos", { 65, 266}, "style", "icon"},
-            { "pos", {121, 266}, "style", "icon"}}}
+            { "pos", {  6, 216}, "style", "icon"},
+            { "pos", { 62, 216}, "style", "icon"},
+            { "pos", {118, 216}, "style", "icon"},
+            { "pos", {  6, 263}, "style", "icon"},
+            { "pos", { 62, 263}, "style", "icon"},
+            { "pos", {118, 263}, "style", "icon"}}}
       },
       "upgrading", {
         "text", {
@@ -117,8 +119,8 @@ function OrcScreen(screen_width, screen_height)
           "font", "game",
           "pos", { info_panel_x + 29, info_panel_y + 8 + 78}},
         "icon", {
-          "pos", { info_panel_x + 110, info_panel_y + 11 + 70},
-          "style", "icon"}
+          "pos", { info_panel_x + 107, info_panel_y + 8 + 70},
+          "style", "icon"},
       },
       "researching", {
         "text", {
@@ -126,17 +128,17 @@ function OrcScreen(screen_width, screen_height)
           "font", "game",
           "pos", { info_panel_x + 16, info_panel_y + 8 + 78}},
         "icon", {
-          "pos", { info_panel_x + 110, info_panel_y + 11 + 70},
+          "pos", { info_panel_x + 107, info_panel_y + 8 + 70},
           "style", "icon"}
       },
       "transporting", {
         "icons", {
-          { "pos", {  9, 223}, "style", "icon"},
-          { "pos", { 65, 223}, "style", "icon"},
-          { "pos", {121, 223}, "style", "icon"},
-          { "pos", {  9, 277}, "style", "icon"},
-          { "pos", { 65, 277}, "style", "icon"},
-          { "pos", {121, 277}, "style", "icon"}}
+          { "pos", {  6, 220}, "style", "icon"},
+          { "pos", { 62, 220}, "style", "icon"},
+          { "pos", {118, 220}, "style", "icon"},
+          { "pos", {  6, 274}, "style", "icon"},
+          { "pos", { 62, 274}, "style", "icon"},
+          { "pos", {118, 274}, "style", "icon"}}
       },
       "completed-bar", {
         "color", {48, 100, 4},
@@ -150,53 +152,49 @@ function OrcScreen(screen_width, screen_height)
     },
 
     "button-panel", {
+--[[
       "panel", {
         "file", "ui/orc/" ..
           screen_width .. "x" .. screen_height ..
           "/buttonpanel.png",
         "pos", {0, 336}},
+]]
       "icons", {
-        { "pos", {  9, 340}, "style", "icon"},
-        { "pos", { 65, 340}, "style", "icon"},
-        { "pos", {121, 340}, "style", "icon"},
-        { "pos", {  9, 387}, "style", "icon"},
-        { "pos", { 65, 387}, "style", "icon"},
-        { "pos", {121, 387}, "style", "icon"},
-        { "pos", {  9, 434}, "style", "icon"},
-        { "pos", { 65, 434}, "style", "icon"},
-        { "pos", {121, 434}, "style", "icon"}},
+        {"pos", {  8, 236}, "style", "icon"},
+        {"pos", { 76, 236}, "style", "icon"},
+        {"pos", {  8, 282}, "style", "icon"},
+        {"pos", { 76, 282}, "style", "icon"},
+        {"pos", {  8, 328}, "style", "icon"},
+        {"pos", { 76, 328}, "style", "icon"}},
       "auto-cast-border-color", {0, 0, 252},
     },
 
     "map-area", {
-      Pos = {176, 16},
-      Size = {
-        screen_width - 176 - 16,
-        screen_height - 16 - 16}},
+      Pos = {144, 24},
+      Size = {480, 352}},
 
     "menu-panel", {
       "menu-button", {
-        Pos = {24, 2},
-        Caption = "Menu (~<F10~>)",
-        Style = "main"},
+        Pos = {6, 376},
+        Style = "menu"},
       "network-menu-button", {
-        Pos = {6, 2},
+        Pos = {6, 376},
         Caption = "Menu",
         Style = "network"},
       "network-diplomacy-button", {
-        Pos = {90, 2},
+        Pos = {168, 376},
         Caption = "Diplomacy",
-        Style = "network"}
+        Style = "network"},
     },
 
     "minimap", {
-      Pos = {6, 36},
+      Pos = {6, 12},
       Size = {128, 128}},
 
     "status-line", {
-      TextPos = {2 + 176, 2 + screen_height - 16},
+      TextPos = {148, 385},
       Font = "game",
-      Width = screen_width - 16 - 2 - 176},
+      Width = 480},
 
     "cursors", {
       Point = "cursor-point",
