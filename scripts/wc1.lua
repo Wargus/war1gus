@@ -190,6 +190,8 @@ DefineUpgradeWcNames(
   "upgrade-axe1", "upgrade-axe2",
   "upgrade-arrow1", "upgrade-arrow2",
   "upgrade-spear1", "upgrade-spear2",
+  "upgrade-horse1", "upgrade-horse2",
+  "upgrade-wolves1", "upgrade-wolves2",
   "upgrade-human-shield1", "upgrade-human-shield2",
   "upgrade-orc-shield1", "upgrade-orc-shield2",
   "upgrade-healing", "upgrade-far-seeing", "upgrade-invisibility",
