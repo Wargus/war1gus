@@ -5,12 +5,12 @@
 --     /_______  /|__|  |__|  (____  /__| (____  /\___  /|____//____  >
 --             \/                  \/          \//_____/            \/ 
 --  ______________________                           ______________________
---			  T H E   W A R   B E G I N S
---	   Stratagus - A free fantasy real time strategy game engine
+--                        T H E   W A R   B E G I N S
+--         Stratagus - A free fantasy real time strategy game engine
 --
---	ui.ccl		-	Define the human user interface
+--      ui.ccl - Define the human user interface
 --
---	(c) Copyright 2001-2003 by Lutz Sammer and Jimmy Salmon
+--      (c) Copyright 2001-2004 by Lutz Sammer and Jimmy Salmon
 --
 --      This program is free software; you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 --      along with this program; if not, write to the Free Software
 --      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 --
---	$Id$
+--      $Id$
 
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 --	* Race human.
@@ -41,20 +41,20 @@ function HumanScreen(screen_width, screen_height)
     "reverse-font-color", "yellow",
 
     "filler", {
-      File = "ui/human/" ..  screen_width .. "x" .. screen_height .. "/filler-right.png",
-      Pos = { screen_width - 16, 0}},
-    "filler", {
-      File = "ui/human/" ..  screen_width .. "x" .. screen_height .. "/resource.png",
-      Pos = {176, 0}},
-    "filler", {
-      File = "ui/human/" ..  screen_width .. "x" .. screen_height .. "/statusline.png",
-      Pos = { 176, screen_height - 16}},
-    "filler", {
-      File = "ui/human/menubutton.png",
+      File = "ui/human/minimap.png",
       Pos = {0, 0}},
     "filler", {
-      File = "ui/human/minimap.png",
-      Pos = {0, 24}},
+      File = "ui/human/left_panel.png",
+      Pos = {0, 144}},
+    "filler", {
+      File = "ui/human/top_resource_bar.png",
+      Pos = {144, 0}},
+    "filler", {
+      File = "ui/human/right_panel.png",
+      Pos = {624, 0}},
+    "filler", {
+      File = "ui/human/bottom_panel.png",
+      Pos = {144, 376}},
 
     "resources", {
       "gold", { File = "ui/gold,wood,oil,mana.png", Frame = 0,
@@ -69,11 +69,13 @@ function HumanScreen(screen_width, screen_height)
         Pos = { screen_width - 16 - 68, 0}, Size = {14, 14}, TextPos = { (screen_width - 16 - 68) + 18, 1}}},
 
     "info-panel", {
+--[[
       "panel", {
         "file", "ui/human/infopanel.png",
         "pos", { info_panel_x, info_panel_y},
         "size", {176, 176}
       },
+]]
       "selected", {
         "single", {
           "icon", {
@@ -150,53 +152,50 @@ function HumanScreen(screen_width, screen_height)
     },
 
     "button-panel", {
+--[[
       "panel", {
         "file", "ui/human/" ..
           screen_width .. "x" .. screen_height ..
           "/buttonpanel.png",
         "pos", {0, 336}},
+]]
       "icons", {
-        {"pos", {  9, 340}, "style", "icon"},
-        {"pos", { 65, 340}, "style", "icon"},
-        {"pos", {121, 340}, "style", "icon"},
-        {"pos", {  9, 387}, "style", "icon"},
-        {"pos", { 65, 387}, "style", "icon"},
-        {"pos", {121, 387}, "style", "icon"},
-        {"pos", {  9, 434}, "style", "icon"},
-        {"pos", { 65, 434}, "style", "icon"},
-        {"pos", {121, 434}, "style", "icon"}},
+        {"pos", {  8, 236}, "style", "icon"},
+        {"pos", { 76, 236}, "style", "icon"},
+        {"pos", {  8, 282}, "style", "icon"},
+        {"pos", { 76, 282}, "style", "icon"},
+        {"pos", {  8, 328}, "style", "icon"},
+        {"pos", { 76, 328}, "style", "icon"}},
       "auto-cast-border-color", {0, 0, 252},
     },
 
     "map-area", {
-      Pos = {176, 16},
-      Size = {
-        screen_width - 176 - 16,
-        screen_height - 16 - 16}},
+      Pos = {144, 24},
+      Size = {480, 352}},
 
     "menu-panel", {
       "menu-button", {
-        Pos = {24, 2},
+        Pos = {6, 376},
         Caption = "Menu (~<F10~>)",
         Style = "main"},
       "network-menu-button", {
-        Pos = {6, 2},
+        Pos = {6, 376},
         Caption = "Menu",
         Style = "network"},
       "network-diplomacy-button", {
-        Pos = {90, 2},
+        Pos = {168, 376},
         Caption = "Diplomacy",
         Style = "network"},
     },
 
     "minimap", {
-      Pos = {6, 36},
+      Pos = {6, 12},
       Size = {128, 128}},
 
     "status-line", {
-      TextPos = { 2 + 176, 2 + screen_height - 16},
+      TextPos = {148, 385},
       Font = "game",
-      Width = screen_width - 16 - 2 - 176},
+      Width = 480},
 
     "cursors", {
       Point = "cursor-point",

@@ -45,22 +45,22 @@ Load("scripts/orc/buttons.lua")
 
 -- general cancel button ------------------------------------------------------
 
-DefineButton( { Pos = 9, Level = 9, Icon = "icon-cancel",
+DefineButton( { Pos = 6, Level = 9, Icon = "icon-cancel",
   Action = "cancel",
   Key = "\27", Hint = "~<ESC~> CANCEL",
   ForUnit = {"*"} } )
 
-DefineButton( { Pos = 9, Level = 0, Icon = "icon-cancel",
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-cancel",
   Action = "cancel-upgrade",
   Key = "\27", Hint = "~<ESC~> CANCEL UPGRADE",
   ForUnit = {"cancel-upgrade"} } )
 
-DefineButton( { Pos = 9, Level = 0, Icon = "icon-cancel",
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-cancel",
   Action = "cancel-train-unit",
   Key = "\27", Hint = "~<ESC~> CANCEL UNIT TRAINING",
   ForUnit = {"*"} } )
 
-DefineButton( { Pos = 9, Level = 0, Icon = "icon-cancel",
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-cancel",
   Action = "cancel-build",
   Key = "\27", Hint = "~<ESC~> CANCEL CONSTRUCTION",
   ForUnit = {"cancel-build"} } )
