@@ -51,49 +51,49 @@ DefineMenuItem("pos", { 128, 11}, "font", "large", "init", "game-menu-init",
   "text", {"caption", "Game Menu", "align", "center"},
   "menu", "menu-game")
 DefineMenuItem("pos", { 16, 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "Save (~<F11~>)",
     "hotkey", "f11",
     "func", "save-game-menu",
     "style", "gm-half"},
   "menu", "menu-game")
 DefineMenuItem("pos", { 16 + 12 + 106, 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "Load (~<F12~>)",
     "hotkey", "f12",
     "func", "load-game-menu",
     "style", "gm-half"},
   "menu", "menu-game")
 DefineMenuItem("pos", { 16, 40 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Options (~<F5~>)",
     "hotkey", "f5",
     "func", "game-options-menu",
     "style", "gm-full"},
   "menu", "menu-game")
 DefineMenuItem("pos", { 16, 40 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Help (~<F1~>)",
     "hotkey", "f1",
     "func", "help-menu",
     "style", "gm-full"},
   "menu", "menu-game")
 DefineMenuItem("pos", { 16, 40 + (36 * 3)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Scenario ~!Objectives",
     "hotkey", "o",
     "func", "objectives-menu",
     "style", "gm-full"},
   "menu", "menu-game")
 DefineMenuItem("pos", { 16, 40 + (36 * 4)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!End Scenario",
     "hotkey", "e",
     "func", "end-scenario-menu",
     "style", "gm-full"},
   "menu", "menu-game")
 DefineMenuItem("pos", { 16, 288 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Return to Game (~<Esc~>)",
     "hotkey", "esc",
     "func", "game-menu-return",
@@ -113,14 +113,14 @@ DefineMenuItem("pos", { 144, 32}, "font", "large",
   "text", {"caption", "You are victorious!", "align", "center"},
   "menu", "menu-victory")
 DefineMenuItem("pos", { 32, 56}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Victory",
     "hotkey", "v",
     "func", "game-menu-end",
     "style", "gm-full"},
   "menu", "menu-victory")
 DefineMenuItem("pos", { 32, 90}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Save ~!Replay",
     "hotkey", "r",
     "func", "save-replay",
@@ -140,14 +140,14 @@ DefineMenuItem("pos", { 144, 32}, "font", "large",
   "text", {"caption", "achieve victory!", "align", "center"},
   "menu", "menu-defeated")
 DefineMenuItem("pos", { 32, 56}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "game-menu-end",
     "style", "gm-full"},
   "menu", "menu-defeated")
 DefineMenuItem("pos", { 32, 90}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Save ~!Replay",
     "hotkey", "r",
     "func", "save-replay",
@@ -168,14 +168,14 @@ DefineMenuItem("pos", { 14, 40}, "font", "game",
     "style", "pulldown"},
   "menu", "menu-save-replay")
 DefineMenuItem("pos", { 14, 80}, "font", "large", "flags", {"disabled"},
-  "button", {"size", {112, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "save-replay-ok",
     "style", "gm-half"},
   "menu", "menu-save-replay")
 DefineMenuItem("pos", { 162, 80}, "font", "large",
-  "button", {"size", {112, 27},
+  "button", {
     "caption", "Cancel (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -205,14 +205,14 @@ DefineMenuItem("pos", { 312, 140}, "font", "small",
     "handler", "scen-select-ok"},
   "menu", "menu-select-scenario")
 DefineMenuItem("pos", { 48, 318}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "OK",
     "hotkey", "",
     "func", "scen-select-ok",
     "style", "gm-half"},
   "menu", "menu-select-scenario")
 DefineMenuItem("pos", { 198, 318}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "Cancel",
     "hotkey", "",
     "func", "scen-select-cancel",
@@ -241,7 +241,7 @@ DefineMenuItem("pos", { 140, 80}, "font", "game",
     "current", 0},
   "menu", "menu-select-scenario")
 DefineMenuItem("pos", { 22, 112}, "font", "game",
-  "button", {"size", {36, 24},
+  "button", {
     "caption", "",
     "hotkey", "",
     "func", "scen-select-folder",
@@ -258,63 +258,63 @@ DefineMenuItem("pos", { 0, 0}, "font", "game", "init", "program-start",
   "drawfunc", "name-line-draw",
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Single Player Game",
     "hotkey", "s",
     "func", "single-player-game-menu",
     "style", "gm-full"},
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Multi Player Game",
     "hotkey", "m",
     "func", "multi-player-game-menu",
     "style", "gm-full"},
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Campaign Game",
     "hotkey", "c",
     "func", "campaign-game-menu",
     "style", "gm-full"},
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 3)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Load Game",
     "hotkey", "l",
     "func", "load-game-menu",
     "style", "gm-full"},
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 4)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Replay Game",
     "hotkey", "r",
     "func", "replay-game-menu",
     "style", "gm-full"},
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 5)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Options",
     "hotkey", "o",
     "func", "global-options-menu",
     "style", "gm-full"},
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 6)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Editor",
     "hotkey", "e",
     "func", "game-start-editor",
     "style", "gm-full"},
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 7)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "S~!how Credits",
     "hotkey", "h",
     "func", "game-show-credits",
     "style", "gm-full"},
   "menu", "menu-program-start")
 DefineMenuItem("pos", { 208, 109 + (36 * 8)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "E~!xit Program",
     "hotkey", "x",
     "func", "game-menu-exit",
@@ -402,7 +402,7 @@ DefineMenuItem("pos", { 192, 91},
   "menu", "menu-global-options")
 ]]
 DefineMenuItem("pos", { 123, 309}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "end-menu",
@@ -421,21 +421,21 @@ DefineMenuItem("pos", { (640 / 2) + 12, 192}, "font", "large",
   "text", {"caption", "~<Single Player Game Setup~>", "align", "center"},
   "menu", "menu-custom-game")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "S~!elect Scenario",
     "hotkey", "e",
     "func", "scen-select-menu",
     "style", "gm-full"},
   "menu", "menu-custom-game")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Start Game",
     "hotkey", "s",
     "func", "custom-game-start",
     "style", "gm-full"},
   "menu", "menu-custom-game")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Cancel Game",
     "hotkey", "c",
     "func", "game-cancel",
@@ -517,14 +517,14 @@ DefineMenuItem("pos", { 40, 38}, "font", "game",
     "style", "pulldown"},
   "menu", "menu-enter-name")
 DefineMenuItem("pos", { 24, 80}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "end-menu",
     "style", "gm-half"},
   "menu", "menu-enter-name")
 DefineMenuItem("pos", { 154, 80}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "enter-name-cancel",
@@ -538,21 +538,21 @@ DefineMenuItem("pos", { 154, 80}, "font", "large",
 DefineMenu("name", "menu-create-join-menu", "geometry", {0, 0, 640, 480},
   "panel", "none", "background", MenuBackground, "default", 2)
 DefineMenuItem("pos", { 208, 320 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Join LAN Game",
     "hotkey", "j",
     "func", "net-join-game",
     "style", "gm-full"},
   "menu", "menu-create-join-menu")
 DefineMenuItem("pos", { 208, 320 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Create LAN Game",
     "hotkey", "c",
     "func", "net-create-game",
     "style", "gm-full"},
   "menu", "menu-create-join-menu")
 DefineMenuItem("pos", { 208, 320 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Previous Menu",
     "hotkey", "p",
     "func", "end-menu",
@@ -565,21 +565,21 @@ DefineMenuItem("pos", { 208, 320 + (36 * 2)}, "font", "large",
 DefineMenu("name", "menu-internet-create-join-menu", "geometry", {0, 0, 640, 480},
   "panel", "none", "background", MenuBackground, "default", 2)
 DefineMenuItem("pos", { 208, 320 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Join Internet Game",
     "hotkey", "j",
     "func", "metaserver-list",
     "style", "gm-full"},
   "menu", "menu-internet-create-join-menu")
 DefineMenuItem("pos", { 208, 320 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Create Internet Game",
     "hotkey", "c",
     "func", "net-internet-create-game",
     "style", "gm-full"},
   "menu", "menu-internet-create-join-menu")
 DefineMenuItem("pos", { 208, 320 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Previous Menu",
     "hotkey", "p",
     "func", "menu-internet-end-menu",
@@ -592,21 +592,21 @@ DefineMenuItem("pos", { 208, 320 + (36 * 2)}, "font", "large",
 DefineMenu("name", "menu-multi-net-type-menu", "geometry", {0, 0, 640, 480},
   "panel", "none", "background", MenuBackground, "default", 2)
 DefineMenuItem("pos", { 208, 320 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!LAN/P2P Game",
     "hotkey", "l",
     "func", "net-lan-game",
     "style", "gm-full"},
   "menu", "menu-multi-net-type-menu")
 DefineMenuItem("pos", { 208, 320 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Internet Game",
     "hotkey", "i",
     "func", "net-internet-game",
     "style", "gm-full"},
   "menu", "menu-multi-net-type-menu")
 DefineMenuItem("pos", { 208, 320 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Previous Menu",
     "hotkey", "p",
     "func", "end-menu",
@@ -626,21 +626,21 @@ DefineMenuItem("pos", { (640 / 2) + 12, 8}, "font", "large",
   "text", {"caption", "~<Multi Player Setup~>", "align", "center"},
   "menu", "menu-multi-setup")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "S~!elect Scenario",
     "hotkey", "e",
     "func", "multi-scen-select",
     "style", "gm-full"},
   "menu", "menu-multi-setup")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 1)}, "font", "large", "flags", {"disabled"},
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Start Game",
     "hotkey", "s",
     "func", "multi-game-start",
     "style", "gm-full"},
   "menu", "menu-multi-setup")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Cancel Game",
     "hotkey", "c",
     "func", "multi-game-cancel",
@@ -1009,14 +1009,14 @@ DefineMenuItem("pos", { 40, 38}, "font", "game",
     "style", "pulldown"},
   "menu", "menu-enter-server")
 DefineMenuItem("pos", { 24, 80}, "font", "large", "flags", {"disabled"},
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "end-menu",
     "style", "gm-half"},
   "menu", "menu-enter-server")
 DefineMenuItem("pos", { 154, 80}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "enter-server-ip-cancel",
@@ -1036,21 +1036,21 @@ DefineMenuItem("pos", { (640 / 2) + 12, 8}, "font", "large",
   "text", {"caption", "~<Multi Player Game~>", "align", "center"},
   "menu", "menu-net-multi-client")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Ready",
     "hotkey", "r",
     "func", "multi-client-ready",
     "style", "gm-full"},
   "menu", "menu-net-multi-client")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Not Ready",
     "hotkey", "n",
     "func", "multi-client-not-ready",
     "style", "gm-full"},
   "menu", "menu-net-multi-client")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Cancel Game",
     "hotkey", "c",
     "func", "multi-client-cancel",
@@ -1342,7 +1342,7 @@ DefineMenuItem("pos", { 144, 53}, "font", "large",
   "text", {"caption", nil, "align", "center"},
   "menu", "menu-net-connecting")
 DefineMenuItem("pos", { 32, 90}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Cancel (~<Esc~>)",
     "hotkey", "esc",
     "func", "net-connecting-cancel",
@@ -1356,42 +1356,42 @@ DefineMenuItem("pos", { 32, 90}, "font", "large",
 DefineMenu("name", "menu-campaign-select", "geometry", {0, 0, 640, 480},
   "panel", "none", "background", MenuBackground, "default", 0)
 DefineMenuItem("pos", { 208, 212 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", nil,
     "hotkey", "a",
     "func", "campaign-1",
     "style", "gm-full"},
   "menu", "menu-campaign-select")
 DefineMenuItem("pos", { 208, 212 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", nil,
     "hotkey", "m",
     "func", "campaign-2",
     "style", "gm-full"},
   "menu", "menu-campaign-select")
 DefineMenuItem("pos", { 208, 212 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", nil,
     "hotkey", "l",
     "func", "campaign-3",
     "style", "gm-full"},
   "menu", "menu-campaign-select")
 DefineMenuItem("pos", { 208, 212 + (36 * 3)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", nil,
     "hotkey", "y",
     "func", "campaign-4",
     "style", "gm-full"},
   "menu", "menu-campaign-select")
 DefineMenuItem("pos", { 208, 212 + (36 * 4)}, "font", "large", "flags", {"disabled"},
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Select Campaign",
     "hotkey", "s",
     "func", "select-campaign-menu",
     "style", "gm-full"},
   "menu", "menu-campaign-select")
 DefineMenuItem("pos", { 208, 212 + (36 * 5)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Previous Menu",
     "hotkey", "p",
     "func", "end-menu",
@@ -1405,7 +1405,7 @@ DefineMenuItem("pos", { 208, 212 + (36 * 5)}, "font", "large",
 DefineMenu("name", "menu-campaign-continue", "geometry", {0, 0, 640, 480},
   "panel", "none", "background", MenuBackground, "default", 0)
 DefineMenuItem("pos", { 508, 320 + (36 * 3)}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Continue",
     "hotkey", "c",
     "func", "end-menu",
@@ -1449,7 +1449,7 @@ DefineMenuItem("pos", { 14, 38 + (21 * 8)}, "font", "large",
   "text", {"caption", nil},
   "menu", "menu-objectives")
 DefineMenuItem("pos", { 16, 288 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "end-menu",
@@ -1466,35 +1466,35 @@ DefineMenuItem("pos", { 128, 11}, "font", "large",
   "text", {"caption", "End Scenario", "align", "center"},
   "menu", "menu-end-scenario")
 DefineMenuItem("pos", { 16, 40 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Restart Scenario",
     "hotkey", "r",
     "func", "restart-confirm-menu",
     "style", "gm-full"},
   "menu", "menu-end-scenario")
 DefineMenuItem("pos", { 16, 40 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Surrender",
     "hotkey", "s",
     "func", "surrender-confirm-menu",
     "style", "gm-full"},
   "menu", "menu-end-scenario")
 DefineMenuItem("pos", { 16, 40 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Quit to Menu",
     "hotkey", "q",
     "func", "quit-to-menu-confirm-menu",
     "style", "gm-full"},
   "menu", "menu-end-scenario")
 DefineMenuItem("pos", { 16, 40 + (36 * 3)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "E~!xit Program",
     "hotkey", "x",
     "func", "exit-confirm-menu",
     "style", "gm-full"},
   "menu", "menu-end-scenario")
 DefineMenuItem("pos", { 16, 288 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Previous (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -1588,7 +1588,7 @@ DefineMenuItem("pos", { 170, 36 * 6.5}, "font", "large",
     "style", "gem-round"},
   "menu", "menu-sound-options")
 DefineMenuItem("pos", { 176 - (106 / 2), 352 - 11 - 27}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "end-menu",
@@ -1619,7 +1619,7 @@ DefineMenuItem("pos", { 16, 36 * 2}, "font", "large",
     "style", "gem-square"},
   "menu", "menu-preferences")
 DefineMenuItem("pos", { 128 - (106 / 2), 245}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "end-menu",
@@ -1953,14 +1953,14 @@ DefineMenuItem("pos", { 276, (18 * 14) + 23}, "font", "large",
   "menu", "menu-diplomacy")
 
 DefineMenuItem("pos", { 75, 352 - 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "diplomacy-ok",
     "style", "gm-half"},
   "menu", "menu-diplomacy")
 DefineMenuItem("pos", { 195, 352 - 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "end-menu",
@@ -2019,7 +2019,7 @@ DefineMenuItem("pos", { 230, (36 * 6) + 6}, "font", "small",
   "text", {"caption", "fast", "align", "right"},
   "menu", "menu-speed-options")
 DefineMenuItem("pos", { 128 - (106 / 2), 245}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "end-menu",
@@ -2036,35 +2036,35 @@ DefineMenuItem("pos", { 128, 11}, "font", "large",
   "text", {"caption", "Game Options", "align", "center"},
   "menu", "menu-game-options")
 DefineMenuItem("pos", { 16, 40 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Sound (~<F7~>)",
     "hotkey", "f7",
     "func", "sound-options-menu",
     "style", "gm-full"},
   "menu", "menu-game-options")
 DefineMenuItem("pos", { 16, 40 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Speeds (~<F8~>)",
     "hotkey", "f8",
     "func", "speed-options-menu",
     "style", "gm-full"},
   "menu", "menu-game-options")
 DefineMenuItem("pos", { 16, 40 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Preferences (~<F9~>)",
     "hotkey", "f9",
     "func", "preferences-menu",
     "style", "gm-full"},
   "menu", "menu-game-options")
 DefineMenuItem("pos", { 16, 40 + (36 * 3)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Diplomacy",
     "hotkey", "d",
     "func", "diplomacy-menu",
     "style", "gm-full"},
   "menu", "menu-game-options")
 DefineMenuItem("pos", { 128 - (224 / 2), 245}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Previous (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -2084,7 +2084,7 @@ DefineMenuItem("pos", { 144, 38}, "font", "large",
   "text", {"caption", nil, "align", "center"},
   "menu", "menu-net-error")
 DefineMenuItem("pos", { 92, 80}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "end-menu",
@@ -2108,14 +2108,14 @@ DefineMenuItem("pos", { 14, 256 - 75}, "font", "game",
     "style", "gem-square"},
   "menu", "menu-tips")
 DefineMenuItem("pos", { 14, 256 - 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Next Tip",
     "hotkey", "n",
     "func", "tips-next-tip",
     "style", "gm-half"},
   "menu", "menu-tips")
 DefineMenuItem("pos", { 168, 256 - 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Close",
     "hotkey", "c",
     "func", "end-menu",
@@ -2156,21 +2156,21 @@ DefineMenuItem("pos", { 128, 11}, "font", "large",
   "text", {"caption", "Help Menu", "align", "center"},
   "menu", "menu-help")
 DefineMenuItem("pos", { 16, 40 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Keystroke ~!Help",
     "hotkey", "h",
     "func", "keystroke-help-menu",
     "style", "gm-full"},
   "menu", "menu-help")
 DefineMenuItem("pos", { 16, 40 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Stratagus ~!Tips",
     "hotkey", "t",
     "func", "tips-menu",
     "style", "gm-full"},
   "menu", "menu-help")
 DefineMenuItem("pos", { 128 - (224 / 2), 248}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Previous (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -2193,7 +2193,7 @@ DefineMenuItem("pos", { 352 - 18 - 16, 40 + 20}, "font", "small",
     "default", 0},
   "menu", "menu-keystroke-help")
 DefineMenuItem("pos", { (352 / 2) - (224 / 2), 352 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Previous (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -2231,21 +2231,21 @@ DefineMenuItem("pos", { ((384 - 300 - 18) / 2) + 300, 11 + 36 + 22}, "font", "sm
     "handler", "save-game-ok"},
   "menu", "menu-save-game")
 DefineMenuItem("pos", { (1 * (384 / 3)) - 106 - 10, 256 - 16 - 27}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Save",
     "hotkey", "s",
     "func", "save-game-ok",
     "style", "gm-half"},
   "menu", "menu-save-game")
 DefineMenuItem("pos", { (2 * (384 / 3)) - 106 - 10, 256 - 16 - 27}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Delete",
     "hotkey", "d",
     "func", "delete-confirm-menu",
     "style", "gm-half"},
   "menu", "menu-save-game")
 DefineMenuItem("pos", { (3 * (384 / 3)) - 106 - 10, 256 - 16 - 27}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "end-menu",
@@ -2275,14 +2275,14 @@ DefineMenuItem("pos", { ((384 - 300 - 18) / 2) + 300, 11 + (36 * 1.5)}, "font", 
     "handler", "load-game-ok"},
   "menu", "menu-load-game")
 DefineMenuItem("pos", { (384 - 300 - 18) / 2, 256 - 16 - 27}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Load",
     "hotkey", "l",
     "func", "load-game-ok",
     "style", "gm-half"},
   "menu", "menu-load-game")
 DefineMenuItem("pos", { 384 - ((384 - 300 - 18) / 2) - 106, 256 - 16 - 27}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "end-menu",
@@ -2305,14 +2305,14 @@ DefineMenuItem("pos", { 16, 11 + (20 * 2.5)}, "font", "game",
   "text", {"caption", nil, "align", "left"},
   "menu", "menu-save-confirm")
 DefineMenuItem("pos", { 16, 128 - (27 * 1.5)}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "save-confirm-ok",
     "style", "gm-half"},
   "menu", "menu-save-confirm")
 DefineMenuItem("pos", { 288 - 16 - 106, 128 - (27 * 1.5)}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "save-confirm-cancel",
@@ -2335,14 +2335,14 @@ DefineMenuItem("pos", { 16, 11 + (20 * 2.5)}, "font", "game",
   "text", {"caption", nil, "align", "left"},
   "menu", "menu-delete-confirm")
 DefineMenuItem("pos", { 16, 128 - (27 * 1.5)}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "delete-confirm-ok",
     "style", "gm-half"},
   "menu", "menu-delete-confirm")
 DefineMenuItem("pos", { 288 - 16 - 106, 128 - (27 * 1.5)}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "delete-confirm-cancel",
@@ -2359,21 +2359,21 @@ DefineMenuItem("pos", { 0, 0}, "font", "game",
   "drawfunc", "editor-new-draw-func",
   "menu", "menu-editor-select")
 DefineMenuItem("pos", { 208, 320 + (36 * 0)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!New Map",
     "hotkey", "n",
     "func", "editor-new-map",
     "style", "gm-full"},
   "menu", "menu-editor-select")
 DefineMenuItem("pos", { 208, 320 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Load Map",
     "hotkey", "l",
     "func", "editor-main-load-map",
     "style", "gm-full"},
   "menu", "menu-editor-select")
 DefineMenuItem("pos", { 208, 320 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Cancel (~<Esc~>)",
     "hotkey", "esc",
     "func", "editor-select-cancel",
@@ -2419,14 +2419,14 @@ DefineMenuItem("pos", { 176 + (288 - ((288 - 260) / 2) - 152), 112 + (11 + (36 *
     "func", nil},
   "menu", "menu-editor-new")
 DefineMenuItem("pos", { 320 - 106 - 23, 328}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "editor-new-ok",
     "style", "gm-half"},
   "menu", "menu-editor-new")
 DefineMenuItem("pos", { 320 + 23, 328}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "editor-new-cancel",
@@ -2456,21 +2456,21 @@ DefineMenuItem("pos", { ((352 - 18 - 288) / 2) + 288, 11 + 98}, "font", "small",
     "handler", "editor-main-load-ok"},
   "menu", "menu-editor-main-load-map")
 DefineMenuItem("pos", { 48, 308}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "OK",
     "hotkey", "",
     "func", "editor-main-load-ok",
     "style", "gm-half"},
   "menu", "menu-editor-main-load-map")
 DefineMenuItem("pos", { 198, 308}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "Cancel",
     "hotkey", "",
     "func", "editor-main-load-cancel",
     "style", "gm-half"},
   "menu", "menu-editor-main-load-map")
 DefineMenuItem("pos", { ((352 - 18 - 288) / 2) - 2, (11 + 98) - 28}, "font", "game",
-  "button", {"size", {36, 24},
+  "button", {
     "caption", nil,
     "hotkey", "",
     "func", "editor-main-load-folder",
@@ -2500,21 +2500,21 @@ DefineMenuItem("pos", { ((352 - 18 - 288) / 2) + 288, 11 + 98}, "font", "small",
     "handler", "editor-load-ok"},
   "menu", "menu-editor-load")
 DefineMenuItem("pos", { 48, 308}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "OK",
     "hotkey", "",
     "func", "editor-load-ok",
     "style", "gm-half"},
   "menu", "menu-editor-load")
 DefineMenuItem("pos", { 198, 308}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "Cancel",
     "hotkey", "",
     "func", "editor-load-cancel",
     "style", "gm-half"},
   "menu", "menu-editor-load")
 DefineMenuItem("pos", { ((352 - 18 - 288) / 2) - 2, (11 + 98) - 28}, "font", "game",
-  "button", {"size", {36, 24},
+  "button", {
     "caption", nil,
     "hotkey", "",
     "func", "editor-load-folder",
@@ -2531,42 +2531,42 @@ DefineMenuItem("pos", { 128, 11}, "font", "large",
   "text", {"caption", "Editor Menu", "align", "center"},
   "menu", "menu-editor")
 DefineMenuItem("pos", { 16, 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "Save (~<F11~>)",
     "hotkey", "f11",
     "func", "editor-save-menu",
     "style", "gm-half"},
   "menu", "menu-editor")
 DefineMenuItem("pos", { 16 + 12 + 106, 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "Load (~<F12~>)",
     "hotkey", "f12",
     "func", "editor-load-menu",
     "style", "gm-half"},
   "menu", "menu-editor")
 DefineMenuItem("pos", { 16, 40 + (36 * 1)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Map Properties (~<F5~>)",
     "hotkey", "f5",
     "func", "editor-map-properties-menu",
     "style", "gm-full"},
   "menu", "menu-editor")
 DefineMenuItem("pos", { 16, 40 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Player Properties (~<F6~>)",
     "hotkey", "f6",
     "func", "editor-player-properties-menu",
     "style", "gm-full"},
   "menu", "menu-editor")
 DefineMenuItem("pos", { 16, 288 - 40 - 36}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "E~!xit to Menu",
     "hotkey", "x",
     "func", "editor-quit-to-menu",
     "style", "gm-full"},
   "menu", "menu-editor")
 DefineMenuItem("pos", { 16, 288 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Return to Editor (~<Esc~>)",
     "hotkey", "esc",
     "func", "game-menu-return",
@@ -2616,14 +2616,14 @@ DefineMenuItem("pos", { 288 - ((288 - 260) / 2) - 152, 11 + (36 * 4) + 22}, "fon
     "current", 0},
   "menu", "menu-editor-map-properties")
 DefineMenuItem("pos", { (288 - (106 * 2)) / 4, 256 - 11 - 27}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "editor-map-properties-ok",
     "style", "gm-half"},
   "menu", "menu-editor-map-properties")
 DefineMenuItem("pos", { 288 - ((288 - (106 * 2)) / 4) - 106, 256 - 11 - 27}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "editor-end-menu",
@@ -2643,7 +2643,7 @@ DefineMenuItem("pos", { 640 / 2, 11}, "font", "large",
   "text", {"caption", "Player Properties", "align", "center"},
   "menu", "menu-editor-player-properties")
 DefineMenuItem("pos", { 455, 440}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "OK",
     "hotkey", "o",
     "func", "editor-end-menu",
@@ -3369,14 +3369,14 @@ DefineMenuItem("pos", { 14 + 22, (256 - 75) + 4}, "font", "game",
   "text", {"caption", "Show tips at startup", "align", "left"},
   "menu", "menu-editor-tips")
 DefineMenuItem("pos", { 14, 256 - 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Next Tip",
     "hotkey", "n",
     "func", nil, --show-next-editor-tip
     "style", "gm-half"},
   "menu", "menu-editor-tips")
 DefineMenuItem("pos", { 168, 256 - 40}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Close",
     "hotkey", "c",
     "func", "editor-end-menu",
@@ -3422,14 +3422,14 @@ DefineMenuItem("pos", { 40, 46}, "font", "game",
     "style", "pulldown"},
   "menu", "menu-editor-edit-resource")
 DefineMenuItem("pos", { 24, 88}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "editor-edit-resource-ok",
     "style", "gm-half"},
   "menu", "menu-editor-edit-resource")
 DefineMenuItem("pos", { 154, 88}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "editor-edit-resource-cancel",
@@ -3449,7 +3449,7 @@ DefineMenuItem("pos", { 144, 38}, "font", "large",
   "text", {"caption", nil, "align", "center"},
   "menu", "menu-editor-error")
 DefineMenuItem("pos", { 92, 80}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "editor-end-menu",
@@ -3484,14 +3484,14 @@ DefineMenuItem("pos", { 124, 60}, "font", "game",
   "text", {"caption", "Passive", "align", "left"},
   "menu", "menu-editor-edit-ai-properties")
 DefineMenuItem("pos", { 24, 88}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "editor-edit-ai-properties-ok",
     "style", "gm-half"},
   "menu", "menu-editor-edit-ai-properties")
 DefineMenuItem("pos", { 154, 88}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "editor-edit-ai-properties-cancel",
@@ -3526,21 +3526,21 @@ DefineMenuItem("pos", { (352 - 18 - 288) / 2, 11 + 98 + 108 + 12}, "font", "game
     "style", "pulldown"},
   "menu", "menu-editor-save")
 DefineMenuItem("pos", { 48, 308}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "OK",
     "hotkey", "o",
     "func", "editor-save-ok",
     "style", "gm-half"},
   "menu", "menu-editor-save")
 DefineMenuItem("pos", { 198, 308}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "Cancel",
     "hotkey", "c",
     "func", "editor-save-cancel",
     "style", "gm-half"},
   "menu", "menu-editor-save")
 DefineMenuItem("pos", { ((352 - 18 - 288) / 2) - 2, (11 + 98) - 28}, "font", "game",
-  "button", {"size", {36, 24},
+  "button", {
     "caption", nil,
     "hotkey", "",
     "func", "editor-save-folder",
@@ -3563,14 +3563,14 @@ DefineMenuItem("pos", { 16, 11 + (20 * 2.5)}, "font", "game",
   "text", {"caption", nil, "align", "left"},
   "menu", "menu-editor-save-confirm")
 DefineMenuItem("pos", { 16, 128 - (27 * 1.5)}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "editor-save-confirm-ok",
     "style", "gm-half"},
   "menu", "menu-editor-save-confirm")
 DefineMenuItem("pos", { 288 - 16 - 106, 128 - (27 * 1.5)}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "editor-save-confirm-cancel",
@@ -3600,21 +3600,21 @@ DefineMenuItem("pos", { ((352 - 18 - 288) / 2) + 288, 11 + 98}, "font", "small",
     "handler", "replay-game-ok"},
   "menu", "menu-replay-game")
 DefineMenuItem("pos", { 48, 308}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!OK",
     "hotkey", "o",
     "func", "replay-game-ok",
     "style", "gm-half"},
   "menu", "menu-replay-game")
 DefineMenuItem("pos", { 198, 308}, "font", "large",
-  "button", {"size", {106, 27},
+  "button", {
     "caption", "~!Cancel",
     "hotkey", "c",
     "func", "replay-game-cancel",
     "style", "gm-half"},
   "menu", "menu-replay-game")
 DefineMenuItem("pos", { ((352 - 18 - 288) / 2) - 2, (11 + 98) - 28}, "font", "game",
-  "button", {"size", {36, 24},
+  "button", {
     "caption", nil,
     "hotkey", "",
     "func", "replay-game-folder",
@@ -3644,14 +3644,14 @@ DefineMenuItem("pos", { 128, 11 + (24 * 2)}, "font", "large",
   "text", {"caption", "the scenario?", "align", "center"},
   "menu", "menu-restart-confirm")
 DefineMenuItem("pos", { 16, 11 + (24 * 3) + 29}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Restart Scenario",
     "hotkey", "r",
     "func", "end-scenario-restart",
     "style", "gm-full"},
   "menu", "menu-restart-confirm")
 DefineMenuItem("pos", { 16, 288 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Cancel (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -3674,14 +3674,14 @@ DefineMenuItem("pos", { 128, 11 + (24 * 2)}, "font", "large",
   "text", {"caption", "to your enemies?", "align", "center"},
   "menu", "menu-surrender-confirm")
 DefineMenuItem("pos", { 16, 11 + (24 * 3) + 29}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Surrender",
     "hotkey", "s",
     "func", "end-scenario-surrender",
     "style", "gm-full"},
   "menu", "menu-surrender-confirm")
 DefineMenuItem("pos", { 16, 288 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Cancel (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -3704,14 +3704,14 @@ DefineMenuItem("pos", { 128, 11 + (24 * 2)}, "font", "large",
   "text", {"caption", "the main menu?", "align", "center"},
   "menu", "menu-quit-to-menu-confirm")
 DefineMenuItem("pos", { 16, 11 + (24 * 3) + 29}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Quit to Menu",
     "hotkey", "q",
     "func", "end-scenario-quit-to-menu",
     "style", "gm-full"},
   "menu", "menu-quit-to-menu-confirm")
 DefineMenuItem("pos", { 16, 288 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Cancel (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -3734,14 +3734,14 @@ DefineMenuItem("pos", { 128, 11 + (24 * 2)}, "font", "large",
   "text", {"caption", "Stratagus?", "align", "center"},
   "menu", "menu-exit-confirm")
 DefineMenuItem("pos", { 16, 11 + (24 * 3) + 29}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "E~!xit Program",
     "hotkey", "x",
     "func", "game-menu-exit",
     "style", "gm-full"},
   "menu", "menu-exit-confirm")
 DefineMenuItem("pos", { 16, 288 - 40}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "Cancel (~<Esc~>)",
     "hotkey", "esc",
     "func", "end-menu",
@@ -3761,14 +3761,14 @@ DefineMenuItem("pos", { (640 / 2) + 12, 8}, "font", "large",
   "text", {"caption", "~<Online Game List ~>", "align", "center"},
   "menu", "metaserver-list")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 2)}, "font", "large",
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Cancel Game",
     "hotkey", "c",
     "func", "end-menu",
     "style", "gm-full"},
   "menu", "metaserver-list")
 DefineMenuItem("pos", { 640 - 224 - 16, 360 + (36 * 1)}, "font", "large", 
-  "button", {"size", {224, 27},
+  "button", {
     "caption", "~!Refresh",
     "hotkey", "r",
     "func", "metaserver-list",	-- refresh game list.
