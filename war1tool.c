@@ -628,7 +628,7 @@ int SavePNG(const char* name,unsigned char* image,int w,int h
     int i;
 
     if( !(fp=fopen(name,"wb")) ) {
-	printf("%s:",name);
+	fprintf(stderr,"%s:",name);
 	perror("Can't open file");
 	return 1;
     }
@@ -1048,7 +1048,7 @@ void ConvertFLC_COPY(unsigned char* buf)
 	}
     }
 
-    sprintf(pngbuf,"%s-%02d.png",FLCFile,FLCFrame);
+    sprintf(pngbuf,"%s-%02d.png",FLCFile,FLCFrame++);
     SavePNG(pngbuf,FLCImage,FLCWidth,FLCHeight,FLCPalette);
 }
 
@@ -1243,7 +1243,7 @@ void ConvertFLC(const char* file,const char* flc)
     p=buf;
     i=FetchLE32(p);
     if( i!=stat_buf.st_size ) {
-	printf("FLC file size incorrect: %d != %d\n",i,stat_buf.st_size);
+	printf("FLC file size incorrect: %d != %ld\n",i,stat_buf.st_size);
 	free(buf);
 	return;
     }
@@ -1256,16 +1256,16 @@ void ConvertFLC(const char* file,const char* flc)
     frames=FetchLE16(p);
     FLCWidth=FetchLE16(p);
     FLCHeight=FetchLE16(p);
-    FetchLE16(p); // depth always 8
-    FetchLE16(p); // flags, unused
+    i=FetchLE16(p); // depth always 8
+    i=FetchLE16(p); // flags, unused
     speed=FetchLE32(p);
-    FetchLE16(p); // reserved
-    FetchLE32(p); // created
-    FetchLE32(p); // creator
-    FetchLE32(p); // updated
-    FetchLE32(p); // updater
-    FetchLE16(p); // aspectx
-    FetchLE16(p); // aspecty
+    i=FetchLE16(p); // reserved
+    i=FetchLE32(p); // created
+    i=FetchLE32(p); // creator
+    i=FetchLE32(p); // updated
+    i=FetchLE32(p); // updater
+    i=FetchLE16(p); // aspectx
+    i=FetchLE16(p); // aspecty
     p+=38;        // reserved
     oframe1=FetchLE32(p);
     oframe2=FetchLE32(p);
@@ -1487,10 +1487,17 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp
     minx=0;
     miny=0;
 
-    max_width=best_width;
-    max_height=best_height;
-    IPR=1;
-    length=count;
+    if( count%5==0 ) {
+	best_width=max_width;
+	best_height=max_height;
+	IPR=5;
+	length=((count+IPR-1)/IPR)*IPR;
+    } else {
+	max_width=best_width;
+	max_height=best_height;
+	IPR=1;
+	length=count;
+    }
 
     image=malloc(best_width*best_height*length);
 
@@ -1832,8 +1839,8 @@ int ConvertVoc(char* file,int voce)
     p+=19;
     ++p; // 0x1A
     offset=FetchLE16(p);
-    FetchLE16(p); // Version
-    FetchLE16(p); // 1's comp of version
+    i=FetchLE16(p); // Version
+    i=FetchLE16(p); // 1's comp of version
 
     wavp=NULL;
     wavlen=0;
