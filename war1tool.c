@@ -41,6 +41,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #ifdef _MSC_VER
+#define inline __inline
 #define strdup _strdup
 #define DEBUG _DEBUG
 #include <direct.h>
@@ -77,10 +78,10 @@ typedef unsigned long u_int32_t;
 #define AccessLE32(p) (*((unsigned int*)(p)))
 #define ConvertLE16(v) (v)
 #else
-static _inline unsigned short Swap16(unsigned short D) {
+static inline unsigned short Swap16(unsigned short D) {
 	return ((D << 8) | (D >> 8));
 }
-static _inline unsigned int Swap32(unsigned int D) {
+static inline unsigned int Swap32(unsigned int D) {
 	return ((D << 24) | ((D << 8) & 0x00FF0000) | ((D >> 8) & 0x0000FF00) | (D >> 24));
 }
 #define FetchLE16(p) Swap16(*((unsigned short*)(p))++)
@@ -97,87 +98,87 @@ static _inline unsigned int Swap32(unsigned int D) {
 //----------------------------------------------------------------------------
 
 /**
-**		Destination directory of the graphics
+**  Destination directory of the graphics
 */
 char* Dir;
 
 /**
-**		Path to the tileset graphics. (default=$DIR/graphics/tilesets)
+**  Path to the tileset graphics. (default=$DIR/graphics/tilesets)
 */
 #define TILESET_PATH		"graphics/tilesets"
 
 /**
-**		Path to the unit graphics. (default=$DIR/graphics)
+**  Path to the unit graphics. (default=$DIR/graphics)
 */
 #define UNIT_PATH		"graphics"
 
 /**
-**		Path the cm files. (default=$DIR)
+**  Path to the cm files. (default=$DIR)
 */
 #define CM_PATH		"."
 
 /**
-**		Path the cursor files. (default=$DIR/graphic/ui/)
+**  Path to the cursor files.
 */
-#define CURSOR_PATH		"graphics/ui"
+#define CURSOR_PATH  "graphics/ui/cursors"
 
 /**
-**		Path the graphic files. (default=$DIR/graphic)
+**  Path to the graphic files.
 */
-#define GRAPHIC_PATH		"graphics"
+#define GRAPHIC_PATH  "graphics"
 
 /**
-**		Path the sound files. (default=$DIR/sounds)
+**  Path to the sound files.
 */
-#define SOUND_PATH		"sounds"
+#define SOUND_PATH  "sounds"
 
 /**
-**		Path the sound files. (default=$DIR/music)
+**  Path to the sound files.
 */
-#define MUSIC_PATH		"music"
+#define MUSIC_PATH  "music"
 
 /**
-**		Path the text files. (default=$DIR/texts)
+**  Path to the text files.
 */
-#define TEXT_PATH		"campaigns"
+#define TEXT_PATH  "campaigns"
 
 /**
-**		Path the flc files. (default=$DIR/)
+**  Path to the flc files.
 */
-#define FLC_PATH		"flc"
+#define FLC_PATH  "flc"
 
 /**
-**		How much tiles are stored in a row.
+**  How much tiles are stored in a row.
 */
-#define TILE_PER_ROW		16
+#define TILE_PER_ROW  16
 
 //----------------------------------------------------------------------------
 
 /**
-**		Conversion control sturcture.
+**  Conversion control sturcture.
 */
 typedef struct _control_ {
-	int				Type;						/// Entry type
-	int				Version;				/// Only in this version
-	char*		File;						/// Save file
-	int				Arg1;						/// Extra argument 1
-	int				Arg2;						/// Extra argument 2
-	int				Arg3;						/// Extra argument 3
-	int				Arg4;						/// Extra argument 4
+	int				Type;		/// Entry type
+	int				Version;	/// Only in this version
+	char*			File;		/// Save file
+	int				Arg1;		/// Extra argument 1
+	int				Arg2;		/// Extra argument 2
+	int				Arg3;		/// Extra argument 3
+	int				Arg4;		/// Extra argument 4
 } Control;
 
 /**
-**		Original archive buffer.
+**  Original archive buffer.
 */
 unsigned char* ArchiveBuffer;
 
 /**
-**		Offsets for each entry into original archive buffer.
+**  Offsets for each entry into original archive buffer.
 */
 unsigned char** ArchiveOffsets;
 
 /**
-**		Archive length
+**  Archive length
 */
 int ArchiveLength;
 
@@ -185,527 +186,470 @@ int ArchiveLength;
 **		Possible entry types of archive file.
 */
 enum _archive_type_ {
-	F,						// File								(name)
+	F,						// File							(name)
 	T,						// Tileset						(name,idx)
-	R,						// RGB -> gimp						(name,rgb)
+	R,						// RGB -> gimp					(name,rgb)
 	U,						// Uncompressed Graphics		(name,pal,gfu)
 	I,						// Image						(name,pal,img)
-	W,						// Wav								(name,wav)
-	X,						// Text								(name,text,ofs)
+	W,						// Wav							(name,wav)
+	X,						// Text							(name,text,ofs)
 	X2,						// Text2						(name,text)
 	C,						// Cursor						(name,cursor)
-	FLC,				// FLC
-	VOC,				// VOC
+	FLC,					// FLC
+	VOC,					// VOC
 	CM,						// Cm
 };
 
 char* ArchiveDir;
 
 /**
-**		What, where, how to extract.
+**  What, where, how to extract.
 */
 Control Todo[] = {
-#define __		,0,0,0
-#define _2		,0,0,
+#define __  ,0,0,0
+#define _2  ,0,0,
 
-{FLC,0,"cave1.war",										   0 __},
-{FLC,0,"cave2.war",										   0 __},
-{FLC,0,"cave3.war",										   0 __},
-{FLC,0,"hfinale.war",										   0 __},
-{FLC,0,"hintro1.war",										   0 __},
-{FLC,0,"hintro2.war",										   0 __},
-{FLC,0,"hmap01.war",										   0 __},
-{FLC,0,"hmap02.war",										   0 __},
-{FLC,0,"hmap03.war",										   0 __},
-{FLC,0,"hmap04.war",										   0 __},
-{FLC,0,"hmap05.war",										   0 __},
-{FLC,0,"hmap06.war",										   0 __},
-{FLC,0,"hmap07.war",										   0 __},
-{FLC,0,"hmap08.war",										   0 __},
-{FLC,0,"hmap09.war",										   0 __},
-{FLC,0,"hmap10.war",										   0 __},
-{FLC,0,"hmap11.war",										   0 __},
-{FLC,0,"hmap12.war",										   0 __},
-{FLC,0,"lose1.war",										   0 __},
-{FLC,0,"lose2.war",										   0 __},
-{FLC,0,"ofinale.war",										   0 __},
-{FLC,0,"ointro1.war",										   0 __},
-{FLC,0,"ointro2.war",										   0 __},
-{FLC,0,"ointro3.war",										   0 __},
-{FLC,0,"omap01.war",										   0 __},
-{FLC,0,"omap02.war",										   0 __},
-{FLC,0,"omap03.war",										   0 __},
-{FLC,0,"omap04.war",										   0 __},
-{FLC,0,"omap05.war",										   0 __},
-{FLC,0,"omap06.war",										   0 __},
-{FLC,0,"omap07.war",										   0 __},
-{FLC,0,"omap08.war",										   0 __},
-{FLC,0,"omap09.war",										   0 __},
-{FLC,0,"omap10.war",										   0 __},
-{FLC,0,"omap11.war",										   0 __},
-{FLC,0,"omap12.war",										   0 __},
-{FLC,0,"title.war",										   0 __},
-{FLC,0,"win1.war",										   0 __},
-{FLC,0,"win2.war",										   0 __},
+{FLC,0,"cave1.war",											 0 __},
+{FLC,0,"cave2.war",											 0 __},
+{FLC,0,"cave3.war",											 0 __},
+{FLC,0,"hfinale.war",										 0 __},
+{FLC,0,"hintro1.war",										 0 __},
+{FLC,0,"hintro2.war",										 0 __},
+{FLC,0,"hmap01.war",										 0 __},
+{FLC,0,"hmap02.war",										 0 __},
+{FLC,0,"hmap03.war",										 0 __},
+{FLC,0,"hmap04.war",										 0 __},
+{FLC,0,"hmap05.war",										 0 __},
+{FLC,0,"hmap06.war",										 0 __},
+{FLC,0,"hmap07.war",										 0 __},
+{FLC,0,"hmap08.war",										 0 __},
+{FLC,0,"hmap09.war",										 0 __},
+{FLC,0,"hmap10.war",										 0 __},
+{FLC,0,"hmap11.war",										 0 __},
+{FLC,0,"hmap12.war",										 0 __},
+{FLC,0,"lose1.war",											 0 __},
+{FLC,0,"lose2.war",											 0 __},
+{FLC,0,"ofinale.war",										 0 __},
+{FLC,0,"ointro1.war",										 0 __},
+{FLC,0,"ointro2.war",										 0 __},
+{FLC,0,"ointro3.war",										 0 __},
+{FLC,0,"omap01.war",										 0 __},
+{FLC,0,"omap02.war",										 0 __},
+{FLC,0,"omap03.war",										 0 __},
+{FLC,0,"omap04.war",										 0 __},
+{FLC,0,"omap05.war",										 0 __},
+{FLC,0,"omap06.war",										 0 __},
+{FLC,0,"omap07.war",										 0 __},
+{FLC,0,"omap08.war",										 0 __},
+{FLC,0,"omap09.war",										 0 __},
+{FLC,0,"omap10.war",										 0 __},
+{FLC,0,"omap11.war",										 0 __},
+{FLC,0,"omap12.war",										 0 __},
+{FLC,0,"title.war",											 0 __},
+{FLC,0,"win1.war",											 0 __},
+{FLC,0,"win2.war",											 0 __},
 
 ///////////////////////////////////////////////////////////////////////////////
-//		MOST THINGS
+//  MOST THINGS
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifdef USE_BEOS
-{F,0,"DATA.WAR",										   0 __},
+{F,0,"DATA.WAR",											 0 __},
 #else
-{F,0,"data.war",										   0 __},
+{F,0,"data.war",											 0 __},
 #endif
 
-{CM,0,"puds/human 1",										 117, 63 _2},
-{CM,0,"puds/human 2",										 119, 55 _2},
-{CM,0,"puds/human 3",										 121, 69 _2},
-{CM,0,"puds/human 4",										 123, 97 _2},
-{CM,0,"puds/human 5",										 125, 57 _2},
-{CM,0,"puds/human 6",										 127, 47 _2},
-{CM,0,"puds/human 7",										 129, 67 _2},
-{CM,0,"puds/human 8",										 131, 95 _2},
-{CM,0,"puds/human 9",										 133, 71 _2},
-{CM,0,"puds/human 10",										 135, 73 _2},
-{CM,0,"puds/human 11",										 137, 75 _2},
-{CM,0,"puds/human 12",										 139, 77 _2},
-{CM,0,"puds/orc 1",										 118, 79 _2},
-{CM,0,"puds/orc 2",										 120, 81 _2},
-{CM,0,"puds/orc 3",										 122, 49 _2},
-{CM,0,"puds/orc 4",										 124, 93 _2},
-{CM,0,"puds/orc 5",										 126, 83 _2},
-{CM,0,"puds/orc 6",										 128, 65 _2},
-{CM,0,"puds/orc 7",										 130, 85 _2},
-{CM,0,"puds/orc 8",										 132, 99 _2},
-{CM,0,"puds/orc 9",										 134, 87 _2},
-{CM,0,"puds/orc 10",										 136, 53 _2},
-{CM,0,"puds/orc 11",										 138, 45 _2},
-{CM,0,"puds/orc 12",										 140, 59 _2},
+{CM,0,"campaigns/human/01",									 117, 63 _2},
+{CM,0,"campaigns/human/02",									 119, 55 _2},
+{CM,0,"campaigns/human/03",									 121, 69 _2},
+{CM,0,"campaigns/human/04",									 123, 97 _2},
+{CM,0,"campaigns/human/05",									 125, 57 _2},
+{CM,0,"campaigns/human/06",									 127, 47 _2},
+{CM,0,"campaigns/human/07",									 129, 67 _2},
+{CM,0,"campaigns/human/08",									 131, 95 _2},
+{CM,0,"campaigns/human/09",									 133, 71 _2},
+{CM,0,"campaigns/human/10",									 135, 73 _2},
+{CM,0,"campaigns/human/11",									 137, 75 _2},
+{CM,0,"campaigns/human/12",									 139, 77 _2},
+{CM,0,"campaigns/orc/01",									 118, 79 _2},
+{CM,0,"campaigns/orc/02",									 120, 81 _2},
+{CM,0,"campaigns/orc/03",									 122, 49 _2},
+{CM,0,"campaigns/orc/04",									 124, 93 _2},
+{CM,0,"campaigns/orc/05",									 126, 83 _2},
+{CM,0,"campaigns/orc/06",									 128, 65 _2},
+{CM,0,"campaigns/orc/07",									 130, 85 _2},
+{CM,0,"campaigns/orc/08",									 132, 99 _2},
+{CM,0,"campaigns/orc/09",									 134, 87 _2},
+{CM,0,"campaigns/orc/10",									 136, 53 _2},
+{CM,0,"campaigns/orc/11",									 138, 45 _2},
+{CM,0,"campaigns/orc/12",									 140, 59 _2},
 
 // Tilesets
 {R,0,"forest/forest",										 191 __},
 {T,0,"forest/terrain",										 190 __},
-{R,0,"swamp/swamp",										 194 __},
+{R,0,"swamp/swamp",											 194 __},
 {T,0,"swamp/terrain",										 193 __},
 {R,0,"dungeon/dungeon",										 197 __},
 {T,0,"dungeon/terrain",										 196 __},
 
 // Some animations
-{U,0,"425",												 424, 425 _2},
-{U,0,"426",												 424, 426 _2},
-{U,0,"427",												 424, 427 _2},
-{U,0,"428",												 423, 428 _2},
-{U,0,"429",												 423, 429 _2},
-{U,0,"430",												 423, 430 _2},
-{U,0,"431",												 423, 431 _2},
-{U,0,"460",												 459, 460 _2},
+{U,0,"425",													 424, 425 _2},
+{U,0,"426",													 424, 426 _2},
+{U,0,"427",													 424, 427 _2},
+{U,0,"428",													 423, 428 _2},
+{U,0,"429",													 423, 429 _2},
+{U,0,"430",													 423, 430 _2},
+{U,0,"431",													 423, 431 _2},
+{U,0,"460",													 459, 460 _2},
 
 // Text
-{X2,0,"human/01/objectives",								 117 __},
-{X2,0,"orc/01/objectives",								 118 __},
-{X2,0,"human/02/objectives",								 119 __},
-{X2,0,"orc/02/objectives",								 120 __},
-{X2,0,"human/03/objectives",								 121 __},
-{X2,0,"orc/03/objectives",								 122 __},
-{X2,0,"human/04/objectives",								 123 __},
-{X2,0,"orc/04/objectives",								 124 __},
-{X2,0,"human/05/objectives",								 125 __},
-{X2,0,"orc/05/objectives",								 126 __},
-{X2,0,"human/06/objectives",								 127 __},
-{X2,0,"orc/06/objectives",								 128 __},
-{X2,0,"human/07/objectives",								 129 __},
-{X2,0,"orc/07/objectives",								 130 __},
-{X2,0,"human/08/objectives",								 131 __},
-{X2,0,"orc/08/objectives",								 132 __},
-{X2,0,"human/09/objectives",								 133 __},
-{X2,0,"orc/09/objectives",								 134 __},
-{X2,0,"human/10/objectives",								 135 __},
-{X2,0,"orc/10/objectives",								 136 __},
-{X2,0,"human/11/objectives",								 137 __},
-{X2,0,"orc/11/objectives",								 138 __},
-{X2,0,"human/12/objectives",								 139 __},
-{X2,0,"orc/12/objectives",								 140 __},
-{X,0,"human/01/intro",										 432 __},
-{X,0,"orc/01/intro",										 433 __},
-{X,0,"human/02/intro",										 434 __},
-{X,0,"orc/02/intro",										 435 __},
-{X,0,"human/03/intro",										 436 __},
-{X,0,"orc/03/intro",										 437 __},
-{X,0,"human/04/intro",										 438 __},
-{X,0,"orc/04/intro",										 439 __},
-{X,0,"human/05/intro",										 440 __},
-{X,0,"orc/05/intro",										 441 __},
-{X,0,"human/06/intro",										 442 __},
-{X,0,"orc/06/intro",										 443 __},
-{X,0,"human/07/intro",										 444 __},
-{X,0,"orc/07/intro",										 445 __},
-{X,0,"human/08/intro",										 446 __},
-{X,0,"orc/08/intro",										 447 __},
-{X,0,"human/09/intro",										 448 __},
-{X,0,"orc/09/intro",										 449 __},
-{X,0,"human/10/intro",										 450 __},
-{X,0,"orc/10/intro",										 451 __},
-{X,0,"human/11/intro",										 452 __},
-{X,0,"orc/11/intro",										 453 __},
-{X,0,"human/12/intro",										 454 __},
-{X,0,"orc/12/intro",										 455 __},
-{X,0,"human/ending 1",										 461 __},
-{X,0,"orc/ending 1",										 462 __},
-{X,0,"human/ending 2",										 463 __},
-{X,0,"orc/ending 2",										 464 __},
+{X,0,"human/01_intro",										 432 __},
+{X,0,"orc/01_intro",										 433 __},
+{X,0,"human/02_intro",										 434 __},
+{X,0,"orc/02_intro",										 435 __},
+{X,0,"human/03_intro",										 436 __},
+{X,0,"orc/03_intro",										 437 __},
+{X,0,"human/04_intro",										 438 __},
+{X,0,"orc/04_intro",										 439 __},
+{X,0,"human/05_intro",										 440 __},
+{X,0,"orc/05_intro",										 441 __},
+{X,0,"human/06_intro",										 442 __},
+{X,0,"orc/06_intro",										 443 __},
+{X,0,"human/07_intro",										 444 __},
+{X,0,"orc/07_intro",										 445 __},
+{X,0,"human/08_intro",										 446 __},
+{X,0,"orc/08_intro",										 447 __},
+{X,0,"human/09_intro",										 448 __},
+{X,0,"orc/09_intro",										 449 __},
+{X,0,"human/10_intro",										 450 __},
+{X,0,"orc/10_intro",										 451 __},
+{X,0,"human/11_intro",										 452 __},
+{X,0,"orc/11_intro",										 453 __},
+{X,0,"human/12_intro",										 454 __},
+{X,0,"orc/12_intro",										 455 __},
+{X,0,"human/ending_1",										 461 __},
+{X,0,"orc/ending_1",										 462 __},
+{X,0,"human/ending_2",										 463 __},
+{X,0,"orc/ending_2",										 464 __},
 {X,0,"credits",												 465 __},
-{X,0,"victory dialog 1",								 466 __},
-{X,0,"victory dialog 2",								 467 __},
-{X,0,"defeat dialog 1",										 468 __},
-{X,0,"defeat dialog 2",										 469 __},
+{X,0,"victory_dialog_1",									 466 __},
+{X,0,"victory_dialog_2",									 467 __},
+{X,0,"defeat_dialog_1",										 468 __},
+{X,0,"defeat_dialog_2",										 469 __},
 
 // Cursors
-{C,0,"cursors/arrow",										 262, 263 _2},
-{C,0,"cursors/invalid command",								 262, 264 _2},
-{C,0,"cursors/yellow crosshair",						 262, 265 _2},
-{C,0,"cursors/red crosshair",								 262, 266 _2},
-{C,0,"cursors/yellow crosshair 2",						 262, 267 _2},
-{C,0,"cursors/magnifying glass",						 262, 268 _2},
-{C,0,"cursors/small green crosshair",						 262, 269 _2},
-{C,0,"cursors/watch",										 262, 270 _2},
-{C,0,"cursors/up arrow",								 262, 271 _2},
-{C,0,"cursors/upper-right arrow",						 262, 272 _2},
-{C,0,"cursors/right arrow",								 262, 273 _2},
-{C,0,"cursors/lower-right arrow",						 262, 274 _2},
-{C,0,"cursors/down arrow",								 262, 275 _2},
-{C,0,"cursors/lower-left arrow",						 262, 276 _2},
-{C,0,"cursors/left arrow",								 262, 277 _2},
-{C,0,"cursors/upper-left arrow",						 262, 278 _2},
+{C,0,"arrow",												 262, 263 _2},
+{C,0,"invalid_command",										 262, 264 _2},
+{C,0,"yellow_crosshair",									 262, 265 _2},
+{C,0,"red_crosshair",										 262, 266 _2},
+{C,0,"yellow_crosshair_2",									 262, 267 _2},
+{C,0,"magnifying_glass",									 262, 268 _2},
+{C,0,"small_green_crosshair",								 262, 269 _2},
+{C,0,"watch",												 262, 270 _2},
+{C,0,"up_arrow",											 262, 271 _2},
+{C,0,"upper_right_arrow",									 262, 272 _2},
+{C,0,"right_arrow",											 262, 273 _2},
+{C,0,"lower_right_arrow",									 262, 274 _2},
+{C,0,"down_arrow",											 262, 275 _2},
+{C,0,"lower_left_arrow",									 262, 276 _2},
+{C,0,"left_arrow",											 262, 277 _2},
+{C,0,"upper_left_arrow",									 262, 278 _2},
 
 // Unit graphics
-{U,0,"tilesets/forest/human/units/footman",				 191, 279 _2},
-{U,0,"tilesets/forest/orc/units/grunt",						 191, 280 _2},
-{U,0,"tilesets/forest/human/units/peasant",				 191, 281 _2},
-{U,0,"tilesets/forest/orc/units/peon",						 191, 282 _2},
-{U,0,"tilesets/forest/human/units/catapult",				 191, 283 _2},
-{U,0,"tilesets/forest/orc/units/catapult",				 191, 284 _2},
-{U,0,"tilesets/forest/human/units/knight",				 191, 285 _2},
-{U,0,"tilesets/forest/orc/units/raider",				 191, 286 _2},
-{U,0,"tilesets/forest/human/units/archer",				 191, 287 _2},
-{U,0,"tilesets/forest/orc/units/spearman",				 191, 288 _2},
-{U,0,"tilesets/forest/human/units/conjurer",				 191, 289 _2},
-{U,0,"tilesets/forest/orc/units/warlock",				 191, 290 _2},
-{U,0,"tilesets/forest/human/units/cleric",				 191, 291 _2},
-{U,0,"tilesets/forest/orc/units/necrolyte",				 191, 292 _2},
-{U,0,"tilesets/forest/human/units/midevh",				 191, 293 _2},
-{U,0,"tilesets/forest/orc/units/lothar",				 191, 294 _2},
-{U,0,"tilesets/forest/units/wounded",						 191, 295 _2},
-{U,0,"tilesets/forest/units/grizelda,garona",				 191, 296 _2},
-{U,0,"tilesets/forest/units/ogre",						 191, 297 _2},
-{U,0,"tilesets/forest/units/spider",						 191, 298 _2},
-{U,0,"tilesets/forest/units/slime",						 191, 299 _2},
-{U,0,"tilesets/forest/units/fire elemental",				 191, 300 _2},
-{U,0,"tilesets/forest/units/scorpion",						 191, 301 _2},
-{U,0,"tilesets/forest/units/brigand",						 191, 302 _2},
-{U,0,"tilesets/forest/units/the dead",						 191, 303 _2},
-{U,0,"tilesets/forest/units/skeleton",						 191, 304 _2},
-{U,0,"tilesets/forest/units/daemon",						 191, 305 _2},
-{U,0,"tilesets/forest/units/water elemental",				 191, 306 _2},
-{U,0,"tilesets/forest/neutral/units/dead bodies",		 191, 326 _2},
-{U,0,"tilesets/forest/human/units/peasant with wood",		 191, 327 _2},
-{U,0,"tilesets/forest/orc/units/peon with wood",		 191, 328 _2},
-{U,0,"tilesets/forest/human/units/peasant with gold",		 191, 329 _2},
-{U,0,"tilesets/forest/orc/units/peon with gold",		 191, 330 _2},
-{U,0,"tilesets/swamp/human/units/footman",				 194, 279 _2},
-{U,0,"tilesets/swamp/orc/units/grunt",						 194, 280 _2},
-{U,0,"tilesets/swamp/human/units/peasant",				 194, 281 _2},
-{U,0,"tilesets/swamp/orc/units/peon",						 194, 282 _2},
-{U,0,"tilesets/swamp/human/units/catapult",				 194, 283 _2},
-{U,0,"tilesets/swamp/orc/units/catapult",				 194, 284 _2},
-{U,0,"tilesets/swamp/human/units/knight",				 194, 285 _2},
-{U,0,"tilesets/swamp/orc/units/raider",						 194, 286 _2},
-{U,0,"tilesets/swamp/human/units/archer",				 194, 287 _2},
-{U,0,"tilesets/swamp/orc/units/spearman",				 194, 288 _2},
-{U,0,"tilesets/swamp/human/units/conjurer",				 194, 289 _2},
-{U,0,"tilesets/swamp/orc/units/warlock",				 194, 290 _2},
-{U,0,"tilesets/swamp/human/units/cleric",				 194, 291 _2},
-{U,0,"tilesets/swamp/orc/units/necrolyte",				 194, 292 _2},
-{U,0,"tilesets/swamp/human/units/midevh",				 194, 293 _2},
-{U,0,"tilesets/swamp/orc/units/lothar",						 194, 294 _2},
-{U,0,"tilesets/swamp/units/wounded",						 194, 295 _2},
-{U,0,"tilesets/swamp/units/grizelda,garona",				 194, 296 _2},
-{U,0,"tilesets/swamp/units/ogre",						 194, 297 _2},
-{U,0,"tilesets/swamp/units/spider",						 194, 298 _2},
-{U,0,"tilesets/swamp/units/slime",						 194, 299 _2},
-{U,0,"tilesets/swamp/units/fire elemental",				 194, 300 _2},
-{U,0,"tilesets/swamp/units/scorpion",						 194, 301 _2},
-{U,0,"tilesets/swamp/units/brigand",						 194, 302 _2},
-{U,0,"tilesets/swamp/units/the dead",						 194, 303 _2},
-{U,0,"tilesets/swamp/units/skeleton",						 194, 304 _2},
-{U,0,"tilesets/swamp/units/daemon",						 194, 305 _2},
-{U,0,"tilesets/swamp/units/water elemental",				 194, 306 _2},
-{U,0,"tilesets/swamp/neutral/units/dead bodies",		 194, 326 _2},
-{U,0,"tilesets/swamp/human/units/peasant with wood",		 194, 327 _2},
-{U,0,"tilesets/swamp/orc/units/peon with wood",				 194, 328 _2},
-{U,0,"tilesets/swamp/human/units/peasant with gold",		 194, 329 _2},
-{U,0,"tilesets/swamp/orc/units/peon with gold",				 194, 330 _2},
-{U,0,"tilesets/dungeon/human/units/footman",				 197, 279 _2},
-{U,0,"tilesets/dungeon/orc/units/grunt",				 197, 280 _2},
-{U,0,"tilesets/dungeon/human/units/peasant",				 197, 281 _2},
-{U,0,"tilesets/dungeon/orc/units/peon",						 197, 282 _2},
-{U,0,"tilesets/dungeon/human/units/catapult",				 197, 283 _2},
-{U,0,"tilesets/dungeon/orc/units/catapult",				 197, 284 _2},
-{U,0,"tilesets/dungeon/human/units/knight",				 197, 285 _2},
-{U,0,"tilesets/dungeon/orc/units/raider",				 197, 286 _2},
-{U,0,"tilesets/dungeon/human/units/archer",				 197, 287 _2},
-{U,0,"tilesets/dungeon/orc/units/spearman",				 197, 288 _2},
-{U,0,"tilesets/dungeon/human/units/conjurer",				 197, 289 _2},
-{U,0,"tilesets/dungeon/orc/units/warlock",				 197, 290 _2},
-{U,0,"tilesets/dungeon/human/units/cleric",				 197, 291 _2},
-{U,0,"tilesets/dungeon/orc/units/necrolyte",				 197, 292 _2},
-{U,0,"tilesets/dungeon/human/units/midevh",				 197, 293 _2},
-{U,0,"tilesets/dungeon/orc/units/lothar",				 197, 294 _2},
-{U,0,"tilesets/dungeon/units/wounded",						 197, 295 _2},
-{U,0,"tilesets/dungeon/units/grizelda,garona",				 197, 296 _2},
-{U,0,"tilesets/dungeon/units/ogre",						 197, 297 _2},
-{U,0,"tilesets/dungeon/units/spider",						 197, 298 _2},
-{U,0,"tilesets/dungeon/units/slime",						 197, 299 _2},
-{U,0,"tilesets/dungeon/units/fire elemental",				 197, 300 _2},
-{U,0,"tilesets/dungeon/units/scorpion",						 197, 301 _2},
-{U,0,"tilesets/dungeon/units/brigand",						 197, 302 _2},
-{U,0,"tilesets/dungeon/units/the dead",						 197, 303 _2},
-{U,0,"tilesets/dungeon/units/skeleton",						 197, 304 _2},
-{U,0,"tilesets/dungeon/units/daemon",						 197, 305 _2},
-{U,0,"tilesets/dungeon/units/water elemental",				 197, 306 _2},
-{U,0,"tilesets/dungeon/neutral/units/dead bodies",		 197, 326 _2},
-{U,0,"tilesets/dungeon/human/units/peasant with wood",		 197, 327 _2},
-{U,0,"tilesets/dungeon/orc/units/peon with wood",		 197, 328 _2},
-{U,0,"tilesets/dungeon/human/units/peasant with gold",		 197, 329 _2},
-{U,0,"tilesets/dungeon/orc/units/peon with gold",		 197, 330 _2},
+{U,0,"human/units/footman",									 191, 279 _2},
+{U,0,"orc/units/grunt",										 191, 280 _2},
+{U,0,"human/units/peasant",									 191, 281 _2},
+{U,0,"orc/units/peon",										 191, 282 _2},
+{U,0,"human/units/catapult",								 191, 283 _2},
+{U,0,"orc/units/catapult",									 191, 284 _2},
+{U,0,"human/units/knight",									 191, 285 _2},
+{U,0,"orc/units/raider",									 191, 286 _2},
+{U,0,"human/units/archer",									 191, 287 _2},
+{U,0,"orc/units/spearman",									 191, 288 _2},
+{U,0,"human/units/conjurer",								 191, 289 _2},
+{U,0,"orc/units/warlock",									 191, 290 _2},
+{U,0,"human/units/cleric",									 191, 291 _2},
+{U,0,"orc/units/necrolyte",									 191, 292 _2},
+{U,0,"human/units/midevh",									 191, 293 _2},
+{U,0,"orc/units/lothar",									 191, 294 _2},
+{U,0,"neutral/units/wounded",								 191, 295 _2},
+{U,0,"neutral/units/grizelda,garona",						 191, 296 _2},
+{U,0,"neutral/units/ogre",									 191, 297 _2},
+{U,0,"neutral/units/spider",								 191, 298 _2},
+{U,0,"neutral/units/slime",									 191, 299 _2},
+{U,0,"neutral/units/fire_elemental",						 191, 300 _2},
+{U,0,"neutral/units/scorpion",								 191, 301 _2},
+{U,0,"neutral/units/brigand",								 191, 302 _2},
+{U,0,"neutral/units/the_dead",								 191, 303 _2},
+{U,0,"neutral/units/skeleton",								 191, 304 _2},
+{U,0,"neutral/units/daemon",								 191, 305 _2},
+{U,0,"neutral/units/water_elemental",						 191, 306 _2},
+{U,0,"neutral/units/dead_bodies",							 191, 326 _2},
+{U,0,"human/units/peasant_with_wood",						 191, 327 _2},
+{U,0,"orc/units/peon_with_wood",							 191, 328 _2},
+{U,0,"human/units/peasant_with_gold",						 191, 329 _2},
+{U,0,"orc/units/peon_with_gold",							 191, 330 _2},
 
 // Buildings
-{U,0,"human/buildings/farm",								 191, 307 _2},
-{U,0,"orc/buildings/farm",								 191, 308 _2},
-{U,0,"human/buildings/barracks",						 191, 309 _2},
-{U,0,"orc/buildings/barracks",								 191, 310 _2},
-{U,0,"human/buildings/church",								 191, 311 _2},
-{U,0,"orc/buildings/temple",								 191, 312 _2},
-{U,0,"human/buildings/tower",								 191, 313 _2},
-{U,0,"orc/buildings/tower",								 191, 314 _2},
-{U,0,"human/buildings/town hall",						 191, 315 _2},
-{U,0,"orc/buildings/town hall",								 191, 316 _2},
-{U,0,"human/buildings/lumber mill",						 191, 317 _2},
-{U,0,"orc/buildings/lumber mill",						 191, 318 _2},
-{U,0,"human/buildings/stable",								 191, 319 _2},
-{U,0,"orc/buildings/kennel",								 191, 320 _2},
-{U,0,"human/buildings/blacksmith",						 191, 321 _2},
-{U,0,"orc/buildings/blacksmith",						 191, 322 _2},
-{U,0,"human/buildings/stormwind keep",						 191, 323 _2},
-{U,0,"orc/buildings/blackrock spire",						 191, 324 _2},
-{U,0,"neutral/buildings/gold mine",						 191, 325 _2},
-{U,0,"human/buildings/farm construction",				 191, 331 _2},
-{U,0,"orc/buildings/farm construction",						 191, 332 _2},
-{U,0,"human/buildings/barracks construction",				 191, 333 _2},
-{U,0,"orc/buildings/barracks construction",				 191, 334 _2},
-{U,0,"human/buildings/church construction",				 191, 335 _2},
-{U,0,"orc/buildings/temple construction",				 191, 336 _2},
-{U,0,"human/buildings/tower construction",				 191, 337 _2},
-{U,0,"orc/buildings/tower construction",				 191, 338 _2},
-{U,0,"human/buildings/town hall construction",				 191, 339 _2},
-{U,0,"orc/buildings/town hall construction",				 191, 340 _2},
-{U,0,"human/buildings/lumber mill construction",		 191, 341 _2},
-{U,0,"orc/buildings/lumber mill construction",				 191, 342 _2},
-{U,0,"human/buildings/stable construction",				 191, 343 _2},
-{U,0,"orc/buildings/kennel construction",				 191, 344 _2},
-{U,0,"human/buildings/blacksmith construction",				 191, 345 _2},
-{U,0,"orc/buildings/blacksmith construction",				 191, 346 _2},
+{U,0,"tilesets/forest/human/buildings/farm",					 191, 307 _2},
+{U,0,"tilesets/forest/orc/buildings/farm",						 191, 308 _2},
+{U,0,"tilesets/forest/human/buildings/barracks",				 191, 309 _2},
+{U,0,"tilesets/forest/orc/buildings/barracks",					 191, 310 _2},
+{U,0,"tilesets/forest/human/buildings/church",					 191, 311 _2},
+{U,0,"tilesets/forest/orc/buildings/temple",					 191, 312 _2},
+{U,0,"tilesets/forest/human/buildings/tower",					 191, 313 _2},
+{U,0,"tilesets/forest/orc/buildings/tower",						 191, 314 _2},
+{U,0,"tilesets/forest/human/buildings/town_hall",				 191, 315 _2},
+{U,0,"tilesets/forest/orc/buildings/town_hall",					 191, 316 _2},
+{U,0,"tilesets/forest/human/buildings/lumber_mill",				 191, 317 _2},
+{U,0,"tilesets/forest/orc/buildings/lumber_mill",				 191, 318 _2},
+{U,0,"tilesets/forest/human/buildings/stable",					 191, 319 _2},
+{U,0,"tilesets/forest/orc/buildings/kennel",					 191, 320 _2},
+{U,0,"tilesets/forest/human/buildings/blacksmith",				 191, 321 _2},
+{U,0,"tilesets/forest/orc/buildings/blacksmith",				 191, 322 _2},
+{U,0,"tilesets/forest/human/buildings/stormwind_keep",			 191, 323 _2},
+{U,0,"tilesets/forest/orc/buildings/blackrock_spire",			 191, 324 _2},
+{U,0,"tilesets/forest/neutral/buildings/gold_mine",				 191, 325 _2},
+{U,0,"tilesets/forest/human/buildings/farm_construction",		 191, 331 _2},
+{U,0,"tilesets/forest/orc/buildings/farm_construction",			 191, 332 _2},
+{U,0,"tilesets/forest/human/buildings/barracks_construction",	 191, 333 _2},
+{U,0,"tilesets/forest/orc/buildings/barracks_construction",		 191, 334 _2},
+{U,0,"tilesets/forest/human/buildings/church_construction",		 191, 335 _2},
+{U,0,"tilesets/forest/orc/buildings/temple_construction",		 191, 336 _2},
+{U,0,"tilesets/forest/human/buildings/tower_construction",		 191, 337 _2},
+{U,0,"tilesets/forest/orc/buildings/tower_construction",		 191, 338 _2},
+{U,0,"tilesets/forest/human/buildings/town_hall_construction",	 191, 339 _2},
+{U,0,"tilesets/forest/orc/buildings/town_hall_construction",	 191, 340 _2},
+{U,0,"tilesets/forest/human/buildings/lumber_mill_construction", 191, 341 _2},
+{U,0,"tilesets/forest/orc/buildings/lumber_mill_construction",	 191, 342 _2},
+{U,0,"tilesets/forest/human/buildings/stable_construction",		 191, 343 _2},
+{U,0,"tilesets/forest/orc/buildings/kennel_construction",		 191, 344 _2},
+{U,0,"tilesets/forest/human/buildings/blacksmith_construction",	 191, 345 _2},
+{U,0,"tilesets/forest/orc/buildings/blacksmith_construction",	 191, 346 _2},
+{U,0,"tilesets/swamp/human/buildings/farm",						 194, 307 _2},
+{U,0,"tilesets/swamp/orc/buildings/farm",						 194, 308 _2},
+{U,0,"tilesets/swamp/human/buildings/barracks",					 194, 309 _2},
+{U,0,"tilesets/swamp/orc/buildings/barracks",					 194, 310 _2},
+{U,0,"tilesets/swamp/human/buildings/church",					 194, 311 _2},
+{U,0,"tilesets/swamp/orc/buildings/temple",						 194, 312 _2},
+{U,0,"tilesets/swamp/human/buildings/tower",					 194, 313 _2},
+{U,0,"tilesets/swamp/orc/buildings/tower",						 194, 314 _2},
+{U,0,"tilesets/swamp/human/buildings/town_hall",				 194, 315 _2},
+{U,0,"tilesets/swamp/orc/buildings/town_hall",					 194, 316 _2},
+{U,0,"tilesets/swamp/human/buildings/lumber_mill",				 194, 317 _2},
+{U,0,"tilesets/swamp/orc/buildings/lumber_mill",				 194, 318 _2},
+{U,0,"tilesets/swamp/human/buildings/stable",					 194, 319 _2},
+{U,0,"tilesets/swamp/orc/buildings/kennel",						 194, 320 _2},
+{U,0,"tilesets/swamp/human/buildings/blacksmith",				 194, 321 _2},
+{U,0,"tilesets/swamp/orc/buildings/blacksmith",					 194, 322 _2},
+{U,0,"tilesets/swamp/human/buildings/stormwind_keep",			 194, 323 _2},
+{U,0,"tilesets/swamp/orc/buildings/blackrock_spire",			 194, 324 _2},
+{U,0,"tilesets/swamp/neutral/buildings/gold_mine",				 194, 325 _2},
+{U,0,"tilesets/swamp/human/buildings/farm_construction",		 194, 331 _2},
+{U,0,"tilesets/swamp/orc/buildings/farm_construction",			 194, 332 _2},
+{U,0,"tilesets/swamp/human/buildings/barracks_construction",	 194, 333 _2},
+{U,0,"tilesets/swamp/orc/buildings/barracks_construction",		 194, 334 _2},
+{U,0,"tilesets/swamp/human/buildings/church_construction",		 194, 335 _2},
+{U,0,"tilesets/swamp/orc/buildings/temple_construction",		 194, 336 _2},
+{U,0,"tilesets/swamp/human/buildings/tower_construction",		 194, 337 _2},
+{U,0,"tilesets/swamp/orc/buildings/tower_construction",			 194, 338 _2},
+{U,0,"tilesets/swamp/human/buildings/town_hall_construction",	 194, 339 _2},
+{U,0,"tilesets/swamp/orc/buildings/town_hall_construction",		 194, 340 _2},
+{U,0,"tilesets/swamp/human/buildings/lumber_mill_construction",	 194, 341 _2},
+{U,0,"tilesets/swamp/orc/buildings/lumber_mill_construction",	 194, 342 _2},
+{U,0,"tilesets/swamp/human/buildings/stable_construction",		 194, 343 _2},
+{U,0,"tilesets/swamp/orc/buildings/kennel_construction",		 194, 344 _2},
+{U,0,"tilesets/swamp/human/buildings/blacksmith_construction",	 194, 345 _2},
+{U,0,"tilesets/swamp/orc/buildings/blacksmith_construction",	 194, 346 _2},
 
-{U,0,"missiles/fireball",								 217, 347 _2},
-{U,0,"missiles/catapult projectile",						 191, 348 _2},
+// Missiles
+{U,0,"missiles/fireball",									 217, 347 _2},
+{U,0,"missiles/catapult_projectile",						 191, 348 _2},
 {U,0,"missiles/arrow",										 217, 349 _2},
-{U,0,"missiles/poison cloud",								 191, 350 _2},
-{U,0,"missiles/rain of fire",								 191, 351 _2},
+{U,0,"missiles/poison_cloud",								 191, 350 _2},
+{U,0,"missiles/rain_of_fire",								 191, 351 _2},
 {U,0,"missiles/flames",										 191, 352 _2},
-{U,0,"missiles/larger flames",								 191, 353 _2},
-{U,0,"missiles/explosion",								 191, 354 _2},
-{U,0,"missiles/healing",								 217, 355 _2},
-{U,0,"missiles/building collapse",						 191, 356 _2},
-{U,0,"missiles/water elemental projectile",				 217, 357 _2},
-{U,0,"missiles/fireball 2",								 191, 358 _2},
-{U,0,"ui/orc/icon selection boxes",						 191, 359 _2},
-{U,0,"ui/human/icon selection boxes",						 191, 360 _2},
-{U,0,"tilesets/forest/portrait icons",						 191, 361 _2},
-{U,0,"tilesets/swamp/portrait icons",						 194, 361 _2},
-{U,0,"tilesets/dungeon/portrait icons",						 197, 361 _2},
+{U,0,"missiles/larger_flames",								 191, 353 _2},
+{U,0,"missiles/explosion",									 191, 354 _2},
+{U,0,"missiles/healing",									 217, 355 _2},
+{U,0,"missiles/building_collapse",							 191, 356 _2},
+{U,0,"missiles/water_elemental_projectile",					 217, 357 _2},
+{U,0,"missiles/fireball_2",									 191, 358 _2},
 
-// Images
+// Icons
+{U,0,"tilesets/forest/portrait_icons",						 191, 361 _2},
+{U,0,"tilesets/swamp/portrait_icons",						 194, 361 _2},
+{U,0,"tilesets/dungeon/portrait_icons",						 197, 361 _2},
+
+// UI
+{U,0,"ui/orc/icon_selection_boxes",							 191, 359 _2},
+{U,0,"ui/human/icon_selection_boxes",						 191, 360 _2},
 {I,0,"ui/logo",												 217, 216 _2},
-{I,0,"ui/human/top resource bar",						 255, 218 _2},
-{I,0,"ui/orc/top resource bar",								 191, 219 _2},
-{I,0,"ui/human/right panel",								 255, 220 _2},
-{I,0,"ui/orc/right panel",								 217, 221 _2},
-{I,0,"ui/human/bottom panel",								 255, 222 _2},
-{I,0,"ui/orc/bottom panel",								 217, 223 _2},
-{I,0,"ui/human/minimap",								 255, 224 _2},
+{I,0,"ui/human/top_resource_bar",							 255, 218 _2},
+{I,0,"ui/orc/top_resource_bar",								 191, 219 _2},
+{I,0,"ui/human/right_panel",								 255, 220 _2},
+{I,0,"ui/orc/right_panel",									 217, 221 _2},
+{I,0,"ui/human/bottom_panel",								 255, 222 _2},
+{I,0,"ui/orc/bottom_panel",									 217, 223 _2},
+{I,0,"ui/human/minimap",									 255, 224 _2},
 {I,0,"ui/orc/minimap",										 217, 225 _2},
-{I,0,"ui/human/left panel",								 255, 226 _2},
-{I,0,"ui/orc/left panel",								 217, 227 _2},
-{I,0,"ui/human/panel 1",								 255, 228 _2},
-{I,0,"ui/orc/panel 1",										 217, 229 _2},
-{I,0,"ui/human/panel 2",								 255, 233 _2},
-{I,0,"ui/orc/panel 2",										 217, 234 _2},
-{I,0,"ui/human/panel 3",								 255, 235 _2},
-{I,0,"ui/orc/panel 3",										 217, 236 _2},
-{I,0,"ui/bottom of title screen",						 260, 243 _2},
-{I,0,"ui/human/left arrow",								 255, 244 _2},
-{I,0,"ui/orc/left arrow",								 255, 245 _2},
-{I,0,"ui/human/right arrow",								 255, 246 _2},
-{I,0,"ui/orc/right arrow",								 255, 247 _2},
+{I,0,"ui/human/left_panel",									 255, 226 _2},
+{I,0,"ui/orc/left_panel",									 217, 227 _2},
+{I,0,"ui/human/panel_1",									 255, 228 _2},
+{I,0,"ui/orc/panel_1",										 217, 229 _2},
+{I,0,"ui/human/panel_2",									 255, 233 _2},
+{I,0,"ui/orc/panel_2",										 217, 234 _2},
+{I,0,"ui/human/panel_3",									 255, 235 _2},
+{I,0,"ui/orc/panel_3",										 217, 236 _2},
+{I,0,"ui/bottom_of_title_screen",							 260, 243 _2},
+{I,0,"ui/human/left_arrow",									 255, 244 _2},
+{I,0,"ui/orc/left_arrow",									 255, 245 _2},
+{I,0,"ui/human/right_arrow",								 255, 246 _2},
+{I,0,"ui/orc/right_arrow",									 255, 247 _2},
 {I,0,"ui/box",												 255, 248 _2},
-{I,0,"ui/human/save game",								 255, 249 _2},
-{I,0,"ui/orc/save game",								 217, 250 _2},
-{I,0,"ui/hot keys",										 255, 254 _2},
-{I,0,"ui/human/ok box",										 255, 256 _2},
-{I,0,"ui/orc/ok box",										 255, 257 _2},
-{I,0,"ui/top of title screen",								 260, 258 _2},
-{I,0,"ui/title screen",										 260, 261 _2},
-{I,0,"ui/menu button 1",								 217, 362 _2},
-{I,0,"ui/menu button 2",								 217, 363 _2},
-{I,0,"ui/human/icon border",								 255, 364 _2},
-{I,0,"ui/orc/icon border",								 217, 365 _2},
-{I,0,"ui/gold icon 1",										 191, 406 _2},
-{I,0,"ui/lumber icon 1",								 217, 407 _2},
-{I,0,"ui/gold icon 2",										 191, 408 _2},
-{I,0,"ui/lumber icon 2",								 217, 409 _2},
-{I,0,"ui/percent complete",								 217, 410 _2},
-{I,0,"ui/human/outcome windows",						 413, 411 _2},
-{I,0,"ui/orc/outcome windows",								 414, 412 _2},
-{I,0,"ui/victory scene",								 416, 415 _2},
-{I,0,"ui/defeat scene",										 418, 417 _2},
-{I,0,"ui/victory text",										 418, 419 _2},
-{I,0,"ui/defeat text",										 418, 420 _2},
-{I,0,"ui/human briefing",								 423, 421 _2},
-{I,0,"ui/orc briefing",										 424, 422 _2},
-{I,0,"ui/human/victory 1",								 457, 456 _2},
-{I,0,"ui/orc/victory 1",								 459, 458 _2},
-{I,0,"ui/human/victory 2",								 457, 470 _2},
-{I,0,"ui/orc/victory 2",								 459, 471 _2},
+{I,0,"ui/human/save_game",									 255, 249 _2},
+{I,0,"ui/orc/save_game",									 217, 250 _2},
+{I,0,"ui/hot_keys",											 255, 254 _2},
+{I,0,"ui/human/ok_box",										 255, 256 _2},
+{I,0,"ui/orc/ok_box",										 255, 257 _2},
+{I,0,"ui/top_of_title_screen",								 260, 258 _2},
+{I,0,"ui/title_screen",										 260, 261 _2},
+{I,0,"ui/menu_button_1",									 217, 362 _2},
+{I,0,"ui/menu_button_2",									 217, 363 _2},
+{I,0,"ui/human/icon_border",								 255, 364 _2},
+{I,0,"ui/orc/icon_border",									 217, 365 _2},
+{I,0,"ui/gold_icon_1",										 191, 406 _2},
+{I,0,"ui/lumber_icon_1",									 217, 407 _2},
+{I,0,"ui/gold_icon_2",										 191, 408 _2},
+{I,0,"ui/lumber_icon_2",									 217, 409 _2},
+{I,0,"ui/percent_complete",									 217, 410 _2},
+{I,0,"ui/human/outcome_windows",							 413, 411 _2},
+{I,0,"ui/orc/outcome_windows",								 414, 412 _2},
+{I,0,"ui/victory_scene",									 416, 415 _2},
+{I,0,"ui/defeat_scene",										 418, 417 _2},
+{I,0,"ui/victory_text",										 418, 419 _2},
+{I,0,"ui/defeat_text",										 418, 420 _2},
+{I,0,"ui/human/briefing",									 423, 421 _2},
+{I,0,"ui/orc/briefing",										 424, 422 _2},
+{I,0,"ui/human/victory_1",									 457, 456 _2},
+{I,0,"ui/orc/victory_1",									 459, 458 _2},
+{I,0,"ui/human/victory_2",									 457, 470 _2},
+{I,0,"ui/orc/victory_2",									 459, 471 _2},
 
 // Sounds
-{VOC,0,"misc/building",										 474		__},
-{VOC,0,"misc/explosion",								 475		__},
-{VOC,0,"missiles/catapult rock fired",						 476		__},
-{VOC,0,"misc/tree chopping 1",								 477		__},
-{VOC,0,"misc/tree chopping 2",								 478		__},
-{VOC,0,"misc/tree chopping 3",								 479		__},
-{VOC,0,"misc/tree chopping 4",								 480		__},
-{VOC,0,"misc/building collapse 1",						 481		__},
-{VOC,0,"misc/building collapse 2",						 482		__},
-{VOC,0,"misc/building collapse 3",						 483		__},
-{VOC,0,"ui/chime",										 484		__},
-{W,0,"ui/click",										 485		__},
-{VOC,0,"ui/cancel",										 486		__},
-{VOC,0,"missiles/sword attack 1",						 487		__},
-{VOC,0,"missiles/sword attack 2",						 488		__},
-{VOC,0,"missiles/sword attack 3",						 489		__},
-{VOC,0,"missiles/fist attack",								 490		__},
-{VOC,0,"missiles/catapult fire explosion",				 491		__},
-{VOC,0,"missiles/fireball",								 492		__},
-{VOC,0,"missiles/arrow,spear",								 493		__},
-{VOC,0,"missiles/arrow,spear hit",						 494		__},
-{VOC,0,"human/help 1",										 495		__},
-{VOC,0,"orc/help 1",										 496		__},
-{W,0,"human/help 2",										 497		__},
-{W,0,"orc/help 2",										 498		__},
-{VOC,0,"orc/dead",										 499		__},
-{VOC,0,"human/dead",										 500		__},
-{VOC,0,"orc/work complete",								 501		__},
-{W,0,"human/work completed",								 502		__},
-{VOC,0,"orc/help 3",										 503		__},
-{W,0,"orc/help 4",										 504		__},
-{W,0,"human/help 3",										 505		__},
-{W,0,"human/help 4",										 506		__},
-{VOC,0,"orc/ready",										 507		__},
-{W,0,"human/ready",										 508		__},
-{VOC,0,"orc/acknowledgement 1",								 509		__},
-{VOC,0,"orc/acknowledgement 2",								 510		__},
-{VOC,0,"orc/acknowledgement 3",								 511		__},
-{VOC,0,"orc/acknowledgement 4",								 512		__},
-{W,0,"human/acknowledgement 1",								 513		__},
-{W,0,"human/acknowledgement 2",								 514		__},
-{VOC,0,"orc/selected 1",								 515		__},
-{VOC,0,"orc/selected 2",								 516		__},
-{VOC,0,"orc/selected 3",								 517		__},
-{VOC,0,"orc/selected 4",								 518		__},
-{VOC,0,"orc/selected 5",								 519		__},
-{W,0,"human/selected 1",								 520		__},
-{W,0,"human/selected 2",								 521		__},
-{W,0,"human/selected 3",								 522		__},
-{W,0,"human/selected 4",								 523		__},
-{W,0,"human/selected 5",								 524		__},
-{VOC,0,"orc/annoyed 1",										 525		__},
-{VOC,0,"orc/annoyed 2",										 526		__},
-{W,0,"orc/annoyed 3",										 527		__},
-{W,0,"human/annoyed 1",										 528		__},
-{W,0,"human/annoyed 2",										 529		__},
-{W,0,"human/annoyed 3",										 530		__},
-{W,0,"dead spider,scorpion",								 531		__},
-{W,0,"normal spell",										 532		__},
-{W,0,"misc/build road",										 533		__},
-{W,0,"orc/temple",										 534		__},
-{W,0,"human/church",										 535		__},
-{W,0,"orc/kennel",										 536		__},
-{W,0,"human/stable",										 537		__},
-{W,0,"blacksmith",										 538		__},
-{W,0,"misc/fire crackling",								 539		__},
-{W,0,"cannon",												 540		__},
-{W,0,"cannon2",												 541		__},
-{W,0,"human ending",										 542		__},
-{W,0,"human ending 2",										 543		__},
-{W,0,"orc ending",										 544		__},
-{W,0,"orc ending 2",										 545		__},
-{W,0,"intro 1",												 546		__},
-{W,0,"intro 2",												 547		__},
-{W,0,"intro 3",												 548		__},
-{W,0,"intro 4",												 549		__},
-{W,0,"intro 5",												 550		__},
-{W,0,"../campaigns/human/01/intro",						 551		__},
-{W,0,"../campaigns/human/02/intro",						 552		__},
-{W,0,"../campaigns/human/03/intro",						 553		__},
-{W,0,"../campaigns/human/04/intro",						 554		__},
-{W,0,"../campaigns/human/05/intro",						 555		__},
-{W,0,"../campaigns/human/06/intro",						 556		__},
-{W,0,"../campaigns/human/07/intro",						 557		__},
-{W,0,"../campaigns/human/08/intro",						 558		__},
-{W,0,"../campaigns/human/09/intro",						 559		__},
-{W,0,"../campaigns/human/10/intro",						 560		__},
-{W,0,"../campaigns/human/11/intro",						 561		__},
-{W,0,"../campaigns/human/12/intro",						 562		__},
-{W,0,"../campaigns/orc/01/intro",						 563		__},
-{W,0,"../campaigns/orc/02/intro",						 564		__},
-{W,0,"../campaigns/orc/03/intro",						 565		__},
-{W,0,"../campaigns/orc/04/intro",						 566		__},
-{W,0,"../campaigns/orc/05/intro",						 567		__},
-{W,0,"../campaigns/orc/06/intro",						 568		__},
-{W,0,"../campaigns/orc/07/intro",						 569		__},
-{W,0,"../campaigns/orc/08/intro",						 570		__},
-{W,0,"../campaigns/orc/09/intro",						 571		__},
-{W,0,"../campaigns/orc/10/intro",						 572		__},
-{W,0,"../campaigns/orc/11/intro",						 573		__},
-{W,0,"../campaigns/orc/12/intro",						 574		__},
-{W,0,"human/defeat",										 575		__},
-{W,0,"orc/defeat",										 576		__},
-{W,0,"orc/victory 1",										 577		__},
-{W,0,"orc/victory 2",										 578		__},
-{W,0,"orc/victory 3",										 579		__},
-{W,0,"human/victory 1",										 580		__},
-{W,0,"human/victory 2",										 581		__},
-{W,0,"human/victory 3",										 582		__},
+{VOC,0,"misc/building",										 474 __},
+{VOC,0,"misc/explosion",									 475 __},
+{VOC,0,"missiles/catapult_rock_fired",						 476 __},
+{VOC,0,"misc/tree_chopping_1",								 477 __},
+{VOC,0,"misc/tree_chopping_2",								 478 __},
+{VOC,0,"misc/tree_chopping_3",								 479 __},
+{VOC,0,"misc/tree_chopping_4",								 480 __},
+{VOC,0,"misc/building_collapse_1",							 481 __},
+{VOC,0,"misc/building_collapse_2",							 482 __},
+{VOC,0,"misc/building_collapse_3",							 483 __},
+{VOC,0,"ui/chime",											 484 __},
+{W,0,"ui/click",											 485 __},
+{VOC,0,"ui/cancel",											 486 __},
+{VOC,0,"missiles/sword_attack_1",							 487 __},
+{VOC,0,"missiles/sword_attack_2",							 488 __},
+{VOC,0,"missiles/sword_attack_3",							 489 __},
+{VOC,0,"missiles/fist_attack",								 490 __},
+{VOC,0,"missiles/catapult_fire_explosion",					 491 __},
+{VOC,0,"missiles/fireball",									 492 __},
+{VOC,0,"missiles/arrow,spear",								 493 __},
+{VOC,0,"missiles/arrow,spear_hit",							 494 __},
+{VOC,0,"human/help_1",										 495 __},
+{VOC,0,"orc/help_1",										 496 __},
+{W,0,"human/help_2",										 497 __},
+{W,0,"orc/help_2",											 498 __},
+{VOC,0,"orc/dead",											 499 __},
+{VOC,0,"human/dead",										 500 __},
+{VOC,0,"orc/work_complete",									 501 __},
+{W,0,"human/work_completed",								 502 __},
+{VOC,0,"orc/help_3",										 503 __},
+{W,0,"orc/help_4",											 504 __},
+{W,0,"human/help_3",										 505 __},
+{W,0,"human/help_4",										 506 __},
+{VOC,0,"orc/ready",											 507 __},
+{W,0,"human/ready",											 508 __},
+{VOC,0,"orc/acknowledgement_1",								 509 __},
+{VOC,0,"orc/acknowledgement_2",								 510 __},
+{VOC,0,"orc/acknowledgement_3",								 511 __},
+{VOC,0,"orc/acknowledgement_4",								 512 __},
+{W,0,"human/acknowledgement_1",								 513 __},
+{W,0,"human/acknowledgement_2",								 514 __},
+{VOC,0,"orc/selected_1",									 515 __},
+{VOC,0,"orc/selected_2",									 516 __},
+{VOC,0,"orc/selected_3",									 517 __},
+{VOC,0,"orc/selected_4",									 518 __},
+{VOC,0,"orc/selected_5",									 519 __},
+{W,0,"human/selected_1",									 520 __},
+{W,0,"human/selected_2",									 521 __},
+{W,0,"human/selected_3",									 522 __},
+{W,0,"human/selected_4",									 523 __},
+{W,0,"human/selected_5",									 524 __},
+{VOC,0,"orc/annoyed_1",										 525 __},
+{VOC,0,"orc/annoyed_2",										 526 __},
+{W,0,"orc/annoyed_3",										 527 __},
+{W,0,"human/annoyed_1",										 528 __},
+{W,0,"human/annoyed_2",										 529 __},
+{W,0,"human/annoyed_3",										 530 __},
+{W,0,"dead_spider,scorpion",								 531 __},
+{W,0,"normal_spell",										 532 __},
+{W,0,"misc/build_road",										 533 __},
+{W,0,"orc/temple",											 534 __},
+{W,0,"human/church",										 535 __},
+{W,0,"orc/kennel",											 536 __},
+{W,0,"human/stable",										 537 __},
+{W,0,"blacksmith",											 538 __},
+{W,0,"misc/fire_crackling",									 539 __},
+{W,0,"cannon",												 540 __},
+{W,0,"cannon2",												 541 __},
+{W,0,"intro_1",												 542 __},
+{W,0,"intro_2",												 543 __},
+{W,0,"intro_3",												 544 __},
+{W,0,"intro_4",												 545 __},
+{W,0,"intro_5",												 546 __},
+{W,0,"../campaigns/human/01_intro",							 547 __},
+{W,0,"../campaigns/human/02_intro",							 548 __},
+{W,0,"../campaigns/human/03_intro",							 549 __},
+{W,0,"../campaigns/human/04_intro",							 550 __},
+{W,0,"../campaigns/human/05_intro",							 551 __},
+{W,0,"../campaigns/human/06_intro",							 552 __},
+{W,0,"../campaigns/human/07_intro",							 553 __},
+{W,0,"../campaigns/human/08_intro",							 554 __},
+{W,0,"../campaigns/human/09_intro",							 555 __},
+{W,0,"../campaigns/human/10_intro",							 556 __},
+{W,0,"../campaigns/human/11_intro",							 557 __},
+{W,0,"../campaigns/human/12_intro",							 558 __},
+{W,0,"../campaigns/orc/01_intro",							 559 __},
+{W,0,"../campaigns/orc/02_intro",							 560 __},
+{W,0,"../campaigns/orc/03_intro",							 561 __},
+{W,0,"../campaigns/orc/04_intro",							 562 __},
+{W,0,"../campaigns/orc/05_intro",							 563 __},
+{W,0,"../campaigns/orc/06_intro",							 564 __},
+{W,0,"../campaigns/orc/07_intro",							 565 __},
+{W,0,"../campaigns/orc/08_intro",							 566 __},
+{W,0,"../campaigns/orc/09_intro",							 567 __},
+{W,0,"../campaigns/orc/10_intro",							 568 __},
+{W,0,"../campaigns/orc/11_intro",							 569 __},
+{W,0,"../campaigns/orc/12_intro",							 570 __},
+{W,0,"orc/victory_1",										 571 __},
+{W,0,"orc/victory_2",										 572 __},
+{W,0,"orc/victory_3",										 573 __},
+{W,0,"human/victory_1",										 574 __},
+{W,0,"human/victory_2",										 575 __},
+{W,0,"human/victory_3",										 576 __},
+{W,0,"human/defeat",										 577 __},
+{W,0,"orc/defeat",											 578 __},
+{W,0,"../campaigns/human/ending_1",							 579 __},
+{W,0,"../campaigns/human/ending_2",							 580 __},
+{W,0,"../campaigns/orc/ending_1",							 581 __},
+{W,0,"../campaigns/orc/ending_2",							 582 __},
 
 #undef __
 #undef _2
 };
-
-/**
-**  File names.
-*/
-char* UnitNames[110];
 
 //----------------------------------------------------------------------------
 //  TOOLS
@@ -719,7 +663,7 @@ void CheckPath(const char* path)
 	char* cp;
 	char* s;
 
-	if (*path && path[0]=='.') {  // relative don't work
+	if (*path && path[0] == '.') {  // relative don't work
 		return;
 	}
 	cp = strdup(path);
@@ -748,7 +692,7 @@ void CheckPath(const char* path)
 }
 
 //----------------------------------------------------------------------------
-//		PNG
+//  PNG
 //----------------------------------------------------------------------------
 
 /**
@@ -1713,9 +1657,7 @@ int ConvertTileset(char* file,int index)
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, width, height, 2 * width, 2 * height);
-	width = 2 * width;
-	height = 2 * height;
-	SavePNG(buf, image, width, height, palp);
+	SavePNG(buf, image, 2 * width, 2 * height, palp);
 
 	free(palp);
 	free(mini);
@@ -1744,7 +1686,7 @@ void DecodeGfuEntry(int index, unsigned char* start,
 	int height;
 	int offset;
 
-	bp = start + index*8;
+	bp = start + index * 8;
 	xoff = FetchByte(bp);
 	yoff = FetchByte(bp);
 	width = FetchByte(bp);
@@ -1830,6 +1772,8 @@ int ConvertGfu(char* file, int pale, int gfue)
 	int h;
 	char buf[1024];
 	int len;
+	unsigned char* p;
+	unsigned char* end;
 
 	palp = ExtractEntry(ArchiveOffsets[pale], &len);
 	if (!palp) {
@@ -1842,6 +1786,7 @@ int ConvertGfu(char* file, int pale, int gfue)
 	if (pale == 191 || pale == 194 || pale == 197) {
 		unsigned char* gpalp;
 		int i;
+
 		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
 		for (i = 0; i < 128; ++i) {
 			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
@@ -1873,12 +1818,19 @@ int ConvertGfu(char* file, int pale, int gfue)
 	free(gfup);
 	ConvertPalette(palp);
 
+	p = image;
+	end = image + w * h;
+	while (p < end) {
+		if (!*p) {
+			*p = 255;
+		}
+		++p;
+	}
+
 	sprintf(buf, "%s/%s/%s.png", Dir, UNIT_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	w = 2 * w;
-	h = 2 * h;
-	SavePNG(buf, image, w, h, palp);
+	SavePNG(buf, image, 2 * w, 2 * h, palp);
 
 	free(image);
 	free(palp);
@@ -1925,7 +1877,7 @@ unsigned char* ConvertImg(unsigned char* bp,int *wp,int *hp)
 /**
 **  Convert an image to my format.
 */
-int ConvertImage(char* file, int pale, int imge, int nw, int nh)
+int ConvertImage(char* file, int pale, int imge)
 {
 	unsigned char* palp;
 	unsigned char* imgp;
@@ -1980,16 +1932,8 @@ int ConvertImage(char* file, int pale, int imge, int nw, int nh)
 	sprintf(buf, "%s/%s/%s.png", Dir, GRAPHIC_PATH, file);
 	CheckPath(buf);
 
-	// Only resize if parameters 3 and 4 are non-zero
-	if (nw && nh) {
-		ResizeImage(&image, w, h, nw,nh);
-		w = nw;
-		h = nh;
-	}
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	w = 2 * w;
-	h = 2 * h;
-	SavePNG(buf, image, w, h, palp);
+	SavePNG(buf, image, 2 * w, 2 * h, palp);
 
 	free(image);
 	free(palp);
@@ -2065,9 +2009,7 @@ int ConvertCursor(char* file, int pale, int cure)
 	sprintf(buf, "%s/%s/%s.png", Dir, CURSOR_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	w = 2 * w;
-	h = 2 * h;
-	SavePNG(buf, image, w, h, palp);
+	SavePNG(buf, image, 2 * w, 2 * h, palp);
 
 	free(image);
 	if (pale != 27 && cure != 314) {
@@ -2287,8 +2229,8 @@ int ConvertText(char* file, int txte, int ofs)
 		printf("Can't open %s\n", buf);
 		exit(-1);
 	}
-	if (l - ofs != gzwrite(gf, txtp + ofs, l - ofs)) {
-		printf("Can't write %d bytes\n", l);
+	if (l - ofs - 1 != gzwrite(gf, txtp + ofs, l - ofs - 1)) {
+		printf("Can't write %d bytes\n", l - ofs - 1);
 	}
 
 	free(txtp);
@@ -2298,81 +2240,22 @@ int ConvertText(char* file, int txte, int ofs)
 }
 
 /**
-**  Convert text to my format.
+**  Save the players
+**
+**  @param f      File handle
+**  @param mtxme  Entry number of map.
 */
-int ConvertText2(char* file, int txte)
+static void CmSaveObjectives(gzFile f, unsigned char* txtp)
 {
-	unsigned char* txtp;
-	char buf[1024];
-	gzFile gf;
-	int l;
-	unsigned char* t;
-	unsigned char* p;
+	int offset;
 
-	txtp = ExtractEntry(ArchiveOffsets[txte], &l);
-	if (!txtp) {
-		return 0;
+	offset = ConvertLE16(*(unsigned short*)(txtp + 0x94));
+	if (!offset) {
+		return;
 	}
-
-	sprintf(buf, "%s/%s/%s.txt.gz", Dir, TEXT_PATH, file);
-	CheckPath(buf);
-	gf = gzopen(buf, "wb9");
-	if (!gf) {
-		perror("");
-		printf("Can't open %s\n", buf);
-		exit(-1);
-	}
-	t = p = txtp + ConvertLE16(*(unsigned short*)(txtp + 0x94));
-	while (*p) {
-		++p;
-	}
-	gzwrite(gf, t, p - t + 1);
-
-	free(txtp);
-
-	gzclose(gf);
-	return 0;
-}
-
-/**
-**  Parse string.
-*/
-char* ParseString(char* input)
-{
-	static char buf[1024];
-	char* dp;
-	char* sp;
-	char* tp;
-	int i;
-	int f;
-
-	for (sp = input, dp = buf; *sp;) {
-		if (*sp == '%') {
-			f = 0;
-			if (*++sp == '-') {
-				f = 1;
-				++sp;
-			}
-			i = strtol(sp, &sp, 0);
-			tp = UnitNames[i];
-			if (f) {
-				tp = strchr(tp, ' ') + 1;
-			}
-			while (*tp) {  // make them readabler
-				if (*tp == '-') {
-					*dp++ = '_';
-					tp++;
-				} else {
-					*dp++ = tolower(*tp++);
-				}
-			}
-			continue;
-		}
-		*dp++ = *sp++;
-	}
-	*dp = '\0';
-
-	return buf;
+	gzprintf(f, "--[[ Objectives:\n");
+	gzprintf(f, "%s", txtp + offset);
+	gzprintf(f, "\n]]\n");
 }
 
 /**
@@ -2386,32 +2269,32 @@ static void CmSavePlayers(gzFile f)
 	int i;
 
 	for (i = 0; i < 16; ++i) {
-		gzprintf(f, "(player %d\n", i);
-		gzprintf(f, "  'name \"Player %d\"\n", i);
+		gzprintf(f, "Player(%d,\n", i);
+		gzprintf(f, "  \"name\", \"Player %d\",\n", i);
 		if (i == 0) {
-			gzprintf(f, "  'type 'person 'race \"human\" 'ai 0\n");
-			gzprintf(f, "  'team 2 'enemy \"_X______________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+			gzprintf(f, "  \"type\", \"person\", \"race\", \"human\", \"ai\", 0,\n");
+			gzprintf(f, "  \"team\", 2, \"enemy\", \"_X______________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
 		} else if (i == 1) {
-			gzprintf(f, "  'type 'computer 'race \"orc\" 'ai 0\n");
-			gzprintf(f, "  'team 2 'enemy \"X_______________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+			gzprintf(f, "  \"type\", \"computer\", \"race\", \"orc\", \"ai\", 0,\n");
+			gzprintf(f, "  \"team\", 2, \"enemy\", \"X_______________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
 		} else if (i == 15) {
-			gzprintf(f, "  'type 'neutral 'race \"neutral\" 'ai 0\n");
-			gzprintf(f, "  'team 2 'enemy \"________________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+			gzprintf(f, "  \"type\", \"neutral\", \"race\", \"neutral\", \"ai\", 0,\n");
+			gzprintf(f, "  \"team\", 2, \"enemy\", \"________________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
 		} else {
-			gzprintf(f, "  'type 'nobody 'race \"human\" 'ai 0\n");
-			gzprintf(f, "  'team 2 'enemy \"________________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+			gzprintf(f, "  \"type\", \"nobody\", \"race\", \"human\", \"ai\", 0,\n");
+			gzprintf(f, "  \"team\", 2, \"enemy\", \"________________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
 		}
-		gzprintf(f, "  'start '(0 0)\n");
-		gzprintf(f, "  'resources '(time 0 gold 1000 wood 1000 oil 0 ore 0 stone 0 coal 0)\n");
-		gzprintf(f, "  'incomes '(time 0 gold 100 wood 100 oil 0 ore 0 stone 0 coal 0)\n");
+		gzprintf(f, "  \"start\", {0, 0},\n");
+		gzprintf(f, "  \"resources\", {\"time\", 0, \"gold\", 1000, \"wood\", 1000},\n");
+		gzprintf(f, "  \"incomes\", {\"time\", 0, \"gold\", 100, \"wood\", 100},\n");
 		if (i != 1) {
-			gzprintf(f, "  'ai-disabled\n");
+			gzprintf(f, "  \"ai-disabled\"\n");
 		} else {
-			gzprintf(f, "  'ai-enabled\n");
+			gzprintf(f, "  \"ai-enabled\"\n");
 		}
 		gzprintf(f, ")\n");
 	}
-	gzprintf(f, "(set-this-player! 0)\n");
+	gzprintf(f, "SetThisPlayer(0)\n");
 }
 
 /**
@@ -2435,14 +2318,14 @@ static void CmSaveMap(gzFile f, int mtxme)
 
 	p = mtxm;
 
-	gzprintf(f, "(stratagus-map\n");
-	gzprintf(f, "  'the-map '(\n");
-	gzprintf(f, "  terrain (tileset-forest \"forest\")\n");
-	gzprintf(f, "  size (64 64)\n");
-	gzprintf(f, "  map-fields (\n");
+	gzprintf(f, "StratagusMap(\n");
+	gzprintf(f, "  \"the-map\", {\n");
+	gzprintf(f, "  \"terrain\", {\"tileset-forest\", \"forest\"},\n");
+	gzprintf(f, "  \"size\", {64, 64},\n");
+	gzprintf(f, "  \"map-fields\", {\n");
 
 	for (i = 0; i < 64; ++i) {
-		gzprintf(f, "  ; %d\n",i);
+		gzprintf(f, "  -- %d\n",i);
 		for (j = 0; j < 64; ++j) {
 			if (!(j & 1)) {
 				gzprintf(f, "  ");
@@ -2450,14 +2333,14 @@ static void CmSaveMap(gzFile f, int mtxme)
 				gzprintf(f, "\t");
 			}
 			s = FetchLE16(p);
-			gzprintf(f, "(%d land)", s);
+			gzprintf(f, "{%d, \"land\"},", s);
 			if (j & 1) {
 				gzprintf(f, "\n");
 			}
 		}
 	}
 
-	gzprintf(f, ")))\n");
+	gzprintf(f, "}})\n");
 
 	free(mtxm);
 }
@@ -2515,6 +2398,10 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 	int value;
 	int i;
 	int numunits;
+	int startx;
+	int starty;
+	int endx;
+	int endy;
 
 	p = txtp;
 	while (p[0] != 0xFF || p[1] != 0xFF || p[2] != 0xFF || p[3] != 0xFF) {
@@ -2531,19 +2418,19 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 	numunits = 0;
 	p2 = p;
 	while (p2[0] != 0xFF || p2[1] != 0xFF) {
-		x = FetchByte(p2) / 2;
-		y = FetchByte(p2) / 2;
+		FetchByte(p2);
+		FetchByte(p2);
 		type = FetchByte(p2);
-		player = FetchByte(p2);
+		FetchByte(p2);
 		if (type == 0x32) {
 			// gold mine
-			value = FetchByte(p2);
-			value = FetchByte(p2) * 250;
+			FetchByte(p2);
+			FetchByte(p2);
 		}
 		++numunits;
 	}
 
-	gzprintf(f, "(slot-usage '(0 - %d))\n", numunits - 1);
+	gzprintf(f, "SlotUsage({0, \"-\", %d})\n", numunits - 1);
 
 	i = 0;
 	while (p[0] != 0xFF || p[1] != 0xFF) {
@@ -2562,13 +2449,29 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 			value = 0;
 		}
 
-		gzprintf(f, "(unit %d 'type '%s 'player %d\n", i, UnitTypes[type], player);
-		gzprintf(f, "  'tile '(%d %d)\n", x, y);
+		gzprintf(f, "Unit(%d, \"type\", \"%s\", \"player\", %d,\n", i, UnitTypes[type], player);
+		gzprintf(f, "  \"tile\", {%d, %d}", x, y);
 		if (value) {
-			gzprintf(f, "  'value %d\n", value);
+			gzprintf(f, ",\n  \"value\", %d", value);
 		}
-		gzprintf(f, ")\n");
+		gzprintf(f, "\n)\n");
 		++i;
+	}
+
+	p += 2;
+	while (p[0] != 0xFF || p[1] != 0xFF) {
+		startx = FetchByte(p) / 2;
+		starty = FetchByte(p) / 2;
+		endx = FetchByte(p) / 2;
+		endy = FetchByte(p) / 2;
+		type = FetchByte(p);
+		gzprintf(f, "-- Roads (%d):", type);
+		for (x = startx; x <= endx; ++x) {
+			for (y = starty; y <= endy; ++y) {
+				gzprintf(f, " {%d, %d}", x, y);
+			}
+		}
+		gzprintf(f, "\n");
 	}
 }
 
@@ -2594,6 +2497,7 @@ int ConvertCm(const char* file, int txte, int mtxme)
 		exit(-1);
 	}
 
+	CmSaveObjectives(f, txtp);
 	CmSavePlayers(f);
 	CmSaveMap(f, mtxme);
 	CmSaveUnits(f, txtp);
@@ -2658,7 +2562,7 @@ int main(int argc, char** argv)
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		// Should only be on the expansion cd
 #ifdef DEBUG
-		printf("%s:\n", ParseString(Todo[u].File));
+		printf("%s:\n", Todo[u].File);
 #endif
 		switch (Todo[u].Type) {
 			case F:
@@ -2685,8 +2589,7 @@ int main(int argc, char** argv)
 				ConvertGfu(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case I:
-				ConvertImage(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2,
-					Todo[u].Arg3, Todo[u].Arg4);
+				ConvertImage(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case C:
 				ConvertCursor(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
@@ -2699,9 +2602,6 @@ int main(int argc, char** argv)
 				break;
 			case X:
 				ConvertText(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
-				break;
-			case X2:
-				ConvertText2(Todo[u].File, Todo[u].Arg1);
 				break;
 			case CM:
 				ConvertCm(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
