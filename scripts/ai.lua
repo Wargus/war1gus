@@ -61,7 +61,6 @@ DefineAiHelper(
   --
   -- Building can train which units.
   --
-  {"train", "unit-human-farm", "unit-critter"},
   {"train", "unit-human-town-hall", "unit-peasant"},
   {"train", "unit-human-barracks",
   "unit-footman", "unit-archer"},
@@ -100,7 +99,6 @@ DefineAiHelper(
   --
   -- Building can train which units.
   --
-  {"train", "unit-orc-farm", "unit-critter"},
   {"train", "unit-orc-town-hall", "unit-peon"},
   {"train", "unit-orc-barracks",
   "unit-grunt", "unit-spearman"},
@@ -705,17 +703,6 @@ function AiMageSpell3()
     return "upgrade-invisibility"
   else
     return "upgrade-whirlwind"
-  end
-end
-
---
---  4th spell of the mages of the current race.
---
-function AiMageSpell4()
-  if (AiGetRace() == race1) then
-    return "upgrade-polymorph"
-  else
-    return "upgrade-unholy-armor"
   end
 end
 

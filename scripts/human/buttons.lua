@@ -45,7 +45,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peasant",
     "unit-female-hero",
     "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
     "unit-man-of-light", "unit-white-mage", "unit-balloon",
-    "unit-gryphon-rider", "unit-mage", "unit-critter",
+    "unit-gryphon-rider", "unit-mage",
     "human-group"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
@@ -56,7 +56,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
     "unit-female-hero",
     "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
     "unit-man-of-light", "unit-white-mage", "unit-balloon",
-    "unit-gryphon-rider", "unit-mage", "unit-critter",
+    "unit-gryphon-rider", "unit-mage",
     "human-group"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield2",
@@ -219,13 +219,6 @@ DefineButton( { Pos = 7, Level = 0, Icon = "icon-invisibility",
   Key = "i", Hint = "~!INVISIBILITY",
   ForUnit = {"unit-mage", "unit-white-mage"} } )
 
-DefineButton( { Pos = 8, Level = 0, Icon = "icon-polymorph",
-  Action = "cast-spell", Value = "spell-polymorph",
---  Action = "cast-spell", Value = "spell-suicide-bomber",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-polymorph"},
-  Key = "p", Hint = "~!POLYMORPH",
-  ForUnit = {"unit-mage", "unit-white-mage"} } )
-
 DefineButton( { Pos = 9, Level = 0, Icon = "icon-blizzard",
   Action = "cast-spell", Value = "spell-blizzard",
   Allowed = "check-upgrade", AllowArg = {"upgrade-blizzard"},
@@ -280,10 +273,6 @@ DefineButton( { Pos = 3, Level = 1, Icon = "icon-human-barracks",
   ForUnit = {"unit-peasant"} } )
 
 
-DefineButton( { Pos = 8, Level = 1, Icon = "icon-human-wall",
-  Action = "build", Value = "unit-human-wall",
-  Key = "w", Hint = "BUILD ~!WALL",
-  ForUnit = {"unit-human-town-hall"} } )
 
 DefineButton( { Pos = 6, Level = 1, Icon = "icon-cancel",
   Action = "button", Value = 0,
@@ -319,18 +308,24 @@ DefineButton( { Pos = 6, Level = 2, Icon = "icon-cancel",
 
 -- buildings commands ---------------------------------------------------------
 
-if (extensions) then
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-critter",
-  Action = "train-unit", Value = "unit-critter",
-  Key = "c", Hint = "TRAIN ~!CRITTER",
-  ForUnit = {"unit-farm"} } )
-end
-
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-peasant",
   Action = "train-unit", Value = "unit-peasant",
   Allowed = "check-no-research",
   Key = "p", Hint = "TRAIN ~!PEASANT",
   ForUnit = {"unit-human-town-hall"} } )
+
+--[[
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-wall",
+  Action = "build", Value = "unit-human-wall",
+  Key = "r", Hint = "BUILD ~!ROAD",
+  ForUnit = {"unit-human-town-hall"} } )
+]]
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-wall",
+  Action = "build", Value = "unit-human-wall",
+  Key = "w", Hint = "BUILD ~!WALL",
+  ForUnit = {"unit-human-town-hall"} } )
+
 
 -- town hall upgrades ---------------------------------------------------------
 
@@ -561,12 +556,6 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-invisibility",
   Action = "research", Value = "upgrade-invisibility",
   Allowed = "check-single-research",
   Key = "i", Hint = "RESEARCH ~!INVISIBILITY",
-  ForUnit = {"unit-human-tower"} } )
-
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-polymorph",
-  Action = "research", Value = "upgrade-polymorph",
-  Allowed = "check-single-research",
-  Key = "p", Hint = "RESEARCH ~!POLYMORPH",
   ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-blizzard",
