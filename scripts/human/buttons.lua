@@ -133,6 +133,7 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-attack-ground",
 --    "unit-man-of-light"} } )
 --)
 
+--[[
 DefineButton( { Pos = 7, Level = 0, Icon = "icon-holy-vision",
   Action = "cast-spell", Value = "spell-holy-vision",
   Allowed = "check-upgrade", AllowArg = {"upgrade-holy-vision"},
@@ -153,6 +154,7 @@ DefineButton( { Pos = 9, Level = 0, Icon = "icon-exorcism",
   Key = "e", Hint = "~!EXORCISM",
   ForUnit = {"unit-paladin", "unit-knight-rider",
     "unit-man-of-light"} } )
+]]
 
 -- mage specific actions ------------------------------------------------------
 
@@ -161,6 +163,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-lightning",
   Key = "a", Hint = "LIGHTNING ~!ATTACK",
   ForUnit = {"unit-mage", "unit-white-mage"} } )
 
+--[[
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-fireball",
   Action = "cast-spell", Value = "spell-fireball",
   Allowed = "check-upgrade", AllowArg = {"upgrade-fireball"},
@@ -190,6 +193,7 @@ DefineButton( { Pos = 9, Level = 0, Icon = "icon-blizzard",
   Allowed = "check-upgrade", AllowArg = {"upgrade-blizzard"},
   Key = "b", Hint = "~!BLIZZARD",
   ForUnit = {"unit-mage", "unit-white-mage"} } )
+]]
 
 -- peasant specific actions ---------------------------------------------------
 

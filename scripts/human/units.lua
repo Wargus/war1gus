@@ -227,12 +227,14 @@ DefineUnitType("unit-cleric", { Name = "Cleric",
   RightMouseAction = "attack",
   CanAttack = true,
   CanTargetLand = true,
+--[[
   CanCastSpell = {
     "spell-fireball",
     "spell-slow",
     "spell-flame-shield",
     "spell-invisibility",
     "spell-blizzard"},
+]]
   LandUnit = true,
   organic = true,
   SelectableByRectangle = true,
@@ -264,12 +266,14 @@ DefineUnitType("unit-conjurer", { Name = "Conjurer",
   RightMouseAction = "attack",
   CanAttack = true,
   CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
+--[[
   CanCastSpell = {
     "spell-fireball",
     "spell-slow",
     "spell-flame-shield",
     "spell-invisibility",
     "spell-blizzard"},
+]]
   LandUnit = true,
   Coward = true,
   organic = true,

@@ -161,7 +161,7 @@ DecorationOnTop()
 --
 --  (shadow-sprite file hotx hoty width height)
 --
-ShadowSprite("missiles/unit_shadow.png", 3, 42, 32, 32)
+--ShadowSprite("missiles/unit_shadow.png", 3, 42, 32, 32)
 SpellSprite("ui/bloodlust,haste,slow,invisible,shield.png",
   1, 1, 16, 16)
 
@@ -214,7 +214,7 @@ SetRevealAttacker(false)
 RightButtonMoves()
 
 --  Set the name of the missile to use when clicking
-SetClickMissile("missile-green-cross")
+--SetClickMissile("missile-green-cross")
 
 --  Set the name of the missile to use when displaying damage
 SetDamageMissile("missile-hit")
