@@ -678,26 +678,26 @@ void CheckPath(const char* path)
     char* cp;
     char* s;
 
-    if( *path && path[0]=='.' ) {	// relative don't work
+    if (*path && path[0]=='.') {	// relative don't work
 	return;
     }
-    cp=strdup(path);
-    s=strrchr(cp,'/');
-    if( s ) {
-	*s='\0';			// remove file
-	s=cp;
-	for( ;; ) {			// make each path element
-	    s=strchr(s,'/');
-	    if( s ) {
-		*s='\0';
+    cp = strdup(path);
+    s = strrchr(cp, '/');
+    if (s) {
+	*s = '\0';			// remove file
+	s = cp;
+	for (;;) {			// make each path element
+	    s = strchr(s, '/');
+	    if (s) {
+		*s = '\0';
 	    }
 #ifdef USE_WIN32
 	    mkdir(cp);
 #else
-	    mkdir(cp,0777);
+	    mkdir(cp, 0777);
 #endif
-	    if( s ) {
-		*s++='/';
+	    if (s) {
+		*s++ = '/';
 	    } else {
 		break;
 	    }
@@ -710,7 +710,7 @@ void CheckPath(const char* path)
 **	Given a file name that would appear in a PC archive convert it to what
 **	would appear on the Mac.
 */
-void ConvertToMac(char *filename)
+void ConvertToMac(char* filename)
 {
     if (!strcmp(filename, "rezdat.war")) {
 	strcpy(filename, "War Resources");
@@ -743,6 +743,40 @@ void ConvertToMac(char *filename)
 //----------------------------------------------------------------------------
 
 /**
+**	Resize an image
+**
+**	@param image	image data to be converted
+**	@param ow	old image width
+**	@param oh	old image height
+**	@param nw	new image width
+**	@param nh	new image height
+*/
+void ResizeImage(unsigned char** image, int ow, int oh, int nw, int nh)
+{
+    int i;
+    int j;
+    unsigned char* data;
+    int x;
+
+    if (ow == nw && nh == oh) {
+	return;
+    }
+
+    data = (unsigned char*)malloc(nw * nh);
+    x = 0;
+    for (i = 0; i < nh; ++i) {
+	for (j = 0; j < nw; ++j) {
+	    data[x] = ((unsigned char*)*image)[
+		i * oh / nh * ow + j * ow / nw];
+	    ++x;
+	}
+    }
+
+    free(*image);
+    *image = data;
+}
+
+/**
 **	Save a png file.
 **
 **	@param name	File name
@@ -751,8 +785,8 @@ void ConvertToMac(char *filename)
 **	@param h	Graphic height
 **	@param pal	Palette
 */
-int SavePNG(const char* name,unsigned char* image,int w,int h
-	,unsigned char* pal)
+int SavePNG(const char* name, unsigned char* image, int w, int h,
+    unsigned char* pal)
 {
     FILE* fp;
     png_structp png_ptr;
@@ -760,67 +794,67 @@ int SavePNG(const char* name,unsigned char* image,int w,int h
     unsigned char** lines;
     int i;
 
-    if( !(fp=fopen(name,"wb")) ) {
-	fprintf(stderr,"%s:",name);
+    if (!(fp = fopen(name, "wb"))) {
+	fprintf(stderr,"%s:", name);
 	perror("Can't open file");
 	return 1;
     }
 
-    png_ptr=png_create_write_struct(PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
-    if( !png_ptr ) {
+    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    if (!png_ptr) {
 	fclose(fp);
 	return 1;
     }
-    info_ptr=png_create_info_struct(png_ptr);
-    if( !info_ptr ) {
-	png_destroy_write_struct(&png_ptr,NULL);
+    info_ptr = png_create_info_struct(png_ptr);
+    if (!info_ptr) {
+	png_destroy_write_struct(&png_ptr, NULL);
 	fclose(fp);
 	return 1;
     }
 
-    if( setjmp(png_ptr->jmpbuf) ) {
+    if (setjmp(png_ptr->jmpbuf)) {
 	// FIXME: must free buffers!!
-	png_destroy_write_struct(&png_ptr,&info_ptr);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
 	fclose(fp);
 	return 1;
     }
-    png_init_io(png_ptr,fp);
+    png_init_io(png_ptr, fp);
 
     // zlib parameters
-    png_set_compression_level(png_ptr,Z_BEST_COMPRESSION);
+    png_set_compression_level(png_ptr ,Z_BEST_COMPRESSION);
 
     //	prepare the file information
 
-    info_ptr->width=w;
-    info_ptr->height=h;
-    info_ptr->bit_depth=8;
-    info_ptr->color_type=PNG_COLOR_TYPE_PALETTE;
-    info_ptr->interlace_type=0;
-    info_ptr->valid|=PNG_INFO_PLTE;
-    info_ptr->palette=(void*)pal;
-    info_ptr->num_palette=256;
+    info_ptr->width = w;
+    info_ptr->height = h;
+    info_ptr->bit_depth = 8;
+    info_ptr->color_type = PNG_COLOR_TYPE_PALETTE;
+    info_ptr->interlace_type = 0;
+    info_ptr->valid |= PNG_INFO_PLTE;
+    info_ptr->palette = (void*)pal;
+    info_ptr->num_palette = 256;
 
-    png_write_info(png_ptr,info_ptr);	// write the file header information
+    png_write_info(png_ptr, info_ptr);	// write the file header information
 
     //	set transformation
 
     //	prepare image
 
-    lines=malloc(h*sizeof(*lines));
-    if( !lines ) {
-	png_destroy_write_struct(&png_ptr,&info_ptr);
+    lines = malloc(h * sizeof(*lines));
+    if (!lines) {
+	png_destroy_write_struct(&png_ptr, &info_ptr);
 	fclose(fp);
 	return 1;
     }
 
-    for( i=0; i<h; ++i ) {
-	lines[i]=image+i*w;
+    for (i = 0; i < h; ++i) {
+	lines[i] = image + i * w;
     }
 
-    png_write_image(png_ptr,lines);
-    png_write_end(png_ptr,info_ptr);
+    png_write_image(png_ptr, lines);
+    png_write_end(png_ptr, info_ptr);
 
-    png_destroy_write_struct(&png_ptr,&info_ptr);
+    png_destroy_write_struct(&png_ptr, &info_ptr);
     fclose(fp);
 
     free(lines);
@@ -838,7 +872,7 @@ int SavePNG(const char* name,unsigned char* image,int w,int h
 **	@param file	Archive file name
 **	@param type	Archive type requested
 */
-int OpenArchive(const char* file,int type)
+int OpenArchive(const char* file, int type)
 {
     int f;
     struct stat stat_buf;
@@ -851,65 +885,66 @@ int OpenArchive(const char* file,int type)
     //
     //	Open the archive file
     //
-    f=open(file,O_RDONLY|O_BINARY,0);
-    if( f==-1 ) {
-	printf("Can't open %s\n",file);
+    f = open(file, O_RDONLY | O_BINARY, 0);
+    if (f == -1) {
+	printf("Can't open %s\n", file);
 	exit(-1);
     }
-    if( fstat(f,&stat_buf) ) {
-	printf("Can't fstat %s\n",file);
+    if (fstat(f, &stat_buf)) {
+	printf("Can't fstat %s\n", file);
 	exit(-1);
     }
-    DebugLevel3("Filesize %ld %ldk\n"
-	_C_ (long)stat_buf.st_size _C_ stat_buf.st_size/1024);
+    DebugLevel3("Filesize %ld %ldk\n" _C_
+	(long)stat_buf.st_size _C_ stat_buf.st_size / 1024);
 
     //
     //	Read in the archive
     //
-    buf=malloc(stat_buf.st_size);
-    if( !buf ) {
-	printf("Can't malloc %ld\n",(long)stat_buf.st_size);
+    buf = malloc(stat_buf.st_size);
+    if (!buf) {
+	printf("Can't malloc %ld\n", (long)stat_buf.st_size);
 	exit(-1);
     }
-    if( read(f,buf,stat_buf.st_size)!=stat_buf.st_size ) {
-	printf("Can't read %ld\n",(long)stat_buf.st_size);
+    if (read(f, buf, stat_buf. st_size) != stat_buf.st_size) {
+	printf("Can't read %ld\n", (long)stat_buf.st_size);
 	exit(-1);
     }
     close(f);
 
-    cp=buf;
-    i=FetchLE32(cp);
+    cp = buf;
+    i = FetchLE32(cp);
     DebugLevel2("Magic\t%08X\t" _C_ i);
-    if( i!=0x19 && i!=0x18 ) {
-	printf("Wrong magic %08x, expected %08x or %08x\n",i,0x00000019,0x00000018);
+    if (i != 0x19 && i != 0x18) {
+	printf("Wrong magic %08x, expected %08x or %08x\n",
+	    i, 0x00000019, 0x00000018);
 	exit(-1);
     }
-    entries=FetchLE16(cp);
+    entries = FetchLE16(cp);
     DebugLevel3("Entries\t%5d\t" _C_ entries);
-    i=FetchLE16(cp);
+    i = FetchLE16(cp);
     DebugLevel3("ID\t%d\n" _C_ i);
-    if( i!=type ) {
-	printf("Wrong type %08x, expected %08x\n",i,type);
+    if (i != type) {
+	printf("Wrong type %08x, expected %08x\n", i, type);
 	exit(-1);
     }
 
     //
     //	Read offsets.
     //
-    op=malloc((entries+1)*sizeof(unsigned char**));
-    if( !op ) {
-	printf("Can't malloc %d entries\n",entries);
+    op = malloc((entries + 1) * sizeof(unsigned char**));
+    if (!op) {
+	printf("Can't malloc %d entries\n", entries);
 	exit(-1);
     }
-    for( i=0; i<entries; ++i ) {
-	op[i]=buf+FetchLE32(cp);
+    for (i = 0; i < entries; ++i) {
+	op[i] = buf + FetchLE32(cp);
 	DebugLevel3("Offset\t%d\n" _C_ op[i]);
     }
-    op[i]=buf+stat_buf.st_size;
+    op[i] = buf + stat_buf.st_size;
 
-    ArchiveOffsets=op;
-    ArchiveBuffer=buf;
-    ArchiveLength=stat_buf.st_size;
+    ArchiveOffsets = op;
+    ArchiveBuffer = buf;
+    ArchiveLength = stat_buf.st_size;
 
     return 0;
 }
@@ -922,87 +957,87 @@ int OpenArchive(const char* file,int type)
 **
 **	@return		Pointer to uncompressed entry
 */
-unsigned char* ExtractEntry(unsigned char* cp,int* lenp)
+unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 {
     unsigned char* dp;
     unsigned char* dest;
     int uncompressed_length;
     int flags;
 
-    uncompressed_length=FetchLE32(cp);
-    flags=uncompressed_length>>24;
-    uncompressed_length&=0x00FFFFFF;
+    uncompressed_length = FetchLE32(cp);
+    flags = uncompressed_length >> 24;
+    uncompressed_length &= 0x00FFFFFF;
     DebugLevel3("Entry length %8d flags %02x\t" _C_ uncompressed_length _C_ flags);
 
-    if( uncompressed_length+(cp-ArchiveBuffer)>=ArchiveLength ) {
+    if (uncompressed_length + (cp-ArchiveBuffer) >= ArchiveLength) {
 	printf("Entry goes past end of file\n");
 	return NULL;
     }
 
-    dp=dest=malloc(uncompressed_length);
-    if( !dest ) {
-	printf("Can't malloc %d\n",uncompressed_length);
+    dp = dest = malloc(uncompressed_length);
+    if (!dest) {
+	printf("Can't malloc %d\n", uncompressed_length);
 	exit(-1);
     }
 
-    if( flags==0x20 ) {
+    if (flags == 0x20) {
 	unsigned char buf[4096];
 	unsigned char* ep;
 	int bi;
 
 	DebugLevel3("Compressed entry\n");
 
-	bi=0;
-	memset(buf,0,sizeof(buf));
-	ep=dp+uncompressed_length;
+	bi = 0;
+	memset(buf, 0, sizeof(buf));
+	ep = dp + uncompressed_length;
 
 	// FIXME: If the decompression is too slow, optimise this loop :->
-	while( dp<ep ) {
+	while (dp < ep) {
 	    int i;
 	    int bflags;
 
-	    bflags=FetchByte(cp);
+	    bflags = FetchByte(cp);
 	    DebugLevel3("Ctrl %02x " _C_ bflags);
-	    for( i=0; i<8; ++i ) {
+	    for (i = 0; i < 8; ++i) {
 		int j;
 		int o;
 
-		if( bflags&1 ) {
-		    j=FetchByte(cp);
-		    *dp++=j;
-		    buf[bi++&0xFFF]=j;
+		if (bflags & 1) {
+		    j = FetchByte(cp);
+		    *dp++ = j;
+		    buf[bi++ & 0xFFF] = j;
 		    DebugLevel3("=%02x" _C_ j);
 		} else {
-		    o=FetchLE16(cp);
-		    DebugLevel3("*%d,%d" _C_ o>>12 _C_ o&0xFFF);
-		    j=(o>>12)+3;
-		    o&=0xFFF;
-		    while( j-- ) {
-			buf[bi++&0xFFF]=*dp++=buf[o++&0xFFF];
-			if( dp==ep ) {
+		    o = FetchLE16(cp);
+		    DebugLevel3("*%d,%d" _C_ o >> 12 _C_ o & 0xFFF);
+		    j = (o >> 12) + 3;
+		    o &= 0xFFF;
+		    while (j--) {
+			buf[bi++ & 0xFFF] = *dp++ = buf[o++ & 0xFFF];
+			if (dp == ep) {
 			    break;
 			}
 		    }
 		}
-		if( dp==ep ) {
+		if (dp == ep) {
 		    break;
 		}
-		bflags>>=1;
+		bflags >>= 1;
 	    }
 	    DebugLevel3("\n");
 	}
-	//if( dp!=ep ) printf("%p,%p %d\n",dp,ep,dp-dest);
-    } else if( flags==0x00 ) {
+	//if (dp!=ep ) printf("%p,%p %d\n",dp,ep,dp-dest);
+    } else if (flags == 0x00) {
 	DebugLevel3("Uncompressed entry\n");
-	memcpy(dest,cp,uncompressed_length);
+	memcpy(dest, cp, uncompressed_length);
     } else {
-	printf("Unknown flags %x\n",flags);
+	printf("Unknown flags %x\n", flags);
 	free(dest);
 	return NULL;
     }
 
-    if( lenp ) {			// return resulting length
-	*lenp=uncompressed_length;
+    if (lenp) {			// return resulting length
+	*lenp = uncompressed_length;
     }
 
     return dest;
@@ -1015,8 +1050,8 @@ int CloseArchive(void)
 {
     free(ArchiveBuffer);
     free(ArchiveOffsets);
-    ArchiveBuffer=0;
-    ArchiveOffsets=0;
+    ArchiveBuffer = 0;
+    ArchiveOffsets = 0;
 
     return 0;
 }
@@ -1026,7 +1061,7 @@ int CloseArchive(void)
 //----------------------------------------------------------------------------
 
 char FLCFile[1024];
-unsigned char FLCPalette[256*3];
+unsigned char FLCPalette[256 * 3];
 int FLCWidth;
 int FLCHeight;
 unsigned char* FLCImage;
@@ -1043,21 +1078,21 @@ void ConvertFLC_COLOR256(unsigned char* buf)
     int color_count;
     int index;
 
-    index=0;
-    p=buf;
+    index = 0;
+    p = buf;
 
-    packets=FetchLE16(p);
-    for( ; packets; --packets ) {
-	skip=FetchByte(p);
-	index+=skip;
-	color_count=FetchByte(p);
-	if( color_count==0 ) {
-	    color_count=256;
+    packets = FetchLE16(p);
+    for (; packets; --packets) {
+	skip = FetchByte(p);
+	index += skip;
+	color_count = FetchByte(p);
+	if (color_count == 0) {
+	    color_count = 256;
 	}
-	for( ; color_count; --color_count ) {
-	    FLCPalette[index*3+0]=FetchByte(p);
-	    FLCPalette[index*3+1]=FetchByte(p);
-	    FLCPalette[index*3+2]=FetchByte(p);
+	for (; color_count; --color_count) {
+	    FLCPalette[index * 3 + 0] = FetchByte(p);
+	    FLCPalette[index * 3 + 1] = FetchByte(p);
+	    FLCPalette[index * 3 + 2] = FetchByte(p);
 	    ++index;
 	}
     }
@@ -1079,37 +1114,37 @@ void ConvertFLC_SS2(unsigned char* buf)
     int skiplines;
     char pngbuf[1024];
 
-    p=buf;
-    lines=FetchLE16(p);
-    skiplines=0;
+    p = buf;
+    lines = FetchLE16(p);
+    skiplines = 0;
 
-    for( ; lines; --lines) {
-	i=FLCImage+FLCWidth*skiplines;
-	w=FetchLE16(p);
-	if( (w&0xC0) == 0 ) {
-	    packets=w;
-	    for( ; packets; --packets ) {
-		skip=FetchByte(p);
-		i+=skip;
-		type=FetchByte(p);
-		if( type>0 ) {
-		    for( ; type; --type ) {
-			*(unsigned short*)i=FetchLE16(p);
-			i+=2;
+    for (; lines; --lines) {
+	i = FLCImage + FLCWidth * skiplines;
+	w = FetchLE16(p);
+	if ((w & 0xC0) == 0) {
+	    packets = w;
+	    for (; packets; --packets) {
+		skip = FetchByte(p);
+		i += skip;
+		type = FetchByte(p);
+		if (type > 0) {
+		    for (; type; --type) {
+			*(unsigned short*)i = FetchLE16(p);
+			i += 2;
 		    }
 		} else {
-		    packet=FetchLE16(p);
-		    for( ; type; ++type ) {
-			*(unsigned short*)i=packet;
-			i+=2;
+		    packet = FetchLE16(p);
+		    for (; type; ++type) {
+			*(unsigned short*)i = packet;
+			i += 2;
 		    }
 		}
 	    }
-	} else if( (w&0xC000) == 0x8000 ) {
+	} else if ((w & 0xC000) == 0x8000) {
 	    printf("SS2 low order byte stored in last byte of line\n");
-	} else if( (w&0xC000) == 0xC000 ) {
-	    skip=-(short)w;
-	    skiplines+=skip-1; // -1 because of ++skiplines below
+	} else if ((w & 0xC000) == 0xC000) {
+	    skip = -(short)w;
+	    skiplines += skip - 1; // -1 because of ++skiplines below
 	} else {
 	    printf("SS2 error\n");
 	    return;
@@ -1117,8 +1152,8 @@ void ConvertFLC_SS2(unsigned char* buf)
 	++skiplines;
     }
 
-    sprintf(pngbuf,"%s-%02d.png",FLCFile,FLCFrame++);
-    SavePNG(pngbuf,FLCImage,FLCWidth,FLCHeight,FLCPalette);
+    sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
+    SavePNG(pngbuf, FLCImage, FLCWidth, FLCHeight, FLCPalette);
 }
 
 /**
@@ -1137,34 +1172,34 @@ void ConvertFLC_LC(unsigned char* buf)
     int skiplines;
     char pngbuf[1024];
 
-    p=buf;
-    skiplines=FetchLE16(p);
-    lines=FetchLE16(p);
+    p = buf;
+    skiplines = FetchLE16(p);
+    lines = FetchLE16(p);
 
-    for( ; lines; --lines) {
-	x=FetchByte(p);
-	packets=FetchByte(p);
-	i=FLCImage+FLCWidth*skiplines+x;
-	for( ; packets; --packets ) {
-	    skip=FetchByte(p);
-	    i+=skip;
-	    type=FetchByte(p);
-	    if( type>0 ) {
-		for( ; type; --type ) {
-		    *i++=FetchByte(p);
+    for (; lines; --lines) {
+	x = FetchByte(p);
+	packets = FetchByte(p);
+	i = FLCImage + FLCWidth * skiplines + x;
+	for (; packets; --packets) {
+	    skip = FetchByte(p);
+	    i += skip;
+	    type = FetchByte(p);
+	    if (type > 0) {
+		for (; type; --type) {
+		    *i++ = FetchByte(p);
 		}
 	    } else {
-		packet=FetchByte(p);
-		for( ; type; ++type ) {
-		    *i++=packet;
+		packet = FetchByte(p);
+		for (; type; ++type) {
+		    *i++ = packet;
 		}
 	    }
 	}
 	++skiplines;
     }
 
-    sprintf(pngbuf,"%s-%02d.png",FLCFile,FLCFrame++);
-    SavePNG(pngbuf,FLCImage,FLCWidth,FLCHeight,FLCPalette);
+    sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
+    SavePNG(pngbuf, FLCImage, FLCWidth, FLCHeight, FLCPalette);
 }
 
 /**
@@ -1180,31 +1215,31 @@ void ConvertFLC_BRUN(unsigned char* buf)
     int w;
     char pngbuf[1024];
 
-    p=buf;
-    i=FLCImage;
+    p = buf;
+    i = FLCImage;
 
-    for( h=FLCHeight; h; --h ) {
+    for (h = FLCHeight; h; --h) {
 	++p; // ignore first byte
-	for( w=FLCWidth; w; ) {
-	    type=FetchByte(p);
+	for (w = FLCWidth; w;) {
+	    type = FetchByte(p);
 
-	    if( type<0 ) {
-		for( ; type; ++type ) {
-		    *i++=FetchByte(p);
+	    if (type < 0) {
+		for (; type; ++type) {
+		    *i++ = FetchByte(p);
 		    --w;
 		}
 	    } else {
-		pixel=FetchByte(p);
-		for( ; type; --type ) {
-		    *i++=pixel;
+		pixel = FetchByte(p);
+		for (; type; --type) {
+		    *i++ = pixel;
 		    --w;
 		}
 	    }
 	}
     }
 
-    sprintf(pngbuf,"%s-%02d.png",FLCFile,FLCFrame++);
-    SavePNG(pngbuf,FLCImage,FLCWidth,FLCHeight,FLCPalette);
+    sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
+    SavePNG(pngbuf, FLCImage, FLCWidth, FLCHeight, FLCPalette);
 }
 
 /**
@@ -1218,17 +1253,17 @@ void ConvertFLC_COPY(unsigned char* buf)
     int w;
     char pngbuf[1024];
 
-    p=buf;
-    i=FLCImage;
+    p = buf;
+    i = FLCImage;
 
-    for( h=FLCHeight; h; --h ) {
-	for( w=FLCWidth; w; --w ) {
-	    *i++=FetchByte(p);
+    for (h = FLCHeight; h; --h) {
+	for (w = FLCWidth; w; --w) {
+	    *i++ = FetchByte(p);
 	}
     }
 
-    sprintf(pngbuf,"%s-%02d.png",FLCFile,FLCFrame++);
-    SavePNG(pngbuf,FLCImage,FLCWidth,FLCHeight,FLCPalette);
+    sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
+    SavePNG(pngbuf, FLCImage, FLCWidth, FLCHeight, FLCPalette);
 }
 
 /**
@@ -1250,45 +1285,45 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
     //
     //	Read header
     //
-    p=buf;
-    height=FetchLE16(p);
-    width=FetchLE16(p);
-    xlate=FetchLE16(p);
+    p = buf;
+    height = FetchLE16(p);
+    width = FetchLE16(p);
+    xlate = FetchLE16(p);
 
-    image=malloc(height*width);
-    if( !image ) {
+    image = malloc(height * width);
+    if (!image) {
 	printf("Can't allocate image\n");
 	exit(-1);
     }
-    memset(image,255,height*width);
-    i=image;
+    memset(image, 255, height * width);
+    i = image;
 
     //
     //	PSTAMP header
     //
-    pstamp_size=FetchLE32(p);
-    pstamp_type=FetchLE16(p);
+    pstamp_size = FetchLE32(p);
+    pstamp_type = FetchLE16(p);
 
-    switch( pstamp_type ) {
+    switch (pstamp_type) {
 	case 15:
 	{
 	    char type;
 	    unsigned char pixel;
 
-	    for( h=height; h; --h ) {
+	    for (h = height; h; --h) {
 		++p; // ignore first byte
-		for( w=width; w; ) {
-		    type=FetchByte(p);
+		for (w = width; w;) {
+		    type = FetchByte(p);
 
-		    if( type<0 ) {
-			for( ; type; ++type ) {
-			    *i++=FetchByte(p);
+		    if (type < 0) {
+			for (; type; ++type) {
+			    *i++ = FetchByte(p);
 			    --w;
 			}
 		    } else {
-			pixel=FetchByte(p);
-			for( ; type; --type ) {
-			    *i++=pixel;
+			pixel = FetchByte(p);
+			for (; type; --type) {
+			    *i++ = pixel;
 			    --w;
 			}
 		    }
@@ -1322,23 +1357,23 @@ int ConvertFLCFrameChunk(unsigned char* buf)
     //
     //	Read header
     //
-    p=buf;
-    frame_size=FetchLE32(p);
-    frame_type=FetchLE16(p);
-    if( frame_type!=0xF1FA ) {
-	printf("Wrong magic: %04x != %04x\n",frame_type,0xF1FA);
+    p = buf;
+    frame_size = FetchLE32(p);
+    frame_type = FetchLE16(p);
+    if (frame_type != 0xF1FA) {
+	printf("Wrong magic: %04x != %04x\n", frame_type, 0xF1FA);
 	return 0;
     }
-    frame_chunks=FetchLE16(p);
-    p+=8; // reserved
+    frame_chunks = FetchLE16(p);
+    p += 8; // reserved
 
     //
     //	Read chunks
     //
-    for( ; frame_chunks; --frame_chunks ) {
-	data_size=FetchLE32(p);
-	data_type=FetchLE16(p);
-	switch( data_type ) {
+    for (; frame_chunks; --frame_chunks) {
+	data_size = FetchLE32(p);
+	data_type = FetchLE16(p);
+	switch (data_type) {
 	    case 4:
 		ConvertFLC_COLOR256(p);
 		break;
@@ -1361,7 +1396,7 @@ int ConvertFLCFrameChunk(unsigned char* buf)
 		printf("Unknown data_type = %d\n",data_type);
 		break;
 	}
-	p+=data_size-6;
+	p += data_size - 6;
     }
 
     return frame_size;
@@ -1370,7 +1405,7 @@ int ConvertFLCFrameChunk(unsigned char* buf)
 /**
 **	Convert FLC
 */
-void ConvertFLC(const char* file,const char* flc)
+void ConvertFLC(const char* file, const char* flc)
 {
     int f;
     struct stat stat_buf;
@@ -1381,103 +1416,103 @@ void ConvertFLC(const char* file,const char* flc)
     int oframe1;
     int oframe2;
     int offset;
-    FILE *fd;
+    FILE* fd;
     char txtbuf[1024];
     int speed;
 
-    f=open(file,O_RDONLY|O_BINARY,0);
-    if( f==-1 ) {
-	printf("Can't open %s\n",file);
+    f = open(file, O_RDONLY | O_BINARY, 0);
+    if (f == -1) {
+	printf("Can't open %s\n", file);
 	return;
     }
-    if( fstat(f,&stat_buf) ) {
-	printf("Can't fstat %s\n",file);
+    if (fstat(f, &stat_buf)) {
+	printf("Can't fstat %s\n", file);
 	exit(-1);
     }
-    DebugLevel3("Filesize %ld %ldk\n"
-	_C_ (long)stat_buf.st_size _C_ stat_buf.st_size/1024);
+    DebugLevel3("Filesize %ld %ldk\n" _C_
+	(long)stat_buf.st_size _C_ stat_buf.st_size/1024);
 
     //
     //	Read in the archive
     //
-    buf=malloc(stat_buf.st_size);
-    if( !buf ) {
-	printf("Can't malloc %ld\n",(long)stat_buf.st_size);
+    buf = malloc(stat_buf.st_size);
+    if (!buf) {
+	printf("Can't malloc %ld\n", (long)stat_buf.st_size);
 	exit(-1);
     }
-    if( read(f,buf,stat_buf.st_size)!=stat_buf.st_size ) {
-	printf("Can't read %ld\n",(long)stat_buf.st_size);
+    if (read(f, buf, stat_buf.st_size) != stat_buf.st_size) {
+	printf("Can't read %ld\n", (long)stat_buf.st_size);
 	exit(-1);
     }
     close(f);
 
-    sprintf(FLCFile,"%s/%s/%s",Dir,FLC_PATH,flc);
-    p=strrchr(FLCFile,'.');
-    if( p ) {
-	*p='\0';
+    sprintf(FLCFile, "%s/%s/%s", Dir, FLC_PATH, flc);
+    p = strrchr(FLCFile, '.');
+    if (p) {
+	*p = '\0';
     }
     CheckPath(FLCFile);
-    FLCFrame=0;
+    FLCFrame = 0;
 
     //
     //	Read header
     //
-    p=buf;
-    i=FetchLE32(p);
-    if( i!=stat_buf.st_size ) {
-	printf("FLC file size incorrect: %d != %ld\n",i,(long)stat_buf.st_size);
+    p = buf;
+    i = FetchLE32(p);
+    if (i != stat_buf.st_size) {
+	printf("FLC file size incorrect: %d != %ld\n", i, (long)stat_buf.st_size);
 	free(buf);
 	return;
     }
-    i=FetchLE16(p);
-    if( i!=0xAF12 ) {
-	printf("Wrong FLC magic: %04x != %04x\n",i,0xAF12);
+    i = FetchLE16(p);
+    if (i != 0xAF12) {
+	printf("Wrong FLC magic: %04x != %04x\n", i, 0xAF12);
 	free(buf);
 	return;
     }
-    frames=FetchLE16(p);
-    FLCWidth=FetchLE16(p);
-    FLCHeight=FetchLE16(p);
-    i=FetchLE16(p); // depth always 8
-    i=FetchLE16(p); // flags, unused
-    speed=FetchLE32(p);
-    i=FetchLE16(p); // reserved
-    i=FetchLE32(p); // created
-    i=FetchLE32(p); // creator
-    i=FetchLE32(p); // updated
-    i=FetchLE32(p); // updater
-    i=FetchLE16(p); // aspectx
-    i=FetchLE16(p); // aspecty
-    p+=38;        // reserved
-    oframe1=FetchLE32(p);
-    oframe2=FetchLE32(p);
-    p+=40;        // reserved
+    frames = FetchLE16(p);
+    FLCWidth = FetchLE16(p);
+    FLCHeight = FetchLE16(p);
+    i = FetchLE16(p); // depth always 8
+    i = FetchLE16(p); // flags, unused
+    speed = FetchLE32(p);
+    i = FetchLE16(p); // reserved
+    i = FetchLE32(p); // created
+    i = FetchLE32(p); // creator
+    i = FetchLE32(p); // updated
+    i = FetchLE32(p); // updater
+    i = FetchLE16(p); // aspectx
+    i = FetchLE16(p); // aspecty
+    p += 38;        // reserved
+    oframe1 = FetchLE32(p);
+    oframe2 = FetchLE32(p);
+    p += 40;        // reserved
 
-    FLCImage=malloc(FLCWidth*FLCHeight);
-    if( !FLCImage ) {
+    FLCImage = malloc(FLCWidth * FLCHeight);
+    if (!FLCImage) {
 	printf("Can't allocate image\n");
 	exit(-1);
     }
 
-    offset=oframe1;
-    for( ; frames; --frames) {
-	offset+=ConvertFLCFrameChunk(buf+offset);
+    offset = oframe1;
+    for (; frames; --frames) {
+	offset += ConvertFLCFrameChunk(buf + offset);
     }
 
     //
     //	Save FLC info
     //
-    sprintf(txtbuf,"%s.txt",FLCFile);
-    fd=fopen(txtbuf,"wb");
-    if( !fd ) {
+    sprintf(txtbuf, "%s.txt", FLCFile);
+    fd = fopen(txtbuf, "wb");
+    if (!fd) {
 	printf("Can't open file: %s", txtbuf);
 	free(buf);
 	free(FLCImage);
 	return;
     }
-    fprintf(fd,"width: %d\n",FLCWidth);
-    fprintf(fd,"height: %d\n",FLCHeight);
-    fprintf(fd,"speed: %d\n",speed);
+    fprintf(fd, "width: %d\n", FLCWidth);
+    fprintf(fd, "height: %d\n", FLCHeight);
+    fprintf(fd, "speed: %d\n", speed);
     fclose(fd);
 
     free(buf);
@@ -1499,8 +1534,8 @@ unsigned char* ConvertPalette(unsigned char* pal)
 {
     int i;
 
-    for( i=0; i<768; ++i ) {		// PNG needs 0-256
-	pal[i]<<=2;
+    for (i = 0; i < 768; ++i) {		// PNG needs 0-256
+	pal[i] <<= 2;
     }
 
     return pal;
@@ -1517,27 +1552,27 @@ int ConvertRgb(char* file,int rgbe)
     int i;
     size_t l;
 
-    rgbp=ExtractEntry(ArchiveOffsets[rgbe],&l);
-    if( l<768 ) {
-	rgbp=realloc(rgbp,768);
-	memset(rgbp+l,0,768-l);
-	l=768;
+    rgbp = ExtractEntry(ArchiveOffsets[rgbe], &l);
+    if (l < 768) {
+	rgbp = realloc(rgbp, 768);
+	memset(rgbp + l, 0, 768 - l);
+	l = 768;
     }
     ConvertPalette(rgbp);
 
     //
     //	Generate RGB File.
     //
-    sprintf(buf,"%s/%s/%s.rgb",Dir,TILESET_PATH,file);
+    sprintf(buf, "%s/%s/%s.rgb", Dir, TILESET_PATH, file);
     CheckPath(buf);
-    f=fopen(buf,"wb");
-    if( !f ) {
+    f = fopen(buf, "wb");
+    if (!f) {
 	perror("");
-	printf("Can't open %s\n",buf);
+	printf("Can't open %s\n", buf);
 	exit(-1);
     }
-    if( l!=fwrite(rgbp,1,l,f) ) {
-	printf("Can't write %d bytes\n",l);
+    if (l != fwrite(rgbp, 1, l, f)) {
+	printf("Can't write %d bytes\n", l);
     }
 
     fclose(f);
@@ -1545,21 +1580,21 @@ int ConvertRgb(char* file,int rgbe)
     //
     //	Generate GIMP palette
     //
-    sprintf(buf,"%s/%s/%s.gimp",Dir,TILESET_PATH,file);
+    sprintf(buf, "%s/%s/%s.gimp", Dir, TILESET_PATH, file);
     CheckPath(buf);
-    f=fopen(buf,"wb");
-    if( !f ) {
+    f = fopen(buf, "wb");
+    if (!f) {
 	perror("");
-	printf("Can't open %s\n",buf);
+	printf("Can't open %s\n", buf);
 	exit(-1);
     }
-    fprintf(f,"GIMP Palette\n# Stratagus %c%s -- GIMP Palette file\n"
-	    ,toupper(*file),file+1);
+    fprintf(f,"GIMP Palette\n# Stratagus %c%s -- GIMP Palette file\n",
+	toupper(*file), file + 1);
 
-    for( i=0; i<256; ++i ) {
+    for (i = 0; i < 256; ++i) {
 	// FIXME: insert nice names!
-	fprintf(f,"%d %d %d\t#%d\n"
-		,rgbp[i*3],rgbp[i*3+1],rgbp[i*3+2],i);
+	fprintf(f, "%d %d %d\t#%d\n",
+	    rgbp[i * 3], rgbp[i * 3 + 1], rgbp[i * 3 + 2], i);
     }
 
     free(rgbp);
@@ -1574,17 +1609,17 @@ int ConvertRgb(char* file,int rgbe)
 /**
 **	Decode a minitile into the image.
 */
-void DecodeMiniTile(unsigned char* image,int ix,int iy,int iadd
-	,unsigned char* mini,int index,int flipx,int flipy)
+void DecodeMiniTile(unsigned char* image, int ix, int iy, int iadd,
+    unsigned char* mini,int index, int flipx, int flipy)
 {
     int x;
     int y;
 
     DebugLevel3Fn("index %d\n" _C_ index);
-    for( y=0; y<8; ++y ) {
-	for( x=0; x<8; ++x ) {
-	    image[(y+iy*8)*iadd+ix*8+x]=mini[index+
-		(flipy ? (8-y) : y)*8+(flipx ? (8-x) : x)];
+    for (y = 0; y < 8; ++y) {
+	for (x = 0; x < 8; ++x) {
+	    image[(y + iy * 8) * iadd + ix * 8 + x] = mini[index +
+		(flipy ? (8 - y) : y) * 8 + (flipx ? (8 - x) : x)];
 	}
     }
 }
@@ -1611,70 +1646,75 @@ int ConvertTileset(char* file,int index)
     char buf[1024];
     int pale;
 
-    pale=index+1;
-    palp=ExtractEntry(ArchiveOffsets[pale],&len);
-    if( !palp ) {
+    pale = index + 1;
+    palp = ExtractEntry(ArchiveOffsets[pale], &len);
+    if (!palp) {
 	return 0;
     }
-    if( len<768 ) {
-	palp=realloc(palp,768);
-	memset(palp+len,0,768-len);
+    if (len < 768) {
+	palp = realloc(palp, 768);
+	memset(palp + len, 0, 768 - len);
     }
-    if( pale==191 || pale==194 || pale==197 ) {
+    if (pale == 191 || pale == 194 || pale == 197) {
 	unsigned char* gpalp;
 	int i;
-	gpalp=ExtractEntry(ArchiveOffsets[217],NULL);
-	for( i=0; i<128; ++i ) {
-	    if( palp[i*3+0]==63 && palp[i*3+1]==0 && palp[i*3+2]==63 ) {
-		palp[i*3+0]=gpalp[i*3+0];
-		palp[i*3+1]=gpalp[i*3+1];
-		palp[i*3+2]=gpalp[i*3+2];
+	gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+	for (i = 0; i < 128; ++i) {
+	    if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
+		    palp[i * 3 + 2] == 63) {
+		palp[i * 3 + 0] = gpalp[i * 3 + 0];
+		palp[i * 3 + 1] = gpalp[i * 3 + 1];
+		palp[i * 3 + 2] = gpalp[i * 3 + 2];
 	    }
 	}
-	for( i=128; i<256; ++i ) {
-	    if( !(gpalp[i*3+0]==63 && gpalp[i*3+1]==0 && gpalp[i*3+2]==63) ) {
-		palp[i*3+0]=gpalp[i*3+0];
-		palp[i*3+1]=gpalp[i*3+1];
-		palp[i*3+2]=gpalp[i*3+2];
+	for (i = 128; i < 256; ++i) {
+	    if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
+		    gpalp[i * 3 + 2] == 63)) {
+		palp[i * 3 + 0] = gpalp[i * 3 + 0];
+		palp[i * 3 + 1] = gpalp[i * 3 + 1];
+		palp[i * 3 + 2] = gpalp[i * 3 + 2];
 	    }
 	}
 	free(gpalp);
     }
-    mini=ExtractEntry(ArchiveOffsets[index],NULL);
-    if( !mini ) {
+    mini = ExtractEntry(ArchiveOffsets[index], NULL);
+    if (!mini) {
 	free(palp);
 	return 0;
     }
-    mega=ExtractEntry(ArchiveOffsets[index-1],&msize);
-    if( !mega ) {
+    mega = ExtractEntry(ArchiveOffsets[index - 1], &msize);
+    if (!mega) {
 	free(palp);
 	free(mini);
 	return 0;
     }
-    numtiles=msize/8;
+    numtiles = msize / 8;
 
-    width=TILE_PER_ROW*16;
-    height=((numtiles+TILE_PER_ROW-1)/TILE_PER_ROW)*16;
-    image=malloc(height*width);
-    memset(image,0,height*width);
+    width = TILE_PER_ROW * 16;
+    height = ((numtiles + TILE_PER_ROW - 1) / TILE_PER_ROW) * 16;
+    image = malloc(height * width);
+    memset(image, 0, height * width);
 
-    for( i=0; i<numtiles; ++i ) {
-	mp=(const unsigned short*)(mega+i*8);
-	for( y=0; y<2; ++y ) {
-	    for( x=0; x<2; ++x ) {
-		offset=ConvertLE16(mp[x+y*2]);
-		DecodeMiniTile(image
-		    ,x+((i%TILE_PER_ROW)*2),y+(i/TILE_PER_ROW)*2,width
-		    ,mini,(offset&0xFFFC)<<1,offset&2,offset&1);
+    for (i = 0; i < numtiles; ++i) {
+	mp = (const unsigned short*)(mega + i * 8);
+	for (y = 0; y < 2; ++y) {
+	    for (x = 0; x < 2; ++x) {
+		offset = ConvertLE16(mp[x + y * 2]);
+		DecodeMiniTile(image,
+		    x + ((i % TILE_PER_ROW) * 2), y + (i / TILE_PER_ROW) * 2,
+		    width, mini, (offset & 0xFFFC) << 1, offset & 2, offset & 1);
 	    }
 	}
     }
 
     ConvertPalette(palp);
 
-    sprintf(buf,"%s/%s/%s.png",Dir,TILESET_PATH,file);
+    sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
     CheckPath(buf);
-    SavePNG(buf,image,width,height,palp);
+    ResizeImage(&image, width, height, 2 * width, 2 * height);
+    width = 2 * width;
+    height = 2 * height;
+    SavePNG(buf, image, width, height, palp);
 
     free(palp);
     free(mini);
@@ -1690,8 +1730,8 @@ int ConvertTileset(char* file,int index)
 /**
 **	Decode a entry(frame) into image.
 */
-void DecodeGfuEntry(int index,unsigned char* start
-	,unsigned char* image,int iadd)
+void DecodeGfuEntry(int index, unsigned char* start,
+    unsigned char* image, int iadd)
 {
     unsigned char* bp;
     unsigned char* sp;
@@ -1703,33 +1743,33 @@ void DecodeGfuEntry(int index,unsigned char* start
     int height;
     int offset;
 
-    bp=start+index*8;
-    xoff=FetchByte(bp);
-    yoff=FetchByte(bp);
-    width=FetchByte(bp);
-    height=FetchByte(bp);
-    offset=FetchLE32(bp);
-    if( offset<0 ) {			// High bit of width
-	offset&=0x7FFFFFFF;
-	width+=256;
+    bp = start + index*8;
+    xoff = FetchByte(bp);
+    yoff = FetchByte(bp);
+    width = FetchByte(bp);
+    height = FetchByte(bp);
+    offset = FetchLE32(bp);
+    if (offset < 0) {			// High bit of width
+	offset &= 0x7FFFFFFF;
+	width += 256;
     }
 
-    DebugLevel3("%2d: +x %2d +y %2d width %2d height %2d offset %d\n"
-	_C_ index _C_ xoff _C_ yoff _C_ width _C_ height _C_ offset);
+    DebugLevel3("%2d: +x %2d +y %2d width %2d height %2d offset %d\n" _C_
+	index _C_ xoff _C_ yoff _C_ width _C_ height _C_ offset);
 
-    sp=start+offset-4;
-    dp=image+xoff+yoff*iadd;
-    for( i=0; i<height; ++i ) {
-	memcpy(dp,sp,width);
-	dp+=iadd;
-	sp+=width;
+    sp = start + offset - 4;
+    dp = image + xoff + yoff * iadd;
+    for (i = 0; i < height; ++i) {
+	memcpy(dp, sp, width);
+	dp += iadd;
+	sp += width;
     }
 }
 /**
 **	Convert graphics into image.
 */
-unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp
-	,unsigned char* bp2,int start2)
+unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
+    unsigned char* bp2,int start2)
 {
     int i;
     int count;
@@ -1740,45 +1780,45 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp
     int IPR;
 
     if (bp2) {	// Init pointer to 2nd animation
-	count=FetchLE16(bp2);
-	max_width=FetchByte(bp2);
-	max_height=FetchByte(bp2);
+	count = FetchLE16(bp2);
+	max_width = FetchByte(bp2);
+	max_height = FetchByte(bp2);
     }
-    count=FetchLE16(bp);
-    max_width=FetchByte(bp);
-    max_height=FetchByte(bp);
+    count = FetchLE16(bp);
+    max_width = FetchByte(bp);
+    max_height = FetchByte(bp);
 
 
-    DebugLevel3("Entries %2d Max width %3d height %3d, " _C_ count
-	    _C_ max_width _C_ max_height);
+    DebugLevel3("Entries %2d Max width %3d height %3d, " _C_ count _C_
+	max_width _C_ max_height);
 
-    if( count%5==0 ) {
-	IPR=5;
-	length=((count+IPR-1)/IPR)*IPR;
+    if (count % 5 == 0) {
+	IPR = 5;
+	length = ((count + IPR - 1) / IPR) * IPR;
     } else {
-	IPR=1;
-	length=count;
+	IPR = 1;
+	length = count;
     }
 
-    image=malloc(max_width*max_height*length);
+    image = malloc(max_width * max_height * length);
 
     //	Image:	0, 1, 2, 3, 4,
     //		5, 6, 7, 8, 9, ...
-    if( !image ) {
+    if (!image) {
 	printf("Can't allocate image\n");
 	exit(-1);
     }
     // Set all to transparent.
-    memset(image,255,max_width*max_height*length);
+    memset(image, 255, max_width * max_height * length);
 
-    for( i=0; i<count; ++i ) {
-	DecodeGfuEntry(i,bp
-	    ,image+max_width*(i%IPR)+max_height*max_width*IPR*(i/IPR)
-	    ,max_width*IPR);
+    for (i = 0; i < count; ++i) {
+	DecodeGfuEntry(i, bp,
+	    image + max_width * (i % IPR) + max_height * max_width * IPR * (i / IPR),
+	    max_width * IPR);
     }
 
-    *wp=max_width*IPR;
-    *hp=max_height*(length/IPR);
+    *wp = max_width * IPR;
+    *hp = max_height * (length / IPR);
 
     return image;
 }
@@ -1786,7 +1826,7 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp
 /**
 **	Convert a uncompressed graphic to my format.
 */
-int ConvertGfu(char* file,int pale,int gfue)
+int ConvertGfu(char* file, int pale, int gfue)
 {
     unsigned char* palp;
     unsigned char* gfup;
@@ -1796,49 +1836,54 @@ int ConvertGfu(char* file,int pale,int gfue)
     char buf[1024];
     int len;
 
-    palp=ExtractEntry(ArchiveOffsets[pale],&len);
-    if( !palp ) {
+    palp = ExtractEntry(ArchiveOffsets[pale], &len);
+    if (!palp) {
 	return 0;
     }
-    if( len<768 ) {
-	palp=realloc(palp,768);
-	memset(palp+len,0,768-len);
+    if (len < 768) {
+	palp = realloc(palp, 768);
+	memset(palp + len, 0, 768 - len);
     }
-    if( pale==191 || pale==194 || pale==197 ) {
+    if (pale == 191 || pale == 194 || pale == 197) {
 	unsigned char* gpalp;
 	int i;
-	gpalp=ExtractEntry(ArchiveOffsets[217],NULL);
-	for( i=0; i<128; ++i ) {
-	    if( palp[i*3+0]==63 && palp[i*3+1]==0 && palp[i*3+2]==63 ) {
-		palp[i*3+0]=gpalp[i*3+0];
-		palp[i*3+1]=gpalp[i*3+1];
-		palp[i*3+2]=gpalp[i*3+2];
+	gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+	for (i = 0; i < 128; ++i) {
+	    if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
+		    palp[i * 3 + 2] == 63) {
+		palp[i * 3 + 0] = gpalp[i * 3 + 0];
+		palp[i * 3 + 1] = gpalp[i * 3 + 1];
+		palp[i * 3 + 2] = gpalp[i * 3 + 2];
 	    }
 	}
-	for( i=128; i<256; ++i ) {
-	    if( !(gpalp[i*3+0]==63 && gpalp[i*3+1]==0 && gpalp[i*3+2]==63) ) {
-		palp[i*3+0]=gpalp[i*3+0];
-		palp[i*3+1]=gpalp[i*3+1];
-		palp[i*3+2]=gpalp[i*3+2];
+	for (i = 128; i < 256; ++i) {
+	    if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
+		    gpalp[i * 3 + 2] == 63)) {
+		palp[i * 3 + 0] = gpalp[i * 3 + 0];
+		palp[i * 3 + 1] = gpalp[i * 3 + 1];
+		palp[i * 3 + 2] = gpalp[i * 3 + 2];
 	    }
 	}
 	free(gpalp);
     }
 
-    gfup=ExtractEntry(ArchiveOffsets[gfue],NULL);
-    if( !gfup ) {
+    gfup = ExtractEntry(ArchiveOffsets[gfue], NULL);
+    if (!gfup) {
 	free(palp);
 	return 0;
     }
 
-    image=ConvertGraphic(gfup,&w,&h,NULL,0);
+    image = ConvertGraphic(gfup, &w, &h, NULL, 0);
 
     free(gfup);
     ConvertPalette(palp);
 
-    sprintf(buf,"%s/%s/%s.png",Dir,UNIT_PATH,file);
+    sprintf(buf, "%s/%s/%s.png", Dir, UNIT_PATH, file);
     CheckPath(buf);
-    SavePNG(buf,image,w,h,palp);
+    ResizeImage(&image, w, h, 2 * w, 2 * h);
+    w = 2 * w;
+    h = 2 * h;
+    SavePNG(buf, image, w, h, palp);
 
     free(image);
     free(palp);
@@ -1860,68 +1905,34 @@ unsigned char* ConvertImg(unsigned char* bp,int *wp,int *hp)
     unsigned char* image;
     int i;
 
-    width=FetchLE16(bp);
-    height=FetchLE16(bp);
+    width = FetchLE16(bp);
+    height = FetchLE16(bp);
 
     DebugLevel3("Image: width %3d height %3d\n" _C_ width _C_ height);
 
-    image=malloc(width*height);
-    if( !image ) {
+    image = malloc(width * height);
+    if (!image) {
 	printf("Can't allocate image\n");
 	exit(-1);
     }
-    memcpy(image,bp,width*height);
+    memcpy(image, bp, width * height);
 
-    for( i=0; i<width*height; ++i ) {
-	if( image[i]==96 ) {
-	    image[i]=255;
+    for (i = 0; i < width * height; ++i) {
+	if (image[i] == 96) {
+	    image[i] = 255;
 	}
     }
 
-    *wp=width;
-    *hp=height;
+    *wp = width;
+    *hp = height;
 
     return image;
 }
 
 /**
-**	Resize an image
-**
-**	@param image	image data to be converted
-**	@param ow	old image width
-**	@param oh	old image height
-**	@param nw	new image width
-**	@param nh	new image height
-*/
-void ResizeImage(unsigned char** image,int ow,int oh,int nw,int nh)
-{
-    int i;
-    int j;
-    unsigned char *data;
-    int x;
-
-    if( ow==nw && nh==oh ) {
-	return;
-    }
-
-    data = (unsigned char*)malloc(nw*nh);
-    x=0;
-    for( i=0; i<nh; ++i ) {
-	for( j=0; j<nw; ++j ) {
-	    data[x] = ((unsigned char*)*image)[
-		(i*oh+nh/2)/nh*ow + (j*ow+nw/2)/nw];
-	    ++x;
-	}
-    }
-
-    free(*image);
-    *image=data;
-}
-
-/**
 **	Convert an image to my format.
 */
-int ConvertImage(char* file,int pale,int imge, int nw, int nh)
+int ConvertImage(char* file, int pale, int imge, int nw, int nh)
 {
     unsigned char* palp;
     unsigned char* imgp;
@@ -1931,55 +1942,61 @@ int ConvertImage(char* file,int pale,int imge, int nw, int nh)
     char buf[1024];
     int len;
 
-    palp=ExtractEntry(ArchiveOffsets[pale],&len);
-    if( !palp ) {
+    palp = ExtractEntry(ArchiveOffsets[pale], &len);
+    if (!palp) {
 	return 0;
     }
-    if( len<768 ) {
-	palp=realloc(palp,768);
-	memset(palp+len,0,768-len);
+    if (len < 768) {
+	palp = realloc(palp, 768);
+	memset(palp + len, 0, 768 - len);
     }
-    if( pale==191 || pale==194 || pale==197 ) {
+    if (pale == 191 || pale == 194 || pale == 197) {
 	unsigned char* gpalp;
 	int i;
-	gpalp=ExtractEntry(ArchiveOffsets[217],NULL);
-	for( i=0; i<128; ++i ) {
-	    if( palp[i*3+0]==63 && palp[i*3+1]==0 && palp[i*3+2]==63 ) {
-		palp[i*3+0]=gpalp[i*3+0];
-		palp[i*3+1]=gpalp[i*3+1];
-		palp[i*3+2]=gpalp[i*3+2];
+	gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+	for (i = 0; i < 128; ++i) {
+	    if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
+		    palp[i * 3 + 2] == 63) {
+		palp[i * 3 + 0] = gpalp[i * 3 + 0];
+		palp[i * 3 + 1] = gpalp[i * 3 + 1];
+		palp[i * 3 + 2] = gpalp[i * 3 + 2];
 	    }
 	}
-	for( i=128; i<256; ++i ) {
-	    if( !(gpalp[i*3+0]==63 && gpalp[i*3+1]==0 && gpalp[i*3+2]==63) ) {
-		palp[i*3+0]=gpalp[i*3+0];
-		palp[i*3+1]=gpalp[i*3+1];
-		palp[i*3+2]=gpalp[i*3+2];
+	for (i = 128; i < 256; ++i) {
+	    if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
+		    gpalp[i * 3 + 2] == 63)) {
+		palp[i * 3 + 0] = gpalp[i * 3 + 0];
+		palp[i * 3 + 1] = gpalp[i * 3 + 1];
+		palp[i * 3 + 2] = gpalp[i * 3 + 2];
 	    }
 	}
 	free(gpalp);
     }
 
-    imgp=ExtractEntry(ArchiveOffsets[imge],NULL);
-    if( !imgp ) {
+    imgp = ExtractEntry(ArchiveOffsets[imge], NULL);
+    if (!imgp) {
 	free(palp);
 	return 0;
     }
 
-    image=ConvertImg(imgp,&w,&h);
+    image = ConvertImg(imgp, &w, &h);
 
     free(imgp);
     ConvertPalette(palp);
 
-    sprintf(buf,"%s/%s/%s.png",Dir,GRAPHIC_PATH,file);
+    sprintf(buf, "%s/%s/%s.png", Dir, GRAPHIC_PATH, file);
     CheckPath(buf);
 
     // Only resize if parameters 3 and 4 are non-zero
     if (nw && nh) {
-	ResizeImage(&image,w,h,nw,nh);
-	w=nw; h=nh;
+	ResizeImage(&image, w, h, nw,nh);
+	w = nw;
+	h = nh;
     }
-    SavePNG(buf,image,w,h,palp);
+    ResizeImage(&image, w, h, 2 * w, 2 * h);
+    w = 2 * w;
+    h = 2 * h;
+    SavePNG(buf, image, w, h, palp);
 
     free(image);
     free(palp);
@@ -1994,7 +2011,7 @@ int ConvertImage(char* file,int pale,int imge, int nw, int nh)
 /**
 **	Convert cursor into image.
 */
-unsigned char* ConvertCur(unsigned char* bp,int *wp,int *hp)
+unsigned char* ConvertCur(unsigned char* bp,int* wp,int* hp)
 {
     int i;
     int hotx;
@@ -2003,25 +2020,25 @@ unsigned char* ConvertCur(unsigned char* bp,int *wp,int *hp)
     int height;
     unsigned char* image;
 
-    hotx=FetchLE16(bp);
-    hoty=FetchLE16(bp);
-    width=FetchLE16(bp);
-    height=FetchLE16(bp);
+    hotx = FetchLE16(bp);
+    hoty = FetchLE16(bp);
+    width = FetchLE16(bp);
+    height = FetchLE16(bp);
 
-    DebugLevel3("Cursor: hotx %d hoty %d width %d height %d\n"
-	    _C_ hotx _C_ hoty _C_ width _C_ height);
+    DebugLevel3("Cursor: hotx %d hoty %d width %d height %d\n" _C_
+	hotx _C_ hoty _C_ width _C_ height);
 
-    image=malloc(width*height);
-    if( !image ) {
+    image = malloc(width * height);
+    if (!image) {
 	printf("Can't allocate image\n");
 	exit(-1);
     }
-    for( i=0; i<width*height; ++i ) {
-	image[i]=bp[i] ? bp[i] : 255;
+    for (i = 0; i < width * height; ++i) {
+	image[i] = bp[i] ? bp[i] : 255;
     }
 
-    *wp=width;
-    *hp=height;
+    *wp = width;
+    *hp = height;
 
     return image;
 }
@@ -2029,7 +2046,7 @@ unsigned char* ConvertCur(unsigned char* bp,int *wp,int *hp)
 /**
 **	Convert a cursor to my format.
 */
-int ConvertCursor(char* file,int pale,int cure)
+int ConvertCursor(char* file, int pale, int cure)
 {
     unsigned char* palp;
     unsigned char* curp;
@@ -2038,29 +2055,32 @@ int ConvertCursor(char* file,int pale,int cure)
     int h;
     char buf[1024];
 
-    palp=ExtractEntry(ArchiveOffsets[pale],NULL);
-    if( !palp ) {
+    palp = ExtractEntry(ArchiveOffsets[pale], NULL);
+    if (!palp) {
 	return 0;
     }
-    curp=ExtractEntry(ArchiveOffsets[cure],NULL);
-    if( !curp ) {
-	if( pale!=27 && cure!=314 ) {
+    curp = ExtractEntry(ArchiveOffsets[cure], NULL);
+    if (!curp) {
+	if (pale != 27 && cure != 314) {
 	    free(palp);
 	}
 	return 0;
     }
 
-    image=ConvertCur(curp,&w,&h);
+    image = ConvertCur(curp, &w, &h);
 
     free(curp);
     ConvertPalette(palp);
 
-    sprintf(buf,"%s/%s/%s.png",Dir,CURSOR_PATH,file);
+    sprintf(buf, "%s/%s/%s.png", Dir, CURSOR_PATH, file);
     CheckPath(buf);
-    SavePNG(buf,image,w,h,palp);
+    ResizeImage(&image, w, h, 2 * w, 2 * h);
+    w = 2 * w;
+    h = 2 * h;
+    SavePNG(buf, image, w, h, palp);
 
     free(image);
-    if( pale!=27 && cure!=314 ) {
+    if (pale != 27 && cure != 314) {
 	free(palp);
     }
 
@@ -2074,34 +2094,34 @@ int ConvertCursor(char* file,int pale,int cure)
 /**
 **	Convert wav to my format.
 */
-int ConvertWav(char* file,int wave)
+int ConvertWav(char* file, int wave)
 {
     unsigned char* wavp;
     char buf[1024];
     gzFile gf;
     int l;
 
-    wavp=ExtractEntry(ArchiveOffsets[wave],&l);
-    if( !wavp ) {
+    wavp = ExtractEntry(ArchiveOffsets[wave], &l);
+    if (!wavp) {
 	return 0;
     }
 
-    if( strncmp(wavp,"RIFF",4) ) {
+    if (strncmp(wavp, "RIFF", 4)) {
 	printf("Not a wav file: %s\n", file);
 	free(wavp);
 	return 0;
     }
 
-    sprintf(buf,"%s/%s/%s.wav.gz",Dir,SOUND_PATH,file);
+    sprintf(buf, "%s/%s/%s.wav.gz", Dir, SOUND_PATH, file);
     CheckPath(buf);
-    gf=gzopen(buf,"wb9");
-    if( !gf ) {
+    gf = gzopen(buf, "wb9");
+    if (!gf) {
 	perror("");
-	printf("Can't open %s\n",buf);
+	printf("Can't open %s\n", buf);
 	exit(-1);
     }
-    if( l!=gzwrite(gf,wavp,l) ) {
-	printf("Can't write %d bytes\n",l);
+    if (l != gzwrite(gf, wavp, l)) {
+	printf("Can't write %d bytes\n", l);
     }
 
     free(wavp);
@@ -2132,44 +2152,44 @@ int ConvertVoc(char* file,int voce)
     int i;
     short s;
 
-    vocp=ExtractEntry(ArchiveOffsets[voce],&l);
-    if( !vocp ) {
+    vocp = ExtractEntry(ArchiveOffsets[voce], &l);
+    if (!vocp) {
 	return 0;
     }
 
-    p=vocp;
-    if( memcmp(vocp,"Creative Voice File",19) ) {
-	printf("Not a voc file: %s\n",file);
+    p = vocp;
+    if (memcmp(vocp, "Creative Voice File", 19)) {
+	printf("Not a voc file: %s\n", file);
 	free(vocp);
 	return 0;
     }
-    p+=19;
+    p += 19;
     ++p; // 0x1A
-    offset=FetchLE16(p);
-    i=FetchLE16(p); // Version
-    i=FetchLE16(p); // 1's comp of version
+    offset = FetchLE16(p);
+    i = FetchLE16(p); // Version
+    i = FetchLE16(p); // 1's comp of version
 
-    wavp=NULL;
-    wavlen=0;
-    w=0;
+    wavp = NULL;
+    wavlen = 0;
+    w = 0;
 
-    while( 1 ) {
-	type=FetchByte(p);
-	if( type==0 ) {
+    while (1) {
+	type = FetchByte(p);
+	if (type == 0) {
 	    break;
 	}
-	a=FetchByte(p);
-	b=FetchByte(p);
-	c=FetchByte(p);
-	size=(c<<16)|(b<<8)|a;
-	switch( type ) {
+	a = FetchByte(p);
+	b = FetchByte(p);
+	c = FetchByte(p);
+	size = (c << 16) | (b << 8) | a;
+	switch (type) {
 	    case 1:
-		sample_rate=FetchByte(p);
-		compression_type=FetchByte(p);
-		wavlen+=size-2;
-		wavp=realloc(wavp,wavlen);
-		for( i=size-2; i; --i ) {
-		    wavp[w++]=FetchByte(p);
+		sample_rate = FetchByte(p);
+		compression_type = FetchByte(p);
+		wavlen += size - 2;
+		wavp = realloc(wavp, wavlen);
+		for (i = size - 2; i; --i) {
+		    wavp[w++] = FetchByte(p);
 		}
 		break;
 	    default:
@@ -2178,35 +2198,35 @@ int ConvertVoc(char* file,int voce)
 	}
     }
 
-    sprintf(buf,"%s/%s/%s.wav.gz",Dir,SOUND_PATH,file);
+    sprintf(buf, "%s/%s/%s.wav.gz", Dir, SOUND_PATH, file);
     CheckPath(buf);
-    gf=gzopen(buf,"wb9");
-    if( !gf ) {
+    gf = gzopen(buf, "wb9");
+    if (!gf) {
 	perror("");
-	printf("Can't open %s\n",buf);
+	printf("Can't open %s\n", buf);
 	exit(-1);
     }
-    gzprintf(gf,"RIFF");
-    i=wavlen+36;
-    gzwrite(gf,&i,4);
-    gzprintf(gf,"WAVE");
-    gzprintf(gf,"fmt ");
-    i=16;
-    gzwrite(gf,&i,4);
-    s=1;
-    gzwrite(gf,&s,2); // format
-    gzwrite(gf,&s,2); // channels
-    i=11025;
-    gzwrite(gf,&i,4); // samples per sec
-    gzwrite(gf,&i,4); // avg bytes per sec
-    s=1;
-    gzwrite(gf,&s,2); // block alignment
-    s=8;
-    gzwrite(gf,&s,2); // sample size
-    gzprintf(gf,"data");
-    i=wavlen;
-    gzwrite(gf,&i,4);
-    gzwrite(gf,wavp,wavlen);
+    gzprintf(gf, "RIFF");
+    i = wavlen + 36;
+    gzwrite(gf, &i, 4);
+    gzprintf(gf, "WAVE");
+    gzprintf(gf, "fmt ");
+    i = 16;
+    gzwrite(gf, &i, 4);
+    s = 1;
+    gzwrite(gf, &s, 2); // format
+    gzwrite(gf, &s, 2); // channels
+    i = 11025;
+    gzwrite(gf, &i, 4); // samples per sec
+    gzwrite(gf, &i, 4); // avg bytes per sec
+    s = 1;
+    gzwrite(gf, &s, 2); // block alignment
+    s = 8;
+    gzwrite(gf, &s, 2); // sample size
+    gzprintf(gf, "data");
+    i = wavlen;
+    gzwrite(gf, &i, 4);
+    gzwrite(gf, wavp, wavlen);
 
     free(vocp);
 
@@ -2228,21 +2248,21 @@ int ConvertVideo(char* file,int video)
     FILE* gf;
     size_t l;
 
-    vidp=ExtractEntry(ArchiveOffsets[video],&l);
-    if( !vidp ) {
+    vidp = ExtractEntry(ArchiveOffsets[video], &l);
+    if (!vidp) {
 	return 0;
     }
 
-    sprintf(buf,"%s/%s.smk",Dir,file);
+    sprintf(buf, "%s/%s.smk", Dir, file);
     CheckPath(buf);
-    gf=fopen(buf,"wb");
-    if( !gf ) {
+    gf = fopen(buf,"wb");
+    if (!gf) {
 	perror("");
-	printf("Can't open %s\n",buf);
+	printf("Can't open %s\n", buf);
 	exit(-1);
     }
-    if( l!=fwrite(vidp,1,l,gf) ) {
-	printf("Can't write %d bytes\n",l);
+    if (l != fwrite(vidp, 1, l, gf)) {
+	printf("Can't write %d bytes\n", l);
     }
 
     free(vidp);
@@ -2258,27 +2278,27 @@ int ConvertVideo(char* file,int video)
 /**
 **	Convert text to my format.
 */
-int ConvertText(char* file,int txte,int ofs)
+int ConvertText(char* file, int txte, int ofs)
 {
     unsigned char* txtp;
     char buf[1024];
     gzFile gf;
     int l;
 
-    txtp=ExtractEntry(ArchiveOffsets[txte],&l);
-    if( !txtp ) {
+    txtp = ExtractEntry(ArchiveOffsets[txte], &l);
+    if (!txtp) {
 	return 0;
     }
-    sprintf(buf,"%s/%s/%s.txt.gz",Dir,TEXT_PATH,file);
+    sprintf(buf, "%s/%s/%s.txt.gz", Dir, TEXT_PATH, file);
     CheckPath(buf);
-    gf=gzopen(buf,"wb9");
-    if( !gf ) {
+    gf = gzopen(buf, "wb9");
+    if (!gf) {
 	perror("");
-	printf("Can't open %s\n",buf);
+	printf("Can't open %s\n", buf);
 	exit(-1);
     }
-    if( l-ofs!=gzwrite(gf,txtp+ofs,l-ofs) ) {
-	printf("Can't write %d bytes\n",l);
+    if (l - ofs != gzwrite(gf, txtp + ofs, l - ofs)) {
+	printf("Can't write %d bytes\n", l);
     }
 
     free(txtp);
@@ -2290,7 +2310,7 @@ int ConvertText(char* file,int txte,int ofs)
 /**
 **	Convert text to my format.
 */
-int ConvertText2(char* file,int txte)
+int ConvertText2(char* file, int txte)
 {
     unsigned char* txtp;
     char buf[1024];
@@ -2299,24 +2319,24 @@ int ConvertText2(char* file,int txte)
     unsigned char* t;
     unsigned char* p;
 
-    txtp=ExtractEntry(ArchiveOffsets[txte],&l);
-    if( !txtp ) {
+    txtp = ExtractEntry(ArchiveOffsets[txte], &l);
+    if (!txtp) {
 	return 0;
     }
 
-    sprintf(buf,"%s/%s/%s.txt.gz",Dir,TEXT_PATH,file);
+    sprintf(buf, "%s/%s/%s.txt.gz", Dir, TEXT_PATH, file);
     CheckPath(buf);
-    gf=gzopen(buf,"wb9");
-    if( !gf ) {
+    gf = gzopen(buf, "wb9");
+    if (!gf) {
 	perror("");
-	printf("Can't open %s\n",buf);
+	printf("Can't open %s\n", buf);
 	exit(-1);
     }
-    t=p=txtp+ConvertLE16(*(unsigned short*)(txtp+0x94));
-    while( *p ) {
+    t = p = txtp + ConvertLE16(*(unsigned short*)(txtp + 0x94));
+    while (*p) {
 	++p;
     }
-    gzwrite(gf,t,p-t+1);
+    gzwrite(gf, t, p - t + 1);
 
     free(txtp);
 
@@ -2336,31 +2356,31 @@ char* ParseString(char* input)
     int i;
     int f;
 
-    for( sp=input,dp=buf; *sp; ) {
-	if( *sp=='%' ) {
-	    f=0;
-	    if( *++sp=='-' ) {
-		f=1;
+    for (sp = input, dp = buf; *sp;) {
+	if (*sp == '%') {
+	    f = 0;
+	    if (*++sp == '-') {
+		f = 1;
 		++sp;
 	    }
-	    i=strtol(sp,&sp,0);
-	    tp=UnitNames[i];
-	    if( f ) {
-		tp=strchr(tp,' ')+1;
+	    i = strtol(sp, &sp, 0);
+	    tp = UnitNames[i];
+	    if (f) {
+		tp = strchr(tp, ' ') + 1;
 	    }
-	    while( *tp ) {	// make them readabler
-		if( *tp=='-' ) {
-		    *dp++='_';
+	    while (*tp) {	// make them readabler
+		if (*tp == '-') {
+		    *dp++ = '_';
 		    tp++;
 		} else {
-		    *dp++=tolower(*tp++);
+		    *dp++ = tolower(*tp++);
 		}
 	    }
 	    continue;
 	}
-	*dp++=*sp++;
+	*dp++ = *sp++;
     }
-    *dp='\0';
+    *dp = '\0';
 
     return buf;
 }
@@ -2375,33 +2395,33 @@ local void CmSavePlayers(gzFile f)
 {
     int i;
 
-    for( i=0; i<16; ++i ) {
-	gzprintf(f,"(player %d\n",i);
-	gzprintf(f,"  'name \"Player %d\"\n",i);
-	if( i==0 ) {
-	    gzprintf(f,"  'type 'person 'race \"human\" 'ai 0\n");
-	    gzprintf(f,"  'team 2 'enemy \"_X______________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
-	} else if( i==1 ) {
-	    gzprintf(f,"  'type 'computer 'race \"orc\" 'ai 0\n");
-	    gzprintf(f,"  'team 2 'enemy \"X_______________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
-	} else if( i==15 ) {
-	    gzprintf(f,"  'type 'neutral 'race \"neutral\" 'ai 0\n");
-	    gzprintf(f,"  'team 2 'enemy \"________________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+    for (i = 0; i < 16; ++i) {
+	gzprintf(f, "(player %d\n", i);
+	gzprintf(f, "  'name \"Player %d\"\n", i);
+	if (i == 0) {
+	    gzprintf(f, "  'type 'person 'race \"human\" 'ai 0\n");
+	    gzprintf(f, "  'team 2 'enemy \"_X______________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+	} else if (i == 1) {
+	    gzprintf(f, "  'type 'computer 'race \"orc\" 'ai 0\n");
+	    gzprintf(f, "  'team 2 'enemy \"X_______________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+	} else if (i == 15) {
+	    gzprintf(f, "  'type 'neutral 'race \"neutral\" 'ai 0\n");
+	    gzprintf(f, "  'team 2 'enemy \"________________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
 	} else {
-	    gzprintf(f,"  'type 'nobody 'race \"human\" 'ai 0\n");
-	    gzprintf(f,"  'team 2 'enemy \"________________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+	    gzprintf(f, "  'type 'nobody 'race \"human\" 'ai 0\n");
+	    gzprintf(f, "  'team 2 'enemy \"________________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
 	}
-	gzprintf(f,"  'start '(0 0)\n");
-	gzprintf(f,"  'resources '(time 0 gold 1000 wood 1000 oil 0 ore 0 stone 0 coal 0)\n");
-	gzprintf(f,"  'incomes '(time 0 gold 100 wood 100 oil 0 ore 0 stone 0 coal 0)\n");
-	if( i!=1 ) {
-	    gzprintf(f,"  'ai-disabled\n");
+	gzprintf(f, "  'start '(0 0)\n");
+	gzprintf(f, "  'resources '(time 0 gold 1000 wood 1000 oil 0 ore 0 stone 0 coal 0)\n");
+	gzprintf(f, "  'incomes '(time 0 gold 100 wood 100 oil 0 ore 0 stone 0 coal 0)\n");
+	if (i != 1) {
+	    gzprintf(f, "  'ai-disabled\n");
 	} else {
-	    gzprintf(f,"  'ai-enabled\n");
+	    gzprintf(f, "  'ai-enabled\n");
 	}
-	gzprintf(f,")\n");
+	gzprintf(f, ")\n");
     }
-    gzprintf(f,"(set-this-player! 0)\n");
+    gzprintf(f, "(set-this-player! 0)\n");
 }
 
 /**
@@ -2410,7 +2430,7 @@ local void CmSavePlayers(gzFile f)
 **	@param f	File handle
 **	@param mtxme	Entry number of map.
 */
-local void CmSaveMap(gzFile f,int mtxme)
+local void CmSaveMap(gzFile f, int mtxme)
 {
     unsigned char* mtxm;
     unsigned char* p;
@@ -2418,36 +2438,36 @@ local void CmSaveMap(gzFile f,int mtxme)
     int i;
     int j;
 
-    mtxm=ExtractEntry(ArchiveOffsets[mtxme],NULL);
-    if( !mtxm ) {
+    mtxm = ExtractEntry(ArchiveOffsets[mtxme], NULL);
+    if (!mtxm) {
 	return;
     }
 
-    p=mtxm;
+    p = mtxm;
 
-    gzprintf(f,"(stratagus-map\n");
-    gzprintf(f,"  'the-map '(\n");
-    gzprintf(f,"  terrain (tileset-forest \"forest\")\n");
-    gzprintf(f,"  size (64 64)\n");
-    gzprintf(f,"  map-fields (\n");
+    gzprintf(f, "(stratagus-map\n");
+    gzprintf(f, "  'the-map '(\n");
+    gzprintf(f, "  terrain (tileset-forest \"forest\")\n");
+    gzprintf(f, "  size (64 64)\n");
+    gzprintf(f, "  map-fields (\n");
 
-    for( i=0; i<64; ++i ) {
-	gzprintf(f,"  ; %d\n",i);
-	for( j=0; j<64; ++j ) {
-	    if( !(j&1) ) {
-		gzprintf(f,"  ");
+    for (i = 0; i < 64; ++i) {
+	gzprintf(f, "  ; %d\n",i);
+	for (j = 0; j < 64; ++j) {
+	    if (!(j & 1)) {
+		gzprintf(f, "  ");
 	    } else {
-		gzprintf(f,"\t");
+		gzprintf(f, "\t");
 	    }
-	    s=FetchLE16(p);
-	    gzprintf(f,"(%d land)",s);
-	    if( j&1 ) {
-		gzprintf(f,"\n");
+	    s = FetchLE16(p);
+	    gzprintf(f, "(%d land)", s);
+	    if (j & 1) {
+		gzprintf(f, "\n");
 	    }
 	}
     }
 
-    gzprintf(f,")))\n");
+    gzprintf(f, ")))\n");
 
     free(mtxm);
 }
@@ -2494,7 +2514,7 @@ char *UnitTypes[] = {
 **
 **	@param f	File handle
 */
-local void CmSaveUnits(gzFile f,unsigned char* txtp)
+local void CmSaveUnits(gzFile f, unsigned char* txtp)
 {
     unsigned char* p;
     unsigned char* p2;
@@ -2506,58 +2526,58 @@ local void CmSaveUnits(gzFile f,unsigned char* txtp)
     int i;
     int numunits;
 
-    p=txtp;
-    while( p[0]!=0xFF || p[1]!=0xFF || p[2]!=0xFF || p[3]!=0xFF ) {
+    p = txtp;
+    while (p[0] != 0xFF || p[1] != 0xFF || p[2] != 0xFF || p[3] != 0xFF) {
 	++p;
     }
-    p+=4;
-    while( p[0]!=0xFF || p[1]!=0xFF || p[2]!=0xFF || p[3]!=0xFF ) {
+    p += 4;
+    while (p[0] != 0xFF || p[1] != 0xFF || p[2] != 0xFF || p[3] != 0xFF) {
 	++p;
     }
-    p+=4;
-    x=FetchLE16(p);
-    p=txtp+x;
+    p += 4;
+    x = FetchLE16(p);
+    p = txtp + x;
 
-    numunits=0;
-    p2=p;
-    while( p2[0]!=0xFF || p2[1]!=0xFF ) {
-	x=FetchByte(p2)/2;
-	y=FetchByte(p2)/2;
-	type=FetchByte(p2);
-	player=FetchByte(p2);
-	if( type==0x32 ) {
+    numunits = 0;
+    p2 = p;
+    while (p2[0] != 0xFF || p2[1] != 0xFF) {
+	x = FetchByte(p2) / 2;
+	y = FetchByte(p2) / 2;
+	type = FetchByte(p2);
+	player = FetchByte(p2);
+	if (type == 0x32) {
 	    // gold mine
-	    value=FetchByte(p2);
-	    value=FetchByte(p2)*250;
+	    value = FetchByte(p2);
+	    value = FetchByte(p2) * 250;
 	}
 	++numunits;
     }
 
-    gzprintf(f,"(slot-usage '(0 - %d))\n",numunits-1);
+    gzprintf(f, "(slot-usage '(0 - %d))\n", numunits - 1);
 
-    i=0;
-    while( p[0]!=0xFF || p[1]!=0xFF ) {
-	x=FetchByte(p)/2;
-	y=FetchByte(p)/2;
-	type=FetchByte(p);
-	player=FetchByte(p);
-	if( player==4 ) {
-	    player=15;
+    i = 0;
+    while (p[0] != 0xFF || p[1] != 0xFF) {
+	x = FetchByte(p) / 2;
+	y = FetchByte(p) / 2;
+	type = FetchByte(p);
+	player = FetchByte(p);
+	if (player == 4) {
+	    player = 15;
 	}
-	if( type==0x32 ) {
+	if (type == 0x32) {
 	    // gold mine
-	    value=FetchByte(p);
-	    value=FetchByte(p)*250;
+	    value = FetchByte(p);
+	    value = FetchByte(p) * 250;
 	} else {
-	    value=0;
+	    value = 0;
 	}
 
-	gzprintf(f,"(unit %d 'type '%s 'player %d\n",i,UnitTypes[type],player);
-	gzprintf(f,"  'tile '(%d %d)\n",x,y);
-	if( value ) {
-	    gzprintf(f,"  'value %d\n",value);
+	gzprintf(f, "(unit %d 'type '%s 'player %d\n", i, UnitTypes[type], player);
+	gzprintf(f, "  'tile '(%d %d)\n", x, y);
+	if (value) {
+	    gzprintf(f, "  'value %d\n", value);
 	}
-	gzprintf(f,")\n");
+	gzprintf(f, ")\n");
 	++i;
     }
 }
@@ -2565,28 +2585,28 @@ local void CmSaveUnits(gzFile f,unsigned char* txtp)
 /**
 **	Convert a map to cm.
 */
-int ConvertCm(const char* file,int txte,int mtxme)
+int ConvertCm(const char* file, int txte, int mtxme)
 {
     unsigned char* txtp;
     unsigned char buf[1024];
     gzFile f;
 
-    txtp=ExtractEntry(ArchiveOffsets[txte],NULL);
-    if( !txtp ) {
+    txtp = ExtractEntry(ArchiveOffsets[txte], NULL);
+    if (!txtp) {
 	return 0;
     }
-    sprintf(buf,"%s/%s/%s.cm.gz",Dir,CM_PATH,file);
+    sprintf(buf, "%s/%s/%s.cm.gz", Dir, CM_PATH, file);
     CheckPath(buf);
-    f=gzopen(buf,"wb9");
-    if( !f ) {
+    f = gzopen(buf, "wb9");
+    if (!f) {
 	perror("");
-	fprintf(stderr,"Can't open %s\n",buf);
+	fprintf(stderr, "Can't open %s\n", buf);
 	exit(-1);
     }
 
     CmSavePlayers(f);
-    CmSaveMap(f,mtxme);
-    CmSaveUnits(f,txtp);
+    CmSaveMap(f, mtxme);
+    CmSaveUnits(f, txtp);
 
     free(txtp);
     gzclose(f);
@@ -2613,15 +2633,15 @@ destination-directory\tDirectory where the extracted files are placed.\n"
 **	Main
 */
 #undef main
-int main(int argc,char** argv)
+int main(int argc, char** argv)
 {
     unsigned u;
     char buf[1024];
     int a;
 
-    a=1;
-    while( argc>=2 ) {
-	if( !strcmp(argv[a],"-h") ) {
+    a = 1;
+    while (argc >= 2) {
+	if (!strcmp(argv[a], "-h")) {
 	    Usage(argv[0]);
 	    ++a;
 	    --argc;
@@ -2630,65 +2650,65 @@ int main(int argc,char** argv)
 	break;
     }
 
-    if( argc!=2 && argc!=3 ) {
+    if (argc != 2 && argc != 3) {
 	Usage(argv[0]);
 	exit(-1);
     }
 
-    ArchiveDir=argv[a];
-    if( argc==3 ) {
-	Dir=argv[a+1];
+    ArchiveDir = argv[a];
+    if (argc == 3) {
+	Dir = argv[a + 1];
     } else {
-	Dir="data";
+	Dir = "data";
     }
 
     DebugLevel2("Extract from \"%s\" to \"%s\"\n" _C_ ArchiveDir _C_ Dir);
-    for( u=0; u<sizeof(Todo)/sizeof(*Todo); ++u ) {
+    for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 	// Should only be on the expansion cd
 	DebugLevel2("%s:\n" _C_ ParseString(Todo[u].File));
-	switch( Todo[u].Type ) {
+	switch (Todo[u].Type) {
 	    case F:
-		sprintf(buf,"%s/%s",ArchiveDir,Todo[u].File);
+		sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
 		DebugLevel2("Archive \"%s\"\n" _C_ buf);
-		if( ArchiveBuffer ) {
+		if (ArchiveBuffer) {
 		    CloseArchive();
 		}
-		OpenArchive(buf,Todo[u].Arg1);
+		OpenArchive(buf, Todo[u].Arg1);
 		break;
 	    case FLC:
-		sprintf(buf,"%s/%s",ArchiveDir,Todo[u].File);
-		ConvertFLC(buf,Todo[u].File);
+		sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
+		ConvertFLC(buf, Todo[u].File);
 		break;
 	    case R:
-		ConvertRgb(Todo[u].File,Todo[u].Arg1);
+		ConvertRgb(Todo[u].File, Todo[u].Arg1);
 		break;
 	    case T:
-		ConvertTileset(Todo[u].File,Todo[u].Arg1);
+		ConvertTileset(Todo[u].File, Todo[u].Arg1);
 		break;
 	    case U:
-		ConvertGfu(Todo[u].File,Todo[u].Arg1,Todo[u].Arg2);
+		ConvertGfu(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 		break;
 	    case I:
-		ConvertImage(Todo[u].File,Todo[u].Arg1,Todo[u].Arg2,
-		    Todo[u].Arg3,Todo[u].Arg4);
+		ConvertImage(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2,
+		    Todo[u].Arg3, Todo[u].Arg4);
 		break;
 	    case C:
-		ConvertCursor(Todo[u].File,Todo[u].Arg1,Todo[u].Arg2);
+		ConvertCursor(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 		break;
 	    case W:
-		ConvertWav(Todo[u].File,Todo[u].Arg1);
+		ConvertWav(Todo[u].File, Todo[u].Arg1);
 		break;
 	    case VOC:
-		ConvertVoc(Todo[u].File,Todo[u].Arg1);
+		ConvertVoc(Todo[u].File, Todo[u].Arg1);
 		break;
 	    case X:
-		ConvertText(Todo[u].File,Todo[u].Arg1,Todo[u].Arg2);
+		ConvertText(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 		break;
 	    case X2:
-		ConvertText2(Todo[u].File,Todo[u].Arg1);
+		ConvertText2(Todo[u].File, Todo[u].Arg1);
 		break;
 	    case CM:
-		ConvertCm(Todo[u].File,Todo[u].Arg1,Todo[u].Arg2);
+		ConvertCm(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 		break;
 	    default:
 		break;
