@@ -558,7 +558,7 @@ DefineUnitType("unit-orc-start-location", { Name = "Orc Start Location",
     "attack", "orc-start-location-attack"} } )
 
 DefineUnitType("unit-orc-wall", { Name = "Wall",
-  Use = "unit-human-wall",
+  Files = {"tileset-forest", "neutral/wall.png"},
   Size = {32, 32},
   Animations = "animations-building", Icon = "icon-wall",
   Costs = {"time", 30, "gold", 20, "wood", 10},

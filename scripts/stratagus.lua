@@ -44,13 +44,38 @@ print("Stratagus default config file loading ...\n")
 --  and ~/.stratagus/gamename/preferences2.scripts
 
 --  Enter your default title screen.
+SetTitleScreens(
 --[[
-SetTitleScreens({
-  Image = "ui/stratagus.png",
-  Music = "music/default.mod"}
---  {"logo_stratagus.avi"}
-)
+  {Image = "ui/logo.png",
+   Music = "sounds/logo.wav",
+   Timeout = 3},
+  {Image = "videos/hintro1.mng",
+   Music = "sounds/intro_1.wav",
+   Iterations = 1},
+  {Image = "videos/hintro2.mng",
+   Music = "sounds/intro_2.wav",
+   Iterations = 10},
+  {Image = "videos/ointro1.mng",
+   Music = "sounds/intro_3.wav",
+   Iterations = 1},
+  {Image = "videos/ointro2.mng",
+   Iterations = 10},
+  {Image = "videos/ointro3.mng",
+   Music = "sounds/intro_door.wav",
+   Iterations = 1},
+  {Image = "videos/cave1.mng",
+   Music = "sounds/intro_4.wav",
+   Iterations = 1},
+  {Image = "videos/cave2.mng",
+   Iterations = 3},
+  {Image = "videos/cave3.mng",
+   Music = "sounds/intro_5.wav",
+   Iterations = 1},
 ]]
+  {Image = "videos/title.mng",
+   Iterations = 1}
+)
+
 
 --  Enter your menu music.
 SetMenuMusic("music/default.mod")
