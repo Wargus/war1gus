@@ -111,8 +111,9 @@ DefineUnitType("unit-destroyed-2x2-place", { Name = "Destroyed 2x2 Place",
   Sounds = {} } )
 
 DefineUnitType("unit-destroyed-3x3-place", { Name = "Destroyed 3x3 Place",
-  Use = "unit-destroyed-2x2-place",
-  Size = {96, 96},
+  Files = {"tileset-forest", "neutral/destroyed_site.png"},
+  Size = {64, 64},
+--  Size = {96, 96},
   Animations = "animations-destroyed-place", Icon = "icon-peasant",
   Speed = 0,
   HitPoints = 255,
@@ -127,8 +128,9 @@ DefineUnitType("unit-destroyed-3x3-place", { Name = "Destroyed 3x3 Place",
   Sounds = {} } )
 
 DefineUnitType("unit-destroyed-4x4-place", { Name = "Destroyed 4x4 Place",
-  Use = "unit-destroyed-2x2-place",
-  Size = {128, 128},
+  Files = {"tileset-forest", "neutral/destroyed_site.png"},
+  Size = {64, 64},
+--  Size = {128, 128},
   Animations = "animations-destroyed-place", Icon = "icon-peasant",
   Speed = 0,
   HitPoints = 255,
