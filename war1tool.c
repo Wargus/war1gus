@@ -605,47 +605,47 @@ Control Todo[] = {
 {W,0,"misc/fire_crackling",									 539 __},
 {W,0,"cannon",												 540 __},
 {W,0,"cannon2",												 541 __},
-{W,0,"intro_1",												 542 __},
-{W,0,"intro_2",												 543 __},
-{W,0,"intro_3",												 544 __},
-{W,0,"intro_4",												 545 __},
-{W,0,"intro_5",												 546 __},
-{W,0,"../campaigns/human/01_intro",							 547 __},
-{W,0,"../campaigns/human/02_intro",							 548 __},
-{W,0,"../campaigns/human/03_intro",							 549 __},
-{W,0,"../campaigns/human/04_intro",							 550 __},
-{W,0,"../campaigns/human/05_intro",							 551 __},
-{W,0,"../campaigns/human/06_intro",							 552 __},
-{W,0,"../campaigns/human/07_intro",							 553 __},
-{W,0,"../campaigns/human/08_intro",							 554 __},
-{W,0,"../campaigns/human/09_intro",							 555 __},
-{W,0,"../campaigns/human/10_intro",							 556 __},
-{W,0,"../campaigns/human/11_intro",							 557 __},
-{W,0,"../campaigns/human/12_intro",							 558 __},
-{W,0,"../campaigns/orc/01_intro",							 559 __},
-{W,0,"../campaigns/orc/02_intro",							 560 __},
-{W,0,"../campaigns/orc/03_intro",							 561 __},
-{W,0,"../campaigns/orc/04_intro",							 562 __},
-{W,0,"../campaigns/orc/05_intro",							 563 __},
-{W,0,"../campaigns/orc/06_intro",							 564 __},
-{W,0,"../campaigns/orc/07_intro",							 565 __},
-{W,0,"../campaigns/orc/08_intro",							 566 __},
-{W,0,"../campaigns/orc/09_intro",							 567 __},
-{W,0,"../campaigns/orc/10_intro",							 568 __},
-{W,0,"../campaigns/orc/11_intro",							 569 __},
-{W,0,"../campaigns/orc/12_intro",							 570 __},
-{W,0,"orc/victory_1",										 571 __},
-{W,0,"orc/victory_2",										 572 __},
-{W,0,"orc/victory_3",										 573 __},
-{W,0,"human/victory_1",										 574 __},
-{W,0,"human/victory_2",										 575 __},
-{W,0,"human/victory_3",										 576 __},
-{W,0,"human/defeat",										 577 __},
-{W,0,"orc/defeat",											 578 __},
-{W,0,"../campaigns/human/ending_1",							 579 __},
-{W,0,"../campaigns/human/ending_2",							 580 __},
-{W,0,"../campaigns/orc/ending_1",							 581 __},
-{W,0,"../campaigns/orc/ending_2",							 582 __},
+{W,0,"../campaigns/human/ending_1",							 542 __},
+{W,0,"../campaigns/human/ending_2",							 543 __},
+{W,0,"../campaigns/orc/ending_1",							 544 __},
+{W,0,"../campaigns/orc/ending_2",							 545 __},
+{W,0,"intro_1",												 546 __},
+{W,0,"intro_2",												 547 __},
+{W,0,"intro_3",												 548 __},
+{W,0,"intro_4",												 549 __},
+{W,0,"intro_5",												 550 __},
+{W,0,"../campaigns/human/01_intro",							 551 __},
+{W,0,"../campaigns/human/02_intro",							 552 __},
+{W,0,"../campaigns/human/03_intro",							 553 __},
+{W,0,"../campaigns/human/04_intro",							 554 __},
+{W,0,"../campaigns/human/05_intro",							 555 __},
+{W,0,"../campaigns/human/06_intro",							 556 __},
+{W,0,"../campaigns/human/07_intro",							 557 __},
+{W,0,"../campaigns/human/08_intro",							 558 __},
+{W,0,"../campaigns/human/09_intro",							 559 __},
+{W,0,"../campaigns/human/10_intro",							 560 __},
+{W,0,"../campaigns/human/11_intro",							 561 __},
+{W,0,"../campaigns/human/12_intro",							 562 __},
+{W,0,"../campaigns/orc/01_intro",							 563 __},
+{W,0,"../campaigns/orc/02_intro",							 564 __},
+{W,0,"../campaigns/orc/03_intro",							 565 __},
+{W,0,"../campaigns/orc/04_intro",							 566 __},
+{W,0,"../campaigns/orc/05_intro",							 567 __},
+{W,0,"../campaigns/orc/06_intro",							 568 __},
+{W,0,"../campaigns/orc/07_intro",							 569 __},
+{W,0,"../campaigns/orc/08_intro",							 570 __},
+{W,0,"../campaigns/orc/09_intro",							 571 __},
+{W,0,"../campaigns/orc/10_intro",							 572 __},
+{W,0,"../campaigns/orc/11_intro",							 573 __},
+{W,0,"../campaigns/orc/12_intro",							 574 __},
+{W,0,"human/defeat",										 575 __},
+{W,0,"orc/defeat",											 576 __},
+{W,0,"orc/victory_1",										 577 __},
+{W,0,"orc/victory_2",										 578 __},
+{W,0,"orc/victory_3",										 579 __},
+{W,0,"human/victory_1",										 580 __},
+{W,0,"human/victory_2",										 581 __},
+{W,0,"human/victory_3",										 582 __},
 
 #undef __
 #undef _2
@@ -915,7 +915,7 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 	flags = uncompressed_length >> 24;
 	uncompressed_length &= 0x00FFFFFF;
 
-	if (uncompressed_length + (cp-ArchiveBuffer) >= ArchiveLength) {
+	if (uncompressed_length + (cp - ArchiveBuffer) > ArchiveLength) {
 		printf("Entry goes past end of file\n");
 		return NULL;
 	}
@@ -1106,7 +1106,6 @@ void ConvertFLC_LC(unsigned char* buf)
 	unsigned char* p;
 	int lines;
 	int packets;
-	unsigned char x;
 	unsigned char* i;
 	int skip;
 	char type;
@@ -1119,9 +1118,8 @@ void ConvertFLC_LC(unsigned char* buf)
 	lines = FetchLE16(p);
 
 	for (; lines; --lines) {
-		x = FetchByte(p);
 		packets = FetchByte(p);
-		i = FLCImage + FLCWidth * skiplines + x;
+		i = FLCImage + FLCWidth * skiplines;
 		for (; packets; --packets) {
 			skip = FetchByte(p);
 			i += skip;
@@ -1130,7 +1128,7 @@ void ConvertFLC_LC(unsigned char* buf)
 				for (; type; --type) {
 					*i++ = FetchByte(p);
 				}
-			} else {
+			} else if (type < 0) {
 				packet = FetchByte(p);
 				for (; type; ++type) {
 					*i++ = packet;
