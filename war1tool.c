@@ -1853,6 +1853,7 @@ unsigned char* ConvertImg(unsigned char* bp,int *wp,int *hp)
     int width;
     int height;
     unsigned char* image;
+    int i;
 
     width=FetchLE16(bp);
     height=FetchLE16(bp);
@@ -1865,6 +1866,12 @@ unsigned char* ConvertImg(unsigned char* bp,int *wp,int *hp)
 	exit(-1);
     }
     memcpy(image,bp,width*height);
+
+    for( i=0; i<width*height; ++i ) {
+	if( image[i]==96 ) {
+	    image[i]=255;
+	}
+    }
 
     *wp=width;
     *hp=height;
