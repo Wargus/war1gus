@@ -82,18 +82,14 @@ local air_funcs = {
   function() return AiWaitForce(0) end,  -- wait until defense is ready
 
   function() return AiNeed(AiBlacksmith()) end,
-  function() return AiUpgradeTo(AiBetterCityCenter()) end,
   function() return AiSet(AiWorker(), 15) end,
   function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 3}) end,
-  function() return AiWait(AiBetterCityCenter()) end,
 
   function() return AiNeed(AiStables()) end,
   function() return AiNeed(AiTower()) end,
   function() return AiUpgradeTo(AiGuardTower()) end,
   function() return AiNeed(AiTower()) end,
   function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiUpgradeTo(AiBestCityCenter()) end,
-  function() return AiWait(AiBestCityCenter()) end,  -- need this for airport!
 
   function() return AiNeed(AiAirport()) end,
   function() return AiForce(2, {AiFlyer(), 1}) end,

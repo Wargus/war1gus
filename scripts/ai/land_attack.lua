@@ -104,8 +104,6 @@ local land_funcs = {
   function() return AiAttackWithForce(1) end,
 
   function() return AiSleep(500) end,
-  function() return AiUpgradeTo(AiBetterCityCenter()) end,
-  function() return AiWait(AiBetterCityCenter()) end,
 
   function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
   function() return AiWaitForce(1) end,
@@ -125,9 +123,7 @@ local land_funcs = {
   function() return AiNeed(AiTower()) end,
   function() return AiUpgradeTo(AiGuardTower()) end,
   function() return AiNeed(AiBarracks()) end,
-  function() return AiUpgradeTo(AiBestCityCenter()) end,
   function() return AiSet(AiWorker(), 19) end,
-  function() return AiWait(AiBestCityCenter()) end,
 
   function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1}) end,
   function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,

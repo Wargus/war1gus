@@ -129,14 +129,21 @@ icons = {
   {"icon-orc-stand-ground", 40},
   {"icon-human-attack-ground", 40},
   {"icon-orc-attack-ground", 40},
+
+  {"icon-holy-vision", 0},
+  {"icon-eye-of-kilrogg", 0},
+  {"icon-critter", 0},
+  {"icon-circle-of-power", 0},
+  {"icon-catapult", 0},
+  {"icon-human-wall", 41},
 }
 
 for i = 1,table.getn(icons) do
   DefineIcon({
     Name = icons[i][1],
-    Tileset = "tileset-summer",
+    Tileset = "tileset-forest",
     Size = {54, 38},
-    File = "tilesets/summer/portrait_icons.png",
+    File = "tilesets/forest/portrait_icons.png",
     Index = icons[i][2],})
 
   DefineIcon({

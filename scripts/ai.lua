@@ -50,85 +50,41 @@ race2 = "orc"
 --  * Race human.
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
---[[
+
 DefineAiHelper(
   --
   -- Unit can build which buildings.
   --
   {"build", "unit-peasant",
-  "unit-farm", "unit-human-barracks", "unit-town-hall", "unit-elven-lumber-mill",
-  "unit-human-blacksmith", "unit-human-watch-tower", "unit-human-wall",
-  "unit-human-shipyard", "unit-human-foundry", "unit-human-refinery",
-  "unit-inventor", "unit-stables", "unit-mage-tower", "unit-church",
-  "unit-gryphon-aviary"},
-  {"build", "unit-human-oil-tanker", "unit-human-oil-platform"},
+  "unit-human-farm", "unit-human-barracks", "unit-human-town-hall", "unit-human-lumber-mill",
+  "unit-human-blacksmith"},
   --
   -- Building can train which units.
   --
-  {"train", "unit-farm", "unit-critter"},
-  {"train", "unit-town-hall", "unit-peasant"},
-  {"train", "unit-keep", "unit-peasant"},
-  {"train", "unit-castle", "unit-peasant"},
+  {"train", "unit-human-farm", "unit-critter"},
+  {"train", "unit-human-town-hall", "unit-peasant"},
   {"train", "unit-human-barracks",
-  "unit-footman", "unit-archer", "unit-ranger", "unit-ballista", "unit-knight",
-  "unit-paladin"},
-  {"train", "unit-inventor",
-  "unit-balloon", "unit-dwarves"},
-  {"train", "unit-mage-tower", "unit-mage"},
-  {"train", "unit-gryphon-aviary", "unit-gryphon-rider"},
-  {"train", "unit-human-shipyard",
-  "unit-human-oil-tanker", "unit-human-destroyer", "unit-human-transport",
-  "unit-human-submarine", "unit-battleship"},
+  "unit-footman", "unit-archer"},
   --
   -- Building can upgrade which upgrades.
   --
-  {"upgrade", "unit-town-hall", "unit-keep"},
-  {"upgrade", "unit-keep", "unit-castle"},
-  {"upgrade", "unit-human-watch-tower",
-  "unit-human-guard-tower", "unit-human-cannon-tower"},
   --
   -- Building can research which spells or upgrades.
   --
-  {"research", "unit-human-blacksmith",
-  "upgrade-sword1", "upgrade-sword2",
-  "upgrade-human-shield1", "upgrade-human-shield2",
-  "upgrade-ballista1", "upgrade-ballista2"},
-  {"research", "unit-elven-lumber-mill",
-  "upgrade-arrow1", "upgrade-arrow2", "upgrade-ranger",
-  "upgrade-ranger-scouting", "upgrade-longbow", "upgrade-ranger-marksmanship"},
-  {"research", "unit-church",
-  "upgrade-paladin", "upgrade-healing", "upgrade-exorcism"},
-  {"research", "unit-mage-tower",
-  "upgrade-slow", "upgrade-flame-shield", "upgrade-invisibility",
-  "upgrade-polymorph", "upgrade-blizzard"},
-  {"research", "unit-human-foundry",
-  "upgrade-human-ship-cannon1", "upgrade-human-ship-cannon2",
-  "upgrade-human-ship-armor1", "upgrade-human-ship-armor2"},
   --
   -- Unit can repair which units.
   --
   {"repair", "unit-peasant",
-  "unit-farm", "unit-human-barracks", "unit-town-hall", "unit-keep", "unit-castle",
-  "unit-elven-lumber-mill", "unit-human-blacksmith", "unit-human-watch-tower",
-  "unit-human-guard-tower", "unit-human-cannon-tower", "unit-human-wall",
-  "unit-human-shipyard", "unit-human-foundry", "unit-human-refinery",
-  "unit-inventor", "unit-stables", "unit-mage-tower", "unit-church",
-  "unit-gryphon-aviary", "unit-human-transport"},
+  "unit-human-farm", "unit-human-barracks", "unit-human-town-hall",
+  "unit-human-lumber-mill", "unit-human-blacksmith"},
   --
   -- Reduce unit limits.
   --
-  {"unit-limit", "unit-farm", "food"},
+  {"unit-limit", "unit-human-farm", "food"}
   --
   -- Equivalence of units for the resource manager.
   --
-  {"unit-equiv", "unit-town-hall",
-  "unit-keep", "unit-castle"},
-  {"unit-equiv", "unit-keep",
-  "unit-castle"},
-  {"unit-equiv", "unit-archer",
-  "unit-ranger"},
-  {"unit-equiv", "unit-knight",
-  "unit-paladin"} )
+)
 
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 --  * Race orc.
@@ -139,111 +95,44 @@ DefineAiHelper(
   -- Unit can build which buildings.
   --
   {"build", "unit-peon",
-  "unit-pig-farm", "unit-orc-barracks", "unit-great-hall",
-  "unit-troll-lumber-mill", "unit-orc-blacksmith", "unit-orc-watch-tower",
-  "unit-orc-wall", "unit-orc-shipyard", "unit-orc-foundry", "unit-orc-refinery",
-  "unit-alchemist", "unit-ogre-mound", "unit-temple-of-the-damned",
-  "unit-altar-of-storms", "unit-dragon-roost"},
-  {"build", "unit-orc-oil-tanker", "unit-orc-oil-platform"},
+  "unit-orc-farm", "unit-orc-barracks", "unit-orc-town-hall",
+  "unit-orc-lumber-mill", "unit-orc-blacksmith"},
   --
   -- Building can train which units.
   --
-  {"train", "unit-pig-farm", "unit-critter"},
-  {"train", "unit-great-hall", "unit-peon"},
-  {"train", "unit-stronghold", "unit-peon"},
-  {"train", "unit-fortress", "unit-peon"},
+  {"train", "unit-orc-farm", "unit-critter"},
+  {"train", "unit-orc-town-hall", "unit-peon"},
   {"train", "unit-orc-barracks",
-  "unit-grunt", "unit-axethrower", "unit-berserker", "unit-catapult", "unit-ogre",
-  "unit-ogre-mage"},
-  {"train", "unit-alchemist",
-  "unit-zeppelin", "unit-goblin-sappers"},
-  {"train", "unit-temple-of-the-damned", "unit-death-knight"},
-  {"train", "unit-dragon-roost", "unit-dragon"},
-  {"train", "unit-orc-shipyard",
-  "unit-orc-oil-tanker", "unit-orc-destroyer", "unit-orc-transport",
-  "unit-orc-submarine", "unit-ogre-juggernaught"},
+  "unit-grunt", "unit-spearman"},
   --
   -- Building can upgrade which upgrades.
   --
-  {"upgrade", "unit-great-hall", "unit-stronghold"},
-  {"upgrade", "unit-stronghold", "unit-fortress"},
-  {"upgrade", "unit-orc-watch-tower",
-  "unit-orc-guard-tower", "unit-orc-cannon-tower"},
   --
   -- Building can research which spells or upgrades.
   --
-  {"research", "unit-orc-blacksmith",
-  "upgrade-battle-axe1", "upgrade-battle-axe2",
-  "upgrade-orc-shield1", "upgrade-orc-shield2",
-  "upgrade-catapult1", "upgrade-catapult2"},
-  {"research", "unit-troll-lumber-mill",
-  "upgrade-throwing-axe1", "upgrade-throwing-axe2", "upgrade-berserker",
-  "upgrade-berserker-scouting", "upgrade-light-axes",
-  "upgrade-berserker-regeneration"},
-  {"research", "unit-altar-of-storms",
-  "upgrade-ogre-mage", "upgrade-bloodlust", "upgrade-runes"},
-  {"research", "unit-temple-of-the-damned",
-  "upgrade-haste", "upgrade-raise-dead", "upgrade-whirlwind",
-  "upgrade-unholy-armor", "upgrade-death-and-decay"},
-  {"research", "unit-orc-foundry",
-  "upgrade-orc-ship-cannon1", "upgrade-orc-ship-cannon2",
-  "upgrade-orc-ship-armor1", "upgrade-orc-ship-armor2"},
   --
   -- Unit can build which units.
   --
   {"repair", "unit-peon",
-  "unit-pig-farm", "unit-orc-barracks", "unit-great-hall", "unit-stronghold",
-  "unit-fortress", "unit-troll-lumber-mill", "unit-orc-blacksmith",
-  "unit-orc-watch-tower", "unit-orc-guard-tower", "unit-orc-cannon-tower",
-  "unit-orc-wall", "unit-orc-shipyard", "unit-orc-foundry", "unit-orc-refinery",
-  "unit-alchemist", "unit-ogre-mound", "unit-temple-of-the-damned",
-  "unit-altar-of-storms", "unit-dragon-roost", "unit-orc-transport"},
+  "unit-orc-farm", "unit-orc-barracks", "unit-orc-town-hall",
+  "unit-orc-lumber-mill", "unit-orc-blacksmith"},
   --
   -- Reduce unit limits.
   --
-  {"unit-limit", "unit-pig-farm", "food"},
+  {"unit-limit", "unit-orc-farm", "food"}
   --
   -- Equivalence of units for the resource manager.
   --
-  {"unit-equiv", "unit-great-hall",
-  "unit-stronghold", "unit-fortress"},
-  {"unit-equiv", "unit-stronghold",
-  "unit-fortress"},
-  {"unit-equiv", "unit-axethrower",
-  "unit-berserker"},
-  {"unit-equiv", "unit-ogre",
-  "unit-ogre-mage"} )
-]]
+)
+
 --
 --  City-center of the current race.
 --
 function AiCityCenter()
   if (AiGetRace() == race1) then
-    return "unit-town-hall"
+    return "unit-human-town-hall"
   else
-    return "unit-great-hall"
-  end
-end
-
---
---  Better city-center of the current race.
---
-function AiBetterCityCenter()
-  if (AiGetRace() == race1) then
-    return "unit-keep"
-  else
-    return "unit-stronghold"
-  end
-end
-
---
---  Best city-center of the current race.
---
-function AiBestCityCenter()
-  if (AiGetRace() == race1) then
-    return "unit-castle"
-  else
-    return "unit-fortress"
+    return "unit-orc-town-hall"
   end
 end
 
@@ -263,9 +152,9 @@ end
 --
 function AiLumberMill()
   if (AiGetRace() == race1) then
-    return "unit-elven-lumber-mill"
+    return "unit-human-lumber-mill"
   else
-    return "unit-troll-lumber-mill"
+    return "unit-orc-lumber-mill"
   end
 end
 
