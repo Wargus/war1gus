@@ -244,7 +244,7 @@ DefineButton( { Pos = 5, Level = 0, Icon = "icon-harvest",
   Key = "h", Hint = "~!HARVEST LUMBER/MINE GOLD",
   ForUnit = {"unit-peasant"} } )
 
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-return-goods-peasant",
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-return-goods",
   Action = "return-goods",
   Key = "g", Hint = "RETURN WITH ~!GOODS",
   ForUnit = {"unit-peasant"} } )
@@ -258,7 +258,7 @@ DefineButton( { Pos = 7, Level = 0, Icon = "icon-build-basic",
 
 DefineButton( { Pos = 8, Level = 0, Icon = "icon-build-advanced",
   Action = "button", Value = 2,
-  Allowed = "check-units-or", AllowArg = {"unit-elven-lumber-mill", "unit-keep"},
+  Allowed = "check-units-or", AllowArg = {"unit-human-lumber-mill"},
   Key = "v", Hint = "BUILD AD~!VANCED STRUCTURE",
   ForUnit = {"unit-peasant"} } )
 
@@ -275,12 +275,12 @@ DefineButton( { Pos = 2, Level = 1, Icon = "icon-human-barracks",
   ForUnit = {"unit-peasant"} } )
 
 DefineButton( { Pos = 3, Level = 1, Icon = "icon-town-hall",
-  Action = "build", Value = "unit-town-hall",
+  Action = "build", Value = "unit-human-town-hall",
   Key = "h", Hint = "BUILD TOWN ~!HALL",
   ForUnit = {"unit-peasant"} } )
 
-DefineButton( { Pos = 4, Level = 1, Icon = "icon-elven-lumber-mill",
-  Action = "build", Value = "unit-elven-lumber-mill",
+DefineButton( { Pos = 4, Level = 1, Icon = "icon-human-lumber-mill",
+  Action = "build", Value = "unit-human-lumber-mill",
   Key = "l", Hint = "BUILD ELVEN ~!LUMBER MILL",
   ForUnit = {"unit-peasant"} } )
 
@@ -365,45 +365,33 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-peasant",
   Action = "train-unit", Value = "unit-peasant",
   Allowed = "check-no-research",
   Key = "p", Hint = "TRAIN ~!PEASANT",
-  ForUnit = {"unit-town-hall", "unit-keep", "unit-castle"} } )
+  ForUnit = {"unit-human-town-hall"} } )
 
 -- town hall upgrades ---------------------------------------------------------
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-keep",
-  Action = "upgrade-to", Value = "unit-keep",
-  Allowed = "check-upgrade-to",
-  Key = "k", Hint = "UPGRADE TO ~!KEEP",
-  ForUnit = {"unit-town-hall"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-castle-upgrade",
-  Action = "upgrade-to", Value = "unit-castle",
-  Allowed = "check-upgrade-to",
-  Key = "c", Hint = "UPGRADE TO ~!CASTLE",
-  ForUnit = {"unit-keep"} } )
 
 if (extensions) then
 do
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-harvest",
   Action = "harvest",
   Key = "h", Hint = "SET ~!HARVEST LUMBER/MINE GOLD",
-  ForUnit = {"unit-town-hall", "unit-keep", "unit-castle"} } )
+  ForUnit = {"unit-human-town-hall"} } )
 
 DefineButton( { Pos = 7, Level = 0, Icon = "icon-move-peasant",
   Action = "move",
   Key = "m", Hint = "SET ~!MOVE",
-  ForUnit = {"unit-town-hall", "unit-keep", "unit-castle", "unit-human-barracks",
+  ForUnit = {"unit-human-town-hall", "unit-human-barracks",
     "unit-mage-tower", "unit-gryphon-aviary", "unit-inventor"} } )
 
 DefineButton( { Pos = 8, Level = 0, Icon = "icon-human-shield1",
   Action = "stop",
   Key = "z", Hint = "SET ~!ZTOP",
-  ForUnit = {"unit-town-hall", "unit-keep", "unit-castle", "unit-human-barracks",
+  ForUnit = {"unit-human-town-hall", "unit-human-barracks",
     "unit-mage-tower", "unit-gryphon-aviary", "unit-inventor"} } )
 
 DefineButton( { Pos = 9, Level = 0, Icon = "icon-sword1",
   Action = "attack",
   Key = "e", Hint = "S~!ET ATTACK",
-  ForUnit = {"unit-town-hall", "unit-keep", "unit-castle", "unit-human-barracks",
+  ForUnit = {"unit-human-town-hall", "unit-human-barracks",
     "unit-mage-tower", "unit-gryphon-aviary", "unit-inventor"} } )
 end
 end
@@ -621,37 +609,37 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow2",
   Action = "research", Value = "upgrade-arrow1",
   Allowed = "check-single-research",
   Key = "u", Hint = "~!UPGRADE ARROWS (Damage +1)",
-  ForUnit = {"unit-elven-lumber-mill"} } )
+  ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow3",
   Action = "research", Value = "upgrade-arrow2",
   Allowed = "check-single-research",
   Key = "u", Hint = "~!UPGRADE ARROWS (Damage +1)",
-  ForUnit = {"unit-elven-lumber-mill"} } )
+  ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-ranger",
   Action = "research", Value = "upgrade-ranger",
   Allowed = "check-single-research",
   Key = "r", Hint = "ELVEN ~!RANGER TRAINING",
-  ForUnit = {"unit-elven-lumber-mill"} } )
+  ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-ranger-scouting",
   Action = "research", Value = "upgrade-ranger-scouting",
   Allowed = "check-single-research",
   Key = "s", Hint = "RANGER ~!SCOUTING (Sight:9)",
-  ForUnit = {"unit-elven-lumber-mill"} } )
+  ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-longbow",
   Action = "research", Value = "upgrade-longbow",
   Allowed = "check-single-research",
   Key = "l", Hint = "RESEARCH ~!LONGBOW (Range +1)",
-  ForUnit = {"unit-elven-lumber-mill"} } )
+  ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-ranger-marksmanship",
   Action = "research", Value = "upgrade-ranger-marksmanship",
   Allowed = "check-single-research",
   Key = "m", Hint = "RANGER ~!MARKSMANSHIP (Damage +3)",
-  ForUnit = {"unit-elven-lumber-mill"} } )
+  ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-paladin",
   Action = "research", Value = "upgrade-paladin",
