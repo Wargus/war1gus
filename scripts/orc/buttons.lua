@@ -167,12 +167,6 @@ DefineButton( { Pos = 9, Level = 0, Icon = "icon-orc-demolish",
 -- ogre-mage specific actions -------------------------------------------------
 
 --[[
-DefineButton( { Pos = 7, Level = 0, Icon = "icon-eye-of-kilrogg",
-  Action = "cast-spell", Value = "spell-eye-of-vision",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-eye-of-kilrogg"},
-  Key = "k", Hint = "EYE OF ~!KILROGG",
-  ForUnit = {"unit-ogre-mage", "unit-fad-man"} } )
-
 DefineButton( { Pos = 8, Level = 0, Icon = "icon-bloodlust",
   Action = "cast-spell", Value = "spell-bloodlust",
   Allowed = "check-upgrade", AllowArg = {"upgrade-bloodlust"},
@@ -189,12 +183,6 @@ DefineButton( { Pos = 9, Level = 0, Icon = "icon-runes",
 -- cho'gall specific actions --- same as ogre mage but it has them always -----
 
 --[[
-DefineButton( { Pos = 7, Level = 0, Icon = "icon-eye-of-kilrogg",
-  Action = "cast-spell", Value = "spell-eye-of-vision",
-  Allowed = "check-true",
-  Key = "k", Hint = "EYE OF ~!KILROGG",
-  ForUnit = {"unit-double-head"} } )
-
 DefineButton( { Pos = 8, Level = 0, Icon = "icon-bloodlust",
   Action = "cast-spell", Value = "spell-bloodlust",
   Allowed = "check-true",
