@@ -1,0 +1,123 @@
+--       _________ __                 __                               
+--      /   _____//  |_____________ _/  |______     ____  __ __  ______
+--      \_____  \\   __\_  __ \__  \\   __\__  \   / ___\|  |  \/  ___/
+--      /        \|  |  |  | \// __ \|  |  / __ \_/ /_/  >  |  /\___ \ 
+--     /_______  /|__|  |__|  (____  /__| (____  /\___  /|____//____  >
+--             \/                  \/          \//_____/            \/ 
+--  ______________________                           ______________________
+--                        T H E   W A R   B E G I N S
+--         Stratagus - A free fantasy real time strategy game engine
+--
+--      ui.lua - Define the user interface
+--
+--      (c) Copyright 2000-2004 by Lutz Sammer and Jimmy Salmon
+--
+--      This program is free software; you can redistribute it and/or modify
+--      it under the terms of the GNU General Public License as published by
+--      the Free Software Foundation; either version 2 of the License, or
+--      (at your option) any later version.
+--  
+--      This program is distributed in the hope that it will be useful,
+--      but WITHOUT ANY WARRANTY; without even the implied warranty of
+--      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--      GNU General Public License for more details.
+--  
+--      You should have received a copy of the GNU General Public License
+--      along with this program; if not, write to the Free Software
+--      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+--
+--      $Id$
+
+Load("scripts/human/ui.lua")
+Load("scripts/orc/ui.lua")
+
+DefineCursor({
+  Name = "cursor-point",
+  Race = "any",
+  File = "ui/cursors/arrow.png",
+  HotSpot = {0, 0},
+  Size = {14, 22}})
+DefineCursor({
+  Name = "cursor-glass",
+  Race = "any",
+  File = "ui/cursors/magnifying_glass.png",
+  HotSpot = {11, 11},
+  Size = {28, 28}})
+DefineCursor({
+  Name = "cursor-green-hair",
+  Race = "any",
+  File = "ui/cursors/small_green_crosshair.png",
+  HotSpot = {8, 8},
+  Size = {18, 18}})
+DefineCursor({
+  Name = "cursor-yellow-hair",
+  Race = "any",
+  File = "ui/cursors/yellow_crosshair.png",
+  HotSpot = {14, 10},
+  Size = {30, 22}})
+DefineCursor({
+  Name = "cursor-red-hair",
+  Race = "any",
+  File = "ui/cursors/red_crosshair.png",
+  HotSpot = {14, 10},
+  Size = {30, 22}})
+DefineCursor({
+  Name = "cursor-cross",
+  Race = "any",
+  File = "ui/cursors/small_green_crosshair.png",
+  HotSpot = { 8,  8},
+  Size = {18, 18}})
+DefineCursor({
+  Name = "cursor-scroll",
+  Race = "any",
+  File = "ui/cursors/cross.png",
+  HotSpot = {15, 15},
+  Size = {32, 32}})
+DefineCursor({
+  Name = "cursor-arrow-e",
+  Race = "any",
+  File = "ui/cursors/right_arrow.png",
+  HotSpot = {23, 10},
+  Size = {32, 32}})
+DefineCursor({
+  Name = "cursor-arrow-ne",
+  Race = "any",
+  File = "ui/cursors/upper_right_arrow.png",
+  HotSpot = {21,  2},
+  Size = {32, 32}})
+DefineCursor({
+  Name = "cursor-arrow-n",
+  Race = "any",
+  File = "ui/cursors/up_arrow.png",
+  HotSpot = {12,  2},
+  Size = {32, 32}})
+DefineCursor({
+  Name = "cursor-arrow-nw",
+  Race = "any",
+  File = "ui/cursors/upper_left_arrow.png",
+  HotSpot = { 2,  2},
+  Size = {32, 32}})
+DefineCursor({
+  Name = "cursor-arrow-w",
+  Race = "any",
+  File = "ui/cursors/left_arrow.png",
+  HotSpot = { 4, 10},
+  Size = {32, 32}})
+DefineCursor({
+  Name = "cursor-arrow-s",
+  Race = "any",
+  File = "ui/cursors/down_arrow.png",
+  HotSpot = {12, 23},
+  Size = {32, 32}})
+DefineCursor({
+  Name = "cursor-arrow-sw",
+  Race = "any",
+  File = "ui/cursors/lower_left_arrow.png",
+  HotSpot = { 2, 19},
+  Size = {32, 32}})
+DefineCursor({
+  Name = "cursor-arrow-se",
+  Race = "any",
+  File = "ui/cursors/lower_right_arrow.png",
+  HotSpot = {21, 19},
+  Size = {32, 32}})
