@@ -41,28 +41,32 @@ function OrcScreen(screen_width, screen_height)
     "reverse-font-color", "white",
 
     "filler", {
-      "file", "graphics/ui/orc/" ..
-        screen_width .. "x" .. screen_height ..
-        "/filler-right.png",
-      "pos", { screen_width - 16, 0}},
-
-    "resource-line", {
-      "graphics/ui/orc/" ..
-        screen_width .. "x" .. screen_height ..
-        "/resource.png",
-      176, 0},
+      File = "graphics/ui/orc/" ..  screen_width .. "x" .. screen_height .. "/filler-right.png",
+      Pos = { screen_width - 16, 0}},
+    "filler", {
+      File = "graphics/ui/orc/" ..  screen_width .. "x" .. screen_height .. "/resource.png",
+      Pos = {176, 0}},
+    "filler", {
+      File = "graphics/ui/orc/" ..  screen_width .. "x" .. screen_height .. "/statusline.png",
+      Pos = { 176, screen_height - 16}},
+    "filler", {
+      File = "graphics/ui/orc/menubutton.png",
+      Pos = {0, 0}},
+    "filler", {
+      File = "graphics/ui/orc/minimap.png",
+      Pos = {0, 24}},
 
     "resources", {
-      "gold", { "file", "graphics/ui/gold,wood,oil,mana.png", "frame", 0,
-        "pos", { 176 + 0, 0}, "size", {14, 14}, "text-pos", { 176 + 0 + 18, 1}},
-      "wood", { "file", "graphics/ui/gold,wood,oil,mana.png", "frame", 1,
-        "pos", { 176 + 75, 0}, "size", {14, 14}, "text-pos", { 176 + 75 + 18, 1}},
-      "oil", { "file", "graphics/ui/gold,wood,oil,mana.png", "frame", 2,
-        "pos", { 176 + 150, 0}, "size", {14, 14}, "text-pos", { 176 + 150 + 18, 1}},
-      "food", { "file", "graphics/ui/food.png", "frame", 0,
-        "pos", { screen_width - 16 - 138, 0}, "size", {14, 14}, "text-pos", { (screen_width - 16 - 138) + 18, 1}},
-      "score", { "file", "graphics/ui/score.png", "frame", 0,
-        "pos", { screen_width - 16 - 68, 0}, "size", {14, 14}, "text-pos", { (screen_width - 16 - 68) + 18, 1}}},
+      "gold", { File = "graphics/ui/gold,wood,oil,mana.png", Frame = 0,
+        Pos = { 176 + 0, 0}, Size = {14, 14}, TextPos = { 176 + 0 + 18, 1}},
+      "wood", { File = "graphics/ui/gold,wood,oil,mana.png", Frame = 1,
+        Pos = { 176 + 75, 0}, Size = {14, 14}, TextPos = { 176 + 75 + 18, 1}},
+      "oil", { File = "graphics/ui/gold,wood,oil,mana.png", Frame = 2,
+        Pos = { 176 + 150, 0}, Size = {14, 14}, TextPos = { 176 + 150 + 18, 1}},
+      "food", { File = "graphics/ui/food.png", Frame = 0,
+        Pos = { screen_width - 16 - 138, 0}, Size = {14, 14}, TextPos = { (screen_width - 16 - 138) + 18, 1}},
+      "score", { File = "graphics/ui/score.png", Frame = 0,
+        Pos = { screen_width - 16 - 68, 0}, Size = {14, 14}, TextPos = { (screen_width - 16 - 68) + 18, 1}}},
 
     "info-panel", {
       "panel", {
@@ -165,59 +169,51 @@ function OrcScreen(screen_width, screen_height)
     },
 
     "map-area", {
-      "pos", {176, 16},
-      "size", {
+      Pos = {176, 16},
+      Size = {
         screen_width - 176 - 16,
         screen_height - 16 - 16}},
 
     "menu-panel", {
-      "panel", {
-        "file", "graphics/ui/orc/menubutton.png",
-        "pos", {0, 0}},
       "menu-button", {
-        "pos", {24, 2},
-        "caption", "Menu (~<F10~>)",
-        "style", "main"},
+        Pos = {24, 2},
+        Caption = "Menu (~<F10~>)",
+        Style = "main"},
       "network-menu-button", {
-        "pos", {6, 2},
-        "caption", "Menu",
-        "style", "network"},
+        Pos = {6, 2},
+        Caption = "Menu",
+        Style = "network"},
       "network-diplomacy-button", {
-        "pos", {90, 2},
-        "caption", "Diplomacy",
-        "style", "network"}
+        Pos = {90, 2},
+        Caption = "Diplomacy",
+        Style = "network"}
     },
 
     "minimap", {
-      "file", "graphics/ui/orc/minimap.png",
-      "panel-pos", {0, 24},
-      "pos", {0 + 24, 24 + 2},
-      "size", {128, 128}},
+      Pos = {0 + 24, 24 + 2},
+      Size = {128, 128}},
 
     "status-line", {
-      "file", "graphics/ui/orc/" ..
-        screen_width .. "x" .. screen_height ..
-        "/statusline.png",
-      "pos", { 176, screen_height - 16},
-      "text-pos", {2 + 176, 2 + screen_height - 16},
-      "font", "game"},
+      TextPos = {2 + 176, 2 + screen_height - 16},
+      Font = "game",
+      Width = screen_width - 16 - 2 - 176},
 
     "cursors", {
-      "point", "cursor-point",
-      "glass", "cursor-glass",
-      "cross", "cursor-cross",
-      "yellow", "cursor-yellow-hair",
-      "green", "cursor-green-hair",
-      "red", "cursor-red-hair",
-      "scroll", "cursor-scroll",
-      "arrow-e", "cursor-arrow-e",
-      "arrow-ne", "cursor-arrow-ne",
-      "arrow-n", "cursor-arrow-n",
-      "arrow-nw", "cursor-arrow-nw",
-      "arrow-w", "cursor-arrow-w",
-      "arrow-sw", "cursor-arrow-sw",
-      "arrow-s", "cursor-arrow-s",
-      "arrow-se", "cursor-arrow-se"},
+      Point = "cursor-point",
+      Glass = "cursor-glass",
+      Cross = "cursor-cross",
+      Yellow = "cursor-yellow-hair",
+      Green = "cursor-green-hair",
+      Red = "cursor-red-hair",
+      Scroll = "cursor-scroll",
+      ArrowE = "cursor-arrow-e",
+      ArrowNE = "cursor-arrow-ne",
+      ArrowN = "cursor-arrow-n",
+      ArrowNW = "cursor-arrow-nw",
+      ArrowW = "cursor-arrow-w",
+      ArrowSW = "cursor-arrow-sw",
+      ArrowS = "cursor-arrow-s",
+      ArrowSE = "cursor-arrow-se"},
 
     "menu-panels", {
       "panel1", "graphics/ui/orc/panel_1.png",
