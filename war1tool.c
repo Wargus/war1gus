@@ -537,6 +537,8 @@ Control Todo[] = {
 {I,0,"ui/orc/victory_2",									 459, 471 _2},
 
 // Sounds
+{W,0,"title_screen",										 472 __},
+{W,0,"intro_door",											 473 __},
 {VOC,0,"misc/building",										 474 __},
 {VOC,0,"misc/explosion",									 475 __},
 {VOC,0,"missiles/catapult_rock_fired",						 476 __},
