@@ -66,6 +66,11 @@ char* Dir;
 #define UNIT_PATH	"graphics"
 
 /**
+**	Path the cm files. (default=$DIR)
+*/
+#define CM_PATH	"."
+
+/**
 **	Path the cursor files. (default=$DIR/graphic/ui/)
 */
 #define CURSOR_PATH	"graphics/ui"
@@ -145,6 +150,7 @@ enum _archive_type_ {
     C,			// Cursor			(name,cursor)
     FLC,		// FLC
     VOC,		// VOC
+    CM,			// Cm
 };
 
 char* ArchiveDir;
@@ -205,6 +211,31 @@ Control Todo[] = {
 #else
 {F,0,"data.war",					   0 __},
 #endif
+
+{CM,0,"puds/human 1",					 117, 63 _2},
+{CM,0,"puds/human 2",					 119, 55 _2},
+{CM,0,"puds/human 3",					 121, 69 _2},
+{CM,0,"puds/human 4",					 123, 97 _2},
+{CM,0,"puds/human 5",					 125, 57 _2},
+{CM,0,"puds/human 6",					 127, 47 _2},
+{CM,0,"puds/human 7",					 129, 67 _2},
+{CM,0,"puds/human 8",					 131, 95 _2},
+{CM,0,"puds/human 9",					 133, 71 _2},
+{CM,0,"puds/human 10",					 135, 73 _2},
+{CM,0,"puds/human 11",					 137, 75 _2},
+{CM,0,"puds/human 12",					 139, 77 _2},
+{CM,0,"puds/orc 1",					 118, 79 _2},
+{CM,0,"puds/orc 2",					 120, 81 _2},
+{CM,0,"puds/orc 3",					 122, 49 _2},
+{CM,0,"puds/orc 4",					 124, 93 _2},
+{CM,0,"puds/orc 5",					 126, 83 _2},
+{CM,0,"puds/orc 6",					 128, 65 _2},
+{CM,0,"puds/orc 7",					 130, 85 _2},
+{CM,0,"puds/orc 8",					 132, 99 _2},
+{CM,0,"puds/orc 9",					 134, 87 _2},
+{CM,0,"puds/orc 10",					 136, 53 _2},
+{CM,0,"puds/orc 11",					 138, 45 _2},
+{CM,0,"puds/orc 12",					 140, 59 _2},
 
 // Tilesets
 {R,0,"forest/forest",					 191 __},
@@ -451,16 +482,16 @@ Control Todo[] = {
 {U,0,"missiles/building collapse",			 191, 356 _2},
 {U,0,"missiles/water elemental projectile",		 217, 357 _2},
 {U,0,"missiles/fireball 2",				 191, 358 _2},
-{U,0,"human/icon selection boxes",			 217, 359 _2},
-{U,0,"orc/icon selection boxes",			 217, 360 _2},
+{U,0,"orc/icon selection boxes",			 191, 359 _2},
+{U,0,"human/icon selection boxes",			 191, 360 _2},
 {U,0,"tilesets/forest/portrait icons",			 191, 361 _2},
 {U,0,"tilesets/swamp/portrait icons",			 194, 361 _2},
 {U,0,"tilesets/dungeon/portrait icons",			 197, 361 _2},
 
 // Images
 {I,0,"ui/logo",						 217, 216 _2},
-{I,0,"ui/human/top resource bar",			 217, 218 _2},
-{I,0,"ui/orc/top resource bar",				 217, 219 _2},
+{I,0,"ui/human/top resource bar",			 191, 218 _2},
+{I,0,"ui/orc/top resource bar",				 191, 219 _2},
 {I,0,"ui/human/right panel",				 217, 220 _2},
 {I,0,"ui/orc/right panel",				 217, 221 _2},
 {I,0,"ui/human/bottom panel",				 217, 222 _2},
@@ -2322,6 +2353,233 @@ char* ParseString(char* input)
     return buf;
 }
 
+/**
+**	Save the players
+**
+**	@param f	File handle
+**	@param mtxme	Entry number of map.
+*/
+local void CmSavePlayers(gzFile f)
+{
+    int i;
+
+    for( i=0; i<16; ++i ) {
+	gzprintf(f,"(player %d\n",i);
+	gzprintf(f,"  'name \"Player %d\"\n",i);
+	if( i==0 ) {
+	    gzprintf(f,"  'type 'person 'race \"human\" 'ai 0\n");
+	    gzprintf(f,"  'team 2 'enemy \"_X______________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+	} else if( i==1 ) {
+	    gzprintf(f,"  'type 'computer 'race \"orc\" 'ai 0\n");
+	    gzprintf(f,"  'team 2 'enemy \"X_______________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+	} else if( i==15 ) {
+	    gzprintf(f,"  'type 'neutral 'race \"neutral\" 'ai 0\n");
+	    gzprintf(f,"  'team 2 'enemy \"________________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+	} else {
+	    gzprintf(f,"  'type 'nobody 'race \"human\" 'ai 0\n");
+	    gzprintf(f,"  'team 2 'enemy \"________________\" 'allied \"_______________\" 'shared-vision \"________________\"\n");
+	}
+	gzprintf(f,"  'start '(0 0)\n");
+	gzprintf(f,"  'resources '(time 0 gold 1000 wood 1000 oil 0 ore 0 stone 0 coal 0)\n");
+	gzprintf(f,"  'incomes '(time 0 gold 100 wood 100 oil 0 ore 0 stone 0 coal 0)\n");
+	if( i!=1 ) {
+	    gzprintf(f,"  'ai-disabled\n");
+	} else {
+	    gzprintf(f,"  'ai-enabled\n");
+	}
+	gzprintf(f,")\n");
+    }
+    gzprintf(f,"(set-this-player! 0)\n");
+}
+
+/**
+**	Save the map
+**
+**	@param f	File handle
+**	@param mtxme	Entry number of map.
+*/
+local void CmSaveMap(gzFile f,int mtxme)
+{
+    unsigned char* mtxm;
+    unsigned char* p;
+    unsigned short s;
+    int i;
+    int j;
+
+    mtxm=ExtractEntry(ArchiveOffsets[mtxme],NULL);
+    if( !mtxm ) {
+	return;
+    }
+
+    p=mtxm;
+
+    gzprintf(f,"(freecraft-map\n");
+    gzprintf(f,"  'the-map '(\n");
+    gzprintf(f,"  terrain (tileset-forest \"forest\")\n");
+    gzprintf(f,"  size (64 64)\n");
+    gzprintf(f,"  map-fields (\n");
+
+    for( i=0; i<64; ++i ) {
+	gzprintf(f,"  ; %d\n",i);
+	for( j=0; j<64; ++j ) {
+	    if( !(j&1) ) {
+		gzprintf(f,"  ");
+	    } else {
+		gzprintf(f,"\t");
+	    }
+	    s=FetchLE16(p);
+	    gzprintf(f,"(%d land)",s);
+	    if( j&1 ) {
+		gzprintf(f,"\n");
+	    }
+	}
+    }
+
+    gzprintf(f,")))\n");
+
+    free(mtxm);
+}
+
+char *UnitTypes[] = {
+    // 0
+    "unit-footman", "unit-grunt",
+    "unit-peasant", "unit-peon",
+    "unit-human-catapult", "unit-orc-catapult",
+    "unit-knight", "unit-raider",
+    "unit-archer", "unit-spearman",
+    // 10
+    "unit-conjurer", "unit-warlock",
+    "unit-cleric", "unit-necrolyte",
+    "unit-midevh", "unit-lothar",
+    "unit-garona", "unit-grizelda",
+    "unit-water-elemental", "unit-daemon",
+    // 20
+    "unit-scorpion", "unit-spider",
+    "unit-22", "unit-23",
+    "unit-24", "unit-25",
+    "unit-26", "unit-27",
+    "unit-28", "unit-29",
+    // 30
+    "unit-30", "unit-31",
+    "unit-human-farm", "unit-orc-farm",
+    "unit-human-barracks", "unit-orc-barracks",
+    "unit-human-church", "unit-orc-temple",
+    "unit-human-tower", "unit-orc-tower",
+    // 40
+    "unit-human-town-hall", "unit-orc-town-hall",
+    "unit-elven-lumber-mill", "unit-troll-lumber-mill",
+    "unit-human-stable", "unit-orc-kennel",
+    "unit-human-blacksmith", "unit-orc-blacksmith",
+    "unit-stormwind-keep", "unit-blackrock-spire",
+    // 50
+    "unit-gold-mine", "unit-51",
+    "unit-peasant-with-wood", "unit-peon-with-wood",
+    "unit-peasant-with-gold", "unit-peon-with-gold",
+};
+
+/**
+**	Save the units to cm.
+**
+**	@param f	File handle
+*/
+local void CmSaveUnits(gzFile f,unsigned char* txtp)
+{
+    unsigned char* p;
+    unsigned char* p2;
+    int x;
+    int y;
+    int type;
+    int player;
+    int value;
+    int i;
+    int numunits;
+
+    p=txtp;
+    while( p[0]!=0xFF || p[1]!=0xFF || p[2]!=0xFF || p[3]!=0xFF ) {
+	++p;
+    }
+    p+=4;
+    while( p[0]!=0xFF || p[1]!=0xFF || p[2]!=0xFF || p[3]!=0xFF ) {
+	++p;
+    }
+    p+=4;
+    x=FetchLE16(p);
+    p=txtp+x;
+
+    numunits=0;
+    p2=p;
+    while( p2[0]!=0xFF || p2[1]!=0xFF ) {
+	x=FetchByte(p2)/2;
+	y=FetchByte(p2)/2;
+	type=FetchByte(p2);
+	player=FetchByte(p2);
+	if( type==0x32 ) {
+	    // gold mine
+	    value=FetchByte(p2);
+	    value=FetchByte(p2)*250;
+	}
+	++numunits;
+    }
+
+    gzprintf(f,"(slot-usage '(0 - %d))\n",numunits-1);
+
+    i=0;
+    while( p[0]!=0xFF || p[1]!=0xFF ) {
+	x=FetchByte(p)/2;
+	y=FetchByte(p)/2;
+	type=FetchByte(p);
+	player=FetchByte(p);
+	if( player==4 ) {
+	    player=15;
+	}
+	if( type==0x32 ) {
+	    // gold mine
+	    value=FetchByte(p);
+	    value=FetchByte(p)*250;
+	} else {
+	    value=0;
+	}
+
+	gzprintf(f,"(unit %d 'type '%s 'player %d\n",i,UnitTypes[type],player);
+	gzprintf(f,"  'tile '(%d %d)\n",x,y);
+	if( value ) {
+	    gzprintf(f,"  'value %d\n",value);
+	}
+	gzprintf(f,")\n");
+	++i;
+    }
+}
+
+/**
+**	Convert a map to cm.
+*/
+int ConvertCm(const char* file,int txte,int mtxme)
+{
+    unsigned char* txtp;
+    unsigned char buf[1024];
+    gzFile f;
+
+    txtp=ExtractEntry(ArchiveOffsets[txte],NULL);
+    if( !txtp ) {
+	return 0;
+    }
+    sprintf(buf,"%s/%s/%s.cm.gz",Dir,CM_PATH,file);
+    CheckPath(buf);
+    f=gzopen(buf,"wb9");
+    if( !f ) {
+	perror("");
+	fprintf(stderr,"Can't open %s\n",buf);
+	exit(-1);
+    }
+
+    CmSavePlayers(f);
+    CmSaveMap(f,mtxme);
+    CmSaveUnits(f,txtp);
+
+    free(txtp);
+    gzclose(f);
+    return 0;
+}
 
 //----------------------------------------------------------------------------
 //	Main loop
@@ -2416,6 +2674,9 @@ int main(int argc,char** argv)
 		break;
 	    case X2:
 		ConvertText2(Todo[u].File,Todo[u].Arg1);
+		break;
+	    case CM:
+		ConvertCm(Todo[u].File,Todo[u].Arg1,Todo[u].Arg2);
 		break;
 	    default:
 		break;
