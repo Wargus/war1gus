@@ -133,7 +133,6 @@ icons = {
   {"icon-holy-vision", 0},
   {"icon-eye-of-kilrogg", 0},
   {"icon-critter", 0},
-  {"icon-circle-of-power", 0},
   {"icon-catapult", 0},
   {"icon-human-wall", 41},
 }

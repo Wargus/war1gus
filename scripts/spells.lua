@@ -38,7 +38,6 @@ DefineUnitType("unit-revealer", {})
 DefineUnitType("unit-eye-of-vision", {})
 DefineUnitType("unit-critter", {})
 DefineUnitType("unit-skeleton", {})
-DefineUnitType("unit-circle-of-power", {})
 
 -- And declare upgrade for dependency...
 -- For human

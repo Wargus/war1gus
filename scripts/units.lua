@@ -190,31 +190,6 @@ DefineUnitType("unit-critter", { Name = "Critter",
     "dead", "critter-dead",
     "attack", "critter-attack"} } )
 
-DefineUnitType("unit-circle-of-power", { Name = "Circle of Power",
-  Files = {"tileset-forest", "tilesets/circle_of_power.png"},
-  Size = {64, 64},
-  Animations = "animations-building", Icon = "icon-circle-of-power",
-  NeutralMinimapColor = {128, 128, 0},
-  Speed = 0,
-  HitPoints = 0,
-  DrawLevel = 5,
-  TileSize = {2, 2}, BoxSize = {63, 63},
-  SightRange = 0,
-  BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
-  Priority = 0,
-  Corpse = {"unit-destroyed-2x2-place", 0},
-  ExplodeWhenKilled = "missile-explosion",
-  Type = "land",
-  Building = true, VisibleUnderFog = true,
-  Sounds = {
-    "selected", "circle-of-power-selected",
-    "acknowledge", "circle-of-power-acknowledge",
-    "ready", "circle-of-power-ready",
-    "help", "basic human voices help 2",
-    "dead", "building destroyed",
-    "attack", "circle-of-power-attack"} } )
-
-
 -- Load the different races
 Load("scripts/human/units.lua")
 Load("scripts/orc/units.lua")
