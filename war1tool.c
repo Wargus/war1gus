@@ -95,6 +95,11 @@ char* Dir;
 */
 #define FLC_PATH	"flc"
 
+/**
+**	How much tiles are stored in a row.
+*/
+#define TILE_PER_ROW	16
+
 //----------------------------------------------------------------------------
 
 /**
@@ -1405,12 +1410,41 @@ unsigned char* ConvertPalette(unsigned char* pal)
 //----------------------------------------------------------------------------
 
 /**
+**	Decode a minitile into the image.
+*/
+void DecodeMiniTile(unsigned char* image,int ix,int iy,int iadd
+	,unsigned char* mini,int index,int flipx,int flipy)
+{
+    int x;
+    int y;
+
+    DebugLevel3Fn("index %d\n" _C_ index);
+    for( y=0; y<8; ++y ) {
+	for( x=0; x<8; ++x ) {
+	    image[(y+iy*8)*iadd+ix*8+x]=mini[index+
+		(flipy ? (8-y) : y)*8+(flipx ? (8-x) : x)];
+	}
+    }
+}
+
+/**
 **	Convert a tileset to my format.
 */
 int ConvertTileset(char* file,int index)
 {
     unsigned char* palp;
+    unsigned char* mini;
+    unsigned char* mega;
     unsigned char* image;
+    const unsigned short* mp;
+    int msize;
+    int height;
+    int width;
+    int i;
+    int x;
+    int y;
+    int offset;
+    int numtiles;
     int len;
     char buf[1024];
 
@@ -1421,20 +1455,45 @@ int ConvertTileset(char* file,int index)
     if( len<768 ) {
 	palp=realloc(palp,768);
     }
-    image=ExtractEntry(ArchiveOffsets[index],&len);
-    if( !image ) {
+    mini=ExtractEntry(ArchiveOffsets[index],NULL);
+    if( !mini ) {
 	free(palp);
 	return 0;
+    }
+    mega=ExtractEntry(ArchiveOffsets[index-1],&msize);
+    if( !mega ) {
+	free(palp);
+	free(mini);
+	return 0;
+    }
+    numtiles=msize/8;
+
+    width=TILE_PER_ROW*16;
+    height=((numtiles+TILE_PER_ROW-1)/TILE_PER_ROW)*16;
+    image=malloc(height*width);
+    memset(image,0,height*width);
+
+    for( i=0; i<numtiles; ++i ) {
+	mp=(const unsigned short*)(mega+i*8);
+	for( y=0; y<2; ++y ) {
+	    for( x=0; x<2; ++x ) {
+		offset=ConvertLE16(mp[x+y*2]);
+		DecodeMiniTile(image
+		    ,x+((i%TILE_PER_ROW)*2),y+(i/TILE_PER_ROW)*2,width
+		    ,mini,(offset&0xFFFC)<<1,offset&2,offset&1);
+	    }
+	}
     }
 
     ConvertPalette(palp);
 
     sprintf(buf,"%s/%s/%s.png",Dir,TILESET_PATH,file);
     CheckPath(buf);
-    SavePNG(buf,image,8,len/8,palp);
+    SavePNG(buf,image,width,height,palp);
 
-    free(image);
     free(palp);
+    free(mini);
+    free(mega);
 
     return 0;
 }
