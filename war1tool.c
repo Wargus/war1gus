@@ -116,11 +116,6 @@ typedef struct _control_ {
 } Control;
 
 /**
-**	Palette N27, for credits cursor
-*/
-unsigned char* Pal27;
-
-/**
 **	Original archive buffer.
 */
 unsigned char* ArchiveBuffer;
@@ -307,39 +302,105 @@ Control Todo[] = {
 {C,0,"cursors/upper-left arrow",			 262, 278 _2},
 
 // Unit graphics
-{U,0,"human/units/footman",				 217, 279 _2},
-{U,0,"orc/units/grunt",					 217, 280 _2},
-{U,0,"human/units/peasant",				 217, 281 _2},
-{U,0,"orc/units/peon",					 217, 282 _2},
-{U,0,"human/units/catapult",				 217, 283 _2},
-{U,0,"orc/units/catapult",				 217, 284 _2},
-{U,0,"human/units/knight",				 217, 285 _2},
-{U,0,"orc/units/raider",				 217, 286 _2},
-{U,0,"human/units/archer",				 217, 287 _2},
-{U,0,"orc/units/spearman",				 217, 288 _2},
-{U,0,"human/units/conjurer",				 217, 289 _2},
-{U,0,"orc/units/warlock",				 217, 290 _2},
-{U,0,"human/units/cleric",				 217, 291 _2},
-{U,0,"orc/units/necrolyte",				 217, 292 _2},
-{U,0,"human/units/midevh",				 217, 293 _2},
-{U,0,"orc/units/lothar",				 217, 294 _2},
-{U,0,"units/wounded",					 217, 295 _2},
-{U,0,"units/grizelda,garona",				 217, 296 _2},
-{U,0,"units/ogre",					 217, 297 _2},
-{U,0,"units/spider",					 217, 298 _2},
-{U,0,"units/slime",					 217, 299 _2},
-{U,0,"units/fire elemental",				 217, 300 _2},
-{U,0,"units/scorpion",					 217, 301 _2},
-{U,0,"units/brigand",					 217, 302 _2},
-{U,0,"units/the dead",					 217, 303 _2},
-{U,0,"units/skeleton",					 217, 304 _2},
-{U,0,"units/daemon",					 217, 305 _2},
-{U,0,"units/water elemental",				 217, 306 _2},
-{U,0,"neutral/units/dead bodies",			 217, 326 _2},
-{U,0,"human/units/peasant with wood",			 217, 327 _2},
-{U,0,"orc/units/peon with wood",			 217, 328 _2},
-{U,0,"human/units/peasant with gold",			 217, 329 _2},
-{U,0,"orc/units/peon with gold",			 217, 330 _2},
+{U,0,"tilesets/forest/human/units/footman",		 191, 279 _2},
+{U,0,"tilesets/forest/orc/units/grunt",			 191, 280 _2},
+{U,0,"tilesets/forest/human/units/peasant",		 191, 281 _2},
+{U,0,"tilesets/forest/orc/units/peon",			 191, 282 _2},
+{U,0,"tilesets/forest/human/units/catapult",		 191, 283 _2},
+{U,0,"tilesets/forest/orc/units/catapult",		 191, 284 _2},
+{U,0,"tilesets/forest/human/units/knight",		 191, 285 _2},
+{U,0,"tilesets/forest/orc/units/raider",		 191, 286 _2},
+{U,0,"tilesets/forest/human/units/archer",		 191, 287 _2},
+{U,0,"tilesets/forest/orc/units/spearman",		 191, 288 _2},
+{U,0,"tilesets/forest/human/units/conjurer",		 191, 289 _2},
+{U,0,"tilesets/forest/orc/units/warlock",		 191, 290 _2},
+{U,0,"tilesets/forest/human/units/cleric",		 191, 291 _2},
+{U,0,"tilesets/forest/orc/units/necrolyte",		 191, 292 _2},
+{U,0,"tilesets/forest/human/units/midevh",		 191, 293 _2},
+{U,0,"tilesets/forest/orc/units/lothar",		 191, 294 _2},
+{U,0,"tilesets/forest/units/wounded",			 191, 295 _2},
+{U,0,"tilesets/forest/units/grizelda,garona",		 191, 296 _2},
+{U,0,"tilesets/forest/units/ogre",			 191, 297 _2},
+{U,0,"tilesets/forest/units/spider",			 191, 298 _2},
+{U,0,"tilesets/forest/units/slime",			 191, 299 _2},
+{U,0,"tilesets/forest/units/fire elemental",		 191, 300 _2},
+{U,0,"tilesets/forest/units/scorpion",			 191, 301 _2},
+{U,0,"tilesets/forest/units/brigand",			 191, 302 _2},
+{U,0,"tilesets/forest/units/the dead",			 191, 303 _2},
+{U,0,"tilesets/forest/units/skeleton",			 191, 304 _2},
+{U,0,"tilesets/forest/units/daemon",			 191, 305 _2},
+{U,0,"tilesets/forest/units/water elemental",		 191, 306 _2},
+{U,0,"tilesets/forest/neutral/units/dead bodies",	 191, 326 _2},
+{U,0,"tilesets/forest/human/units/peasant with wood",	 191, 327 _2},
+{U,0,"tilesets/forest/orc/units/peon with wood",	 191, 328 _2},
+{U,0,"tilesets/forest/human/units/peasant with gold",	 191, 329 _2},
+{U,0,"tilesets/forest/orc/units/peon with gold",	 191, 330 _2},
+{U,0,"tilesets/swamp/human/units/footman",		 194, 279 _2},
+{U,0,"tilesets/swamp/orc/units/grunt",			 194, 280 _2},
+{U,0,"tilesets/swamp/human/units/peasant",		 194, 281 _2},
+{U,0,"tilesets/swamp/orc/units/peon",			 194, 282 _2},
+{U,0,"tilesets/swamp/human/units/catapult",		 194, 283 _2},
+{U,0,"tilesets/swamp/orc/units/catapult",		 194, 284 _2},
+{U,0,"tilesets/swamp/human/units/knight",		 194, 285 _2},
+{U,0,"tilesets/swamp/orc/units/raider",			 194, 286 _2},
+{U,0,"tilesets/swamp/human/units/archer",		 194, 287 _2},
+{U,0,"tilesets/swamp/orc/units/spearman",		 194, 288 _2},
+{U,0,"tilesets/swamp/human/units/conjurer",		 194, 289 _2},
+{U,0,"tilesets/swamp/orc/units/warlock",		 194, 290 _2},
+{U,0,"tilesets/swamp/human/units/cleric",		 194, 291 _2},
+{U,0,"tilesets/swamp/orc/units/necrolyte",		 194, 292 _2},
+{U,0,"tilesets/swamp/human/units/midevh",		 194, 293 _2},
+{U,0,"tilesets/swamp/orc/units/lothar",			 194, 294 _2},
+{U,0,"tilesets/swamp/units/wounded",			 194, 295 _2},
+{U,0,"tilesets/swamp/units/grizelda,garona",		 194, 296 _2},
+{U,0,"tilesets/swamp/units/ogre",			 194, 297 _2},
+{U,0,"tilesets/swamp/units/spider",			 194, 298 _2},
+{U,0,"tilesets/swamp/units/slime",			 194, 299 _2},
+{U,0,"tilesets/swamp/units/fire elemental",		 194, 300 _2},
+{U,0,"tilesets/swamp/units/scorpion",			 194, 301 _2},
+{U,0,"tilesets/swamp/units/brigand",			 194, 302 _2},
+{U,0,"tilesets/swamp/units/the dead",			 194, 303 _2},
+{U,0,"tilesets/swamp/units/skeleton",			 194, 304 _2},
+{U,0,"tilesets/swamp/units/daemon",			 194, 305 _2},
+{U,0,"tilesets/swamp/units/water elemental",		 194, 306 _2},
+{U,0,"tilesets/swamp/neutral/units/dead bodies",	 194, 326 _2},
+{U,0,"tilesets/swamp/human/units/peasant with wood",	 194, 327 _2},
+{U,0,"tilesets/swamp/orc/units/peon with wood",		 194, 328 _2},
+{U,0,"tilesets/swamp/human/units/peasant with gold",	 194, 329 _2},
+{U,0,"tilesets/swamp/orc/units/peon with gold",		 194, 330 _2},
+{U,0,"tilesets/dungeon/human/units/footman",		 197, 279 _2},
+{U,0,"tilesets/dungeon/orc/units/grunt",		 197, 280 _2},
+{U,0,"tilesets/dungeon/human/units/peasant",		 197, 281 _2},
+{U,0,"tilesets/dungeon/orc/units/peon",			 197, 282 _2},
+{U,0,"tilesets/dungeon/human/units/catapult",		 197, 283 _2},
+{U,0,"tilesets/dungeon/orc/units/catapult",		 197, 284 _2},
+{U,0,"tilesets/dungeon/human/units/knight",		 197, 285 _2},
+{U,0,"tilesets/dungeon/orc/units/raider",		 197, 286 _2},
+{U,0,"tilesets/dungeon/human/units/archer",		 197, 287 _2},
+{U,0,"tilesets/dungeon/orc/units/spearman",		 197, 288 _2},
+{U,0,"tilesets/dungeon/human/units/conjurer",		 197, 289 _2},
+{U,0,"tilesets/dungeon/orc/units/warlock",		 197, 290 _2},
+{U,0,"tilesets/dungeon/human/units/cleric",		 197, 291 _2},
+{U,0,"tilesets/dungeon/orc/units/necrolyte",		 197, 292 _2},
+{U,0,"tilesets/dungeon/human/units/midevh",		 197, 293 _2},
+{U,0,"tilesets/dungeon/orc/units/lothar",		 197, 294 _2},
+{U,0,"tilesets/dungeon/units/wounded",			 197, 295 _2},
+{U,0,"tilesets/dungeon/units/grizelda,garona",		 197, 296 _2},
+{U,0,"tilesets/dungeon/units/ogre",			 197, 297 _2},
+{U,0,"tilesets/dungeon/units/spider",			 197, 298 _2},
+{U,0,"tilesets/dungeon/units/slime",			 197, 299 _2},
+{U,0,"tilesets/dungeon/units/fire elemental",		 197, 300 _2},
+{U,0,"tilesets/dungeon/units/scorpion",			 197, 301 _2},
+{U,0,"tilesets/dungeon/units/brigand",			 197, 302 _2},
+{U,0,"tilesets/dungeon/units/the dead",			 197, 303 _2},
+{U,0,"tilesets/dungeon/units/skeleton",			 197, 304 _2},
+{U,0,"tilesets/dungeon/units/daemon",			 197, 305 _2},
+{U,0,"tilesets/dungeon/units/water elemental",		 197, 306 _2},
+{U,0,"tilesets/dungeon/neutral/units/dead bodies",	 197, 326 _2},
+{U,0,"tilesets/dungeon/human/units/peasant with wood",	 197, 327 _2},
+{U,0,"tilesets/dungeon/orc/units/peon with wood",	 197, 328 _2},
+{U,0,"tilesets/dungeon/human/units/peasant with gold",	 197, 329 _2},
+{U,0,"tilesets/dungeon/orc/units/peon with gold",	 197, 330 _2},
 
 // Buildings
 {U,0,"human/buildings/farm",				 191, 307 _2},
@@ -392,9 +453,9 @@ Control Todo[] = {
 {U,0,"missiles/fireball 2",				 191, 358 _2},
 {U,0,"human/icon selection boxes",			 217, 359 _2},
 {U,0,"orc/icon selection boxes",			 217, 360 _2},
-{U,0,"portrait icons",					 217, 361 _2},
 {U,0,"tilesets/forest/portrait icons",			 191, 361 _2},
 {U,0,"tilesets/swamp/portrait icons",			 194, 361 _2},
+{U,0,"tilesets/dungeon/portrait icons",			 197, 361 _2},
 
 // Images
 {I,0,"ui/logo",						 217, 216 _2},
@@ -431,9 +492,9 @@ Control Todo[] = {
 {I,0,"ui/menu button 2",				 217, 363 _2},
 {I,0,"ui/human/icon border",				 217, 364 _2},
 {I,0,"ui/orc/icon border",				 217, 365 _2},
-{I,0,"ui/gold icon 1",					 217, 406 _2},
+{I,0,"ui/gold icon 1",					 191, 406 _2},
 {I,0,"ui/lumber icon 1",				 217, 407 _2},
-{I,0,"ui/gold icon 2",					 217, 408 _2},
+{I,0,"ui/gold icon 2",					 191, 408 _2},
 {I,0,"ui/lumber icon 2",				 217, 409 _2},
 {I,0,"ui/percent complete",				 217, 410 _2},
 {I,0,"ui/human/outcome windows",			 413, 411 _2},
@@ -1512,13 +1573,36 @@ int ConvertTileset(char* file,int index)
     int numtiles;
     int len;
     char buf[1024];
+    int pale;
 
-    palp=ExtractEntry(ArchiveOffsets[index+1],&len);
+    pale=index+1;
+    palp=ExtractEntry(ArchiveOffsets[pale],&len);
     if( !palp ) {
 	return 0;
     }
     if( len<768 ) {
 	palp=realloc(palp,768);
+	memset(palp+len,0,768-len);
+    }
+    if( pale==191 || pale==194 || pale==197 ) {
+	unsigned char* gpalp;
+	int i;
+	gpalp=ExtractEntry(ArchiveOffsets[217],NULL);
+	for( i=0; i<128; ++i ) {
+	    if( palp[i*3+0]==63 && palp[i*3+1]==0 && palp[i*3+2]==63 ) {
+		palp[i*3+0]=gpalp[i*3+0];
+		palp[i*3+1]=gpalp[i*3+1];
+		palp[i*3+2]=gpalp[i*3+2];
+	    }
+	}
+	for( i=128; i<256; ++i ) {
+	    if( !(gpalp[i*3+0]==63 && gpalp[i*3+1]==0 && gpalp[i*3+2]==63) ) {
+		palp[i*3+0]=gpalp[i*3+0];
+		palp[i*3+1]=gpalp[i*3+1];
+		palp[i*3+2]=gpalp[i*3+2];
+	    }
+	}
+	free(gpalp);
     }
     mini=ExtractEntry(ArchiveOffsets[index],NULL);
     if( !mini ) {
@@ -1682,11 +1766,27 @@ int ConvertGfu(char* file,int pale,int gfue)
     }
     if( len<768 ) {
 	palp=realloc(palp,768);
+	memset(palp+len,0,768-len);
     }
-    if( pale==217 ) {
-	palp[96*3+0]=0;
-	palp[96*3+1]=0;
-	palp[96*3+2]=0;
+    if( pale==191 || pale==194 || pale==197 ) {
+	unsigned char* gpalp;
+	int i;
+	gpalp=ExtractEntry(ArchiveOffsets[217],NULL);
+	for( i=0; i<128; ++i ) {
+	    if( palp[i*3+0]==63 && palp[i*3+1]==0 && palp[i*3+2]==63 ) {
+		palp[i*3+0]=gpalp[i*3+0];
+		palp[i*3+1]=gpalp[i*3+1];
+		palp[i*3+2]=gpalp[i*3+2];
+	    }
+	}
+	for( i=128; i<256; ++i ) {
+	    if( !(gpalp[i*3+0]==63 && gpalp[i*3+1]==0 && gpalp[i*3+2]==63) ) {
+		palp[i*3+0]=gpalp[i*3+0];
+		palp[i*3+1]=gpalp[i*3+1];
+		palp[i*3+2]=gpalp[i*3+2];
+	    }
+	}
+	free(gpalp);
     }
 
     gfup=ExtractEntry(ArchiveOffsets[gfue],NULL);
@@ -1786,14 +1886,37 @@ int ConvertImage(char* file,int pale,int imge, int nw, int nh)
     int w;
     int h;
     char buf[1024];
+    int len;
 
-    palp=ExtractEntry(ArchiveOffsets[pale],NULL);
+    palp=ExtractEntry(ArchiveOffsets[pale],&len);
     if( !palp ) {
 	return 0;
     }
-    if (pale == 27 && imge == 28) {
-	Pal27 = palp;
+    if( len<768 ) {
+	palp=realloc(palp,768);
+	memset(palp+len,0,768-len);
     }
+    if( pale==191 || pale==194 || pale==197 ) {
+	unsigned char* gpalp;
+	int i;
+	gpalp=ExtractEntry(ArchiveOffsets[217],NULL);
+	for( i=0; i<128; ++i ) {
+	    if( palp[i*3+0]==63 && palp[i*3+1]==0 && palp[i*3+2]==63 ) {
+		palp[i*3+0]=gpalp[i*3+0];
+		palp[i*3+1]=gpalp[i*3+1];
+		palp[i*3+2]=gpalp[i*3+2];
+	    }
+	}
+	for( i=128; i<256; ++i ) {
+	    if( !(gpalp[i*3+0]==63 && gpalp[i*3+1]==0 && gpalp[i*3+2]==63) ) {
+		palp[i*3+0]=gpalp[i*3+0];
+		palp[i*3+1]=gpalp[i*3+1];
+		palp[i*3+2]=gpalp[i*3+2];
+	    }
+	}
+	free(gpalp);
+    }
+
     imgp=ExtractEntry(ArchiveOffsets[imge],NULL);
     if( !imgp ) {
 	free(palp);
@@ -1816,9 +1939,7 @@ int ConvertImage(char* file,int pale,int imge, int nw, int nh)
     SavePNG(buf,image,w,h,palp);
 
     free(image);
-    if (pale != 27 && imge != 28) {
-	free(palp);
-    }
+    free(palp);
 
     return 0;
 }
@@ -1874,13 +1995,9 @@ int ConvertCursor(char* file,int pale,int cure)
     int h;
     char buf[1024];
 
-    if (pale == 27 && cure == 314 && Pal27 ) { // Credits arrow (Blue arrow NW)
-	palp = Pal27;
-    } else {
-	palp=ExtractEntry(ArchiveOffsets[pale],NULL);
-	if( !palp ) {
-	    return 0;
-	}
+    palp=ExtractEntry(ArchiveOffsets[pale],NULL);
+    if( !palp ) {
+	return 0;
     }
     curp=ExtractEntry(ArchiveOffsets[cure],NULL);
     if( !curp ) {
