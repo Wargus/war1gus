@@ -117,44 +117,10 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-arrow3",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-archer", "unit-female-hero"} } )
 
-if (extensions) then
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-patrol-land",
-  Action = "patrol",
-  Key = "p", Hint = "~!PATROL",
-  ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-female-hero",
-    "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
-    "unit-man-of-light", "unit-gryphon-rider", "human-group",
-    "unit-balloon"} } )
-else
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-patrol-land",
-  Action = "patrol",
-  Key = "p", Hint = "~!PATROL",
-  ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-female-hero",
-    "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
-    "unit-man-of-light", "unit-gryphon-rider", "human-group"} } )
-end
-
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-human-stand-ground",
-  Action = "stand-ground",
-  Key = "t", Hint = "S~!TAND GROUND",
-  ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-female-hero",
-    "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
-    "unit-man-of-light", "unit-gryphon-rider", "human-group",
-    "unit-human-submarine", "unit-battleship", "unit-human-destroyer"} } )
-
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-attack-ground",
   Action = "attack-ground",
   Key = "g", Hint = "ATTACK ~!GROUND",
-  ForUnit = {"unit-human-catapult", "unit-battleship", "human-group"} } )
-
-DefineButton( { Pos = 9, Level = 0, Icon = "icon-human-demolish",
-  Action = "cast-spell", Value = "spell-suicide-bomber",
-  Allowed = "check-true",
-  Key = "d", Hint = "~!DEMOLISH",
-  ForUnit = {"unit-dwarves"} } )
+  ForUnit = {"unit-human-catapult", "human-group"} } )
 
 -- paladin specific actions ---------------------------------------------------
 
@@ -239,20 +205,18 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-harvest",
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-return-goods",
   Action = "return-goods",
-  Key = "g", Hint = "RETURN WITH ~!GOODS",
+  Key = "t", Hint = "RETURN GOODS TO ~!TOWN HALL",
   ForUnit = {"unit-peasant"} } )
-
--- build basic/advanced structs -----------------------------------------------
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-build-basic",
   Action = "button", Value = 1,
-  Key = "b", Hint = "~!BUILD BASIC STRUCTURE",
+  Key = "b", Hint = "BUILD ~!BASIC STRUCTURE",
   ForUnit = {"unit-peasant"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-build-advanced",
   Action = "button", Value = 2,
   Allowed = "check-units-or", AllowArg = {"unit-human-lumber-mill"},
-  Key = "v", Hint = "BUILD AD~!VANCED STRUCTURE",
+  Key = "a", Hint = "BUILD ~!ADVANCED STRUCTURE",
   ForUnit = {"unit-peasant"} } )
 
 -- simple buildings human -----------------------------------------------------
@@ -272,41 +236,39 @@ DefineButton( { Pos = 3, Level = 1, Icon = "icon-human-barracks",
   Key = "b", Hint = "BUILD ~!BARRACKS",
   ForUnit = {"unit-peasant"} } )
 
-
-
 DefineButton( { Pos = 6, Level = 1, Icon = "icon-cancel",
   Action = "button", Value = 0,
-  Key = "\27", Hint = "~<ESC~> CANCEL",
+  Key = "\27", Hint = "~<ESC~> - CANCEL",
   ForUnit = {"unit-peasant"} } )
 
 -- human advanced buildings ---------------------------------------------------
 
 DefineButton( { Pos = 1, Level = 2, Icon = "icon-human-blacksmith",
   Action = "build", Value = "unit-human-blacksmith",
-  Key = "s", Hint = "BUILD BLACK~!SMITH",
+  Key = "b", Hint = "BUILD ~!BLACKSMITH",
   ForUnit = {"unit-peasant"} } )
 
 DefineButton( { Pos = 2, Level = 2, Icon = "icon-human-church",
   Action = "build", Value = "unit-human-church",
-  Key = "c", Hint = "BUILD ~!CHURCH",
+  Key = "u", Hint = "BUILD CH~!URCH",
   ForUnit = {"unit-peasant"} } )
 
 DefineButton( { Pos = 3, Level = 2, Icon = "icon-human-stable",
   Action = "build", Value = "unit-human-stable",
-  Key = "a", Hint = "BUILD ST~!ABLE",
+  Key = "s", Hint = "BUILD ~!STABLE",
   ForUnit = {"unit-peasant"} } )
 
-DefineButton( { Pos = 4, Level = 1, Icon = "icon-human-tower",
+DefineButton( { Pos = 4, Level = 2, Icon = "icon-human-tower",
   Action = "build", Value = "unit-human-tower",
   Key = "t", Hint = "BUILD ~!TOWER",
   ForUnit = {"unit-peasant"} } )
 
 DefineButton( { Pos = 6, Level = 2, Icon = "icon-cancel",
   Action = "button", Value = 0,
-  Key = "\27", Hint = "~<ESC~> CANCEL",
+  Key = "\27", Hint = "~<ESC~> - CANCEL",
   ForUnit = {"unit-peasant"} } )
 
--- buildings commands ---------------------------------------------------------
+-- town hall commands ---------------------------------------------------------
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-peasant",
   Action = "train-unit", Value = "unit-peasant",
@@ -315,8 +277,8 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-peasant",
   ForUnit = {"unit-human-town-hall"} } )
 
 --[[
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-wall",
-  Action = "build", Value = "unit-human-wall",
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-road",
+  Action = "build", Value = "unit-human-road",
   Key = "r", Hint = "BUILD ~!ROAD",
   ForUnit = {"unit-human-town-hall"} } )
 ]]
@@ -327,7 +289,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-wall",
   ForUnit = {"unit-human-town-hall"} } )
 
 
--- town hall upgrades ---------------------------------------------------------
+-- training commands ---------------------------------------------------------
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-footman",
   Action = "train-unit", Value = "unit-footman",
@@ -349,171 +311,40 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-knight",
   Key = "k", Hint = "TRAIN ~!KNIGHT",
   ForUnit = {"unit-human-barracks"} } )
 
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-gnomish-flying-machine",
-  Action = "train-unit", Value = "unit-balloon",
-  Key = "f", Hint = "BUILD GNOMISH ~!FLYING MACHINE",
-  ForUnit = {"unit-inventor"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-dwarves",
-  Action = "train-unit", Value = "unit-dwarves",
-  Key = "d", Hint = "TRAIN ~!DWARVEN DEMOLITION SQUAD",
-  ForUnit = {"unit-inventor"} } )
-
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-mage",
-  Action = "train-unit", Value = "unit-mage",
-  Key = "t", Hint = "~!TRAIN MAGE",
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-conjurer",
+  Action = "train-unit", Value = "unit-conjurer",
+  Key = "t", Hint = "TRAIN ~!CONJURER",
   ForUnit = {"unit-human-tower"} } )
 
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-gryphon-rider",
-  Action = "train-unit", Value = "unit-gryphon-rider",
-  Key = "g", Hint = "TRAIN ~!GRYPHON RIDER",
-  ForUnit = {"unit-gryphon-aviary"} } )
-
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-human-oil-tanker",
-  Action = "train-unit", Value = "unit-human-oil-tanker",
-  Key = "o", Hint = "BUILD ~!OIL TANKER",
-  ForUnit = {"unit-human-shipyard"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-destroyer",
-  Action = "train-unit", Value = "unit-human-destroyer",
-  Key = "d", Hint = "BUILD ~!DESTROYER",
-  ForUnit = {"unit-human-shipyard"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-transport",
-  Action = "train-unit", Value = "unit-human-transport",
-  Key = "t", Hint = "BUILD ~!TRANSPORT",
-  ForUnit = {"unit-human-shipyard"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-gnomish-submarine",
-  Action = "train-unit", Value = "unit-human-submarine",
-  Key = "s", Hint = "BUILD GNOMISH ~!SUBMARINE",
-  ForUnit = {"unit-human-shipyard"} } )
-
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-battleship",
-  Action = "train-unit", Value = "unit-battleship",
-  Key = "b", Hint = "BUILD ~!BATTLESHIP",
-  ForUnit = {"unit-human-shipyard"} } )
-
-if (extensions) then
------------------------------------------------------
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-ship-haul-oil",
-  Action = "harvest",
-  Key = "h", Hint = "SET ~!HAUL OIL",
-  ForUnit = {"unit-human-shipyard"} } )
------------------------------------------------------
-end
-
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-human-guard-tower",
-  Action = "upgrade-to", Value = "unit-human-guard-tower",
-  Key = "g", Hint = "UPGRADE TO ~!GUARD TOWER",
-  ForUnit = {"unit-human-watch-tower"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-cannon-tower",
-  Action = "upgrade-to", Value = "unit-human-cannon-tower",
-  Key = "c", Hint = "UPGRADE TO ~!CANNON TOWER",
-  ForUnit = {"unit-human-watch-tower"} } )
-
--- ships ----------------------------------------------------------------------
-
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-human-ship-move",
-  Action = "move",
-  Key = "m", Hint = "~!MOVE",
-  ForUnit = {"unit-human-oil-tanker",
-    "unit-human-submarine", "unit-battleship", "unit-human-destroyer",
-    "unit-human-transport"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-ship-armor1",
-  Action = "stop",
-  Key = "s", Hint = "~!STOP",
-  ForUnit = {"unit-human-oil-tanker",
-    "unit-human-submarine", "unit-battleship", "unit-human-destroyer",
-    "unit-human-transport"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-unload",
-  Action = "unload",
-  Key = "u", Hint = "~!UNLOAD",
-  ForUnit = {"unit-human-transport"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-oil-platform",
-  Action = "build", Value = "unit-human-oil-platform",
-  Key = "b", Hint = "~!BUILD OIL PLATFORM",
-  ForUnit = {"unit-human-oil-tanker"} } )
-
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-human-ship-haul-oil",
-  Action = "harvest",
-  Key = "h", Hint = "~!HAUL OIL",
-  ForUnit = {"unit-human-oil-tanker"} } )
-
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-ship-return-oil",
-  Action = "return-goods",
-  Key = "g", Hint = "RETURN WITH ~!GOODS",
-  ForUnit = {"unit-human-oil-tanker"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-ship-cannon1",
-  Action = "attack",
-  Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-human-submarine", "unit-battleship", "unit-human-destroyer"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-ship-cannon2",
-  Action = "attack",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-human-ship-cannon1"},
-  Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-human-submarine", "unit-battleship", "unit-human-destroyer"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-ship-cannon3",
-  Action = "attack",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-human-ship-cannon2"},
-  Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-human-submarine", "unit-battleship", "unit-human-destroyer"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-patrol-naval",
-  Action = "patrol",
-  Key = "p", Hint = "~!PATROL",
-  ForUnit = {"unit-human-submarine", "unit-battleship", "unit-human-destroyer"} } )
-
-if (extensions) then
-do
-DefineButton( { Pos = 7, Level = 0, Icon = "icon-human-ship-move",
-  Action = "move",
-  Key = "m", Hint = "SET ~!MOVE",
-  ForUnit = {"unit-human-shipyard"} } )
-
-DefineButton( { Pos = 8, Level = 0, Icon = "icon-human-ship-armor1",
-  Action = "stop",
-  Key = "z", Hint = "SET ~!ZTOP",
-  ForUnit = {"unit-human-shipyard"} } )
-
-DefineButton( { Pos = 9, Level = 0, Icon = "icon-human-ship-cannon1",
-  Action = "attack",
-  Key = "e", Hint = "S~!ET ATTACK",
-  ForUnit = {"unit-human-shipyard"} } )
-end
-end
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-cleric",
+  Action = "train-unit", Value = "unit-cleric",
+  Key = "c", Hint = "TRAIN ~!CLERIC",
+  ForUnit = {"unit-human-church"} } )
 
 -- upgrades -------------------------------------------------------------------
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-sword2",
   Action = "research", Value = "upgrade-sword1",
   Allowed = "check-single-research",
-  Key = "w", Hint = "UPGRADE S~!WORDS (Damage +2)",
+  Key = "w", Hint = "UPGRADE S~!WORD STRENGTH",
   ForUnit = {"unit-human-blacksmith"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-sword3",
   Action = "research", Value = "upgrade-sword2",
   Allowed = "check-single-research",
-  Key = "w", Hint = "UPGRADE S~!WORDS (Damage +2)",
+  Key = "w", Hint = "UPGRADE S~!WORD STRENGTH",
   ForUnit = {"unit-human-blacksmith"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield2",
   Action = "research", Value = "upgrade-human-shield1",
   Allowed = "check-single-research",
-  Key = "s", Hint = "UPGRADE ~!SHIELDS (Armor +2)",
+  Key = "h", Hint = "UPGRADE S~!HIELD STRENGTH",
   ForUnit = {"unit-human-blacksmith"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield3",
   Action = "research", Value = "upgrade-human-shield2",
   Allowed = "check-single-research",
-  Key = "s", Hint = "UPGRADE ~!SHIELDS (Armor +2)",
+  Key = "h", Hint = "UPGRADE S~!HIELD STRENGTH",
   ForUnit = {"unit-human-blacksmith"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow2",
@@ -528,62 +359,53 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow3",
   Key = "u", Hint = "~!UPGRADE ARROW STRENGTH",
   ForUnit = {"unit-human-lumber-mill"} } )
 
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-heal",
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse1",
+  Action = "research", Value = "upgrade-horse1",
+  Allowed = "check-single-research",
+  Key = "u", Hint = "~!BREED FASTER HORSES",
+  ForUnit = {"unit-human-stable"} } )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse2",
+  Action = "research", Value = "upgrade-horse2",
+  Allowed = "check-single-research",
+  Key = "u", Hint = "~!BREED FASTER HORSES",
+  ForUnit = {"unit-human-stable"} } )
+
+-- spells -------------------------------------------------------------------
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-healing",
   Action = "research", Value = "upgrade-healing",
   Allowed = "check-single-research",
   Key = "h", Hint = "RESEARCH ~!HEALING",
   ForUnit = {"unit-human-church"} } )
 
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-exorcism",
-  Action = "research", Value = "upgrade-exorcism",
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-far-seeing",
+  Action = "research", Value = "upgrade-far-seeing",
   Allowed = "check-single-research",
-  Key = "e", Hint = "RESEARCH ~!EXORCISM",
+  Key = "e", Hint = "RESEARCH ~!FAR SEEING",
   ForUnit = {"unit-human-church"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-slow",
-  Action = "research", Value = "upgrade-slow",
-  Allowed = "check-single-research",
-  Key = "o", Hint = "RESEARCH SL~!OW",
-  ForUnit = {"unit-human-tower"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-flame-shield",
-  Action = "research", Value = "upgrade-flame-shield",
-  Allowed = "check-single-research",
-  Key = "l", Hint = "RESEARCH F~!LAME SHIELD",
-  ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-invisibility",
   Action = "research", Value = "upgrade-invisibility",
   Allowed = "check-single-research",
-  Key = "i", Hint = "RESEARCH ~!INVISIBILITY",
+  Key = "o", Hint = "RESEARCH ~!INVISIBILITY",
+  ForUnit = {"unit-human-church"} } )
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-scorpion",
+  Action = "research", Value = "upgrade-scorpion",
+  Allowed = "check-single-research",
+  Key = "b", Hint = "RESEARCH ~!MINOR SUMMONING",
   ForUnit = {"unit-human-tower"} } )
 
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-blizzard",
-  Action = "research", Value = "upgrade-blizzard",
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-rain-of-fire",
+  Action = "research", Value = "upgrade-rain-of-fire",
   Allowed = "check-single-research",
-  Key = "b", Hint = "RESEARCH ~!BLIZZARD",
+  Key = "b", Hint = "RESEARCH ~!RAIN OF FIRE",
   ForUnit = {"unit-human-tower"} } )
 
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-human-ship-cannon2",
-  Action = "research", Value = "upgrade-human-ship-cannon1",
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-water-elemental",
+  Action = "research", Value = "upgrade-water-elemental",
   Allowed = "check-single-research",
-  Key = "c", Hint = "UPGRADE ~!CANNONS (Damage +5)",
-  ForUnit = {"unit-human-foundry"} } )
+  Key = "b", Hint = "RESEARCH ~!MAJOR SUMMONING",
+  ForUnit = {"unit-human-tower"} } )
 
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-human-ship-cannon3",
-  Action = "research", Value = "upgrade-human-ship-cannon2",
-  Allowed = "check-single-research",
-  Key = "c", Hint = "UPGRADE ~!CANNONS (Damage +5)",
-  ForUnit = {"unit-human-foundry"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-ship-armor2",
-  Action = "research", Value = "upgrade-human-ship-armor1",
-  Allowed = "check-single-research",
-  Key = "a", Hint = "UPGRADE SHIP ~!ARMOR (Armor +5)",
-  ForUnit = {"unit-human-foundry"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-ship-armor3",
-  Action = "research", Value = "upgrade-human-ship-armor2",
-  Allowed = "check-single-research",
-  Key = "a", Hint = "UPGRADE SHIP ~!ARMOR (Armor +5)",
-  ForUnit = {"unit-human-foundry"} } )

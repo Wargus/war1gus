@@ -114,18 +114,6 @@ DefineMissileType("missile-axe",
   ImpactSound = "bow hit",
   DrawLevel = 50, Class = "missile-class-point-to-point", Sleep = 1, Speed = 32, Range = 0 } )
 
-DefineMissileType("missile-submarine-missile",
-  { File = "missiles/submarine_missile.png", Size = {40, 40}, Frames = 5, NumDirections = 5,
-  ImpactSound = "explosion",
-  DrawLevel = 50, Class = "missile-class-point-to-point", Sleep = 1, Speed = 16, Range = 1,
-  ImpactMissile = "missile-impact" } )
-
-DefineMissileType("missile-turtle-missile",
-  { File = "missiles/turtle_missile.png", Size = {40, 40}, Frames = 5, NumDirections = 5,
-  DrawLevel = 50, ImpactSound = "explosion",
-  Class = "missile-class-point-to-point", Sleep = 1, Speed = 16, Range = 1,
-  ImpactMissile = "missile-impact" } )
-
 DefineMissileType("missile-small-fire",
   { File = "missiles/small_fire.png", Size = {32, 48}, Frames = 6, NumDirections = 1,
   DrawLevel = 45, Class = "missile-class-fire", Sleep = 8, Speed = 16, Range = 1 } )

@@ -525,11 +525,6 @@ MakeSound("ships orc annoyed",
 	{"orc/ships/annoyed/1.wav",
 	"orc/ships/annoyed/2.wav",
 	"orc/ships/annoyed/3.wav"})
-MakeSound("ships submarine annoyed",
-	{"human/ships/gnomish_submarine/annoyed/1.wav",
-	"human/ships/gnomish_submarine/annoyed/2.wav",
-	"human/ships/gnomish_submarine/annoyed/3.wav",
-	"human/ships/gnomish_submarine/annoyed/4.wav"})
 MakeSound("troll axethrower-berserker annoyed",
 	{"orc/units/troll_axethrower-berserker/annoyed/1.wav",
 	"orc/units/troll_axethrower-berserker/annoyed/2.wav",
@@ -652,8 +647,6 @@ MakeSoundGroup("orc-oil-tanker-selected",
 	"ships orc selected", "ships orc annoyed")
 MakeSoundGroup("deathwing-selected",
 	"deathwing selected", "deathwing annoyed")
-MakeSoundGroup("gnomish-submarine-selected",
-	"ships human selected", "ships submarine annoyed")
 MakeSoundGroup("gnomish-flying-machine-selected",
 	"click", "gnomish flying machine annoyed")
 MakeSoundGroup("goblin-zeppelin-selected",
@@ -686,8 +679,6 @@ MapSound("elven-destroyer-acknowledge", "ships human acknowledge")
 MapSound("troll-destroyer-acknowledge", "ships orc acknowledge")
 MapSound("battleship-acknowledge", "ships human acknowledge")
 MapSound("ogre-juggernaught-acknowledge", "ships orc acknowledge")
-MapSound("gnomish-submarine-acknowledge", "ships human acknowledge")
-MapSound("giant-turtle-acknowledge", "ships orc acknowledge")
 MapSound("cho-gall-acknowledge", "ogre-mage-acknowledge")
 MapSound("lothar-acknowledge", "knight-acknowledge")
 MapSound("gul-dan-acknowledge", "death-knight-acknowledge")
@@ -710,8 +701,6 @@ MapSound("elven-destroyer-ready", "ships human ready")
 MapSound("troll-destroyer-ready", "ships orc ready")
 MapSound("battleship-ready", "ships human ready")
 MapSound("ogre-juggernaught-ready", "ships orc ready")
-MapSound("gnomish-submarine-ready", "ships human ready")
-MapSound("giant-turtle-ready", "ships orc ready")
     --	 selection sounds
 MapSound("peon-selected", "grunt-selected")
 MapSound("ballista-selected", "click")
@@ -724,7 +713,6 @@ MapSound("elven-destroyer-selected", "human-oil-tanker-selected")
 MapSound("troll-destroyer-selected", "orc-oil-tanker-selected")
 MapSound("battleship-selected", "human-oil-tanker-selected")
 MapSound("ogre-juggernaught-selected", "orc-oil-tanker-selected")
-MapSound("giant-turtle-selected", "orc-oil-tanker-selected")
 MapSound("eye-of-kilrogg-selected", "click")
 MapSound("cho-gall-selected", "ogre-mage-selected")
 MapSound("lothar-selected", "knight-selected")
@@ -790,8 +778,6 @@ MapSound("elven-destroyer-attack", "fireball throw")
 MapSound("troll-destroyer-attack", "fireball throw")
 MapSound("battleship-attack", "fireball throw")
 MapSound("ogre-juggernaught-attack", "fireball throw")
-MapSound("gnomish-submarine-attack", "fireball throw")
-MapSound("giant-turtle-attack", "fireball throw")
 MapSound("deathwing-attack", "fireball throw")
 MapSound("gryphon-rider-attack", "lightning")
 MapSound("dragon-attack", "fireball throw")

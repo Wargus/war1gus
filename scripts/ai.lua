@@ -234,28 +234,6 @@ function AiUpgradeMissile2()
 end
 
 --
---  Upgrade catapult 1 of the current race.
---
-function AiUpgradeCatapult1()
-  if (AiGetRace() == race1) then
-    return "upgrade-ballista1"
-  else
-    return "upgrade-catapult1"
-  end
-end
-
---
---  Upgrade catapult 2 of the current race.
---
-function AiUpgradeCatapult2()
-  if (AiGetRace() == race1) then
-    return "upgrade-ballista2"
-  else
-    return "upgrade-catapult2"
-  end
-end
-
---
 --  Research of the current race.
 --
 function AiScientific()
@@ -553,17 +531,6 @@ function AiTanker()
 end
 
 --
---  Submarine of the current race.
---
-function AiSubmarine()
-  if (AiGetRace() == race1) then
-    return "unit-human-submarine"
-  else
-    return "unit-orc-submarine"
-  end
-end
-
---
 --  Destroyer of the current race.
 --
 function AiDestroyer()
@@ -571,39 +538,6 @@ function AiDestroyer()
     return "unit-human-destroyer"
   else
     return "unit-orc-destroyer"
-  end
-end
-
---
---  Battleship of the current race.
---
-function AiBattleship()
-  if (AiGetRace() == race1) then
-    return "unit-battleship"
-  else
-    return "unit-ogre-juggernaught"
-  end
-end
-
---
---  Transporter of the current race.
---
-function AiTransporter()
-  if (AiGetRace() == race1) then
-    return "unit-human-transport"
-  else
-    return "unit-orc-transport"
-  end
-end
-
---
---  1st Elite Shooter of the current race.
---
-function AiUpgradeEliteShooter()
-  if (AiGetRace() == race1) then
-    return "upgrade-ranger"
-  else
-    return "upgrade-berserker"
   end
 end
 
@@ -637,17 +571,6 @@ function AiUpgradeEliteShooter3()
     return "upgrade-ranger-marksmanship"
   else
     return "upgrade-berserker-regeneration"
-  end
-end
-
---
---  Upgrade cavalry to cavalry mages of the current race.
---
-function AiUpgradeCavalryMage()
-  if (AiGetRace() == race1) then
-    return "upgrade-paladin"
-  else
-    return "upgrade-ogre-mage"
   end
 end
 

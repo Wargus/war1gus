@@ -148,7 +148,7 @@ DefineButton( { Pos = 5, Level = 0, Icon = "icon-orc-stand-ground",
   ForUnit = {"unit-grunt", "unit-ogre", "unit-axethrower", "unit-ogre-mage",
     "unit-goblin-sappers", "unit-berserker", "unit-catapult", "unit-fad-man",
     "unit-double-head", "unit-sharp-axe", "unit-beast-cry", "unit-quick-blade",
-    "unit-skeleton", "unit-dragon", "unit-fire-breeze", "unit-orc-submarine",
+    "unit-skeleton", "unit-dragon", "unit-fire-breeze",
     "unit-ogre-juggernaught", "unit-orc-destroyer", "orc-group", "unit-daemon"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-attack-ground",
@@ -464,11 +464,6 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-transport",
   Key = "t", Hint = "BUILD ~!TRANSPORT",
   ForUnit = {"unit-orc-shipyard"} } )
 
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-giant-turtle",
-  Action = "train-unit", Value = "unit-orc-submarine",
-  Key = "g", Hint = "BUILD ~!GIANT TURTLE",
-  ForUnit = {"unit-orc-shipyard"} } )
-
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-ogre-juggernaught",
   Action = "train-unit", Value = "unit-ogre-juggernaught",
   Key = "j", Hint = "BUILD ~!JUGGERNAUHGT",
@@ -492,62 +487,6 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-cannon-tower",
   Action = "upgrade-to", Value = "unit-orc-cannon-tower",
   Key = "c", Hint = "UPGRADE TO ~!CANNON TOWER",
   ForUnit = {"unit-orc-watch-tower"} } )
-
--- ships ----------------------------------------------------------------------
-
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-orc-ship-move",
-  Action = "move",
-  Key = "m", Hint = "~!MOVE",
-  ForUnit = {"unit-orc-oil-tanker", "unit-orc-submarine",
-    "unit-ogre-juggernaught", "unit-orc-destroyer", "unit-orc-transport"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-ship-armor1",
-  Action = "stop",
-  Key = "s", Hint = "~!STOP",
-  ForUnit = {"unit-orc-oil-tanker", "unit-orc-submarine",
-    "unit-ogre-juggernaught", "unit-orc-destroyer", "unit-orc-transport"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-unload",
-  Action = "unload",
-  Key = "u", Hint = "~!UNLOAD",
-  ForUnit = {"unit-orc-transport"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-oil-platform",
-  Action = "build", Value = "unit-orc-oil-platform",
-  Key = "b", Hint = "~!BUILD OIL PLATFORM",
-  ForUnit = {"unit-orc-oil-tanker"} } )
-
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-orc-ship-haul-oil",
-  Action = "harvest",
-  Key = "h", Hint = "~!HAUL OIL",
-  ForUnit = {"unit-orc-oil-tanker"} } )
-
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-ship-return-oil",
-  Action = "return-goods",
-  Key = "g", Hint = "RETURN WITH ~!GOODS",
-  ForUnit = {"unit-orc-oil-tanker"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-ship-cannon1",
-  Action = "attack",
-  Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-orc-submarine", "unit-ogre-juggernaught", "unit-orc-destroyer"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-ship-cannon2",
-  Action = "attack",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-orc-ship-cannon1"},
-  Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-orc-submarine", "unit-ogre-juggernaught", "unit-orc-destroyer"} } )
-
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-ship-cannon3",
-  Action = "attack",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-orc-ship-cannon2"},
-  Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-orc-submarine", "unit-ogre-juggernaught", "unit-orc-destroyer"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-patrol-naval",
-  Action = "patrol",
-  Key = "p", Hint = "~!PATROL",
-  ForUnit = {"unit-orc-submarine", "unit-ogre-juggernaught", "unit-orc-destroyer"} } )
 
 if (extensions) then
 do
