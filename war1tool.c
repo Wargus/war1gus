@@ -5,12 +5,12 @@
 //     /_______  /|__|  |__|  (____  /__| (____  /\___  /|____//____  >
 //             \/                  \/          \//_____/            \/
 //  ______________________                           ______________________
-//			  T H E   W A R   B E G I N S
+//                        T H E   W A R   B E G I N S
 //   Utility for Stratagus - A free fantasy real time strategy game engine
 //
-/**@name war1tool.c	-	Extract files from war archives. */
+/**@name war1tool.c - Extract files from war archives. */
 //
-//	(c) Copyright 2003 by Jimmy Salmon
+//      (c) Copyright 2003-2004 by Jimmy Salmon
 //
 //      This program is free software; you can redistribute it and/or modify
 //      it under the terms of the GNU General Public License as published by
@@ -26,12 +26,12 @@
 //      Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //      02111-1307, USA.
 //
-//	$Id$
+//      $Id$
 
 //@{
 
 /*----------------------------------------------------------------------------
---		Includes
+--  Includes
 ----------------------------------------------------------------------------*/
 
 #include <stdio.h>
@@ -52,7 +52,7 @@ typedef unsigned long u_int32_t;
 #endif
 
 //----------------------------------------------------------------------------
-//		Config
+//  Config
 //----------------------------------------------------------------------------
 
 /**
@@ -495,21 +495,21 @@ Control Todo[] = {
 
 // Images
 {I,0,"ui/logo",												 217, 216 _2},
-{I,0,"ui/human/top resource bar",						 191, 218 _2},
+{I,0,"ui/human/top resource bar",						 255, 218 _2},
 {I,0,"ui/orc/top resource bar",								 191, 219 _2},
-{I,0,"ui/human/right panel",								 217, 220 _2},
+{I,0,"ui/human/right panel",								 255, 220 _2},
 {I,0,"ui/orc/right panel",								 217, 221 _2},
-{I,0,"ui/human/bottom panel",								 217, 222 _2},
+{I,0,"ui/human/bottom panel",								 255, 222 _2},
 {I,0,"ui/orc/bottom panel",								 217, 223 _2},
-{I,0,"ui/human/minimap",								 217, 224 _2},
+{I,0,"ui/human/minimap",								 255, 224 _2},
 {I,0,"ui/orc/minimap",										 217, 225 _2},
-{I,0,"ui/human/left panel",								 217, 226 _2},
+{I,0,"ui/human/left panel",								 255, 226 _2},
 {I,0,"ui/orc/left panel",								 217, 227 _2},
-{I,0,"ui/human/panel 1",								 217, 228 _2},
+{I,0,"ui/human/panel 1",								 255, 228 _2},
 {I,0,"ui/orc/panel 1",										 217, 229 _2},
-{I,0,"ui/human/panel 2",								 217, 233 _2},
+{I,0,"ui/human/panel 2",								 255, 233 _2},
 {I,0,"ui/orc/panel 2",										 217, 234 _2},
-{I,0,"ui/human/panel 3",								 217, 235 _2},
+{I,0,"ui/human/panel 3",								 255, 235 _2},
 {I,0,"ui/orc/panel 3",										 217, 236 _2},
 {I,0,"ui/bottom of title screen",						 260, 243 _2},
 {I,0,"ui/human/left arrow",								 255, 244 _2},
@@ -517,7 +517,7 @@ Control Todo[] = {
 {I,0,"ui/human/right arrow",								 255, 246 _2},
 {I,0,"ui/orc/right arrow",								 255, 247 _2},
 {I,0,"ui/box",												 255, 248 _2},
-{I,0,"ui/human/save game",								 217, 249 _2},
+{I,0,"ui/human/save game",								 255, 249 _2},
 {I,0,"ui/orc/save game",								 217, 250 _2},
 {I,0,"ui/hot keys",										 255, 254 _2},
 {I,0,"ui/human/ok box",										 255, 256 _2},
@@ -526,7 +526,7 @@ Control Todo[] = {
 {I,0,"ui/title screen",										 260, 261 _2},
 {I,0,"ui/menu button 1",								 217, 362 _2},
 {I,0,"ui/menu button 2",								 217, 363 _2},
-{I,0,"ui/human/icon border",								 217, 364 _2},
+{I,0,"ui/human/icon border",								 255, 364 _2},
 {I,0,"ui/orc/icon border",								 217, 365 _2},
 {I,0,"ui/gold icon 1",										 191, 406 _2},
 {I,0,"ui/lumber icon 1",								 217, 407 _2},
@@ -662,31 +662,31 @@ Control Todo[] = {
 };
 
 /**
-**		File names.
+**  File names.
 */
 char* UnitNames[110];
 
 //----------------------------------------------------------------------------
-//		TOOLS
+//  TOOLS
 //----------------------------------------------------------------------------
 
 /**
-**		Check if path exists, if not make all directories.
+**  Check if path exists, if not make all directories.
 */
 void CheckPath(const char* path)
 {
 	char* cp;
 	char* s;
 
-	if (*path && path[0]=='.') {		// relative don't work
+	if (*path && path[0]=='.') {  // relative don't work
 		return;
 	}
 	cp = strdup(path);
 	s = strrchr(cp, '/');
 	if (s) {
-		*s = '\0';						// remove file
+		*s = '\0';  // remove file
 		s = cp;
-		for (;;) {						// make each path element
+		for (;;) {  // make each path element
 			s = strchr(s, '/');
 			if (s) {
 				*s = '\0';
@@ -707,8 +707,8 @@ void CheckPath(const char* path)
 }
 
 /**
-**		Given a file name that would appear in a PC archive convert it to what
-**		would appear on the Mac.
+**  Given a file name that would appear in a PC archive convert it to what
+**  would appear on the Mac.
 */
 void ConvertToMac(char* filename)
 {
@@ -743,13 +743,13 @@ void ConvertToMac(char* filename)
 //----------------------------------------------------------------------------
 
 /**
-**		Resize an image
+**  Resize an image
 **
-**		@param image		image data to be converted
-**		@param ow		old image width
-**		@param oh		old image height
-**		@param nw		new image width
-**		@param nh		new image height
+**  @param image  image data to be converted
+**  @param ow     old image width
+**  @param oh     old image height
+**  @param nw     new image width
+**  @param nh     new image height
 */
 void ResizeImage(unsigned char** image, int ow, int oh, int nw, int nh)
 {
@@ -777,13 +777,13 @@ void ResizeImage(unsigned char** image, int ow, int oh, int nw, int nh)
 }
 
 /**
-**		Save a png file.
+**  Save a png file.
 **
-**		@param name		File name
-**		@param image		Graphic data
-**		@param w		Graphic width
-**		@param h		Graphic height
-**		@param pal		Palette
+**  @param name   File name
+**  @param image  Graphic data
+**  @param w      Graphic width
+**  @param h      Graphic height
+**  @param pal    Palette
 */
 int SavePNG(const char* name, unsigned char* image, int w, int h,
 	unsigned char* pal)
@@ -823,7 +823,7 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	// zlib parameters
 	png_set_compression_level(png_ptr ,Z_BEST_COMPRESSION);
 
-	//		prepare the file information
+	// prepare the file information
 
 	info_ptr->width = w;
 	info_ptr->height = h;
@@ -834,11 +834,11 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	info_ptr->palette = (void*)pal;
 	info_ptr->num_palette = 256;
 
-	png_write_info(png_ptr, info_ptr);		// write the file header information
+	png_write_info(png_ptr, info_ptr);  // write the file header information
 
-	//		set transformation
+	// set transformation
 
-	//		prepare image
+	// prepare image
 
 	lines = malloc(h * sizeof(*lines));
 	if (!lines) {
@@ -863,14 +863,14 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 }
 
 //----------------------------------------------------------------------------
-//		Archive
+//  Archive
 //----------------------------------------------------------------------------
 
 /**
-**		Open the archive file.
+**  Open the archive file.
 **
-**		@param file		Archive file name
-**		@param type		Archive type requested
+**  @param file  Archive file name
+**  @param type  Archive type requested
 */
 int OpenArchive(const char* file, int type)
 {
@@ -883,7 +883,7 @@ int OpenArchive(const char* file, int type)
 	int i;
 
 	//
-	//		Open the archive file
+	//  Open the archive file
 	//
 	f = open(file, O_RDONLY | O_BINARY, 0);
 	if (f == -1) {
@@ -898,7 +898,7 @@ int OpenArchive(const char* file, int type)
 		(long)stat_buf.st_size _C_ stat_buf.st_size / 1024);
 
 	//
-	//		Read in the archive
+	//  Read in the archive
 	//
 	buf = malloc(stat_buf.st_size);
 	if (!buf) {
@@ -929,7 +929,7 @@ int OpenArchive(const char* file, int type)
 	}
 
 	//
-	//		Read offsets.
+	//  Read offsets.
 	//
 	op = malloc((entries + 1) * sizeof(unsigned char**));
 	if (!op) {
@@ -950,12 +950,12 @@ int OpenArchive(const char* file, int type)
 }
 
 /**
-**		Extract/uncompress entry.
+**  Extract/uncompress entry.
 **
-**		@param cp		Pointer to compressed entry
-**		@param lenp		Return pointer of length of the entry
+**  @param cp    Pointer to compressed entry
+**  @param lenp  Return pointer of length of the entry
 **
-**		@return				Pointer to uncompressed entry
+**  @return      Pointer to uncompressed entry
 */
 unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 {
@@ -1044,7 +1044,7 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 }
 
 /**
-**		Close the archive file.
+**  Close the archive file.
 */
 int CloseArchive(void)
 {
@@ -1057,7 +1057,7 @@ int CloseArchive(void)
 }
 
 //----------------------------------------------------------------------------
-//		FLC
+//  FLC
 //----------------------------------------------------------------------------
 
 char FLCFile[1024];
@@ -1065,10 +1065,11 @@ unsigned char FLCPalette[256 * 3];
 int FLCWidth;
 int FLCHeight;
 unsigned char* FLCImage;
+unsigned char* FLCImage2;
 int FLCFrame;
 
 /**
-**		Convert FLC COLOR256
+**  Convert FLC COLOR256
 */
 void ConvertFLC_COLOR256(unsigned char* buf)
 {
@@ -1099,7 +1100,7 @@ void ConvertFLC_COLOR256(unsigned char* buf)
 }
 
 /**
-**		Convert FLC SS2
+**  Convert FLC SS2
 */
 void ConvertFLC_SS2(unsigned char* buf)
 {
@@ -1153,11 +1154,13 @@ void ConvertFLC_SS2(unsigned char* buf)
 	}
 
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
-	SavePNG(pngbuf, FLCImage, FLCWidth, FLCHeight, FLCPalette);
+	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
+	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette);
 }
 
 /**
-**		Convert FLC LC
+**  Convert FLC LC
 */
 void ConvertFLC_LC(unsigned char* buf)
 {
@@ -1199,11 +1202,13 @@ void ConvertFLC_LC(unsigned char* buf)
 	}
 
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
-	SavePNG(pngbuf, FLCImage, FLCWidth, FLCHeight, FLCPalette);
+	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
+	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette);
 }
 
 /**
-**		Convert FLC BRUN
+**  Convert FLC BRUN
 */
 void ConvertFLC_BRUN(unsigned char* buf)
 {
@@ -1239,11 +1244,13 @@ void ConvertFLC_BRUN(unsigned char* buf)
 	}
 
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
-	SavePNG(pngbuf, FLCImage, FLCWidth, FLCHeight, FLCPalette);
+	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
+	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette);
 }
 
 /**
-**		Convert FLC COPY
+**  Convert FLC COPY
 */
 void ConvertFLC_COPY(unsigned char* buf)
 {
@@ -1263,11 +1270,12 @@ void ConvertFLC_COPY(unsigned char* buf)
 	}
 
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
-	SavePNG(pngbuf, FLCImage, FLCWidth, FLCHeight, FLCPalette);
+	ResizeImage(&FLCImage, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
+	SavePNG(pngbuf, FLCImage, 2 * FLCWidth, 2 * FLCHeight, FLCPalette);
 }
 
 /**
-**		Convert FLC PSTAMP
+**  Convert FLC PSTAMP
 */
 void ConvertFLC_PSTAMP(unsigned char* buf)
 {
@@ -1283,7 +1291,7 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	unsigned char* i;
 
 	//
-	//		Read header
+	//  Read header
 	//
 	p = buf;
 	height = FetchLE16(p);
@@ -1299,7 +1307,7 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	i = image;
 
 	//
-	//		PSTAMP header
+	//  PSTAMP header
 	//
 	pstamp_size = FetchLE32(p);
 	pstamp_type = FetchLE16(p);
@@ -1343,7 +1351,7 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 }
 
 /**
-**		Convert FLC Frame Chunk
+**  Convert FLC Frame Chunk
 */
 int ConvertFLCFrameChunk(unsigned char* buf)
 {
@@ -1355,7 +1363,7 @@ int ConvertFLCFrameChunk(unsigned char* buf)
 	int data_type;
 
 	//
-	//		Read header
+	//  Read header
 	//
 	p = buf;
 	frame_size = FetchLE32(p);
@@ -1368,7 +1376,7 @@ int ConvertFLCFrameChunk(unsigned char* buf)
 	p += 8; // reserved
 
 	//
-	//		Read chunks
+	//  Read chunks
 	//
 	for (; frame_chunks; --frame_chunks) {
 		data_size = FetchLE32(p);
@@ -1403,7 +1411,7 @@ int ConvertFLCFrameChunk(unsigned char* buf)
 }
 
 /**
-**		Convert FLC
+**  Convert FLC
 */
 void ConvertFLC(const char* file, const char* flc)
 {
@@ -1433,7 +1441,7 @@ void ConvertFLC(const char* file, const char* flc)
 		(long)stat_buf.st_size _C_ stat_buf.st_size/1024);
 
 	//
-	//		Read in the archive
+	//  Read in the archive
 	//
 	buf = malloc(stat_buf.st_size);
 	if (!buf) {
@@ -1455,7 +1463,7 @@ void ConvertFLC(const char* file, const char* flc)
 	FLCFrame = 0;
 
 	//
-	//		Read header
+	//  Read header
 	//
 	p = buf;
 	i = FetchLE32(p);
@@ -1489,7 +1497,8 @@ void ConvertFLC(const char* file, const char* flc)
 	p += 40;		// reserved
 
 	FLCImage = malloc(FLCWidth * FLCHeight);
-	if (!FLCImage) {
+	FLCImage2 = malloc(2 * FLCWidth * 2 * FLCHeight);
+	if (!FLCImage || !FLCImage2) {
 		printf("Can't allocate image\n");
 		exit(-1);
 	}
@@ -1500,7 +1509,7 @@ void ConvertFLC(const char* file, const char* flc)
 	}
 
 	//
-	//		Save FLC info
+	//  Save FLC info
 	//
 	sprintf(txtbuf, "%s.txt", FLCFile);
 	fd = fopen(txtbuf, "wb");
@@ -1520,21 +1529,21 @@ void ConvertFLC(const char* file, const char* flc)
 }
 
 //----------------------------------------------------------------------------
-//		Palette
+//  Palette
 //----------------------------------------------------------------------------
 
 /**
-**		Convert palette.
+**  Convert palette.
 **
-**		@param pal		Pointer to palette
+**  @param pal  Pointer to palette
 **
-**		@return				Pointer to palette
+**  @return     Pointer to palette
 */
 unsigned char* ConvertPalette(unsigned char* pal)
 {
 	int i;
 
-	for (i = 0; i < 768; ++i) {				// PNG needs 0-256
+	for (i = 0; i < 768; ++i) {  // PNG needs 0-256
 		pal[i] <<= 2;
 	}
 
@@ -1542,7 +1551,7 @@ unsigned char* ConvertPalette(unsigned char* pal)
 }
 
 /**
-**		Convert rgb to my format.
+**  Convert rgb to my format.
 */
 int ConvertRgb(char* file,int rgbe)
 {
@@ -1561,7 +1570,7 @@ int ConvertRgb(char* file,int rgbe)
 	ConvertPalette(rgbp);
 
 	//
-	//		Generate RGB File.
+	//  Generate RGB File.
 	//
 	sprintf(buf, "%s/%s/%s.rgb", Dir, TILESET_PATH, file);
 	CheckPath(buf);
@@ -1578,7 +1587,7 @@ int ConvertRgb(char* file,int rgbe)
 	fclose(f);
 
 	//
-	//		Generate GIMP palette
+	//  Generate GIMP palette
 	//
 	sprintf(buf, "%s/%s/%s.gimp", Dir, TILESET_PATH, file);
 	CheckPath(buf);
@@ -1603,11 +1612,11 @@ int ConvertRgb(char* file,int rgbe)
 }
 
 //----------------------------------------------------------------------------
-//		Tileset
+//  Tileset
 //----------------------------------------------------------------------------
 
 /**
-**		Decode a minitile into the image.
+**  Decode a minitile into the image.
 */
 void DecodeMiniTile(unsigned char* image, int ix, int iy, int iadd,
 	unsigned char* mini,int index, int flipx, int flipy)
@@ -1625,7 +1634,7 @@ void DecodeMiniTile(unsigned char* image, int ix, int iy, int iadd,
 }
 
 /**
-**		Convert a tileset to my format.
+**  Convert a tileset to my format.
 */
 int ConvertTileset(char* file,int index)
 {
@@ -1724,11 +1733,11 @@ int ConvertTileset(char* file,int index)
 }
 
 //----------------------------------------------------------------------------
-//		Graphics
+//  Graphics
 //----------------------------------------------------------------------------
 
 /**
-**		Decode a entry(frame) into image.
+**  Decode a entry(frame) into image.
 */
 void DecodeGfuEntry(int index, unsigned char* start,
 	unsigned char* image, int iadd)
@@ -1749,7 +1758,7 @@ void DecodeGfuEntry(int index, unsigned char* start,
 	width = FetchByte(bp);
 	height = FetchByte(bp);
 	offset = FetchLE32(bp);
-	if (offset < 0) {						// High bit of width
+	if (offset < 0) {  // High bit of width
 		offset &= 0x7FFFFFFF;
 		width += 256;
 	}
@@ -1766,7 +1775,7 @@ void DecodeGfuEntry(int index, unsigned char* start,
 	}
 }
 /**
-**		Convert graphics into image.
+**  Convert graphics into image.
 */
 unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 	unsigned char* bp2,int start2)
@@ -1779,7 +1788,7 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 	unsigned char* image;
 	int IPR;
 
-	if (bp2) {		// Init pointer to 2nd animation
+	if (bp2) {  // Init pointer to 2nd animation
 		count = FetchLE16(bp2);
 		max_width = FetchByte(bp2);
 		max_height = FetchByte(bp2);
@@ -1802,8 +1811,8 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 
 	image = malloc(max_width * max_height * length);
 
-	//		Image:		0, 1, 2, 3, 4,
-	//				5, 6, 7, 8, 9, ...
+	//  Image:  0, 1, 2, 3, 4,
+	//          5, 6, 7, 8, 9, ...
 	if (!image) {
 		printf("Can't allocate image\n");
 		exit(-1);
@@ -1824,7 +1833,7 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 }
 
 /**
-**		Convert a uncompressed graphic to my format.
+**  Convert a uncompressed graphic to my format.
 */
 int ConvertGfu(char* file, int pale, int gfue)
 {
@@ -1892,11 +1901,11 @@ int ConvertGfu(char* file, int pale, int gfue)
 }
 
 //----------------------------------------------------------------------------
-//		Image
+//  Image
 //----------------------------------------------------------------------------
 
 /**
-**		Convert image into image.
+**  Convert image into image.
 */
 unsigned char* ConvertImg(unsigned char* bp,int *wp,int *hp)
 {
@@ -1930,7 +1939,7 @@ unsigned char* ConvertImg(unsigned char* bp,int *wp,int *hp)
 }
 
 /**
-**		Convert an image to my format.
+**  Convert an image to my format.
 */
 int ConvertImage(char* file, int pale, int imge, int nw, int nh)
 {
@@ -2009,7 +2018,7 @@ int ConvertImage(char* file, int pale, int imge, int nw, int nh)
 //----------------------------------------------------------------------------
 
 /**
-**		Convert cursor into image.
+**  Convert cursor into image.
 */
 unsigned char* ConvertCur(unsigned char* bp,int* wp,int* hp)
 {
@@ -2044,7 +2053,7 @@ unsigned char* ConvertCur(unsigned char* bp,int* wp,int* hp)
 }
 
 /**
-**		Convert a cursor to my format.
+**  Convert a cursor to my format.
 */
 int ConvertCursor(char* file, int pale, int cure)
 {
@@ -2088,11 +2097,11 @@ int ConvertCursor(char* file, int pale, int cure)
 }
 
 //----------------------------------------------------------------------------
-//		Wav
+//  Wav
 //----------------------------------------------------------------------------
 
 /**
-**		Convert wav to my format.
+**  Convert wav to my format.
 */
 int ConvertWav(char* file, int wave)
 {
@@ -2131,7 +2140,7 @@ int ConvertWav(char* file, int wave)
 }
 
 /**
-**		Convert voc to my format.
+**  Convert voc to my format.
 */
 int ConvertVoc(char* file,int voce)
 {
@@ -2235,11 +2244,11 @@ int ConvertVoc(char* file,int voce)
 }
 
 //----------------------------------------------------------------------------
-//		Video
+//  Video
 //----------------------------------------------------------------------------
 
 /**
-**		Convert pud to my format.
+**  Convert video to my format.
 */
 int ConvertVideo(char* file,int video)
 {
@@ -2272,11 +2281,11 @@ int ConvertVideo(char* file,int video)
 }
 
 //----------------------------------------------------------------------------
-//		Text
+//  Text
 //----------------------------------------------------------------------------
 
 /**
-**		Convert text to my format.
+**  Convert text to my format.
 */
 int ConvertText(char* file, int txte, int ofs)
 {
@@ -2308,7 +2317,7 @@ int ConvertText(char* file, int txte, int ofs)
 }
 
 /**
-**		Convert text to my format.
+**  Convert text to my format.
 */
 int ConvertText2(char* file, int txte)
 {
@@ -2345,7 +2354,7 @@ int ConvertText2(char* file, int txte)
 }
 
 /**
-**		Parse string.
+**  Parse string.
 */
 char* ParseString(char* input)
 {
@@ -2368,7 +2377,7 @@ char* ParseString(char* input)
 			if (f) {
 				tp = strchr(tp, ' ') + 1;
 			}
-			while (*tp) {		// make them readabler
+			while (*tp) {  // make them readabler
 				if (*tp == '-') {
 					*dp++ = '_';
 					tp++;
@@ -2386,10 +2395,10 @@ char* ParseString(char* input)
 }
 
 /**
-**		Save the players
+**  Save the players
 **
-**		@param f		File handle
-**		@param mtxme		Entry number of map.
+**  @param f      File handle
+**  @param mtxme  Entry number of map.
 */
 local void CmSavePlayers(gzFile f)
 {
@@ -2425,10 +2434,10 @@ local void CmSavePlayers(gzFile f)
 }
 
 /**
-**		Save the map
+**  Save the map
 **
-**		@param f		File handle
-**		@param mtxme		Entry number of map.
+**  @param f      File handle
+**  @param mtxme  Entry number of map.
 */
 local void CmSaveMap(gzFile f, int mtxme)
 {
@@ -2510,9 +2519,9 @@ char *UnitTypes[] = {
 };
 
 /**
-**		Save the units to cm.
+**  Save the units to cm.
 **
-**		@param f		File handle
+**  @param f  File handle
 */
 local void CmSaveUnits(gzFile f, unsigned char* txtp)
 {
@@ -2583,7 +2592,7 @@ local void CmSaveUnits(gzFile f, unsigned char* txtp)
 }
 
 /**
-**		Convert a map to cm.
+**  Convert a map to cm.
 */
 int ConvertCm(const char* file, int txte, int mtxme)
 {
@@ -2614,11 +2623,11 @@ int ConvertCm(const char* file, int txte, int mtxme)
 }
 
 //----------------------------------------------------------------------------
-//		Main loop
+//  Main loop
 //----------------------------------------------------------------------------
 
 /**
-**		Display the usage.
+**  Display the usage.
 */
 void Usage(const char* name)
 {
@@ -2630,7 +2639,7 @@ destination-directory\tDirectory where the extracted files are placed.\n"
 }
 
 /**
-**		Main
+**  Main
 */
 #undef main
 int main(int argc, char** argv)
