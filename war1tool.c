@@ -737,9 +737,10 @@ void ResizeImage(unsigned char** image, int ow, int oh, int nw, int nh)
 **  @param w      Graphic width
 **  @param h      Graphic height
 **  @param pal    Palette
+**  @param transparent  Image uses transparency
 */
 int SavePNG(const char* name, unsigned char* image, int w, int h,
-	unsigned char* pal)
+	unsigned char* pal, int transparent)
 {
 	FILE* fp;
 	png_structp png_ptr;
@@ -777,7 +778,6 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	png_set_compression_level(png_ptr ,Z_BEST_COMPRESSION);
 
 	// prepare the file information
-
 	info_ptr->width = w;
 	info_ptr->height = h;
 	info_ptr->bit_depth = 8;
@@ -787,12 +787,31 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	info_ptr->palette = (void*)pal;
 	info_ptr->num_palette = 256;
 
+	if (transparent) {
+		unsigned char* p;
+		unsigned char* end;
+		png_byte trans[256];
+
+		p = image;
+		end = image + w * h;
+		while (p < end) {
+			if (!*p) {
+				*p = 0xFF;
+			}
+			++p;
+		}
+
+		memset(trans, 0xFF, sizeof(trans));
+		trans[255] = 0x0;
+		png_set_tRNS(png_ptr, info_ptr, trans, 256, 0);
+	}
+
+	// write the file header information
 	png_write_info(png_ptr, info_ptr);  // write the file header information
 
 	// set transformation
 
 	// prepare image
-
 	lines = malloc(h * sizeof(*lines));
 	if (!lines) {
 		png_destroy_write_struct(&png_ptr, &info_ptr);
@@ -1061,7 +1080,7 @@ void ConvertFLC_SS2(unsigned char* buf)
 	for (; lines; --lines) {
 		i = FLCImage + FLCWidth * skiplines;
 		w = FetchLE16(p);
-		if ((w & 0xC0) == 0) {
+		if ((w & 0xC000) == 0) {
 			packets = w;
 			for (; packets; --packets) {
 				skip = FetchByte(p);
@@ -1072,7 +1091,7 @@ void ConvertFLC_SS2(unsigned char* buf)
 						*(unsigned short*)i = FetchLE16(p);
 						i += 2;
 					}
-				} else {
+				} else if (type < 0) {
 					packet = FetchLE16(p);
 					for (; type; ++type) {
 						*(unsigned short*)i = packet;
@@ -1081,10 +1100,13 @@ void ConvertFLC_SS2(unsigned char* buf)
 				}
 			}
 		} else if ((w & 0xC000) == 0x8000) {
+			// Not used, ignore
 			printf("SS2 low order byte stored in last byte of line\n");
+			++lines;
 		} else if ((w & 0xC000) == 0xC000) {
 			skip = -(short)w;
 			skiplines += skip - 1; // -1 because of ++skiplines below
+			++lines;
 		} else {
 			printf("SS2 error\n");
 			return;
@@ -1095,7 +1117,7 @@ void ConvertFLC_SS2(unsigned char* buf)
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
 	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
 	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, 0);
 }
 
 /**
@@ -1141,7 +1163,7 @@ void ConvertFLC_LC(unsigned char* buf)
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
 	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
 	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, 0);
 }
 
 /**
@@ -1183,7 +1205,7 @@ void ConvertFLC_BRUN(unsigned char* buf)
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
 	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
 	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, 0);
 }
 
 /**
@@ -1207,8 +1229,9 @@ void ConvertFLC_COPY(unsigned char* buf)
 	}
 
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
-	ResizeImage(&FLCImage, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage, 2 * FLCWidth, 2 * FLCHeight, FLCPalette);
+	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
+	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, 0);
 }
 
 /**
@@ -1655,7 +1678,7 @@ int ConvertTileset(char* file,int index)
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, width, height, 2 * width, 2 * height);
-	SavePNG(buf, image, 2 * width, 2 * height, palp);
+	SavePNG(buf, image, 2 * width, 2 * height, palp, 1);
 
 	free(palp);
 	free(mini);
@@ -1828,7 +1851,7 @@ int ConvertGfu(char* file, int pale, int gfue)
 	sprintf(buf, "%s/%s/%s.png", Dir, UNIT_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	SavePNG(buf, image, 2 * w, 2 * h, palp);
+	SavePNG(buf, image, 2 * w, 2 * h, palp, 1);
 
 	free(image);
 	free(palp);
@@ -1931,7 +1954,7 @@ int ConvertImage(char* file, int pale, int imge)
 	CheckPath(buf);
 
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	SavePNG(buf, image, 2 * w, 2 * h, palp);
+	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
 
 	free(image);
 	free(palp);
@@ -2007,7 +2030,7 @@ int ConvertCursor(char* file, int pale, int cure)
 	sprintf(buf, "%s/%s/%s.png", Dir, CURSOR_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	SavePNG(buf, image, 2 * w, 2 * h, palp);
+	SavePNG(buf, image, 2 * w, 2 * h, palp, 1);
 
 	free(image);
 	if (pale != 27 && cure != 314) {
