@@ -1472,7 +1472,7 @@ void DecodeGfuEntry(int index,unsigned char* start
     DebugLevel3("%2d: +x %2d +y %2d width %2d height %2d offset %d\n"
 	_C_ index _C_ xoff _C_ yoff _C_ width _C_ height _C_ offset);
 
-    sp=start+offset-6;
+    sp=start+offset-4;
     dp=image+xoff-ix+(yoff-iy)*iadd;
     for( i=0; i<height; ++i ) {
 	memcpy(dp,sp,width);
