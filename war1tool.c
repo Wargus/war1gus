@@ -1622,6 +1622,17 @@ int ConvertTileset(char* file,int index)
 	ResizeImage(&image, width, height, 2 * width, 2 * height);
 	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
 
+	for (y = 0; y < 32; ++y) {
+		for (x = 10 * 32; x < 16 * 32; ++x) {
+			image[y * 16 * 32 + x] = 0;
+		}
+	}
+	sprintf(buf, "%s/%s/%s", Dir, TILESET_PATH, file);
+	*(strrchr(buf, '/') + 1) = '\0';
+	strcat(buf, "fog.png");
+	CheckPath(buf);
+	SavePNG(buf, image, 16 * 32, 32, palp, 0);
+
 	free(palp);
 	free(mini);
 	free(mega);
