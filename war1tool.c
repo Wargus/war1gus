@@ -2319,7 +2319,7 @@ static void CmSaveMap(gzFile f, int mtxme)
 				gzprintf(f, "\t");
 			}
 			s = FetchLE16(p);
-			gzprintf(f, "{%d, \"land\"},", s);
+			gzprintf(f, "{%d, %d, \"land\"},", s, s);
 			if (j & 1) {
 				gzprintf(f, "\n");
 			}
@@ -2416,7 +2416,7 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 		++numunits;
 	}
 
-	gzprintf(f, "SlotUsage({0, \"-\", %d})\n", numunits - 1);
+	gzprintf(f, "SlotUsage(0, \"-\", %d)\n", numunits - 1);
 
 	i = 0;
 	while (p[0] != 0xFF || p[1] != 0xFF) {
