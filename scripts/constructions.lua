@@ -34,25 +34,8 @@ Load("scripts/orc/constructions.lua")
 DefineConstruction("construction-none", {
   Files = {
    {Tileset = "default",
-    File = "neutral/land_construction_site.png",
-    Size = {64, 64}}},
-  Constructions = {
-   {Percent = 0,
-    File = "construction",
-    Frame = 0},
-   {Percent = 33,
-    File = "construction",
-    Frame = 1},
-   {Percent = 67,
-    File = "construction",
-    Frame = 2}}
-})
-
-DefineConstruction("construction-land", {
-  Files = {
-   {Tileset = "default",
-    File = "neutral/land_construction_site.png",
-    Size = {64, 64}}},
+    File = "tilesets/wall_construction_site.png",
+    Size = {32, 32}}},
   Constructions = {
    {Percent = 0,
     File = "construction",

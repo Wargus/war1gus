@@ -49,7 +49,7 @@ DefineTilesetWcNames(
 
 DefineConstructionWcNames(
   "construction-none",
-  "construction-land", "construction-wall",
+  "construction-wall",
   "construction-human-barracks", "construction-human-blacksmith",
   "construction-human-church", "construction-human-farm",
   "construction-human-lumber-mill", "construction-human-stable",
