@@ -253,7 +253,9 @@ DefineUnitType("unit-warlock", { Name = "Warlock",
   RightMouseAction = "attack",
   CanAttack = true,
   CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
+--[[
   CanCastSpell = {"spell-eye-of-vision", "spell-runes", "spell-bloodlust"},
+]]
   LandUnit = true,
   Coward = true,
   isundead = true,

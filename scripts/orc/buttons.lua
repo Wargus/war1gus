@@ -68,7 +68,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield3",
     "unit-goblin-sappers", "unit-berserker", "unit-catapult", "unit-quick-blade",
     "unit-beast-cry", "unit-fad-man", "unit-double-head"} } )
 
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-battle-axe1",
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe1",
   Action = "attack",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-grunt", "unit-ogre", "unit-axethrower", "unit-ogre-mage",
@@ -78,17 +78,17 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-battle-axe1",
     "unit-evil-knight", "unit-skeleton", "unit-dragon", "unit-fire-breeze",
     "orc-group", "unit-daemon"} } )
 
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-battle-axe2",
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe2",
   Action = "attack",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-battle-axe1"},
+  Allowed = "check-upgrade", AllowArg = {"upgrade-axe1"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-grunt", "unit-ogre", "unit-axethrower", "unit-ogre-mage",
     "unit-goblin-sappers", "unit-berserker", "unit-catapult", "unit-quick-blade",
     "unit-beast-cry", "unit-fad-man", "unit-double-head"} } )
 
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-battle-axe3",
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe3",
   Action = "attack",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-battle-axe2"},
+  Allowed = "check-upgrade", AllowArg = {"upgrade-axe2"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-grunt", "unit-ogre", "unit-axethrower", "unit-ogre-mage",
     "unit-goblin-sappers", "unit-berserker", "unit-catapult", "unit-quick-blade",
@@ -156,14 +156,17 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-attack-ground",
   Key = "g", Hint = "ATTACK ~!GROUND",
   ForUnit = {"unit-catapult", "unit-ogre-juggernaught", "orc-group"} } )
 
+--[[
 DefineButton( { Pos = 9, Level = 0, Icon = "icon-orc-demolish",
   Action = "cast-spell", Value = "spell-suicide-bomber",
   Allowed = "check-true",
   Key = "d", Hint = "~!DEMOLISH",
   ForUnit = {"unit-goblin-sappers"} } )
+]]
 
 -- ogre-mage specific actions -------------------------------------------------
 
+--[[
 DefineButton( { Pos = 7, Level = 0, Icon = "icon-eye-of-kilrogg",
   Action = "cast-spell", Value = "spell-eye-of-vision",
   Allowed = "check-upgrade", AllowArg = {"upgrade-eye-of-kilrogg"},
@@ -181,9 +184,11 @@ DefineButton( { Pos = 9, Level = 0, Icon = "icon-runes",
   Allowed = "check-upgrade", AllowArg = {"upgrade-runes"},
   Key = "r", Hint = "~!RUNES",
   ForUnit = {"unit-ogre-mage", "unit-fad-man"} } )
+]]
 
 -- cho'gall specific actions --- same as ogre mage but it has them always -----
 
+--[[
 DefineButton( { Pos = 7, Level = 0, Icon = "icon-eye-of-kilrogg",
   Action = "cast-spell", Value = "spell-eye-of-vision",
   Allowed = "check-true",
@@ -201,6 +206,7 @@ DefineButton( { Pos = 9, Level = 0, Icon = "icon-runes",
   Allowed = "check-true",
   Key = "r", Hint = "~!RUNES",
   ForUnit = {"unit-double-head"} } )
+]]
 
 -- death-knight specific actions ----------------------------------------------
 
@@ -209,6 +215,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-touch-of-darkness",
   Key = "a", Hint = "TOUCH OF D~!ARKNESS",
   ForUnit = {"unit-death-knight", "unit-ice-bringer", "unit-evil-knight"} } )
 
+--[[
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-death-coil",
   Action = "cast-spell", Value = "spell-death-coil",
   Allowed = "check-upgrade", AllowArg = {"upgrade-death-coil"},
@@ -244,6 +251,7 @@ DefineButton( { Pos = 9, Level = 0, Icon = "icon-death-and-decay",
   Allowed = "check-upgrade", AllowArg = {"upgrade-death-and-decay"},
   Key = "d", Hint = "~!DEATH AND DECAY",
   ForUnit = {"unit-death-knight", "unit-ice-bringer", "unit-evil-knight"} } )
+]]
 
 -- peon specific actions ------------------------------------------------------
 
@@ -392,7 +400,7 @@ DefineButton( { Pos = 8, Level = 0, Icon = "icon-orc-shield1",
   Key = "z", Hint = "SET ~!ZTOP",
   ForUnit = {"unit-orc-town-hall", "unit-orc-barracks"} } )
 
-DefineButton( { Pos = 9, Level = 0, Icon = "icon-battle-axe1",
+DefineButton( { Pos = 9, Level = 0, Icon = "icon-axe1",
   Action = "attack",
   Key = "e", Hint = "S~!ET ATTACK",
   ForUnit = {"unit-orc-town-hall", "unit-orc-barracks"} } )
@@ -509,14 +517,14 @@ end
 
 -- upgrades -------------------------------------------------------------------
 
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-battle-axe2",
-  Action = "research", Value = "upgrade-battle-axe1",
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-axe2",
+  Action = "research", Value = "upgrade-axe1",
   Allowed = "check-single-research",
   Key = "w", Hint = "UPGRADE ~!WEAPONS (Damage +2)",
   ForUnit = {"unit-orc-blacksmith"} } )
 
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-battle-axe3",
-  Action = "research", Value = "upgrade-battle-axe2",
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-axe3",
+  Action = "research", Value = "upgrade-axe2",
   Allowed = "check-single-research",
   Key = "w", Hint = "UPGRADE ~!WEAPONS (Damage +2)",
   ForUnit = {"unit-orc-blacksmith"} } )
