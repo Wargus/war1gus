@@ -1319,7 +1319,7 @@ void ConvertFLC(const char* file,const char* flc)
     p=buf;
     i=FetchLE32(p);
     if( i!=stat_buf.st_size ) {
-	printf("FLC file size incorrect: %d != %ld\n",i,stat_buf.st_size);
+	printf("FLC file size incorrect: %d != %ld\n",i,(long)stat_buf.st_size);
 	free(buf);
 	return;
     }
