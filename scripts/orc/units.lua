@@ -269,37 +269,6 @@ DefineUnitType("unit-warlock", { Name = "Warlock",
     "dead", "orc dead",
     "attack", "warlock-attack"} } )
 
-DefineUnitType("unit-lothar", { Name = "Lothar",
-  Files = {"tileset-forest", "orc/units/lothar.png"},
-  Size = {96, 96},
-  Animations = "animations-footman", Icon = "icon-lothar",
-  Costs = {"time", 90, "gold", 800, "wood", 100},
-  Speed = 13,
-  HitPoints = 90,
-  DrawLevel = 40,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 4, ComputerReactionRange = 6, PersonReactionRange = 4,
-  Armor = 4, BasicDamage = 8, PiercingDamage = 4, Missile = "missile-none",
-  MaxAttackRange = 1,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  Corpse = {"unit-dead-body", 0},
-  Type = "land",
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true,
-  LandUnit = true,
-  organic = true,
-  SelectableByRectangle = true,
-  Sounds = {
-    "selected", "lothar-selected",
-    "acknowledge", "lothar-acknowledge",
-    "ready", "lothar-ready",
-    "help", "basic orc voices help 1",
-    "dead", "basic orc voices dead",
-    "attack", "lothar-attack"} } )
-
 DefineUnitType("unit-orc-farm", { Name = "Orc Farm",
   Files = {"tileset-forest", "tilesets/forest/orc/buildings/farm.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/farm.png"},
@@ -326,7 +295,7 @@ DefineUnitType("unit-orc-farm", { Name = "Orc Farm",
     "selected", "orc-farm-selected",
     "acknowledge", "orc-farm-acknowledge",
     "ready", "orc-farm-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-farm-attack"} } )
 
@@ -355,7 +324,7 @@ DefineUnitType("unit-orc-barracks", { Name = "Orc Barracks",
     "selected", "orc-barracks-selected",
     "acknowledge", "orc-barracks-acknowledge",
     "ready", "orc-barracks-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-barracks-attack"} } )
 
@@ -384,7 +353,7 @@ DefineUnitType("unit-orc-temple", { Name = "Orc Temple",
     "selected", "orc-temple-selected",
     "acknowledge", "orc-temple-acknowledge",
     "ready", "orc-temple-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-temple-attack"} } )
 
@@ -413,7 +382,7 @@ DefineUnitType("unit-orc-kennel", { Name = "Orc Kennel",
     "selected", "orc-kennel-selected",
     "acknowledge", "orc-kennel-acknowledge",
     "ready", "orc-kennel-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-kennel-attack"} } )
 
@@ -444,7 +413,7 @@ DefineUnitType("unit-orc-town-hall", { Name = "Orc Town Hall",
     "selected", "orc-town-hall-selected",
     "acknowledge", "orc-town-hall-acknowledge",
     "ready", "orc-town-hall-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-town-hall-attack"} } )
 
@@ -475,7 +444,7 @@ DefineUnitType("unit-orc-lumber-mill", { Name = "Orc Lumber Mill",
     "selected", "orc-lumber-mill-selected",
     "acknowledge", "orc-lumber-mill-acknowledge",
     "ready", "orc-lumber-mill-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-lumber-mill-attack"} } )
 
@@ -504,7 +473,7 @@ DefineUnitType("unit-orc-tower", { Name = "Orc Tower",
     "selected", "orc-tower-selected",
     "acknowledge", "orc-tower-acknowledge",
     "ready", "orc-tower-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-tower-attack"} } )
 
@@ -533,7 +502,7 @@ DefineUnitType("unit-orc-blacksmith", { Name = "Orc Blacksmith",
     "selected", "orc-blacksmith-selected",
     "acknowledge", "orc-blacksmith-acknowledge",
     "ready", "orc-blacksmith-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-blacksmith-attack"} } )
 
@@ -555,7 +524,7 @@ DefineUnitType("unit-orc-start-location", { Name = "Orc Start Location",
     "selected", "orc-start-location-selected",
     "acknowledge", "orc-start-location-acknowledge",
     "ready", "orc-start-location-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-start-location-attack"} } )
 
@@ -581,7 +550,7 @@ DefineUnitType("unit-orc-wall", { Name = "Wall",
     "selected", "orc-wall-selected",
     "acknowledge", "orc-wall-acknowledge",
     "ready", "orc-wall-ready",
-    "help", "basic orc voices help 2",
+    "help", "orc help 2",
     "dead", "building destroyed",
     "attack", "orc-wall-attack"} } )
 
@@ -611,7 +580,7 @@ DefineUnitType("unit-skeleton", { Name = "Skeleton",
     "selected", "skeleton-selected",
     "acknowledge", "skeleton-acknowledge",
     "ready", "skeleton-ready",
-    "help", "basic orc voices help 1",
-    "dead", "basic orc voices dead",
+    "help", "orc help 1",
+    "dead", "orc dead",
     "attack", "skeleton-attack"} } )
 

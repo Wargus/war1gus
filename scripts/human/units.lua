@@ -343,7 +343,7 @@ DefineUnitType("unit-human-farm", { Name = "Human Farm",
     "selected", "human-farm-selected",
     "acknowledge", "human-farm-acknowledge",
     "ready", "human-farm-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-farm-attack"} } )
 
@@ -372,7 +372,7 @@ DefineUnitType("unit-human-barracks", { Name = "Human Barracks",
     "selected", "human-barracks-selected",
     "acknowledge", "human-barracks-acknowledge",
     "ready", "human-barracks-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-barracks-attack"} } )
 
@@ -401,7 +401,7 @@ DefineUnitType("unit-human-church", { Name = "Human Church",
     "selected", "human-church-selected",
     "acknowledge", "human-church-acknowledge",
     "ready", "human-church-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-church-attack"} } )
 
@@ -430,7 +430,7 @@ DefineUnitType("unit-human-stable", { Name = "Human Stable",
     "selected", "human-stable-selected",
     "acknowledge", "human-stable-acknowledge",
     "ready", "human-stable-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-stable-attack"} } )
 
@@ -461,7 +461,7 @@ DefineUnitType("unit-human-lumber-mill", { Name = "Human Lumber Mill",
     "selected", "human-lumber-mill-selected",
     "acknowledge", "human-lumber-mill-acknowledge",
     "ready", "human-lumber-mill-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-lumber-mill-attack"} } )
 
@@ -492,7 +492,7 @@ DefineUnitType("unit-human-town-hall", { Name = "Human Town Hall",
     "selected", "human-town-hall-selected",
     "acknowledge", "human-town-hall-acknowledge",
     "ready", "human-town-hall-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-town-hall-attack"} } )
 
@@ -508,7 +508,7 @@ DefineUnitType("unit-human-tower", { Name = "Human Tower",
   Speed = 0,
   HitPoints = 500,
   DrawLevel = 20,
-  TileSize = {1, 1}, BoxSize = {31, 31},
+  TileSize = {2, 2}, BoxSize = {63, 63},
   SightRange = 3,
   Armor = 20, BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
   Priority = 35, AnnoyComputerFactor = 20,
@@ -521,7 +521,7 @@ DefineUnitType("unit-human-tower", { Name = "Human Tower",
     "selected", "human-tower-selected",
     "acknowledge", "human-tower-acknowledge",
     "ready", "human-tower-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-tower-attack"} } )
 
@@ -550,7 +550,7 @@ DefineUnitType("unit-human-blacksmith", { Name = "Human Blacksmith",
     "selected", "human-blacksmith-selected",
     "acknowledge", "human-blacksmith-acknowledge",
     "ready", "human-blacksmith-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-blacksmith-attack"} } )
 
@@ -572,7 +572,7 @@ DefineUnitType("unit-human-start-location", { Name = "Human Start Location",
     "selected", "human-start-location-selected",
     "acknowledge", "human-start-location-acknowledge",
     "ready", "human-start-location-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-start-location-attack"} } )
 
@@ -598,7 +598,7 @@ DefineUnitType("unit-human-wall", { Name = "Wall",
     "selected", "human-wall-selected",
     "acknowledge", "human-wall-acknowledge",
     "ready", "human-wall-ready",
-    "help", "basic human voices help 2",
+    "help", "human help 2",
     "dead", "building destroyed",
     "attack", "human-wall-attack"} } )
 
