@@ -176,8 +176,7 @@ function HumanScreen(screen_width, screen_height)
     "menu-panel", {
       "menu-button", {
         Pos = {6, 376},
-        Caption = "Menu (~<F10~>)",
-        Style = "main"},
+        Style = "menu"},
       "network-menu-button", {
         Pos = {6, 376},
         Caption = "Menu",
