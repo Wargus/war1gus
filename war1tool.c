@@ -1446,7 +1446,7 @@ int ConvertTileset(char* file,int index)
 **	Decode a entry(frame) into image.
 */
 void DecodeGfuEntry(int index,unsigned char* start
-	,unsigned char* image,int ix,int iy,int iadd)
+	,unsigned char* image,int iadd)
 {
     unsigned char* bp;
     unsigned char* sp;
@@ -1473,7 +1473,7 @@ void DecodeGfuEntry(int index,unsigned char* start
 	_C_ index _C_ xoff _C_ yoff _C_ width _C_ height _C_ offset);
 
     sp=start+offset-4;
-    dp=image+xoff-ix+(yoff-iy)*iadd;
+    dp=image+xoff+yoff*iadd;
     for( i=0; i<height; ++i ) {
 	memcpy(dp,sp,width);
 	dp+=iadd;
@@ -1491,10 +1491,6 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp
     int length;
     int max_width;
     int max_height;
-    int minx;
-    int miny;
-    int best_width;
-    int best_height;
     unsigned char* image;
     int IPR;
 
@@ -1511,70 +1507,15 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp
     DebugLevel3("Entries %2d Max width %3d height %3d, " _C_ count
 	    _C_ max_width _C_ max_height);
 
-    // Find best image size
-    minx=999;
-    miny=999;
-    best_width=0;
-    best_height=0;
-    for( i=0; i<count; ++i ) {
-	unsigned char* p;
-	int xoff;
-	int yoff;
-	int width;
-	int height;
-
-	p=bp+i*8;
-	xoff=FetchByte(p);
-	yoff=FetchByte(p);
-	width=FetchByte(p);
-	height=FetchByte(p);
-	if( FetchLE32(p)&0x80000000 ) {	// high bit of width
-	    width+=256;
-	}
-	if( xoff<minx ) minx=xoff;
-	if( yoff<miny ) miny=yoff;
-	if( xoff+width>best_width ) best_width=xoff+width;
-	if( yoff+height>best_height ) best_height=yoff+height;
-    }
-    // FIXME: the image isn't centered!!
-
-#if 0
-    // Taken out, must be rewritten.
-    if( max_width-best_width<minx ) {
-	minx=max_width-best_width;
-	best_width-=minx;
-    } else {
-	best_width=max_width-minx;
-    }
-    if( max_height-best_height<miny ) {
-	miny=max_height-best_height;
-	best_height-=miny;
-    } else {
-	best_height=max_width-miny;
-    }
-
-    //best_width-=minx;
-    //best_height-=miny;
-#endif
-
-    DebugLevel3("Best image size %3d, %3d\n" _C_ best_width _C_ best_height);
-
-    minx=0;
-    miny=0;
-
     if( count%5==0 ) {
-	best_width=max_width;
-	best_height=max_height;
 	IPR=5;
 	length=((count+IPR-1)/IPR)*IPR;
     } else {
-	max_width=best_width;
-	max_height=best_height;
 	IPR=1;
 	length=count;
     }
 
-    image=malloc(best_width*best_height*length);
+    image=malloc(max_width*max_height*length);
 
     //	Image:	0, 1, 2, 3, 4,
     //		5, 6, 7, 8, 9, ...
@@ -1583,16 +1524,16 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp
 	exit(-1);
     }
     // Set all to transparent.
-    memset(image,255,best_width*best_height*length);
+    memset(image,255,max_width*max_height*length);
 
     for( i=0; i<count; ++i ) {
 	DecodeGfuEntry(i,bp
-	    ,image+best_width*(i%IPR)+best_height*best_width*IPR*(i/IPR)
-	    ,minx,miny,best_width*IPR);
+	    ,image+max_width*(i%IPR)+max_height*max_width*IPR*(i/IPR)
+	    ,max_width*IPR);
     }
 
-    *wp=best_width*IPR;
-    *hp=best_height*(length/IPR);
+    *wp=max_width*IPR;
+    *hp=max_height*(length/IPR);
 
     return image;
 }
@@ -1617,6 +1558,12 @@ int ConvertGfu(char* file,int pale,int gfue)
     if( len<768 ) {
 	palp=realloc(palp,768);
     }
+    if( pale==217 ) {
+	palp[96*3+0]=0;
+	palp[96*3+1]=0;
+	palp[96*3+2]=0;
+    }
+
     gfup=ExtractEntry(ArchiveOffsets[gfue],NULL);
     if( !gfup ) {
 	free(palp);
