@@ -265,6 +265,8 @@ SetShowCommandKey(true)
 SetFogOfWar(false)
 --SetFogOfWar(false)
 
+SetFogOfWarGraphics("tilesets/forest/terrain.png")
+
 --  Choose your default for minimap with/without terrain.
 SetMinimapTerrain(true)
 --SetMinimapTerrain(false)
