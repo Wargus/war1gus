@@ -35,7 +35,6 @@
 function HumanScreen(screen_width, screen_height)
   info_panel_x = 0
   info_panel_y = 160
-  icon_size = {46, 38}
 
   DefineUI("human", screen_width, screen_height,
     "normal-font-color", "white",
@@ -74,18 +73,18 @@ function HumanScreen(screen_width, screen_height)
       "selected", {
         "single", {
           "icon", {
-            "pos", {  6, 166}, "size", icon_size}},
+            "pos", {  6, 166}, "style", "icon"}},
         "multiple", {
           "icons", {
-            { "pos", {  6, 166}, "size", icon_size},
-            { "pos", { 62, 166}, "size", icon_size},
-            { "pos", {118, 166}, "size", icon_size},
-            { "pos", {  6, 220}, "size", icon_size},
-            { "pos", { 62, 220}, "size", icon_size},
-            { "pos", {118, 220}, "size", icon_size},
-            { "pos", {  6, 274}, "size", icon_size},
-            { "pos", { 62, 274}, "size", icon_size},
-            { "pos", {118, 274}, "size", icon_size}},
+            { "pos", {  6, 166}, "style", "icon"},
+            { "pos", { 62, 166}, "style", "icon"},
+            { "pos", {118, 166}, "style", "icon"},
+            { "pos", {  6, 220}, "style", "icon"},
+            { "pos", { 62, 220}, "style", "icon"},
+            { "pos", {118, 220}, "style", "icon"},
+            { "pos", {  6, 274}, "style", "icon"},
+            { "pos", { 62, 274}, "style", "icon"},
+            { "pos", {118, 274}, "style", "icon"}},
           "max-text", {
             "font", "game",
             "pos", { info_panel_x + 10, info_panel_y + 10}}}
@@ -98,15 +97,15 @@ function HumanScreen(screen_width, screen_height)
             "pos", { info_panel_x + 37, info_panel_y + 8 + 78}},
           "icon", {
             "pos", { info_panel_x + 107, info_panel_y + 8 + 70},
-            "size", icon_size}},
+            "style", "icon"}},
         "multiple", {
           "icons", {
-            { "pos", {  6, 216}, "size", icon_size},
-            { "pos", { 62, 216}, "size", icon_size},
-            { "pos", {118, 216}, "size", icon_size},
-            { "pos", {  6, 263}, "size", icon_size},
-            { "pos", { 62, 263}, "size", icon_size},
-            { "pos", {118, 263}, "size", icon_size}}}
+            { "pos", {  6, 216}, "style", "icon"},
+            { "pos", { 62, 216}, "style", "icon"},
+            { "pos", {118, 216}, "style", "icon"},
+            { "pos", {  6, 263}, "style", "icon"},
+            { "pos", { 62, 263}, "style", "icon"},
+            { "pos", {118, 263}, "style", "icon"}}}
       },
       "upgrading", {
         "text", {
@@ -115,7 +114,7 @@ function HumanScreen(screen_width, screen_height)
           "pos", { info_panel_x + 29, info_panel_y + 8 + 78}},
         "icon", {
           "pos", { info_panel_x + 107, info_panel_y + 8 + 70},
-          "size", icon_size},
+          "style", "icon"},
       },
       "researching", {
         "text", {
@@ -124,16 +123,16 @@ function HumanScreen(screen_width, screen_height)
           "pos", { info_panel_x + 16, info_panel_y + 8 + 78}},
         "icon", {
           "pos", { info_panel_x + 107, info_panel_y + 8 + 70},
-          "size", icon_size}
+          "style", "icon"}
       },
       "transporting", {
         "icons", {
-          { "pos", {  6, 220}, "size", icon_size},
-          { "pos", { 62, 220}, "size", icon_size},
-          { "pos", {118, 220}, "size", icon_size},
-          { "pos", {  6, 274}, "size", icon_size},
-          { "pos", { 62, 274}, "size", icon_size},
-          { "pos", {118, 274}, "size", icon_size}}
+          { "pos", {  6, 220}, "style", "icon"},
+          { "pos", { 62, 220}, "style", "icon"},
+          { "pos", {118, 220}, "style", "icon"},
+          { "pos", {  6, 274}, "style", "icon"},
+          { "pos", { 62, 274}, "style", "icon"},
+          { "pos", {118, 274}, "style", "icon"}}
       },
       "completed-bar", {
         "color", {48, 100, 4},
