@@ -2190,43 +2190,6 @@ int ConvertVoc(char* file,int voce)
 }
 
 //----------------------------------------------------------------------------
-//  Video
-//----------------------------------------------------------------------------
-
-/**
-**  Convert video to my format.
-*/
-int ConvertVideo(char* file,int video)
-{
-	unsigned char* vidp;
-	char buf[1024];
-	FILE* gf;
-	size_t l;
-
-	vidp = ExtractEntry(ArchiveOffsets[video], &l);
-	if (!vidp) {
-		return 0;
-	}
-
-	sprintf(buf, "%s/%s.smk", Dir, file);
-	CheckPath(buf);
-	gf = fopen(buf,"wb");
-	if (!gf) {
-		perror("");
-		printf("Can't open %s\n", buf);
-		exit(-1);
-	}
-	if (l != fwrite(vidp, 1, l, gf)) {
-		printf("Can't write %d bytes\n", l);
-	}
-
-	free(vidp);
-
-	fclose(gf);
-	return 0;
-}
-
-//----------------------------------------------------------------------------
 //  Text
 //----------------------------------------------------------------------------
 
