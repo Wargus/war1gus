@@ -1582,13 +1582,16 @@ int ConvertRgb(char* file,int rgbe)
 void DecodeMiniTile(unsigned char* image, int ix, int iy, int iadd,
 	unsigned char* mini,int index, int flipx, int flipy)
 {
+	static const int flip[] = {
+		7, 6, 5, 4, 3, 2, 1, 0, 8
+	};
 	int x;
 	int y;
 
 	for (y = 0; y < 8; ++y) {
 		for (x = 0; x < 8; ++x) {
 			image[(y + iy * 8) * iadd + ix * 8 + x] = mini[index +
-				(flipy ? (8 - y) : y) * 8 + (flipx ? (8 - x) : x)];
+				(flipy ? flip[y] : y) * 8 + (flipx ? flip[x] : x)];
 		}
 	}
 }
