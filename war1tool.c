@@ -2167,13 +2167,13 @@ static void CmSavePlayers(gzFile f)
 			gzprintf(f, "  \"team\", 2, \"enemy\", \"_X______________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
 		} else if (i == 1) {
 			gzprintf(f, "  \"type\", \"computer\", \"race\", \"orc\", \"ai\", 0,\n");
-			gzprintf(f, "  \"team\", 2, \"enemy\", \"X_______________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
+			gzprintf(f, "  \"team\", 1, \"enemy\", \"X_______________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
 		} else if (i == 15) {
 			gzprintf(f, "  \"type\", \"neutral\", \"race\", \"neutral\", \"ai\", 0,\n");
-			gzprintf(f, "  \"team\", 2, \"enemy\", \"________________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
+			gzprintf(f, "  \"team\", 0, \"enemy\", \"________________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
 		} else {
 			gzprintf(f, "  \"type\", \"nobody\", \"race\", \"human\", \"ai\", 0,\n");
-			gzprintf(f, "  \"team\", 2, \"enemy\", \"________________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
+			gzprintf(f, "  \"team\", 0, \"enemy\", \"________________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
 		}
 		gzprintf(f, "  \"start\", {0, 0},\n");
 		gzprintf(f, "  \"resources\", {\"time\", 0, \"gold\", 1000, \"wood\", 1000},\n");
