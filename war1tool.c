@@ -208,7 +208,7 @@ char* ArchiveDir;
 Control Todo[] = {
 #define __  ,0,0,0
 #define _2  ,0,0,
-
+#if 0
 {FLC,0,"cave1.war",											 0 __},
 {FLC,0,"cave2.war",											 0 __},
 {FLC,0,"cave3.war",											 0 __},
@@ -248,7 +248,7 @@ Control Todo[] = {
 {FLC,0,"title.war",											 0 __},
 {FLC,0,"win1.war",											 0 __},
 {FLC,0,"win2.war",											 0 __},
-
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 //  MOST THINGS
 ///////////////////////////////////////////////////////////////////////////////
@@ -789,10 +789,11 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	info_ptr->palette = (void*)pal;
 	info_ptr->num_palette = 256;
 
-	if (transparent) {
+	if (transparent != -1) {
+		png_byte trans[256];
+#if 0
 		unsigned char* p;
 		unsigned char* end;
-		png_byte trans[256];
 
 		p = image;
 		end = image + w * h;
@@ -802,9 +803,9 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 			}
 			++p;
 		}
-
+#endif
 		memset(trans, 0xFF, sizeof(trans));
-		trans[255] = 0x0;
+		trans[transparent] = 0x0;
 		png_set_tRNS(png_ptr, info_ptr, trans, 256, 0);
 	}
 
@@ -1119,7 +1120,7 @@ void ConvertFLC_SS2(unsigned char* buf)
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
 	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
 	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, 0);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, -1);
 }
 
 /**
@@ -1165,7 +1166,7 @@ void ConvertFLC_LC(unsigned char* buf)
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
 	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
 	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, 0);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, -1);
 }
 
 /**
@@ -1207,7 +1208,7 @@ void ConvertFLC_BRUN(unsigned char* buf)
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
 	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
 	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, 0);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, -1);
 }
 
 /**
@@ -1233,7 +1234,7 @@ void ConvertFLC_COPY(unsigned char* buf)
 	sprintf(pngbuf, "%s-%02d.png", FLCFile, FLCFrame++);
 	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
 	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, 0);
+	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, -1);
 }
 
 /**
@@ -1680,7 +1681,7 @@ int ConvertTileset(char* file,int index)
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, width, height, 2 * width, 2 * height);
-	SavePNG(buf, image, 2 * width, 2 * height, palp, 1);
+	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
 
 	free(palp);
 	free(mini);
@@ -1769,7 +1770,7 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 		exit(-1);
 	}
 	// Set all to transparent.
-	memset(image, 255, max_width * max_height * length);
+	memset(image, 0, max_width * max_height * length);
 
 	for (i = 0; i < count; ++i) {
 		DecodeGfuEntry(i, bp,
@@ -1795,8 +1796,6 @@ int ConvertGfu(char* file, int pale, int gfue)
 	int h;
 	char buf[1024];
 	int len;
-	unsigned char* p;
-	unsigned char* end;
 
 	palp = ExtractEntry(ArchiveOffsets[pale], &len);
 	if (!palp) {
@@ -1841,19 +1840,10 @@ int ConvertGfu(char* file, int pale, int gfue)
 	free(gfup);
 	ConvertPalette(palp);
 
-	p = image;
-	end = image + w * h;
-	while (p < end) {
-		if (!*p) {
-			*p = 255;
-		}
-		++p;
-	}
-
 	sprintf(buf, "%s/%s/%s.png", Dir, UNIT_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	SavePNG(buf, image, 2 * w, 2 * h, palp, 1);
+	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
 
 	free(image);
 	free(palp);
@@ -1868,7 +1858,7 @@ int ConvertGfu(char* file, int pale, int gfue)
 /**
 **  Convert image into image.
 */
-unsigned char* ConvertImg(unsigned char* bp,int *wp,int *hp)
+unsigned char* ConvertImg(unsigned char* bp, int *wp, int *hp)
 {
 	int width;
 	int height;
@@ -1956,7 +1946,7 @@ int ConvertImage(char* file, int pale, int imge)
 	CheckPath(buf);
 
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
+	SavePNG(buf, image, 2 * w, 2 * h, palp, -1);
 
 	free(image);
 	free(palp);
@@ -1969,45 +1959,16 @@ int ConvertImage(char* file, int pale, int imge)
 //----------------------------------------------------------------------------
 
 /**
-**  Convert cursor into image.
-*/
-unsigned char* ConvertCur(unsigned char* bp,int* wp,int* hp)
-{
-	int i;
-	int hotx;
-	int hoty;
-	int width;
-	int height;
-	unsigned char* image;
-
-	hotx = FetchLE16(bp);
-	hoty = FetchLE16(bp);
-	width = FetchLE16(bp);
-	height = FetchLE16(bp);
-
-	image = malloc(width * height);
-	if (!image) {
-		printf("Can't allocate image\n");
-		exit(-1);
-	}
-	for (i = 0; i < width * height; ++i) {
-		image[i] = bp[i] ? bp[i] : 255;
-	}
-
-	*wp = width;
-	*hp = height;
-
-	return image;
-}
-
-/**
 **  Convert a cursor to my format.
 */
 int ConvertCursor(char* file, int pale, int cure)
 {
 	unsigned char* palp;
 	unsigned char* curp;
+	unsigned char* p;
 	unsigned char* image;
+	int hotx;
+	int hoty;
 	int w;
 	int h;
 	char buf[1024];
@@ -2016,7 +1977,7 @@ int ConvertCursor(char* file, int pale, int cure)
 	if (!palp) {
 		return 0;
 	}
-	curp = ExtractEntry(ArchiveOffsets[cure], NULL);
+	p = curp = ExtractEntry(ArchiveOffsets[cure], NULL);
 	if (!curp) {
 		if (pale != 27 && cure != 314) {
 			free(palp);
@@ -2024,16 +1985,21 @@ int ConvertCursor(char* file, int pale, int cure)
 		return 0;
 	}
 
-	image = ConvertCur(curp, &w, &h);
+	hotx = FetchLE16(p);
+	hoty = FetchLE16(p);
+	w = FetchLE16(p);
+	h = FetchLE16(p);
+	image = malloc(w * h);
+	memcpy(image, p, w * h);
 
-	free(curp);
 	ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, CURSOR_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	SavePNG(buf, image, 2 * w, 2 * h, palp, 1);
+	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
 
+	free(curp);
 	free(image);
 	if (pale != 27 && cure != 314) {
 		free(palp);
@@ -2438,7 +2404,7 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 		gzprintf(f, "Unit(%d, \"type\", \"%s\", \"player\", %d,\n", i, UnitTypes[type], player);
 		gzprintf(f, "  \"tile\", {%d, %d}", x, y);
 		if (value) {
-			gzprintf(f, ",\n  \"value\", %d", value);
+			gzprintf(f, ",\n  \"resources-held\", %d", value);
 		}
 		gzprintf(f, "\n)\n");
 		++i;
