@@ -257,7 +257,7 @@ DefineButton( { Pos = 5, Level = 0, Icon = "icon-harvest",
   Key = "h", Hint = "~!HARVEST LUMBER/MINE GOLD",
   ForUnit = {"unit-peon"} } )
 
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-return-goods-peon",
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-return-goods",
   Action = "return-goods",
   Key = "g", Hint = "RETURN WITH ~!GOODS",
   ForUnit = {"unit-peon"} } )
@@ -271,7 +271,7 @@ DefineButton( { Pos = 7, Level = 0, Icon = "icon-build-basic",
 
 DefineButton( { Pos = 8, Level = 0, Icon = "icon-build-advanced",
   Action = "button", Value = 2,
-  Allowed = "check-units-or", AllowArg = {"unit-troll-lumber-mill", "unit-stronghold"},
+  Allowed = "check-units-or", AllowArg = {"unit-orc-lumber-mill"},
   Key = "v", Hint = "BUILD AD~!VANCED STRUCTURE",
   ForUnit = {"unit-peon"} } )
 
@@ -288,12 +288,12 @@ DefineButton( { Pos = 2, Level = 1, Icon = "icon-orc-barracks",
   ForUnit = {"unit-peon"} } )
 
 DefineButton( { Pos = 3, Level = 1, Icon = "icon-great-hall",
-  Action = "build", Value = "unit-great-hall",
+  Action = "build", Value = "unit-orc-town-hall",
   Key = "h", Hint = "BUILD GREAT ~!HALL",
   ForUnit = {"unit-peon"} } )
 
-DefineButton( { Pos = 4, Level = 1, Icon = "icon-troll-lumber-mill",
-  Action = "build", Value = "unit-troll-lumber-mill",
+DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-lumber-mill",
+  Action = "build", Value = "unit-orc-lumber-mill",
   Key = "l", Hint = "BUILD TROLL ~!LUMBER MILL",
   ForUnit = {"unit-peon"} } )
 
@@ -378,49 +378,31 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-peon",
   Action = "train-unit", Value = "unit-peon",
   Allowed = "check-no-research",
   Key = "p", Hint = "TRAIN ~!PEON",
-  ForUnit = {"unit-great-hall", "unit-stronghold", "unit-fortress"} } )
+  ForUnit = {"unit-orc-town-hall"} } )
 
 -- strong hold upgrades -------------------------------------------------------
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-stronghold",
-  Action = "upgrade-to", Value = "unit-stronghold",
-  Allowed = "check-upgrade-to",
-  Key = "s", Hint = "UPGRADE TO ~!STRONGHOLD",
-  ForUnit = {"unit-great-hall"} } )
-
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-fortress-upgrade",
-  Action = "upgrade-to", Value = "unit-fortress",
-  Allowed = "check-upgrade-to",
-  Key = "f", Hint = "UPGRADE TO ~!FORTRESS",
-  ForUnit = {"unit-stronghold"} } )
 
 if (extensions) then
 do
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-harvest",
   Action = "harvest",
   Key = "h", Hint = "SET ~!HARVEST LUMBER/MINE GOLD",
-  ForUnit = {"unit-great-hall", "unit-stronghold", "unit-fortress"} } )
+  ForUnit = {"unit-orc-town-hall"} } )
 
 DefineButton( { Pos = 7, Level = 0, Icon = "icon-move-peon",
   Action = "move",
   Key = "m", Hint = "SET ~!MOVE",
-  ForUnit = {"unit-great-hall", "unit-stronghold", "unit-fortress",
-    "unit-orc-barracks", "unit-temple-of-the-damned", "unit-dragon-roost",
-    "unit-alchemist"} } )
+  ForUnit = {"unit-orc-town-hall", "unit-orc-barracks"} } )
 
 DefineButton( { Pos = 8, Level = 0, Icon = "icon-orc-shield1",
   Action = "stop",
   Key = "z", Hint = "SET ~!ZTOP",
-  ForUnit = {"unit-great-hall", "unit-stronghold", "unit-fortress",
-    "unit-orc-barracks", "unit-temple-of-the-damned", "unit-dragon-roost",
-    "unit-alchemist"} } )
+  ForUnit = {"unit-orc-town-hall", "unit-orc-barracks"} } )
 
 DefineButton( { Pos = 9, Level = 0, Icon = "icon-battle-axe1",
   Action = "attack",
   Key = "e", Hint = "S~!ET ATTACK",
-  ForUnit = {"unit-great-hall", "unit-stronghold", "unit-fortress",
-    "unit-orc-barracks", "unit-temple-of-the-damned", "unit-dragon-roost",
-    "unit-alchemist"} } )
+  ForUnit = {"unit-orc-town-hall", "unit-orc-barracks"} } )
 end
 end
 
@@ -635,37 +617,37 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-throwing-axe2",
   Action = "research", Value = "upgrade-throwing-axe1",
   Allowed = "check-single-research",
   Key = "u", Hint = "~!UPGRADE THROWING AXE (Damage +1)",
-  ForUnit = {"unit-troll-lumber-mill"} } )
+  ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-throwing-axe3",
   Action = "research", Value = "upgrade-throwing-axe2",
   Allowed = "check-single-research",
   Key = "u", Hint = "~!UPGRADE THROWING AXE (Damage +1)",
-  ForUnit = {"unit-troll-lumber-mill"} } )
+  ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-berserker",
   Action = "research", Value = "upgrade-berserker",
   Allowed = "check-single-research",
   Key = "b", Hint = "TROLL ~!BERSERKER TRAINING",
-  ForUnit = {"unit-troll-lumber-mill"} } )
+  ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-berserker-scouting",
   Action = "research", Value = "upgrade-berserker-scouting",
   Allowed = "check-single-research",
   Key = "s", Hint = "BERSERKER ~!SCOUTING (Sight:9)",
-  ForUnit = {"unit-troll-lumber-mill"} } )
+  ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-light-axes",
   Action = "research", Value = "upgrade-light-axes",
   Allowed = "check-single-research",
   Key = "a", Hint = "RESEARCH LIGHTER ~!AXES (Range +1)",
-  ForUnit = {"unit-troll-lumber-mill"} } )
+  ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-berserker-regeneration",
   Action = "research", Value = "upgrade-berserker-regeneration",
   Allowed = "check-single-research",
   Key = "r", Hint = "BERSERKER ~!REGENERATION",
-  ForUnit = {"unit-troll-lumber-mill"} } )
+  ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-ogre-mage",
   Action = "research", Value = "upgrade-ogre-mage",
