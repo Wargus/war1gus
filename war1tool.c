@@ -72,8 +72,21 @@ typedef unsigned long u_int32_t;
      defined(__SYMBIAN32__) || \
      defined(__x86_64__) || \
      defined(__LITTLE_ENDIAN__)
-#define FetchLE16(p) (*((unsigned short*)(p))++)
-#define FetchLE32(p) (*((unsigned int*)(p))++)
+#ifdef __cplusplus
+static inline unsigned short FetchLE16(unsigned char*& p) {
+	unsigned short s = *(unsigned short*)p;
+	p += 2;
+	return s;
+}
+static inline unsigned int FetchLE32(unsigned char*& p) {
+	unsigned int s = *(unsigned int*)p;
+	p += 4;
+	return s;
+}
+#else
+#define FetchLE16(p) (*((unsigned short*)(p))); p += 2
+#define FetchLE32(p) (*((unsigned int*)(p))); p += 4
+#endif
 #define AccessLE16(p) (*((unsigned short*)(p)))
 #define AccessLE32(p) (*((unsigned int*)(p)))
 #define ConvertLE16(v) (v)
@@ -84,14 +97,14 @@ static inline unsigned short Swap16(unsigned short D) {
 static inline unsigned int Swap32(unsigned int D) {
 	return ((D << 24) | ((D << 8) & 0x00FF0000) | ((D >> 8) & 0x0000FF00) | (D >> 24));
 }
-#define FetchLE16(p) Swap16(*((unsigned short*)(p))++)
-#define FetchLE32(p) Swap32(*((unsigned int*)(p))++)
+#define FetchLE16(p) Swap16(*((unsigned short*)(p))); p += 2
+#define FetchLE32(p) Swap32(*((unsigned int*)(p))) p += 4
 #define AccessLE16(p) Swap16((*((unsigned short*)(p))))
 #define AccessLE32(p) Swap32(*((unsigned int*)(p)))
 #define ConvertLE16(v) Swap16(v)
 #endif
 
-#define FetchByte(p) (*((unsigned char*)(p))++)
+#define FetchByte(p) (*((unsigned char*)(p))); ++p
 
 //----------------------------------------------------------------------------
 //  Config
@@ -188,7 +201,6 @@ int ArchiveLength;
 enum _archive_type_ {
 	F,						// File							(name)
 	T,						// Tileset						(name,idx)
-	R,						// RGB -> gimp					(name,rgb)
 	U,						// Uncompressed Graphics		(name,pal,gfu)
 	I,						// Image						(name,pal,img)
 	W,						// Wav							(name,wav)
@@ -285,11 +297,8 @@ Control Todo[] = {
 {CM,0,"campaigns/orc/12",									 140, 59 _2},
 
 // Tilesets
-{R,0,"forest/forest",										 191 __},
 {T,0,"forest/terrain",										 190 __},
-{R,0,"swamp/swamp",											 194 __},
 {T,0,"swamp/terrain",										 193 __},
-{R,0,"dungeon/dungeon",										 197 __},
 {T,0,"dungeon/terrain",										 196 __},
 
 // Some animations
@@ -1511,67 +1520,6 @@ unsigned char* ConvertPalette(unsigned char* pal)
 	return pal;
 }
 
-/**
-**  Convert rgb to my format.
-*/
-int ConvertRgb(char* file,int rgbe)
-{
-	unsigned char* rgbp;
-	char buf[1024];
-	FILE* f;
-	int i;
-	size_t l;
-
-	rgbp = ExtractEntry(ArchiveOffsets[rgbe], &l);
-	if (l < 768) {
-		rgbp = realloc(rgbp, 768);
-		memset(rgbp + l, 0, 768 - l);
-		l = 768;
-	}
-	ConvertPalette(rgbp);
-
-	//
-	//  Generate RGB File.
-	//
-	sprintf(buf, "%s/%s/%s.rgb", Dir, TILESET_PATH, file);
-	CheckPath(buf);
-	f = fopen(buf, "wb");
-	if (!f) {
-		perror("");
-		printf("Can't open %s\n", buf);
-		exit(-1);
-	}
-	if (l != fwrite(rgbp, 1, l, f)) {
-		printf("Can't write %d bytes\n", l);
-	}
-
-	fclose(f);
-
-	//
-	//  Generate GIMP palette
-	//
-	sprintf(buf, "%s/%s/%s.gimp", Dir, TILESET_PATH, file);
-	CheckPath(buf);
-	f = fopen(buf, "wb");
-	if (!f) {
-		perror("");
-		printf("Can't open %s\n", buf);
-		exit(-1);
-	}
-	fprintf(f,"GIMP Palette\n# Stratagus %c%s -- GIMP Palette file\n",
-		toupper(*file), file + 1);
-
-	for (i = 0; i < 256; ++i) {
-		// FIXME: insert nice names!
-		fprintf(f, "%d %d %d\t#%d\n",
-			rgbp[i * 3], rgbp[i * 3 + 1], rgbp[i * 3 + 2], i);
-	}
-
-	free(rgbp);
-
-	return 0;
-}
-
 //----------------------------------------------------------------------------
 //  Tileset
 //----------------------------------------------------------------------------
@@ -2389,8 +2337,10 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 
 	i = 0;
 	while (p[0] != 0xFF || p[1] != 0xFF) {
-		x = FetchByte(p) / 2;
-		y = FetchByte(p) / 2;
+		x = FetchByte(p);
+		x /= 2;
+		y = FetchByte(p);
+		y /= 2;
 		type = FetchByte(p);
 		player = FetchByte(p);
 		if (player == 4) {
@@ -2399,7 +2349,8 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 		if (type == 0x32) {
 			// gold mine
 			value = FetchByte(p);
-			value = FetchByte(p) * 250;
+			value = FetchByte(p);
+			value *= 250;
 		} else {
 			value = 0;
 		}
@@ -2415,10 +2366,14 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 
 	p += 2;
 	while (p[0] != 0xFF || p[1] != 0xFF) {
-		startx = FetchByte(p) / 2;
-		starty = FetchByte(p) / 2;
-		endx = FetchByte(p) / 2;
-		endy = FetchByte(p) / 2;
+		startx = FetchByte(p);
+		startx /= 2;
+		starty = FetchByte(p);
+		starty /= 2;
+		endx = FetchByte(p);
+		endx /= 2;
+		endy = FetchByte(p);
+		endy /= 2;
 		type = FetchByte(p);
 		gzprintf(f, "-- Roads (%d):", type);
 		for (x = startx; x <= endx; ++x) {
@@ -2533,9 +2488,6 @@ int main(int argc, char** argv)
 			case FLC:
 				sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
 				ConvertFLC(buf, Todo[u].File);
-				break;
-			case R:
-				ConvertRgb(Todo[u].File, Todo[u].Arg1);
 				break;
 			case T:
 				ConvertTileset(Todo[u].File, Todo[u].Arg1);
