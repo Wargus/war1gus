@@ -477,8 +477,8 @@ Control Todo[] = {
 {U,0,"missiles/arrow",										 217, 349 _2},
 {U,0,"missiles/poison_cloud",								 191, 350 _2},
 {U,0,"missiles/rain_of_fire",								 191, 351 _2},
-{U,0,"missiles/flames",										 191, 352 _2},
-{U,0,"missiles/larger_flames",								 191, 353 _2},
+{U,0,"missiles/small_fire",									 191, 352 _2},
+{U,0,"missiles/large_fire",									 191, 353 _2},
 {U,0,"missiles/explosion",									 191, 354 _2},
 {U,0,"missiles/healing",									 217, 355 _2},
 {U,0,"missiles/building_collapse",							 191, 356 _2},
@@ -800,19 +800,7 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 
 	if (transparent != -1) {
 		png_byte trans[256];
-#if 0
-		unsigned char* p;
-		unsigned char* end;
 
-		p = image;
-		end = image + w * h;
-		while (p < end) {
-			if (!*p) {
-				*p = 0xFF;
-			}
-			++p;
-		}
-#endif
 		memset(trans, 0xFF, sizeof(trans));
 		trans[transparent] = 0x0;
 		png_set_tRNS(png_ptr, info_ptr, trans, 256, 0);
