@@ -105,7 +105,7 @@ DefineMissileType("missile-ballista-bolt",
   ImpactMissile = "missile-impact", SplashFactor = 4 } )
 
 DefineMissileType("missile-arrow",
-  { File = "missiles/arrow.png", Size = {40, 40}, Frames = 5, NumDirections = 5,
+  { File = "missiles/arrow.png", Size = {64, 64}, Frames = 5, NumDirections = 5,
   DrawLevel = 50, ImpactSound = "bow hit",
   Class = "missile-class-point-to-point", Sleep = 1, Speed = 32, Range = 0 } )
 
@@ -143,7 +143,7 @@ DefineMissileType("missile-normal-spell",
   DrawLevel = 50, Class = "missile-class-stay", Sleep = 5, Speed = 0, Range = 1 } )
 
 DefineMissileType("missile-explosion",
-  { File = "missiles/explosion.png", Size = {64, 64}, Frames = 20, NumDirections = 1,
+  { File = "missiles/explosion.png", Size = {96, 96}, Frames = 6, NumDirections = 1,
   DrawLevel = 50, Class = "missile-class-stay", Sleep = 1, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-small-cannon",

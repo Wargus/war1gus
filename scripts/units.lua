@@ -64,7 +64,7 @@ DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
     "attack", "gold-mine-attack"} } )
 
 DefineUnitType("unit-dead-body", { Name = "Dead Body",
-  Files = {"tileset-forest", "neutral/units/dead bodies.png"},
+  Files = {"tileset-forest", "neutral/units/dead_bodies.png"},
   Size = {64, 64},
   Animations = "animations-dead-body", Icon = "icon-peasant",
   Speed = 0,
@@ -159,9 +159,7 @@ DefineUnitType("unit-revealer", { Name = "Dummy unit",
   Sounds = {} } )
 
 DefineUnitType("unit-critter", { Name = "Critter",
-  Files = {"tileset-forest", "tilesets/summer/neutral/units/critter.png",
-    "tileset-swamp", "tilesets/winter/neutral/units/critter.png",
-    "tileset-dungeon", "tilesets/wasteland/neutral/units/critter.png"},
+  Files = {"tileset-forest", "tilesets/critter.png"},
   Size = {32, 32},
   Animations = "animations-critter", Icon = "icon-critter",
   NeutralMinimapColor = {192, 192, 192},
@@ -191,7 +189,7 @@ DefineUnitType("unit-critter", { Name = "Critter",
     "attack", "critter-attack"} } )
 
 DefineUnitType("unit-circle-of-power", { Name = "Circle of Power",
-  Files = {"tileset-forest", "neutral/buildings/circle_of_power.png"},
+  Files = {"tileset-forest", "tilesets/circle_of_power.png"},
   Size = {64, 64},
   Animations = "animations-building", Icon = "icon-circle-of-power",
   NeutralMinimapColor = {128, 128, 0},

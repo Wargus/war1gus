@@ -73,13 +73,11 @@ local sea_funcs = {
   function() return AiWaitForce(0) end,
 
   function() return AiNeed(AiHarbor()) end,
-  function() return AiUpgradeTo(AiBetterCityCenter()) end,
   function() return AiNeed(AiRefinery()) end,
   function() return AiNeed(AiScientific()) end,
   function() return AiSet(AiWorker(), 15) end,
   function() return AiSet(AiTanker(), 1) end,
   function() return AiNeed(AiPlatform()) end,
-  function() return AiWait(AiBetterCityCenter()) end,
 
   function() return AiSet(AiTanker(), 3) end,
   function() return AiForce(1, {AiSubmarine(), 3}) end,

@@ -138,10 +138,10 @@ DefineConstruction("construction-orc-kennel", {
   Files = {
    {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/kennel_construction.png",
-    Size = {128, 128}},
+    Size = {128, 96}},
    {Tileset = "swamp",
     File = "tilesets/swamp/orc/buildings/kennel_construction.png",
-    Size = {128, 128}}},
+    Size = {128, 96}}},
   Constructions = {
    {Percent = 0,
     File = "construction",

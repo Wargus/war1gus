@@ -316,7 +316,7 @@ DefineUnitType("unit-midevh", { Name = "Midevh",
     "attack", "midevh-attack"} } )
 
 DefineUnitType("unit-human-farm", { Name = "Human Farm",
-  Files = {"tileset-forest", "tilesets/summer/human/buildings/farm.png",
+  Files = {"tileset-forest", "tilesets/forest/human/buildings/farm.png",
     "tileset-swamp", "tilesets/swamp/human/buildings/farm.png"},
   Size = {96, 96},
   Animations = "animations-building", Icon = "icon-human-farm",
@@ -346,7 +346,7 @@ DefineUnitType("unit-human-farm", { Name = "Human Farm",
     "attack", "human-farm-attack"} } )
 
 DefineUnitType("unit-human-barracks", { Name = "Human Barracks",
-  Files = {"tileset-forest", "tilesets/summer/human/buildings/barracks.png",
+  Files = {"tileset-forest", "tilesets/forest/human/buildings/barracks.png",
     "tileset-swamp", "tilesets/swamp/human/buildings/barracks.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-human-barracks",
@@ -375,7 +375,7 @@ DefineUnitType("unit-human-barracks", { Name = "Human Barracks",
     "attack", "human-barracks-attack"} } )
 
 DefineUnitType("unit-human-church", { Name = "Human Church",
-  Files = {"tileset-forest", "tilesets/summer/human/buildings/church.png",
+  Files = {"tileset-forest", "tilesets/forest/human/buildings/church.png",
     "tileset-swamp", "tilesets/swamp/human/buildings/church.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-human-church",
@@ -404,7 +404,7 @@ DefineUnitType("unit-human-church", { Name = "Human Church",
     "attack", "human-church-attack"} } )
 
 DefineUnitType("unit-human-stable", { Name = "Human Stable",
-  Files = {"tileset-forest", "tilesets/summer/human/buildings/stable.png",
+  Files = {"tileset-forest", "tilesets/forest/human/buildings/stable.png",
     "tileset-swamp", "tilesets/swamp/human/buildings/stable.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-human-stable",
@@ -433,7 +433,7 @@ DefineUnitType("unit-human-stable", { Name = "Human Stable",
     "attack", "human-stable-attack"} } )
 
 DefineUnitType("unit-human-lumber-mill", { Name = "Human Lumber Mill",
-  Files = {"tileset-forest", "tilesets/summer/human/buildings/lumber_mill.png",
+  Files = {"tileset-forest", "tilesets/forest/human/buildings/lumber_mill.png",
     "tileset-swamp", "tilesets/swamp/human/buildings/lumber_mill.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-human-lumber-mill",
@@ -464,7 +464,7 @@ DefineUnitType("unit-human-lumber-mill", { Name = "Human Lumber Mill",
     "attack", "human-lumber-mill-attack"} } )
 
 DefineUnitType("unit-human-town-hall", { Name = "Human Town Hall",
-  Files = {"tileset-forest", "tilesets/summer/human/buildings/town_hall.png",
+  Files = {"tileset-forest", "tilesets/forest/human/buildings/town_hall.png",
     "tileset-swamp", "tilesets/swamp/human/buildings/town_hall.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-human-town-hall",
@@ -495,7 +495,7 @@ DefineUnitType("unit-human-town-hall", { Name = "Human Town Hall",
     "attack", "human-town-hall-attack"} } )
 
 DefineUnitType("unit-human-tower", { Name = "Human Tower",
-  Files = {"tileset-forest", "tilesets/summer/human/buildings/tower.png",
+  Files = {"tileset-forest", "tilesets/forest/human/buildings/tower.png",
     "tileset-swamp", "tilesets/swamp/human/buildings/tower.png"},
   Size = {96, 96},
   Animations = "animations-building", Icon = "icon-human-tower",
@@ -524,7 +524,7 @@ DefineUnitType("unit-human-tower", { Name = "Human Tower",
     "attack", "human-tower-attack"} } )
 
 DefineUnitType("unit-human-blacksmith", { Name = "Human Blacksmith",
-  Files = {"tileset-forest", "tilesets/summer/human/buildings/blacksmith.png",
+  Files = {"tileset-forest", "tilesets/forest/human/buildings/blacksmith.png",
     "tileset-swamp", "tilesets/swamp/human/buildings/blacksmith.png"},
   Size = {96, 96},
   Animations = "animations-building", Icon = "icon-human-blacksmith",

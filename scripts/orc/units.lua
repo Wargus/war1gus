@@ -299,7 +299,7 @@ DefineUnitType("unit-lothar", { Name = "Lothar",
     "attack", "lothar-attack"} } )
 
 DefineUnitType("unit-orc-farm", { Name = "Orc Farm",
-  Files = {"tileset-forest", "tilesets/summer/orc/buildings/farm.png",
+  Files = {"tileset-forest", "tilesets/forest/orc/buildings/farm.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/farm.png"},
   Size = {96, 96},
   Animations = "animations-building", Icon = "icon-orc-farm",
@@ -329,7 +329,7 @@ DefineUnitType("unit-orc-farm", { Name = "Orc Farm",
     "attack", "orc-farm-attack"} } )
 
 DefineUnitType("unit-orc-barracks", { Name = "Orc Barracks",
-  Files = {"tileset-forest", "tilesets/summer/orc/buildings/barracks.png",
+  Files = {"tileset-forest", "tilesets/forest/orc/buildings/barracks.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/barracks.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-orc-barracks",
@@ -358,7 +358,7 @@ DefineUnitType("unit-orc-barracks", { Name = "Orc Barracks",
     "attack", "orc-barracks-attack"} } )
 
 DefineUnitType("unit-orc-temple", { Name = "Orc Temple",
-  Files = {"tileset-forest", "tilesets/summer/orc/buildings/temple.png",
+  Files = {"tileset-forest", "tilesets/forest/orc/buildings/temple.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/temple.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-orc-temple",
@@ -387,7 +387,7 @@ DefineUnitType("unit-orc-temple", { Name = "Orc Temple",
     "attack", "orc-temple-attack"} } )
 
 DefineUnitType("unit-orc-kennel", { Name = "Orc Kennel",
-  Files = {"tileset-forest", "tilesets/summer/orc/buildings/kennel.png",
+  Files = {"tileset-forest", "tilesets/forest/orc/buildings/kennel.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/kennel.png"},
   Size = {128, 96},
   Animations = "animations-building", Icon = "icon-orc-kennel",
@@ -416,7 +416,7 @@ DefineUnitType("unit-orc-kennel", { Name = "Orc Kennel",
     "attack", "orc-kennel-attack"} } )
 
 DefineUnitType("unit-orc-town-hall", { Name = "Orc Town Hall",
-  Files = {"tileset-forest", "tilesets/summer/orc/buildings/town_hall.png",
+  Files = {"tileset-forest", "tilesets/forest/orc/buildings/town_hall.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/town_hall.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-orc-town-hall",
@@ -447,7 +447,7 @@ DefineUnitType("unit-orc-town-hall", { Name = "Orc Town Hall",
     "attack", "orc-town-hall-attack"} } )
 
 DefineUnitType("unit-orc-lumber-mill", { Name = "Orc Lumber Mill",
-  Files = {"tileset-forest", "tilesets/summer/orc/buildings/lumber_mill.png",
+  Files = {"tileset-forest", "tilesets/forest/orc/buildings/lumber_mill.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/lumber_mill.png"},
   Size = {128, 128},
   Animations = "animations-building", Icon = "icon-orc-lumber-mill",
@@ -478,7 +478,7 @@ DefineUnitType("unit-orc-lumber-mill", { Name = "Orc Lumber Mill",
     "attack", "orc-lumber-mill-attack"} } )
 
 DefineUnitType("unit-orc-tower", { Name = "Orc Tower",
-  Files = {"tileset-forest", "tilesets/summer/orc/buildings/tower.png",
+  Files = {"tileset-forest", "tilesets/forest/orc/buildings/tower.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/tower.png"},
   Size = {96, 96},
   Animations = "animations-building", Icon = "icon-orc-tower",
@@ -507,10 +507,10 @@ DefineUnitType("unit-orc-tower", { Name = "Orc Tower",
     "attack", "orc-tower-attack"} } )
 
 DefineUnitType("unit-orc-blacksmith", { Name = "Orc Blacksmith",
-  Files = {"tileset-forest", "tilesets/summer/orc/buildings/blacksmith.png",
+  Files = {"tileset-forest", "tilesets/forest/orc/buildings/blacksmith.png",
     "tileset-swamp", "tilesets/swamp/orc/buildings/blacksmith.png"},
   Size = {96, 96},
-  Animations = "animations-building", Icon = "icon-mythical-blacksmith",
+  Animations = "animations-building", Icon = "icon-orc-blacksmith",
   Costs = {"time", 200, "gold", 800, "wood", 450, "oil", 100},
   RepairHp = 4,
   RepairCosts = {"gold", 1, "wood", 1, "oil", 1},
@@ -612,7 +612,7 @@ DefineUnitType("unit-eye-of-vision", { Name = "Eye of Kilrogg",
 
 DefineUnitType("unit-skeleton", { Name = "Skeleton",
   Files = {"tileset-forest", "neutral/units/skeleton.png"},
-  Size = {56, 56},
+  Size = {64, 64},
   Animations = "animations-skeleton", Icon = "icon-skeleton",
   Speed = 8,
   HitPoints = 40,
