@@ -161,12 +161,38 @@ Control Todo[] = {
 {FLC,0,"hfinale.war",					   0 __},
 {FLC,0,"hintro1.war",					   0 __},
 {FLC,0,"hintro2.war",					   0 __},
+{FLC,0,"hmap01.war",					   0 __},
+{FLC,0,"hmap02.war",					   0 __},
+{FLC,0,"hmap03.war",					   0 __},
+{FLC,0,"hmap04.war",					   0 __},
+{FLC,0,"hmap05.war",					   0 __},
+{FLC,0,"hmap06.war",					   0 __},
+{FLC,0,"hmap07.war",					   0 __},
+{FLC,0,"hmap08.war",					   0 __},
+{FLC,0,"hmap09.war",					   0 __},
+{FLC,0,"hmap10.war",					   0 __},
+{FLC,0,"hmap11.war",					   0 __},
+{FLC,0,"hmap12.war",					   0 __},
+{FLC,0,"lose1.war",					   0 __},
 {FLC,0,"lose2.war",					   0 __},
 {FLC,0,"ofinale.war",					   0 __},
 {FLC,0,"ointro1.war",					   0 __},
 {FLC,0,"ointro2.war",					   0 __},
 {FLC,0,"ointro3.war",					   0 __},
+{FLC,0,"omap01.war",					   0 __},
+{FLC,0,"omap02.war",					   0 __},
+{FLC,0,"omap03.war",					   0 __},
+{FLC,0,"omap04.war",					   0 __},
+{FLC,0,"omap05.war",					   0 __},
+{FLC,0,"omap06.war",					   0 __},
+{FLC,0,"omap07.war",					   0 __},
+{FLC,0,"omap08.war",					   0 __},
+{FLC,0,"omap09.war",					   0 __},
+{FLC,0,"omap10.war",					   0 __},
+{FLC,0,"omap11.war",					   0 __},
+{FLC,0,"omap12.war",					   0 __},
 {FLC,0,"title.war",					   0 __},
+{FLC,0,"win1.war",					   0 __},
 {FLC,0,"win2.war",					   0 __},
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -989,6 +1015,52 @@ void ConvertFLC_SS2(unsigned char* buf)
 }
 
 /**
+**	Convert FLC LC
+*/
+void ConvertFLC_LC(unsigned char* buf)
+{
+    unsigned char* p;
+    int lines;
+    int packets;
+    unsigned char x;
+    unsigned char* i;
+    int skip;
+    char type;
+    unsigned char packet;
+    int skiplines;
+    char pngbuf[1024];
+
+    p=buf;
+    skiplines=FetchLE16(p);
+    lines=FetchLE16(p);
+
+    for( ; lines; --lines) {
+	x=FetchByte(p);
+	packets=FetchByte(p);
+	i=FLCImage+FLCWidth*skiplines+x;
+	for( ; packets; --packets ) {
+	    skip=FetchByte(p);
+	    i+=skip;
+	    type=FetchByte(p);
+	    if( type>0 ) {
+		for( ; type; --type ) {
+		    *i++=FetchByte(p);
+		}
+	    } else {
+		packet=FetchByte(p);
+		for( ; type; ++type ) {
+		    *i++=packet;
+		}
+	    }
+	}
+	++skiplines;
+    }
+
+    sprintf(pngbuf,"%s-%02d.png",FLCFile,FLCFrame++);
+    SavePNG(pngbuf,FLCImage,FLCWidth,FLCHeight,FLCPalette);
+}
+
+/**
 **	Convert FLC BRUN
 */
 void ConvertFLC_BRUN(unsigned char* buf)
@@ -1166,6 +1238,9 @@ int ConvertFLCFrameChunk(unsigned char* buf)
 	    case 7:
 		ConvertFLC_SS2(p);
 		break;
+	    case 12:
+		ConvertFLC_LC(p);
+		break;
 	    case 15:
 		ConvertFLC_BRUN(p);
 		break;
@@ -1206,7 +1281,7 @@ void ConvertFLC(const char* file,const char* flc)
     f=open(file,O_RDONLY|O_BINARY,0);
     if( f==-1 ) {
 	printf("Can't open %s\n",file);
-	exit(-1);
+	return;
     }
     if( fstat(f,&stat_buf) ) {
 	printf("Can't fstat %s\n",file);
