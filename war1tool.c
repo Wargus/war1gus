@@ -37,19 +37,60 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifndef _MSC_VER
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
+#ifdef _MSC_VER
+#define strdup _strdup
+#define DEBUG _DEBUG
+#include <direct.h>
+#include <io.h>
+#else
+#include <unistd.h>
 #endif
 #include <ctype.h>
 #include <png.h>
 
-#include "stratagus.h"
-#include "iocompat.h"
-#include "myendian.h"
-
 #if defined(_MSC_VER) || defined(__MINGW32__) || defined(USE_BEOS)
 typedef unsigned long u_int32_t;
 #endif
+
+#ifndef __GNUC__
+#define __attribute__(args)  // Does nothing for non GNU CC
+#endif
+
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
+// From SDL_byteorder.h
+#if  defined(__i386__) || defined(__ia64__) || defined(WIN32) || \
+    (defined(__alpha__) || defined(__alpha)) || \
+     defined(__arm__) || \
+    (defined(__mips__) && defined(__MIPSEL__)) || \
+     defined(__SYMBIAN32__) || \
+     defined(__x86_64__) || \
+     defined(__LITTLE_ENDIAN__)
+#define FetchLE16(p) (*((unsigned short*)(p))++)
+#define FetchLE32(p) (*((unsigned int*)(p))++)
+#define AccessLE16(p) (*((unsigned short*)(p)))
+#define AccessLE32(p) (*((unsigned int*)(p)))
+#define ConvertLE16(v) (v)
+#else
+static _inline unsigned short Swap16(unsigned short D) {
+	return ((D << 8) | (D >> 8));
+}
+static _inline unsigned int Swap32(unsigned int D) {
+	return ((D << 24) | ((D << 8) & 0x00FF0000) | ((D >> 8) & 0x0000FF00) | (D >> 24));
+}
+#define FetchLE16(p) Swap16(*((unsigned short*)(p))++)
+#define FetchLE32(p) Swap32(*((unsigned int*)(p))++)
+#define AccessLE16(p) (*((unsigned short*)(p)))
+#define AccessLE32(p) Swap32(*((unsigned int*)(p)))
+#define ConvertLE16(v) Swap16(v)
+#endif
+
+#define FetchByte(p) (*((unsigned char*)(p))++)
 
 //----------------------------------------------------------------------------
 //  Config
@@ -691,7 +732,7 @@ void CheckPath(const char* path)
 			if (s) {
 				*s = '\0';
 			}
-#ifdef USE_WIN32
+#ifdef WIN32
 			mkdir(cp);
 #else
 			mkdir(cp, 0777);
@@ -704,38 +745,6 @@ void CheckPath(const char* path)
 		}
 	}
 	free(cp);
-}
-
-/**
-**  Given a file name that would appear in a PC archive convert it to what
-**  would appear on the Mac.
-*/
-void ConvertToMac(char* filename)
-{
-	if (!strcmp(filename, "rezdat.war")) {
-		strcpy(filename, "War Resources");
-		return;
-	}
-	if (!strcmp(filename, "strdat.war")) {
-		strcpy(filename, "War Strings");
-		return;
-	}
-	if (!strcmp(filename, "maindat.war")) {
-		strcpy(filename, "War Data");
-		return;
-	}
-	if (!strcmp(filename, "snddat.war")) {
-		strcpy(filename, "War Music");
-		return;
-	}
-	if (!strcmp(filename, "muddat.cud")) {
-		strcpy(filename, "War Movies");
-		return;
-	}
-	if (!strcmp(filename, "sfxdat.sud")) {
-		strcpy(filename, "War Sounds");
-		return;
-	}
 }
 
 //----------------------------------------------------------------------------
@@ -894,8 +903,6 @@ int OpenArchive(const char* file, int type)
 		printf("Can't fstat %s\n", file);
 		exit(-1);
 	}
-	DebugLevel3("Filesize %ld %ldk\n" _C_
-		(long)stat_buf.st_size _C_ stat_buf.st_size / 1024);
 
 	//
 	//  Read in the archive
@@ -913,16 +920,13 @@ int OpenArchive(const char* file, int type)
 
 	cp = buf;
 	i = FetchLE32(cp);
-	DebugLevel2("Magic\t%08X\t" _C_ i);
 	if (i != 0x19 && i != 0x18) {
 		printf("Wrong magic %08x, expected %08x or %08x\n",
 			i, 0x00000019, 0x00000018);
 		exit(-1);
 	}
 	entries = FetchLE16(cp);
-	DebugLevel3("Entries\t%5d\t" _C_ entries);
 	i = FetchLE16(cp);
-	DebugLevel3("ID\t%d\n" _C_ i);
 	if (i != type) {
 		printf("Wrong type %08x, expected %08x\n", i, type);
 		exit(-1);
@@ -938,7 +942,6 @@ int OpenArchive(const char* file, int type)
 	}
 	for (i = 0; i < entries; ++i) {
 		op[i] = buf + FetchLE32(cp);
-		DebugLevel3("Offset\t%d\n" _C_ op[i]);
 	}
 	op[i] = buf + stat_buf.st_size;
 
@@ -967,7 +970,6 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 	uncompressed_length = FetchLE32(cp);
 	flags = uncompressed_length >> 24;
 	uncompressed_length &= 0x00FFFFFF;
-	DebugLevel3("Entry length %8d flags %02x\t" _C_ uncompressed_length _C_ flags);
 
 	if (uncompressed_length + (cp-ArchiveBuffer) >= ArchiveLength) {
 		printf("Entry goes past end of file\n");
@@ -985,8 +987,6 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 		unsigned char* ep;
 		int bi;
 
-		DebugLevel3("Compressed entry\n");
-
 		bi = 0;
 		memset(buf, 0, sizeof(buf));
 		ep = dp + uncompressed_length;
@@ -997,7 +997,6 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 			int bflags;
 
 			bflags = FetchByte(cp);
-			DebugLevel3("Ctrl %02x " _C_ bflags);
 			for (i = 0; i < 8; ++i) {
 				int j;
 				int o;
@@ -1006,10 +1005,8 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 					j = FetchByte(cp);
 					*dp++ = j;
 					buf[bi++ & 0xFFF] = j;
-					DebugLevel3("=%02x" _C_ j);
 				} else {
 					o = FetchLE16(cp);
-					DebugLevel3("*%d,%d" _C_ o >> 12 _C_ o & 0xFFF);
 					j = (o >> 12) + 3;
 					o &= 0xFFF;
 					while (j--) {
@@ -1024,11 +1021,9 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 				}
 				bflags >>= 1;
 			}
-			DebugLevel3("\n");
 		}
 		//if (dp!=ep ) printf("%p,%p %d\n",dp,ep,dp-dest);
 	} else if (flags == 0x00) {
-		DebugLevel3("Uncompressed entry\n");
 		memcpy(dest, cp, uncompressed_length);
 	} else {
 		printf("Unknown flags %x\n", flags);
@@ -1437,8 +1432,6 @@ void ConvertFLC(const char* file, const char* flc)
 		printf("Can't fstat %s\n", file);
 		exit(-1);
 	}
-	DebugLevel3("Filesize %ld %ldk\n" _C_
-		(long)stat_buf.st_size _C_ stat_buf.st_size/1024);
 
 	//
 	//  Read in the archive
@@ -1624,7 +1617,6 @@ void DecodeMiniTile(unsigned char* image, int ix, int iy, int iadd,
 	int x;
 	int y;
 
-	DebugLevel3Fn("index %d\n" _C_ index);
 	for (y = 0; y < 8; ++y) {
 		for (x = 0; x < 8; ++x) {
 			image[(y + iy * 8) * iadd + ix * 8 + x] = mini[index +
@@ -1763,9 +1755,6 @@ void DecodeGfuEntry(int index, unsigned char* start,
 		width += 256;
 	}
 
-	DebugLevel3("%2d: +x %2d +y %2d width %2d height %2d offset %d\n" _C_
-		index _C_ xoff _C_ yoff _C_ width _C_ height _C_ offset);
-
 	sp = start + offset - 4;
 	dp = image + xoff + yoff * iadd;
 	for (i = 0; i < height; ++i) {
@@ -1797,9 +1786,6 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 	max_width = FetchByte(bp);
 	max_height = FetchByte(bp);
 
-
-	DebugLevel3("Entries %2d Max width %3d height %3d, " _C_ count _C_
-		max_width _C_ max_height);
 
 	if (count % 5 == 0) {
 		IPR = 5;
@@ -1917,8 +1903,6 @@ unsigned char* ConvertImg(unsigned char* bp,int *wp,int *hp)
 	width = FetchLE16(bp);
 	height = FetchLE16(bp);
 
-	DebugLevel3("Image: width %3d height %3d\n" _C_ width _C_ height);
-
 	image = malloc(width * height);
 	if (!image) {
 		printf("Can't allocate image\n");
@@ -2033,9 +2017,6 @@ unsigned char* ConvertCur(unsigned char* bp,int* wp,int* hp)
 	hoty = FetchLE16(bp);
 	width = FetchLE16(bp);
 	height = FetchLE16(bp);
-
-	DebugLevel3("Cursor: hotx %d hoty %d width %d height %d\n" _C_
-		hotx _C_ hoty _C_ width _C_ height);
 
 	image = malloc(width * height);
 	if (!image) {
@@ -2400,7 +2381,7 @@ char* ParseString(char* input)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-local void CmSavePlayers(gzFile f)
+static void CmSavePlayers(gzFile f)
 {
 	int i;
 
@@ -2439,7 +2420,7 @@ local void CmSavePlayers(gzFile f)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-local void CmSaveMap(gzFile f, int mtxme)
+static void CmSaveMap(gzFile f, int mtxme)
 {
 	unsigned char* mtxm;
 	unsigned char* p;
@@ -2523,7 +2504,7 @@ char *UnitTypes[] = {
 **
 **  @param f  File handle
 */
-local void CmSaveUnits(gzFile f, unsigned char* txtp)
+static void CmSaveUnits(gzFile f, unsigned char* txtp)
 {
 	unsigned char* p;
 	unsigned char* p2;
@@ -2631,7 +2612,7 @@ int ConvertCm(const char* file, int txte, int mtxme)
 */
 void Usage(const char* name)
 {
-	printf("war1tool for Stratagus V" VERSION ", (c) 1999-2003 by the Stratagus Project\n\
+	printf("war1tool for Stratagus (c) 2003-2004 by the Stratagus Project\n\
 Usage: %s archive-directory [destination-directory]\n\
 archive-directory\tDirectory which includes the archives maindat.war...\n\
 destination-directory\tDirectory where the extracted files are placed.\n"
@@ -2671,14 +2652,20 @@ int main(int argc, char** argv)
 		Dir = "data";
 	}
 
-	DebugLevel2("Extract from \"%s\" to \"%s\"\n" _C_ ArchiveDir _C_ Dir);
+#ifdef DEBUG
+	printf("Extract from \"%s\" to \"%s\"\n", ArchiveDir, Dir);
+#endif
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		// Should only be on the expansion cd
-		DebugLevel2("%s:\n" _C_ ParseString(Todo[u].File));
+#ifdef DEBUG
+		printf("%s:\n", ParseString(Todo[u].File));
+#endif
 		switch (Todo[u].Type) {
 			case F:
 				sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
-				DebugLevel2("Archive \"%s\"\n" _C_ buf);
+#ifdef DEBUG
+				printf("Archive \"%s\"\n", buf);
+#endif
 				if (ArchiveBuffer) {
 					CloseArchive();
 				}
