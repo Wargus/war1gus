@@ -25,17 +25,17 @@
 ##	$Id: build.sh 1522 2009-05-22 17:05:02Z tlh2000 $
 ##
 
-#       cdrom autodetection
+# cdrom autodetection
 CDROM="/cdrom"
 [ -d "/mnt/cdrom" ] && CDROM="/mnt/cdrom"
 
-#       location of data files
-ARCHIVE="$CDROM/data/"
+# location of data files
+ARCHIVE="$CDROM/data"
 
-#	output dir
+# output dir
 DIR="data.wc1"
 
-#	location of the wartool binary
+# location of the wartool binary
 BINPATH="."
 
 ####	Do not modify anything below this point.
@@ -58,13 +58,20 @@ EOF
 done
 
 if [ -d "$ARCHIVE/fdata/" ]; then
-	DATADIR="$ARCHIVE/fdata/"
+	DATADIR="$ARCHIVE/fdata"
+elif [ -d "$ARCHIVE/FDATA/" ]; then
+	DATADIR="$ARCHIVE/FDATA"
+elif [ -d "$ARCHIVE/data/" ]; then
+	DATADIR="$ARCHIVE/data"
+elif [ -d "$ARCHIVE/DATA/" ]; then
+	DATADIR="$ARCHIVE/DATA"
 else
-	DATADIR="$ARCHIVE/"
+	DATADIR="$ARCHIVE"
 fi
 
 if [ ! -f "$DATADIR/data.war" ] && [ ! -f "$DATADIR/DATA.WAR" ] && [ ! -f "$DATADIR/War Resources" ]; then
     echo "error: '$DATADIR/data.war' does not exist"
+    echo "error: '$DATADIR/DATA.WAR' does not exist"
     echo "error: '$DATADIR/War Resources' does not exist"
     echo "Specify the location of the data files with the '-p' option"
     exit 1
@@ -87,13 +94,28 @@ rm -Rf `find $DIR/scripts | grep .svn`
 
 $BINPATH/war1tool "$DATADIR" "$DIR" || exit
 
-#	Compress the sounds
+# Copy flv animation and convert to theora
+VIDEOS="cave1.war cave2.war cave3.war hfinale.war hintro1.war hintro2.war hmap01.war hmap02.war hmap03.war hmap04.war hmap05.war hmap06.war hmap07.war hmap08.war hmap09.war hmap10.war hmap11.war hmap12.war lose1.war lose2.war ofinale.war ointro1.war ointro2.war ointro3.war omap01.war omap02.war omap03.war omap04.war omap05.war omap06.war omap07.war omap08.war omap09.war omap10.war omap11.war omap12.war title.war win1.war win2.war"
+mkdir -p "$DIR/videos/"
+for f in $VIDEOS; do
+	if [ ! -f "$DATADIR/$f" ]; then
+		f="`echo $f | tr a-z A-Z`"
+	fi
+	if [ -f "$DATADIR/$f" ]; then
+		OUTPUT="$DIR/videos/${f%%.war}"
+		OUTPUT=${OUTPUT%%.WAR}.avi
+		OUTPUT="`echo $OUTPUT | tr A-Z a-z`"
+		ffmpeg2theora "$DATADIR/$f" -o "$OUTPUT"
+	fi
+done
+
+# Compress the sounds
 find $DIR/sounds -type f -name "*.wav" -print -exec gzip -f {} \;
 
-#	Compress the texts
+# Compress the texts
 find $DIR/campaigns -type f -name "*.txt" -print -exec gzip -f {} \;
 
-#	Setup the default map
+# Setup the default map
 #[ -f "$DIR/maps/multi/(2)mysterious-dragon-isle.sms.gz" ] && cd $DIR/maps \
 #	&& ln -s "multi/(2)mysterious-dragon-isle.sms.gz" default.sms.gz \
 #	&& ln -s "multi/(2)mysterious-dragon-isle.smp.gz" default.smp.gz

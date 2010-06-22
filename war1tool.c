@@ -2441,8 +2441,11 @@ int main(int argc, char** argv)
 	unsigned u;
 	char buf[1024];
 	int a;
+	int upper;
+	struct stat st;
 
 	a = 1;
+	upper = 0;
 	while (argc >= 2) {
 		if (!strcmp(argv[a], "-h")) {
 			Usage(argv[0]);
@@ -2468,6 +2471,13 @@ int main(int argc, char** argv)
 #ifdef DEBUG
 	printf("Extract from \"%s\" to \"%s\"\n", ArchiveDir, Dir);
 #endif
+
+	sprintf(buf, "%s/data.war", ArchiveDir);
+	if (stat(buf, &st)) {
+		sprintf(buf, "%s/DATA.WAR", ArchiveDir);
+		upper = 1;
+	}
+
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		// Should only be on the expansion cd
 #ifdef DEBUG
@@ -2475,6 +2485,17 @@ int main(int argc, char** argv)
 #endif
 		switch (Todo[u].Type) {
 			case F:
+				if (upper) {
+					int i = 0;
+					char filename[1024];
+					strcpy(filename, Todo[u].File);
+					Todo[u].File = filename;
+					while (Todo[u].File[i]) {
+						Todo[u].File[i] = toupper(Todo[u].File[i]);
+						++i;
+					}
+				}
+
 				sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
 #ifdef DEBUG
 				printf("Archive \"%s\"\n", buf);
@@ -2485,6 +2506,16 @@ int main(int argc, char** argv)
 				OpenArchive(buf, Todo[u].Arg1);
 				break;
 			case FLC:
+				if (upper) {
+					int i = 0;
+					char filename[1024];
+					strcpy(filename, Todo[u].File);
+					Todo[u].File = filename;
+					while (Todo[u].File[i]) {
+						Todo[u].File[i] = toupper(Todo[u].File[i]);
+						++i;
+					}
+				}
 				sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
 				ConvertFLC(buf, Todo[u].File);
 				break;
