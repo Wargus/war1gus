@@ -33,6 +33,7 @@
 --
 --	(reset-keystroke-help)
 --
+--[[
 ResetKeystrokeHelp()
 --
 --	Add a keystroke help.
@@ -77,3 +78,4 @@ AddKeystrokeHelp("F9", "- preferences")
 AddKeystrokeHelp("F10", "- game menu")
 AddKeystrokeHelp("F11", "- save game")
 AddKeystrokeHelp("F12", "- load game")
+]]

@@ -31,6 +31,7 @@
 --=============================================================================
 --  Define all campaigns.
 
+--[[
 DefineCampaign("human", "name", "~!Human campaign",
   "file", "scripts/human/campaign1.lua")
 DefineCampaign("orc", "name", "~!Orc campaign",
@@ -41,3 +42,4 @@ if (expansion) then
   DefineCampaign("orc-exp", "name", "O~!rc expansion levels",
     "file", "scripts/orc/campaign2.lua")
 end
+]]

@@ -28,6 +28,7 @@
 --
 --      $Id$
 
+--[[
 Credits(
   "background", "ui/title_screen.png",
   "title", "Programmers:",
@@ -153,3 +154,4 @@ Credits(
   "comment", "The Stratagus Team thanks all the people who have contributed",
   "comment", "patches, bug reports, ideas."
 )
+]]

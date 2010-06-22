@@ -28,6 +28,7 @@
 --
 --      $Id$
 
+--[[
 AddTip("You can select all of your currently visible units of the same type by holding down the CTRL key and selecting a unit or by \"double clicking\" on a unit.")
 AddTip("The more workers you have collecting resources, the faster your economy will grow.")
 AddTip("Building more than one barracks will let you train more units faster.")
@@ -46,3 +47,4 @@ AddTip("You can build many of the same building, if you hold the ALT and SHIFT k
 AddTip("Use CTRL-V or ALT-V to cycle through the viewport configuration, you can than monitor your base and lead an attack.")
 
 AddTip("Know a useful tip?  Then add it here!")
+]]

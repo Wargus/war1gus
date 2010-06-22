@@ -40,6 +40,7 @@
 --  rank   The rank that gets displayed.
 --
 
+--[[
 DefineRanks("human", {
   0, "Human Rank 1",
 })
@@ -47,3 +48,4 @@ DefineRanks("human", {
 DefineRanks("orc", {
   0, "Orc Rank 1",
 })
+]]
