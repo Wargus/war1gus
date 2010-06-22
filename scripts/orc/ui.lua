@@ -32,14 +32,67 @@
 --	* Race orc.
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+function AddFiller(file, x, y)
+        if CanAccessFile(file) == true then
+                b = CFiller:new_local()
+                b.G = CGraphic:New(file)
+                b.X = x 
+                b.Y = y 
+                UI.Fillers:push_back(b)
+        end    
+end
+
+function AddSelectedButton(x, y)
+        b = CUIButton:new_local()
+        b.X = x
+        b.Y = y
+        b.Style = FindButtonStyle("icon")
+        UI.SelectedButtons:push_back(b)
+end
+
+function AddTrainingButton(x, y)
+        b = CUIButton:new_local()
+        b.X = x
+        b.Y = y
+        b.Style = FindButtonStyle("icon")
+        UI.TrainingButtons:push_back(b)
+end
+
+function AddTransportingButton(x, y)
+        b = CUIButton:new_local()
+        b.X = x
+        b.Y = y
+        b.Style = FindButtonStyle("icon")
+        UI.TransportingButtons:push_back(b)
+end
+
+function AddButtonPanelButton(x, y)
+        b = CUIButton:new_local()
+        b.X = x
+        b.Y = y
+        b.Style = FindButtonStyle("icon")
+        UI.ButtonPanel.Buttons:push_back(b)
+end
+
+
+
 function OrcScreen(screen_width, screen_height)
   info_panel_x = 0
   info_panel_y = 160
 
-  DefineUI("orc", screen_width, screen_height,
-    "normal-font-color", "white",
-    "reverse-font-color", "yellow",
+--  DefineUI("orc", screen_width, screen_height,
+  UI.NormalFontColor = "yellow";
+  UI.ReverseFontColor = "white";
+--    "normal-font-color", "white",
+--    "reverse-font-color", "yellow",
 
+  UI.Fillers:clear()
+  AddFiller("ui/orc/minimap.png", 0, 0)
+  AddFiller("ui/orc/left_panel.png", 0, 144)
+  AddFiller("ui/orc/top_resource_bar.png", 144, 0)
+  AddFiller("ui/orc/right_panel.png", 624, 0)
+  AddFiller("ui/orc/bottom_panel.png", 144, 376)
+--[[
     "filler", {
       File = "ui/orc/minimap.png",
       Pos = {0, 0}},
@@ -55,7 +108,49 @@ function OrcScreen(screen_width, screen_height)
     "filler", {
       File = "ui/orc/bottom_panel.png",
       Pos = {144, 376}},
+]]
 
+-- gold
+UI.Resources[1].G = CGraphic:New("ui/gold,wood,oil,mana.png", 14, 14)
+UI.Resources[1].IconFrame = 0
+UI.Resources[1].IconX = 176 + 0
+UI.Resources[1].IconY = 0
+UI.Resources[1].TextX = 176 + 0 + 18
+UI.Resources[1].TextY = 1
+
+-- wood
+UI.Resources[2].G = CGraphic:New("ui/gold,wood,oil,mana.png", 14, 14)
+UI.Resources[2].IconFrame = 1
+UI.Resources[2].IconX = 176 + 75
+UI.Resources[2].IconY = 0
+UI.Resources[2].TextX = 176 + 75 + 18
+UI.Resources[2].TextY = 1
+
+-- oil
+UI.Resources[3].G = CGraphic:New("ui/gold,wood,oil,mana.png", 14, 14)
+UI.Resources[3].IconFrame = 2
+UI.Resources[3].IconX = 176 + 150
+UI.Resources[3].IconY = 0
+UI.Resources[3].TextX = 176 + 150 + 18
+UI.Resources[3].TextY = 1
+
+-- food
+UI.Resources[FoodCost].G = CGraphic:New("ui/food.png", 14, 14)
+UI.Resources[FoodCost].IconFrame = 0
+UI.Resources[FoodCost].IconX = Video.Width - 16 - 138
+UI.Resources[FoodCost].IconY = 0
+UI.Resources[FoodCost].TextX = Video.Width - 16 - 138 + 18
+UI.Resources[FoodCost].TextY = 1
+
+-- score
+UI.Resources[ScoreCost].G = CGraphic:New("ui/score.png", 14, 14)
+UI.Resources[ScoreCost].IconFrame = 0
+UI.Resources[ScoreCost].IconX = Video.Width - 16 - 68
+UI.Resources[ScoreCost].IconY = 0
+UI.Resources[ScoreCost].TextX = Video.Width - 16 - 68 + 18
+UI.Resources[ScoreCost].TextY = 1
+
+--[[
     "resources", {
       "gold", { File = "ui/gold,wood,oil,mana.png", Frame = 0,
         Pos = { 176 + 0, 0}, Size = {14, 14}, TextPos = { 176 + 0 + 18, 1}},
@@ -67,8 +162,80 @@ function OrcScreen(screen_width, screen_height)
         Pos = { screen_width - 16 - 138, 0}, Size = {14, 14}, TextPos = { (screen_width - 16 - 138) + 18, 1}},
       "score", { File = "ui/score.png", Frame = 0,
         Pos = { screen_width - 16 - 68, 0}, Size = {14, 14}, TextPos = { (screen_width - 16 - 68) + 18, 1}}},
+]]
 
-    "info-panel", {
+b = CUIButton:new()
+b.X = 9
+b.Y = 160 + 9
+b.Style = FindButtonStyle("icon")
+UI.SingleSelectedButton = b
+
+UI.SelectedButtons:clear()
+
+AddSelectedButton(6, 160 + 6)
+AddSelectedButton(62, 160 + 6)
+AddSelectedButton(118, 160 + 6)
+AddSelectedButton(6, 160 + 60)
+AddSelectedButton(62, 160 + 60)
+AddSelectedButton(118, 160 + 60)
+AddSelectedButton(6, 160 + 114)
+AddSelectedButton(62, 160 + 114)
+AddSelectedButton(118, 160 + 114)
+
+UI.MaxSelectedFont = Fonts["game"]
+UI.MaxSelectedTextX = info_panel_x + 10
+UI.MaxSelectedTextY = info_panel_y + 10
+
+--
+
+b = CUIButton:new()
+b.X = 110
+b.Y = 160 + 11 + 70
+b.Style = FindButtonStyle("icon")
+UI.SingleTrainingButton = b
+
+UI.TrainingButtons:clear()
+
+AddTrainingButton(6, 216)
+AddTrainingButton(62, 216)
+AddTrainingButton(118, 216)
+AddTrainingButton(6, 263)
+AddTrainingButton(62, 263)
+AddTrainingButton(118, 263)
+
+--
+
+b = CUIButton:new()
+b.X = 110
+b.Y = 160 + 11 + 70
+b.Style = FindButtonStyle("icon")
+UI.UpgradingButton = b
+
+--
+
+b = CUIButton:new()
+b.X = 110
+b.Y = 160 + 11 + 70
+b.Style = FindButtonStyle("icon")
+UI.ResearchingButton = b
+
+--
+
+UI.TransportingButtons:clear()
+
+AddTransportingButton(9, 387)
+AddTransportingButton(65, 387)
+AddTransportingButton(121, 387)
+AddTransportingButton(9, 434)
+AddTransportingButton(65, 434)
+AddTransportingButton(121, 434)
+
+--
+
+UI.CompletedBarColorRGB = CColor(48, 100, 4)
+UI.CompletedBarShadow = true
+
+--    "info-panel", {
 --[[
       "panel", {
         "file", "ui/orc/infopanel.png",
@@ -76,6 +243,8 @@ function OrcScreen(screen_width, screen_height)
         "size", {176, 176}
       },
 ]]
+
+--[[
       "selected", {
         "single", {
           "icon", {
@@ -150,8 +319,8 @@ function OrcScreen(screen_width, screen_height)
           "pos", { 50, 313}}
       }
     },
-
-    "button-panel", {
+]]
+--    "button-panel", {
 --[[
       "panel", {
         "file", "ui/orc/" ..
@@ -159,6 +328,7 @@ function OrcScreen(screen_width, screen_height)
           "/buttonpanel.png",
         "pos", {0, 336}},
 ]]
+--[[
       "icons", {
         {"pos", {  8, 236}, "style", "icon"},
         {"pos", { 76, 236}, "style", "icon"},
@@ -219,9 +389,66 @@ function OrcScreen(screen_width, screen_height)
       "panel3", "ui/orc/panel_2.png",
       "panel4", "ui/orc/panel_2.png",
       "panel5", "ui/orc/panel_2.png"},
+]]
 
-    "victory-background", "ui/orc/victory.png",
-    "defeat-background", "ui/orc/defeat.png")
+UI.ButtonPanel.Buttons:clear()
+
+AddButtonPanelButton(9, 340)
+AddButtonPanelButton(65, 340)
+AddButtonPanelButton(121, 340)
+AddButtonPanelButton(9, 387)
+AddButtonPanelButton(65, 387)
+AddButtonPanelButton(121, 387)
+AddButtonPanelButton(9, 434)
+AddButtonPanelButton(65, 434)
+AddButtonPanelButton(121, 434)
+
+UI.ButtonPanel.X = 0
+UI.ButtonPanel.Y = 336
+UI.ButtonPanel.AutoCastBorderColorRGB = CColor(0, 0, 252)
+
+UI.MapArea.X = 176
+UI.MapArea.Y = 16
+UI.MapArea.EndX = Video.Width - 16 - 1
+UI.MapArea.EndY = Video.Height - 16 - 1
+
+UI.Minimap.X = 24
+UI.Minimap.Y = 24 + 2
+UI.Minimap.W = 128
+UI.Minimap.H = 128
+
+UI.StatusLine.TextX = 2 + 176
+UI.StatusLine.TextY = Video.Height + 2 - 16
+UI.StatusLine.Width = Video.Width - 16 - 2 - 176
+UI.StatusLine.Font = Fonts["game"]
+
+UI.MenuButton.X = 24
+UI.MenuButton.Y = 2
+UI.MenuButton.Text = "Menu (~<F10~>)"
+UI.MenuButton.Style = FindButtonStyle("main")
+UI.MenuButton:SetCallback(
+  function()
+    if (Editor.Running == EditorNotRunning) then
+          RunGameMenu()
+        else
+          RunInEditorMenu()
+        end
+  end)
+
+UI.NetworkMenuButton.X = 6
+UI.NetworkMenuButton.Y = 2
+UI.NetworkMenuButton.Text = "Menu"
+UI.NetworkMenuButton.Style = FindButtonStyle("network")
+UI.NetworkMenuButton:SetCallback(function() RunGameMenu() end)
+
+UI.NetworkDiplomacyButton.X = 90
+UI.NetworkDiplomacyButton.Y = 2
+UI.NetworkDiplomacyButton.Text = "Diplomacy"
+UI.NetworkDiplomacyButton.Style = FindButtonStyle("network")
+UI.NetworkDiplomacyButton:SetCallback(function() RunDiplomacyMenu() end)
+
+--    "victory-background", "ui/orc/victory.png",
+--    "defeat-background", "ui/orc/defeat.png")
 end
 
 OrcScreen(640, 480)

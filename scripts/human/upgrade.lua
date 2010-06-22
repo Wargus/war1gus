@@ -30,36 +30,46 @@
 
 --	NOTE: Save can generate this table.
 
-DefineUpgrade("upgrade-sword1", "icon", "icon-sword2",
-  "costs", {   200,   750,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-sword2", "icon", "icon-sword3",
-  "costs", {   250,  1500,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-arrow1", "icon", "icon-arrow2",
-  "costs", {   200,   750,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-arrow2", "icon", "icon-arrow3",
-  "costs", {   250,  1500,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-horse1", "icon", "icon-horse1",
-  "costs", {   200,   750,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-horse2", "icon", "icon-horse2",
-  "costs", {   250,  1500,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-human-shield1", "icon", "icon-human-shield2",
-  "costs", {   200,   750,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-human-shield2", "icon", "icon-human-shield3",
-  "costs", {   250,  1500,     0,     0,     0,     0,     0})
+upgrades = {
+  {"upgrade-sword1", "icon-sword2",
+    {   200,   750,     0,     0,     0,     0,     0}},
+  {"upgrade-sword2", "icon-sword3",
+    {   250,  1500,     0,     0,     0,     0,     0}},
+  {"upgrade-arrow1", "icon-arrow2",
+    {   200,   750,     0,     0,     0,     0,     0}},
+  {"upgrade-arrow2", "icon-arrow3",
+    {   250,  1500,     0,     0,     0,     0,     0}},
+  {"upgrade-horse1", "icon-horse1",
+    {   200,   750,     0,     0,     0,     0,     0}},
+  {"upgrade-horse2", "icon-horse2",
+    {   250,  1500,     0,     0,     0,     0,     0}},
+  {"upgrade-human-shield1", "icon-human-shield2",
+    {   200,   750,     0,     0,     0,     0,     0}},
+  {"upgrade-human-shield2", "icon-human-shield3",
+    {   250,  1500,     0,     0,     0,     0,     0}},
 
-DefineUpgrade("upgrade-healing", "icon", "icon-healing",
-  "costs", {     0,   750,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-far-seeing", "icon", "icon-far-seeing",
-  "costs", {     0,  1500,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-invisibility", "icon", "icon-invisibility",
-  "costs", {     0,  3000,     0,     0,     0,     0,     0})
+  {"upgrade-healing", "icon-healing",
+    {     0,   750,     0,     0,     0,     0,     0}},
+  {"upgrade-far-seeing", "icon-far-seeing",
+    {     0,  1500,     0,     0,     0,     0,     0}},
+  {"upgrade-invisibility", "icon-invisibility",
+    {     0,  3000,     0,     0,     0,     0,     0}},
 
-DefineUpgrade("upgrade-scorpion", "icon", "icon-scorpion",
-  "costs", {   100,   750,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-rain-of-fire", "icon", "icon-rain-of-fire",
-  "costs", {     0,  1500,     0,     0,     0,     0,     0})
-DefineUpgrade("upgrade-water-elemental", "icon", "icon-water-elemental",
-  "costs", {   200,  3000,     0,     0,     0,     0,     0})
+  {"upgrade-scorpion", "icon-scorpion",
+    {   100,   750,     0,     0,     0,     0,     0}},
+  {"upgrade-rain-of-fire", "icon-rain-of-fire",
+    {     0,  1500,     0,     0,     0,     0,     0}},
+  {"upgrade-water-elemental", "icon-water-elemental",
+    {   200,  3000,     0,     0,     0,     0,     0}},
+}
+
+for i = 1,table.getn(upgrades) do
+  u = CUpgrade:New(upgrades[i][1])
+  u.Icon = Icons[upgrades[i][2]]
+  for j = 1,table.getn(upgrades[i][3]) do
+    u.Costs[j - 1] = upgrades[i][3][j]
+  end
+end
 
 --	NOTE: Save can generate this table.
 
@@ -78,10 +88,10 @@ DefineModifier("upgrade-arrow2",
   {"apply-to", "unit-archer"})
 
 DefineModifier("upgrade-horse1",
-  {"speed", 1},
+--  {"speed", 1},
   {"apply-to", "unit-knight"})
 DefineModifier("upgrade-horse2",
-  {"speed", 1},
+--  {"speed", 1},
   {"apply-to", "unit-knight"})
 
 DefineModifier("upgrade-human-shield1",

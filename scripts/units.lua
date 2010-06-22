@@ -28,6 +28,8 @@
 --
 --      $Id$
 
+UnitTypeFiles = {}
+
 -- Load the animations for the units.
 Load("scripts/anim.lua")
 
@@ -35,15 +37,18 @@ Load("scripts/anim.lua")
 --	Define unit-types.
 --
 
+UnitTypeFiles["unit-gold-mine"] = {
+  forest = "tilesets/forest/neutral/buildings/gold_mine.png",
+  swamp = "tilesets/swamp/neutral/buildings/gold_mine.png",
+}
+
 DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
-  Files = {"tileset-forest", "tilesets/forest/neutral/buildings/gold_mine.png",
-    "tileset-swamp", "tilesets/swamp/neutral/buildings/gold_mine.png"},
-  Size = {128, 128},
+  Image = {"size", {128, 128}},
   Animations = "animations-building", Icon = "icon-gold-mine",
   NeutralMinimapColor = {255, 255, 0},
   Costs = {"time", 150},
   Construction = "construction-none",
-  Speed = 0,
+--  Speed = 0,
   HitPoints = 25500,
   DrawLevel = 40,
   TileSize = {3, 3}, BoxSize = {95, 95},
@@ -61,7 +66,8 @@ DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
     "ready", "gold-mine-ready",
     "help", "gold-mine-help",
     "dead", "building destroyed",
-    "attack", "gold-mine-attack"} } )
+--    "attack", "gold-mine-attack"
+}} )
 
 DefineUnitType("unit-dead-body", { Name = "Dead Body",
   Files = {"tileset-forest", "neutral/units/dead_bodies.png"},

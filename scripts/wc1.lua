@@ -30,24 +30,21 @@
 
 DefineRaceNames(
   "race", {
-    "race", 0,
     "name", "human",
     "display", "Human",
     "visible"},
   "race", {
-    "race", 1,
     "name", "orc",
     "display", "Orc",
     "visible"},
   "race", {
-    "race", 2,
     "name", "neutral",
     "display", "Neutral"})
 
-DefineTilesetWcNames(
-  "tileset-forest", "tileset-swamp", "tileset-dungeon")
+--DefineTilesetWcNames(
+--  "tileset-forest", "tileset-swamp", "tileset-dungeon")
 
-DefineConstructionWcNames(
+--[[DefineConstructionWcNames(
   "construction-none",
   "construction-wall",
   "construction-human-barracks", "construction-human-blacksmith",
@@ -223,4 +220,4 @@ DefineAiWcNames(
   "fca-10", "fca-11", "fca-12", "fca-13", "fca-14", "fca-15", "fca-16", "fca-17", "fca-18",
   "fcm-01", "fcm-02", "fcm-03", "fcm-04", "fcm-05", "fcm-06", "fcm-07", "fcm-08", "fcm-09",
   "fcm-10", "fcm-11", "fcm-12", "fcm-13", "fcm-14", "fcm-15", "fcm-16", "fcm-17", "fcm-18")
-
+]]

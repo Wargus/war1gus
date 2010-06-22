@@ -36,12 +36,12 @@
 
 DefineConstruction("construction-orc-barracks", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/barracks_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/orc/buildings/barracks_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/orc/buildings/barracks_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -56,12 +56,12 @@ DefineConstruction("construction-orc-barracks", {
 
 DefineConstruction("construction-orc-blacksmith", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/blacksmith_construction.png",
     Size = {96, 96}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/orc/buildings/blacksmith_construction.png",
-    Size = {96, 96}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/orc/buildings/blacksmith_construction.png",
+--    Size = {96, 96}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -76,12 +76,12 @@ DefineConstruction("construction-orc-blacksmith", {
 
 DefineConstruction("construction-orc-temple", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/temple_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/orc/buildings/temple_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/orc/buildings/temple_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -96,12 +96,12 @@ DefineConstruction("construction-orc-temple", {
 
 DefineConstruction("construction-orc-farm", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/farm_construction.png",
     Size = {96, 96}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/orc/buildings/farm_construction.png",
-    Size = {96, 96}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/orc/buildings/farm_construction.png",
+--    Size = {96, 96}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -116,12 +116,12 @@ DefineConstruction("construction-orc-farm", {
 
 DefineConstruction("construction-orc-lumber-mill", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/lumber_mill_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/orc/buildings/lumber_mill_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/orc/buildings/lumber_mill_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -136,12 +136,12 @@ DefineConstruction("construction-orc-lumber-mill", {
 
 DefineConstruction("construction-orc-kennel", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/kennel_construction.png",
     Size = {128, 96}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/orc/buildings/kennel_construction.png",
-    Size = {128, 96}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/orc/buildings/kennel_construction.png",
+--    Size = {128, 96}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -156,12 +156,12 @@ DefineConstruction("construction-orc-kennel", {
 
 DefineConstruction("construction-orc-tower", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/tower_construction.png",
     Size = {96, 96}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/orc/buildings/tower_construction.png",
-    Size = {96, 96}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/orc/buildings/tower_construction.png",
+--    Size = {96, 96}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -176,12 +176,12 @@ DefineConstruction("construction-orc-tower", {
 
 DefineConstruction("construction-orc-town-hall", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/orc/buildings/town_hall_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/orc/buildings/town_hall_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/orc/buildings/town_hall_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",

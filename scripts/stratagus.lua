@@ -44,60 +44,62 @@ print("Stratagus default config file loading ...\n")
 --  and ~/.stratagus/gamename/preferences2.scripts
 
 --  Enter your default title screen.
---[[
+
 SetTitleScreens(
   {Image = "ui/logo.png",
    Music = "sounds/logo.wav",
    Timeout = 3},
-  {Image = "videos/hintro1.mng",
+  {Image = "videos/hintro1.avi",
    Music = "sounds/intro_1.wav",
    Iterations = 1},
-  {Image = "videos/hintro2.mng",
+  {Image = "videos/hintro2.avi",
    Music = "sounds/intro_2.wav",
    Iterations = 10},
-  {Image = "videos/ointro1.mng",
+  {Image = "videos/ointro1.avi",
    Music = "sounds/intro_3.wav",
    Iterations = 1},
-  {Image = "videos/ointro2.mng",
+  {Image = "videos/ointro2.avi",
    Iterations = 10},
-  {Image = "videos/ointro3.mng",
+  {Image = "videos/ointro3.avi",
    Music = "sounds/intro_door.wav",
    Iterations = 1},
-  {Image = "videos/cave1.mng",
+  {Image = "videos/cave1.avi",
    Music = "sounds/intro_4.wav",
    Iterations = 1},
-  {Image = "videos/cave2.mng",
+  {Image = "videos/cave2.avi",
    Iterations = 3},
-  {Image = "videos/cave3.mng",
+  {Image = "videos/cave3.avi",
    Music = "sounds/intro_5.wav",
    Iterations = 1},
-  {Image = "videos/title.mng",
+  {Image = "videos/title.avi",
    Iterations = 1}
 )
-]]
 
 
 --  Enter your menu music.
-SetMenuMusic("music/default.mod")
+--SetMenuMusic("music/default.mod")
+SetTitleScreens(
+   {Music = "music/default.mod"}
+)
 
 --  If color-cycle-all is off (#f) only the tileset and global palette are
 --  color cycled.  Otherwise (#t) all palettes are color cycled.
-SetColorCycleAll(true)
+--SetColorCycleAll(true) this
 --SetColorCycleAll(false)
 
 --  Set the game name. It's used so we can mantain different savegames
 --  and setting. Might also be used for multiplayer.
 SetGameName("wc1")
 --  set the default map file.
-SetDefaultMap("campaigns/human/01.cm")
+--SetDefaultMap("campaigns/human/01.cm")
 
 
 SetSelectionStyle("corners")
-SetShowSightRange(false)
-SetShowAttackRange(false)
-SetShowReactionRange(false)
+Preference.ShowSightRange = false
+Preference.ShowAttackRange = false
+Preference.ShowReactionRange = false
 
-SetShowOrders(2)
+Preference.ShowOrders = 2
 
 --  Enable/disable the short display of the orders after command.
 --  FIXME: planned
@@ -132,21 +134,21 @@ SetShowOrders(2)
 
 --              file              hotx hoty width height
 --ManaSprite("ui/mana.png", -7, -7, 7, 7)
-ManaSprite("ui/mana2.png", 0, -1, 31, 4)
+DefineSprites({Name = "sprite-mana", File = "ui/mana2.png", Offset = {0, -1}, Size = {31, 4}})
 --HealthSprite("ui/health.png", 1, -7, 7, 7)
-HealthSprite("ui/health2.png", 0, -4, 31, 4)
+DefineSprites({Name = "sprite-health", File = "ui/health.png", Offset = {0, -4}, Size = {31, 4}})
 
 --ShowHealthBar()
 --ShowHealthVertical()
 --ShowHealthHorizontal()
-ShowHealthDot()
+DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, OffsetPercent = {50, 100}, Method = {"sprite", {"sprite-health"}}})
 
 --ShowManaBar()
 --ShowManaVertical()
 --ShowManaHorizontal()
-ShowManaDot()
+DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, OffsetPercent = {50, 100}, Method = {"sprite", {"sprite-mana"}}})
 
-ShowNoFull()
+--ShowNoFull() this
 --ShowFull()
 
 
@@ -155,29 +157,28 @@ ShowNoFull()
 
 --  Uncomment next, to show bars and dots always on top.
 --  FIXME: planned feature
-DecorationOnTop()
+--DecorationOnTop() this
 
 --  Define shadow-sprite.
 --
 --  (shadow-sprite file hotx hoty width height)
 --
 --ShadowSprite("missiles/unit_shadow.png", 3, 42, 32, 32)
-SpellSprite("ui/bloodlust,haste,slow,invisible,shield.png",
-  1, 1, 16, 16)
+DefineSprites({Name = "sprite-spell", File = "ui/bloodlust,haste,slow,invisible,shield.png", Offset = {1, 1}, Size = {16, 16}})
 
 --  Uncomment next, to enable fancy building (random mirroring buildings)
-SetFancyBuildings(true)
+--SetFancyBuildings(true) this
 --SetFancyBuildings(false)
 
 --  Edit this to enable/disable show tips at the start of a level
-SetShowTips(true)
+--SetShowTips(true) this
 
 -------------------------------------------------------------------------------
 --  Game modification
 
 --  Edit this to enable/disable XP to add more damage to attacks
 --SetXPDamage(true)
-SetXPDamage(false)
+--SetXPDamage(false) this
 
 --  Edit this to enable/disable extended features.
 --    Currently enables some additional buttons.
@@ -234,11 +235,11 @@ SetKeyScroll(true)
 --SetKeyScroll(false)
 
 --  Set keyboard scroll speed in frames (1=each frame,2 each second,...)
-SetKeyScrollSpeed(1)
+--SetKeyScrollSpeed(1)
 
 --  Set mouse scroll speed in frames (1=each frame,2 each second,...)
 --  This is when the mouse cursor hits the border.
-SetMouseScrollSpeed(1)
+--SetMouseScrollSpeed(1)
 
 --  While middle-mouse is pressed:
 --  Pixels to move per scrolled mouse pixel, negative = reversed
@@ -254,7 +255,7 @@ SetDoubleClickDelay(300)
 SetHoldClickDelay(1000)
 
 --  Edit this to enable/disable the display of the command keys in buttons.
-SetShowCommandKey(true)
+--SetShowCommandKey(true) this preferences
 --SetShowCommandKey(false)
 
 --  Uncomment next, to reveal the complete map.
@@ -289,7 +290,7 @@ SetFogOfWarOpacity(128)
 --  FIXME: Must describe how geting resources work.
 --
 
-DefineDefaultResources(
+--[[DefineDefaultResources(
   0, 2000, 1000, 1000, 1000, 1000, 1000)
 
 DefineDefaultResourcesLow(
@@ -299,7 +300,7 @@ DefineDefaultResourcesMedium(
   0, 5000, 2000, 2000, 2000, 2000, 2000)
 
 DefineDefaultResourcesHigh(
-  0, 10000, 5000, 5000, 5000, 5000, 5000)
+  0, 10000, 5000, 5000, 5000, 5000, 5000)]]
 
 DefineDefaultIncomes(
   0, 100, 100, 100, 100, 100, 100)
@@ -387,7 +388,7 @@ Load("scripts/sound.lua")
 Load("scripts/missiles.lua")
 Load("scripts/constructions.lua")
 Load("scripts/spells.lua")
-Load("scripts/units.lua")
+--Load("scripts/units.lua")
 Load("scripts/upgrade.lua")
 Load("scripts/fonts.lua")
 Load("scripts/buttons.lua")

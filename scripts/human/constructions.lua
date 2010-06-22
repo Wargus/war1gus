@@ -36,12 +36,12 @@
 
 DefineConstruction("construction-human-barracks", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/human/buildings/barracks_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/human/buildings/barracks_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/human/buildings/barracks_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -56,12 +56,12 @@ DefineConstruction("construction-human-barracks", {
 
 DefineConstruction("construction-human-blacksmith", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/human/buildings/blacksmith_construction.png",
     Size = {96, 96}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/human/buildings/blacksmith_construction.png",
-    Size = {96, 96}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/human/buildings/blacksmith_construction.png",
+--    Size = {96, 96}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -76,12 +76,12 @@ DefineConstruction("construction-human-blacksmith", {
 
 DefineConstruction("construction-human-church", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/human/buildings/church_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/human/buildings/church_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/human/buildings/church_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -96,12 +96,12 @@ DefineConstruction("construction-human-church", {
 
 DefineConstruction("construction-human-farm", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/human/buildings/farm_construction.png",
     Size = {96, 96}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/human/buildings/farm_construction.png",
-    Size = {96, 96}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/human/buildings/farm_construction.png",
+--    Size = {96, 96}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -116,12 +116,12 @@ DefineConstruction("construction-human-farm", {
 
 DefineConstruction("construction-human-lumber-mill", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/human/buildings/lumber_mill_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/human/buildings/lumber_mill_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/human/buildings/lumber_mill_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -136,12 +136,12 @@ DefineConstruction("construction-human-lumber-mill", {
 
 DefineConstruction("construction-human-stable", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/human/buildings/stable_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/human/buildings/stable_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/human/buildings/stable_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -156,12 +156,12 @@ DefineConstruction("construction-human-stable", {
 
 DefineConstruction("construction-human-tower", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/human/buildings/tower_construction.png",
     Size = {96, 96}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/human/buildings/tower_construction.png",
-    Size = {96, 96}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/human/buildings/tower_construction.png",
+--    Size = {96, 96}}},
   Constructions = {
    {Percent = 0,
     File = "construction",
@@ -176,12 +176,12 @@ DefineConstruction("construction-human-tower", {
 
 DefineConstruction("construction-human-town-hall", {
   Files = {
-   {Tileset = "forest",
+--   {Tileset = "forest",
     File = "tilesets/forest/human/buildings/town_hall_construction.png",
     Size = {128, 128}},
-   {Tileset = "swamp",
-    File = "tilesets/swamp/human/buildings/town_hall_construction.png",
-    Size = {128, 128}}},
+--   {Tileset = "swamp",
+--    File = "tilesets/swamp/human/buildings/town_hall_construction.png",
+--    Size = {128, 128}}},
   Constructions = {
    {Percent = 0,
     File = "construction",

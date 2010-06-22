@@ -135,6 +135,7 @@ icons = {
   {"icon-human-wall", 41},
 }
 
+--[[
 for i = 1,table.getn(icons) do
   DefineIcon({
     Name = icons[i][1],
@@ -157,4 +158,19 @@ for i = 1,table.getn(icons) do
     File = "tilesets/dungeon/portrait_icons.png",
     Frame = icons[i][2],})
 end
+]]
+for i = 1,table.getn(icons) do
+  icon = CIcon:New(icons[i][1])
+  icon.G = CGraphic:New("tilesets/forest/portrait_icons.png", 54, 38) 
+  icon.Frame = icons[i][2]
+
+  icon = CIcon:New(icons[i][1])
+  icon.G = CGraphic:New("tilesets/swamp/portrait_icons.png", 54, 38) 
+  icon.Frame = icons[i][2]
+
+  icon = CIcon:New(icons[i][1])
+  icon.G = CGraphic:New("tilesets/dungeon/portrait_icons.png", 54, 38) 
+  icon.Frame = icons[i][2]
+end
+
 

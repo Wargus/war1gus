@@ -33,9 +33,14 @@
 --
 --	FIXME: need a way to automatic load all available tileset definitions
 
-DefineTileset("tileset-forest", "class", "forest", "name", "Forest",
+--[[DefineTileset("tileset-forest", "class", "forest", "name", "Forest",
   "file", "scripts/tilesets/forest.lua")
 DefineTileset("tileset-swamp", "class", "swamp", "name", "Swamp",
   "file", "scripts/tilesets/swamp.lua")
 DefineTileset("tileset-dungeon", "class", "dungeon", "name", "Dungeon",
   "file", "scripts/tilesets/dungeon.lua")
+]]
+--DefineTileset("name", "Forest",
+--  "image", "scripts/tilesets/forest.lua")
+
+Load("scripts/tilesets/forest.lua")

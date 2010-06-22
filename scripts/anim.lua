@@ -50,7 +50,30 @@
 
 --------
 --	Footman, Grunt
-DefineAnimations("animations-footman",
+DefineAnimations("animations-footman", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 5", "move 0", "wait 5", "frame 20", "move 0", "wait 5", "frame 35", "move 0", "wait 5", "frame 50", "move 0", "wait 5",
+    "frame 5", "move 0", "wait 4", "frame 5", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+  -- XXX, move, wait, frame
+
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #16, P32
@@ -62,10 +85,32 @@ DefineAnimations("animations-footman",
     { 0, 0,   4,   5}, { 3, 0,   1,   5}},
   "die", {	-- #107
     { 0, 0,   3,  10}, { 0, 0,   3,  25}, { 0, 0, 100,  40}, { 3, 0,   1,  40}})
+]]
 
 --------
 --	Peasant, Peon, Peasant, Peon, Peasant, Peon, Peasant, Peon
-DefineAnimations("animations-peasant",
+DefineAnimations("animations-peasant", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #16, P16
@@ -77,10 +122,29 @@ DefineAnimations("animations-peasant",
     { 0, 0,   3,  20}, { 0, 0,   7,  50}, { 3, 0,   1,  50}},
   "die", {	-- #107
     { 0, 0,   3,  10}, { 0, 0,   3,  25}, { 0, 0, 100,  40}, { 3, 0,   1,  40}})
+]]
 
 --------
 --	Human Catapult, Orc Catapult
-DefineAnimations("animations-catapult",
+DefineAnimations("animations-catapult", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 0", "wait 1", "frame 15", "move 2", "wait 2", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 5", "move 0", "wait 5", "frame 20", "move 0", "wait 5", "frame 35", "move 0", "wait 5", "frame 50", "move 0", "wait 5",
+    "frame 5", "move 0", "wait 4", "frame 5", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #32, P16
@@ -94,10 +158,33 @@ DefineAnimations("animations-catapult",
     {12, 0,   2,  40}, { 0, 0,   2,  45}, { 0, 0,  21,  40}, { 0, 0, 100,  40},
     { 0, 0,   2,  45}, { 0, 0,   2,  30}, { 0, 0,   2,  20}, { 0, 0,  43,   0},
     { 3, 0,   1,   0}})
+]]
 
 --------
 --	Knight
-DefineAnimations("animations-knight",
+DefineAnimations("animations-knight", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #12, P16
@@ -109,10 +196,33 @@ DefineAnimations("animations-knight",
   "die", {	-- #507
     { 0, 0,   3,  10}, { 0, 0,   3,  25}, { 0, 0, 100,  40}, { 0, 0, 200,  55},
     { 0, 0, 200,  70}, { 3, 0,   1,  70}})
+]]
 
 --------
 --	Archer, Spearman
-DefineAnimations("animations-archer",
+DefineAnimations("animations-archer", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #16, P16
@@ -124,10 +234,33 @@ DefineAnimations("animations-archer",
     { 0, 0,  10,   0}, {12, 0,  10,  20}, { 0, 0,  44,   0}, { 3, 0,   1,   0}},
   "die", {	-- #107
     { 0, 0,   3,  10}, { 0, 0,   3,  25}, { 0, 0, 100,  35}, { 3, 0,   1,  35}})
+]]
 
 --------
 --	Cleric
-DefineAnimations("animations-cleric",
+DefineAnimations("animations-cleric", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #12, P16
@@ -140,10 +273,33 @@ DefineAnimations("animations-cleric",
   "die", {	-- #507
     { 0, 0,   3,  45}, { 0, 0,   3,  50}, { 0, 0, 100,  55}, { 0, 0, 200,  60},
     { 0, 0, 200,  65}, { 3, 0,   1,  65}})
+]]
 
 --------
 --	Necrolyte
-DefineAnimations("animations-necrolyte",
+DefineAnimations("animations-necrolyte", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #12, P16
@@ -156,10 +312,33 @@ DefineAnimations("animations-necrolyte",
   "die", {	-- #507
     { 0, 0,   3,  45}, { 0, 0,   3,  50}, { 0, 0, 100,  55}, { 0, 0, 200,  60},
     { 0, 0, 200,  65}, { 3, 0,   1,  65}})
+]]
 
 --------
 --	Conjurer, Warlock
-DefineAnimations("animations-conjurer",
+DefineAnimations("animations-conjurer", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #18, P16
@@ -172,10 +351,33 @@ DefineAnimations("animations-conjurer",
   "die", {	-- #307
     { 0, 0,   3,  10}, { 0, 0,   3,  25}, { 0, 0, 100,  40}, { 0, 0, 200,  55},
     { 3, 0,   1,  55}})
+]]
 
 --------
 --	Midevh
-DefineAnimations("animations-midevh",
+DefineAnimations("animations-midevh", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}},
   "move", {	-- #12, P16
@@ -188,7 +390,7 @@ DefineAnimations("animations-midevh",
   "die", {	-- #507
     { 0, 0,   3,  45}, { 0, 0,   3,  50}, { 0, 0, 100,  55}, { 0, 0, 200,  60},
     { 0, 0, 200,  65}, { 3, 0,   1,  65}})
-
+]]
 
 --------
 --	Human Farm, Orc Farm, Human Barracks, Orc Barracks,
@@ -197,13 +399,58 @@ DefineAnimations("animations-midevh",
 --	Human Tower, Orc Tower, Human Blacksmith, Orc Blacksmith,
 --	Gold Mine, Human Start Location, Orc Start Location,
 --	Human Wall, Orc Wall
-DefineAnimations("animations-building",
+DefineAnimations("animations-building", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "still", {	-- #5
     { 0, 0,   4,   0}, { 3, 0,   1,   0}})
+]]
 
 --------
 --	Dead Body
-DefineAnimations("animations-dead-body",
+DefineAnimations("animations-dead-body", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "die", {	-- #201
     --	Corpse:		Orcish
     { 0, 0, 200,   5}, {16, 0, 200,  10}, { 0, 0, 200,  15}, { 0, 0, 200,  20},
@@ -211,13 +458,37 @@ DefineAnimations("animations-dead-body",
     --	Corpse:		Human
     { 0, 0, 200,   0}, {16, 0, 200,  10}, { 0, 0, 200,  15}, { 0, 0, 200,  20},
     { 0, 0,   1,  20}, { 3, 0,   1,  20}})
+]]
 
 --------
 --	Destroyed 1x1, Place, Destroyed 2x2, Place,
 --	Destroyed 3x3, Place, Destroyed 4x4, Place
-DefineAnimations("animations-destroyed-place",
+DefineAnimations("animations-destroyed-place", {
+  Still = {
+    "frame 0", "wait 4", "frame 0", "wait 1",
+  },
+  Move = {"unbreakable begin",
+    "frame 0", "move 2", "wait 2", "frame 30", "move 2", "wait 1", "frame 30", "move 4", "wait 2", "frame 15", "move 2", "wait 1",
+    "frame 15", "move 2", "wait 1", "frame 0", "move 4", "wait 1", "frame 0", "move 2", "wait 2", "frame 45", "move 2", "wait 1",
+    "frame 45", "move 4", "wait 2", "frame 55", "move 2", "wait 1", "frame 55", "move 2", "wait 1", "frame 0", "move 4", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Attack = {"unbreakable begin",
+    "frame 50", "move 0", "wait 3", "frame 35", "move 0", "wait 3", "frame 60", "move 0", "wait 3", "frame 5", "move 0", "wait 5",
+    "frame 20", "move 0", "wait 3", "frame 50", "move 0", "wait 7", "frame 50", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+  Death = {"unbreakable begin",
+    "frame 10", "move 0", "wait 3", "frame 25", "move 0", "wait 3", "frame 40", "move 0", "wait 100", "frame 40", "move 0", "wait 1",
+    "unbreakable end", "wait 1",
+  },
+})
+
+--!!!TODO!!!
+--[[
   "die", {	-- #401
     --	Destroyed land site
     { 0, 0, 200,   0}, {16, 0, 200,   1}, { 3, 0,   1,   1},
     --	Destroyed water site
     { 0, 0, 200,   2}, {16, 0, 200,   3}, { 3, 0,   1,   3}})
+]]

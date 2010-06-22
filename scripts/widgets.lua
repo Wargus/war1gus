@@ -52,21 +52,25 @@ DefineButtonStyle("main", {
   Hover = {
     TextNormalColor = "white",
   },
+--[[
   Selected = {
     Border = {
       Color = {252, 252, 0}, Size = 1,
     },
   },
+]]
   Clicked = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 5,
     TextNormalColor = "white",
     TextPos = {66, 6},
   },
+--[[
   Disabled = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 3,
     TextNormalColor = "grey",
     TextReverseColor = "grey",
   },
+]]
 })
 
 DefineButtonStyle("network", {
@@ -82,21 +86,25 @@ DefineButtonStyle("network", {
   Hover = {
     TextNormalColor = "white",
   },
+--[[
   Selected = {
     Border = {
       Color = {252, 252, 0}, Size = 1,
     },
   },
+]]
   Clicked = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 8,
     TextNormalColor = "white",
     TextPos = {42, 6},
   },
+--[[
   Disabled = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 6,
     TextNormalColor = "grey",
     TextReverseColor = "grey",
   },
+]]
 })
 
 DefineButtonStyle("gm-half", {
@@ -112,21 +120,25 @@ DefineButtonStyle("gm-half", {
   Hover = {
     TextNormalColor = "white",
   },
+--[[
   Selected = {
     Border = {
       Color = {252, 252, 0}, Size = 1,
     },
   },
+]]
   Clicked = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 11,
     TextNormalColor = "white",
     TextPos = {55, 9},
   },
+--[[
   Disabled = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 9,
     TextNormalColor = "grey",
     TextReverseColor = "grey",
   },
+]]
 })
 
 DefineButtonStyle("gm-full", {
@@ -142,21 +154,25 @@ DefineButtonStyle("gm-full", {
   Hover = {
     TextNormalColor = "white",
   },
+--[[
   Selected = {
     Border = {
       Color = {252, 252, 0}, Size = 1,
     },
   },
+]]
   Clicked = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 17,
     TextNormalColor = "white",
     TextPos = {114, 9},
   },
+--[[
   Disabled = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 15,
     TextNormalColor = "grey",
     TextReverseColor = "grey",
   },
+]]
 })
 
 DefineButtonStyle("folder", {
@@ -172,18 +188,22 @@ DefineButtonStyle("folder", {
   Hover = {
     TextNormalColor = "white",
   },
+--[[
   Selected = {
     Border = {
       Color = {252, 252, 0}, Size = 1,
     },
   },
+]]
   Clicked = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 52,
     TextNormalColor = "white",
   },
+--[[
   Disabled = {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 50,
   },
+]]
 })
 
 DefineButtonStyle("icon", {
@@ -204,21 +224,26 @@ DefineButtonStyle("icon", {
       Color = {128, 128, 128}, Size = 1,
     },
   },
+--[[
   Selected = {
     Border = {
       Color = {0, 252, 0}, Size = 1,
     },
   },
+]]
   Clicked = {
     TextNormalColor = "white",
     Border = {
       Color = {128, 128, 128}, Size = 1,
     },
   },
+--[[
   Disabled = {
   },
+]]
 })
 
+--[[
 DefineCheckboxStyle("round", {
   Size = {19, 19},
   Font = "game",
@@ -308,3 +333,4 @@ DefineCheckboxStyle("square", {
     File = "ui/buttons_1.png", Size = {300, 144}, Frame = 23,
   },
 })
+]]
