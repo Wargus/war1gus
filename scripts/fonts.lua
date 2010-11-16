@@ -28,11 +28,11 @@
 --
 --      $Id$
 
-CFont:New("small", CGraphic:New("ui/fonts/small.png", 7, 6))
-CFont:New("game", CGraphic:New("ui/fonts/game.png", 13, 14))
-CFont:New("large", CGraphic:New("ui/fonts/large.png", 17, 17))
-CFont:New("small-title", CGraphic:New("ui/fonts/small_episode_titles.png", 32, 35))
-CFont:New("large-title", CGraphic:New("ui/fonts/large_episode_titles.png", 52, 50))
+CFont:New("small", CGraphic:New("3rd/fonts/small.png", 7, 6))
+CFont:New("game", CGraphic:New("3rd/fonts/game.png", 13, 14))
+CFont:New("large", CGraphic:New("3rd/fonts/large.png", 17, 17))
+CFont:New("small-title", CGraphic:New("3rd/fonts/small_episode_titles.png", 32, 35))
+CFont:New("large-title", CGraphic:New("3rd/fonts/large_episode_titles.png", 52, 50))
 
 --[[
 DefineFont({

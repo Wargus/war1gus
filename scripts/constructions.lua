@@ -30,7 +30,7 @@
 
 Load("scripts/human/constructions.lua")
 Load("scripts/orc/constructions.lua")
-
+--[[
 DefineConstruction("construction-none", {
   Files = {
     File = "tilesets/wall_construction_site.png",
@@ -46,7 +46,8 @@ DefineConstruction("construction-none", {
     File = "construction",
     Frame = 2}}
 })
-
+--]]
+--[[
 DefineConstruction("construction-wall", {
   Files = {
     File = "tilesets/wall_construction_site.png",
@@ -62,3 +63,4 @@ DefineConstruction("construction-wall", {
     File = "main",
     Frame = 1}}
 })
+--]]

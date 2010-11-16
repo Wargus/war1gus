@@ -31,13 +31,10 @@
 
 DefineButtonStyle("menu", {
   Size = {130, 24},
-  Default = {
-    File = "ui/menu_button_1.png"
-  },
-  Clicked = {
-    File = "ui/menu_button_2.png"
-  },
+--  Default = { File = "ui/menu_button_1.png"},
+--  Clicked = { File = "ui/menu_button_2.png"},
 })
+
 
 DefineButtonStyle("main", {
   Size = {128, 20},
@@ -46,12 +43,8 @@ DefineButtonStyle("main", {
   TextReverseColor = "white",
   TextAlign = "Center",
   TextPos = {64, 4},
-  Default = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 4,
-  },
-  Hover = {
-    TextNormalColor = "white",
-  },
+--  Default = { File = "ui/buttons_1.png", Size = {300, 144}, Frame = 4},
+  Hover = { TextNormalColor = "white" },
 --[[
   Selected = {
     Border = {
@@ -60,7 +53,7 @@ DefineButtonStyle("main", {
   },
 ]]
   Clicked = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 5,
+--    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 5,
     TextNormalColor = "white",
     TextPos = {66, 6},
   },
@@ -80,12 +73,8 @@ DefineButtonStyle("network", {
   TextReverseColor = "white",
   TextAlign = "Center",
   TextPos = {40, 4},
-  Default = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 7,
-  },
-  Hover = {
-    TextNormalColor = "white",
-  },
+--  Default = { File = "ui/buttons_1.png", Size = {300, 144}, Frame = 7},
+  Hover = { TextNormalColor = "white" },
 --[[
   Selected = {
     Border = {
@@ -94,7 +83,7 @@ DefineButtonStyle("network", {
   },
 ]]
   Clicked = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 8,
+--    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 8,
     TextNormalColor = "white",
     TextPos = {42, 6},
   },
@@ -114,12 +103,8 @@ DefineButtonStyle("gm-half", {
   TextReverseColor = "white",
   TextAlign = "Center",
   TextPos = {53, 7},
-  Default = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 10,
-  },
-  Hover = {
-    TextNormalColor = "white",
-  },
+  Default = { File = "ui/buttons_1.png", Size = {300, 144}, Frame = 10},
+  Hover = { TextNormalColor = "white" },
 --[[
   Selected = {
     Border = {
@@ -128,7 +113,7 @@ DefineButtonStyle("gm-half", {
   },
 ]]
   Clicked = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 11,
+--    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 11,
     TextNormalColor = "white",
     TextPos = {55, 9},
   },
@@ -148,12 +133,8 @@ DefineButtonStyle("gm-full", {
   TextReverseColor = "white",
   TextAlign = "Center",
   TextPos = {112, 7},
-  Default = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 16,
-  },
-  Hover = {
-    TextNormalColor = "white",
-  },
+  Default = { File = "ui/buttons_1.png", Size = {300, 144}, Frame = 16},
+  Hover = { TextNormalColor = "white" },
 --[[
   Selected = {
     Border = {
@@ -162,7 +143,7 @@ DefineButtonStyle("gm-full", {
   },
 ]]
   Clicked = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 17,
+--    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 17,
     TextNormalColor = "white",
     TextPos = {114, 9},
   },
@@ -182,12 +163,8 @@ DefineButtonStyle("folder", {
   TextReverseColor = "white",
   TextAlign = "Left",
   TextPos = {44, 6},
-  Default = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 51,
-  },
-  Hover = {
-    TextNormalColor = "white",
-  },
+--  Default = { File = "ui/buttons_1.png", Size = {300, 144}, Frame = 51},
+  Hover = { TextNormalColor = "white" },
 --[[
   Selected = {
     Border = {
@@ -196,7 +173,7 @@ DefineButtonStyle("folder", {
   },
 ]]
   Clicked = {
-    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 52,
+--    File = "ui/buttons_1.png", Size = {300, 144}, Frame = 52,
     TextNormalColor = "white",
   },
 --[[

@@ -70,11 +70,11 @@ DefineCursor({
   HotSpot = { 8,  8},
   Size = {18, 18}})
 DefineCursor({
-  Name = "cursor-scroll",
+  Name = "cursor-scroll", -- Not present for wc1
   Race = "any",
-  File = "ui/cursors/cross.png",
-  HotSpot = {15, 15},
-  Size = {32, 32}})
+  File = "ui/cursors/small_green_crosshair.png",
+  HotSpot = { 8,  8},
+  Size = {18, 18}})
 DefineCursor({
   Name = "cursor-arrow-e",
   Race = "any",

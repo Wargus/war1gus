@@ -31,6 +31,13 @@
 -- For documentation see stratagus/doc/scripts/scripts.html
 print("Stratagus default config file loading ...\n")
 
+war1gus = {}
+war1gus.Name = "War1gus"
+war1gus.Version = "2.2.5.4"
+war1gus.Homepage = "https://launchpad.net/war1gus"
+war1gus.Licence = "GPL v2"
+war1gus.Copyright = "Copyright (c) 1998-2010 by The Stratagus Project"
+
 -- Config file version
 --(define media-version (list 'wc1 'class 'wc1 'version '(1 18 0)))
 
@@ -90,6 +97,7 @@ SetTitleScreens(
 --  Set the game name. It's used so we can mantain different savegames
 --  and setting. Might also be used for multiplayer.
 SetGameName("wc1")
+SetFullGameName(war1gus.Name)
 --  set the default map file.
 --SetDefaultMap("campaigns/human/01.cm")
 
@@ -106,47 +114,21 @@ Preference.ShowOrders = 2
 --(set-order-feedback! #t)
 --(set-order-feedback! #f)
 
---  Define the mana/energy decoration.
---  FIXME: Planned?
---
---  (set-mana-style!
---    'sprite (...)
---    'horizontal
---    'vertical
---    'no-full
---    'on-top
---    'only-selected
---    'background-long
---  )
-
---  Define the health decoration.
---  FIXME: Planned?
---
---  (set-health-style!
---    'sprite (...)
---    'horizontal
---    'vertical
---    'no-full
---    'on-top
---    'only-selected
---    'background-long
---  )
-
 --              file              hotx hoty width height
 --ManaSprite("ui/mana.png", -7, -7, 7, 7)
-DefineSprites({Name = "sprite-mana", File = "ui/mana2.png", Offset = {0, -1}, Size = {31, 4}})
+--DefineSprites({Name = "sprite-mana", File = "ui/mana2.png", Offset = {0, -1}, Size = {31, 4}})
 --HealthSprite("ui/health.png", 1, -7, 7, 7)
-DefineSprites({Name = "sprite-health", File = "ui/health.png", Offset = {0, -4}, Size = {31, 4}})
+--DefineSprites({Name = "sprite-health", File = "ui/health.png", Offset = {0, -4}, Size = {31, 4}})
 
 --ShowHealthBar()
 --ShowHealthVertical()
 --ShowHealthHorizontal()
-DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, OffsetPercent = {50, 100}, Method = {"sprite", {"sprite-health"}}})
+--DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, OffsetPercent = {50, 100}, Method = {"sprite", {"sprite-health"}}})
 
 --ShowManaBar()
 --ShowManaVertical()
 --ShowManaHorizontal()
-DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, OffsetPercent = {50, 100}, Method = {"sprite", {"sprite-mana"}}})
+--DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, OffsetPercent = {50, 100}, Method = {"sprite", {"sprite-mana"}}})
 
 --ShowNoFull() this
 --ShowFull()
@@ -164,7 +146,7 @@ DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, Offs
 --  (shadow-sprite file hotx hoty width height)
 --
 --ShadowSprite("missiles/unit_shadow.png", 3, 42, 32, 32)
-DefineSprites({Name = "sprite-spell", File = "ui/bloodlust,haste,slow,invisible,shield.png", Offset = {1, 1}, Size = {16, 16}})
+--DefineSprites({Name = "sprite-spell", File = "ui/bloodlust,haste,slow,invisible,shield.png", Offset = {1, 1}, Size = {16, 16}})
 
 --  Uncomment next, to enable fancy building (random mirroring buildings)
 --SetFancyBuildings(true) this
@@ -175,10 +157,6 @@ DefineSprites({Name = "sprite-spell", File = "ui/bloodlust,haste,slow,invisible,
 
 -------------------------------------------------------------------------------
 --  Game modification
-
---  Edit this to enable/disable XP to add more damage to attacks
---SetXPDamage(true)
---SetXPDamage(false) this
 
 --  Edit this to enable/disable extended features.
 --    Currently enables some additional buttons.
@@ -317,30 +295,28 @@ DefineDefaultResourceAmounts(
 
 -------------------------------------------------------------------------------
 
---  Edit next to increase the speed, for debugging.
+DefinePlayerColorIndex(208, 4)
 
---  Decrease the mining time by this factor.
---SetSpeedResourcesHarvest("gold", 10)
---  Decrease the time in a gold deposit by this factor.
---SetSpeedResourcesReturn("gold", 10)
---  Decrease the time for chopping a tree by this factor.
---SetSpeedResourcesHarvest("wood", 10)
---  Decrease the time in a wood deposit by this factor.
---SetSpeedResourcesReturn("wood", 10)
---  Decrease the time for haul oil by this factor.
---SetSpeedResourcesHarvest("oil", 10)
---  Decrease the time in an oil deposit by this factor.
---SetSpeedResourcesReturn("oil", 10)
---  Decrease the time to build a unit by this factor.
---SetSpeedBuild(10)
---  Decrease the time to train a unit by this factor.
---SetSpeedTrain(10)
---  Decrease the time to upgrade a unit by this factor.
---SetSpeedUpgrade(10)
---  Decrease the time to research by this factor.
---SetSpeedResearch(10)
+DefinePlayerColors({
+  "red", {{164, 0, 0}, {124, 0, 0}, {92, 4, 0}, {68, 4, 0}},
+  "blue", {{12, 72, 204}, {4, 40, 160}, {0, 20, 116}, {0, 4, 76}},
+  "green", {{44, 180, 148}, {20, 132, 92}, {4, 84, 44}, {0, 40, 12}},
+  "violet", {{152, 72, 176}, {116, 44, 132}, {80, 24, 88}, {44, 8, 44}},
+  "orange", {{248, 140, 20}, {200, 96, 16}, {152, 60, 16}, {108, 32, 12}},
+  "black", {{40, 40, 60}, {28, 28, 44}, {20, 20, 32}, {12, 12, 20}},
+  "white", {{224, 224, 224}, {152, 152, 180}, {84, 84, 128}, {36, 40, 76}},
+  "yellow", {{252, 252, 72}, {228, 204, 40}, {204, 160, 16}, {180, 116, 0}},
+  "red", {{164, 0, 0}, {124, 0, 0}, {92, 4, 0}, {68, 4, 0}},
+  "blue", {{12, 72, 204}, {4, 40, 160}, {0, 20, 116}, {0, 4, 76}},
+  "green", {{44, 180, 148}, {20, 132, 92}, {4, 84, 44}, {0, 40, 12}},
+  "violet", {{152, 72, 176}, {116, 44, 132}, {80, 24, 88}, {44, 8, 44}},
+  "orange", {{248, 140, 20}, {200, 96, 16}, {152, 60, 16}, {108, 32, 12}},
+  "black", {{40, 40, 60}, {28, 28, 44}, {20, 20, 32}, {12, 12, 20}},
+  "white", {{224, 224, 224}, {152, 152, 180}, {84, 84, 128}, {36, 40, 76}},
+  "yellow", {{252, 252, 72}, {228, 204, 40}, {204, 160, 16}, {180, 116, 0}},
+})
+-------------------------------------------------------------------------------
 
---  You can do all the above with this
 SetSpeeds(1)
 
 -------------------------------------------------------------------------------
@@ -350,7 +326,7 @@ AStar("fixed-unit-cost", 1000, "moving-unit-cost", 20, "know-unseen-terrain", "u
 -------------------------------------------------------------------------------
 
 --  Maximum number of selectable units
-SetMaxSelectable(18)
+SetMaxSelectable(4)
 
 --  All player food unit limit
 SetAllPlayersUnitLimit(200)
@@ -377,30 +353,71 @@ end
 --  Tables-Part
 -------------------------------------------------------------------------------
 
-Load("preferences1.lua")
+Load("preferences.lua")
+
+if (preferences == nil) then
+  preferences = {
+    VideoWidth = 800,
+    VideoHeight = 600,
+    VideoFullScreen = true,
+    PlayerName = "Player",
+    FogOfWar = true,
+    ShowCommandKey = true,
+    GroupKeys = "0123456789`",
+    GameSpeed = 30,
+    EffectsEnabled = true,
+    EffectsVolume = 128,
+    MusicEnabled = true,
+    MusicVolume = 128,
+    StratagusTranslation = "",
+    GameTranslation = "",
+    TipNumber = 0,
+    ShowTips = true,
+    GrabMouse = false,
+    UseOpenGL = false,
+    MaxOpenGLTexture = 0,
+    CampaignOrc = 1,
+    CampaignHuman = 1,
+    CampaignOrcX = 1,
+    CampaignHumanX = 1,
+  }
+end
+
+SetUseOpenGL(preferences.UseOpenGL)
+SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
+SetVideoFullScreen(preferences.VideoFullScreen)
+SetMaxOpenGLTexture(preferences.MaxOpenGLTexture)
+SetLocalPlayerName(preferences.PlayerName)
+SetFogOfWar(preferences.FogOfWar)
+UI.ButtonPanel.ShowCommandKey = preferences.ShowCommandKey
+SetGroupKeys(preferences.GroupKeys)
+SetGameSpeed(preferences.GameSpeed)
+SetEffectsEnabled(preferences.EffectsEnabled)
+SetEffectsVolume(preferences.EffectsVolume)
+SetMusicEnabled(preferences.MusicEnabled)
+SetMusicVolume(preferences.MusicVolume)
+SetTranslationsFiles(preferences.StratagusTranslation, preferences.GameTranslation)
+SetGrabMouse(preferences.GrabMouse)
 
 --- Uses Stratagus Library path!
 Load("scripts/wc1.lua")
 
 Load("scripts/tilesets.lua")
 Load("scripts/icons.lua")
-Load("scripts/sound.lua")
-Load("scripts/missiles.lua")
+--Load("scripts/sound.lua")
+--Load("scripts/missiles.lua")
 Load("scripts/constructions.lua")
-Load("scripts/spells.lua")
---Load("scripts/units.lua")
-Load("scripts/upgrade.lua")
+--Load("scripts/spells.lua")
+Load("scripts/units.lua")
+--Load("scripts/upgrade.lua")
 Load("scripts/fonts.lua")
-Load("scripts/buttons.lua")
+--Load("scripts/buttons.lua")
 Load("scripts/ui.lua")
-Load("scripts/ai.lua")
-Load("scripts/campaigns.lua")
-Load("scripts/credits.lua")
-Load("scripts/tips.lua")
-Load("scripts/ranks.lua")
-Load("scripts/menus.lua")
-Load("scripts/cheats.lua")
-
-Load("preferences2.lua")
+--Load("scripts/ai.lua")
+--Load("scripts/campaigns.lua")
+--Load("scripts/tips.lua")
+--Load("scripts/ranks.lua")
+--Load("scripts/menus.lua")
+--Load("scripts/cheats.lua")
 
 print("... ready!\n")

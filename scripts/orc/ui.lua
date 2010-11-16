@@ -111,7 +111,7 @@ function OrcScreen(screen_width, screen_height)
 ]]
 
 -- gold
-UI.Resources[1].G = CGraphic:New("ui/gold,wood,oil,mana.png", 14, 14)
+UI.Resources[1].G = CGraphic:New("ui/gold_icon_1.png", 26, 12)
 UI.Resources[1].IconFrame = 0
 UI.Resources[1].IconX = 176 + 0
 UI.Resources[1].IconY = 0
@@ -119,13 +119,13 @@ UI.Resources[1].TextX = 176 + 0 + 18
 UI.Resources[1].TextY = 1
 
 -- wood
-UI.Resources[2].G = CGraphic:New("ui/gold,wood,oil,mana.png", 14, 14)
+UI.Resources[2].G = CGraphic:New("ui/lumber_icon_1.png", 18, 18)
 UI.Resources[2].IconFrame = 1
 UI.Resources[2].IconX = 176 + 75
 UI.Resources[2].IconY = 0
 UI.Resources[2].TextX = 176 + 75 + 18
 UI.Resources[2].TextY = 1
-
+--[[
 -- oil
 UI.Resources[3].G = CGraphic:New("ui/gold,wood,oil,mana.png", 14, 14)
 UI.Resources[3].IconFrame = 2
@@ -149,7 +149,7 @@ UI.Resources[ScoreCost].IconX = Video.Width - 16 - 68
 UI.Resources[ScoreCost].IconY = 0
 UI.Resources[ScoreCost].TextX = Video.Width - 16 - 68 + 18
 UI.Resources[ScoreCost].TextY = 1
-
+--]]
 --[[
     "resources", {
       "gold", { File = "ui/gold,wood,oil,mana.png", Frame = 0,

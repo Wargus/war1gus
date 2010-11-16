@@ -128,10 +128,11 @@ MakeSound("sword attack",
 --
 
 DefineGameSounds(
-  "placement-error",
-    MakeSound("placement error", "general/ui/placement error.wav"),
-  "placement-success",
-    MakeSound("placement success", "general/ui/placement success.wav"),
+  "placement-error", { "human", MakeSound("placement error", "general/ui/placement error.wav")},
+  "placement-error", { "orc", MakeSound("placement error", "general/ui/placement error.wav")},
+
+  "placement-success", { "human", MakeSound("placement success", "general/ui/placement success.wav")},
+  "placement-success", { "orc", MakeSound("placement success", "general/ui/placement success.wav")},
 
   "click", MakeSound("click", "ui/click.wav"),
 
