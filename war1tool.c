@@ -52,6 +52,8 @@
 #include <ctype.h>
 #include <png.h>
 
+#include "xmi2mid.h"
+
 #if defined(_MSC_VER) || defined(__MINGW32__) || defined(USE_BEOS)
 typedef unsigned long u_int32_t;
 #endif
@@ -204,6 +206,7 @@ enum _archive_type_ {
 	U,						// Uncompressed Graphics		(name,pal,gfu)
 	I,						// Image						(name,pal,img)
 	W,						// Wav							(name,wav)
+	M,						// XMI Midi Sound					(name,xmi)
 	X,						// Text							(name,text,ofs)
 	X2,						// Text2						(name,text)
 	C,						// Cursor						(name,cursor)
@@ -270,6 +273,54 @@ Control Todo[] = {
 #else
 {F,0,"data.war",											 0 __},
 #endif
+
+// Midi music
+// TODO: Use better file names
+{M,0,"00",  0 __},
+{M,0,"01",  1 __},
+{M,0,"02",  2 __},
+{M,0,"03",  3 __},
+{M,0,"04",  4 __},
+{M,0,"05",  5 __},
+{M,0,"06",  6 __},
+{M,0,"07",  7 __},
+{M,0,"08",  8 __},
+{M,0,"09",  9 __},
+{M,0,"10", 10 __},
+{M,0,"11", 11 __},
+{M,0,"12", 12 __},
+{M,0,"13", 13 __},
+{M,0,"14", 14 __},
+{M,0,"15", 15 __},
+{M,0,"16", 16 __},
+{M,0,"17", 17 __},
+{M,0,"18", 18 __},
+{M,0,"19", 19 __},
+{M,0,"20", 20 __},
+{M,0,"21", 21 __},
+{M,0,"22", 22 __},
+{M,0,"23", 23 __},
+{M,0,"24", 24 __},
+{M,0,"25", 25 __},
+{M,0,"26", 26 __},
+{M,0,"27", 27 __},
+{M,0,"28", 28 __},
+{M,0,"29", 29 __},
+{M,0,"30", 30 __},
+{M,0,"31", 31 __},
+{M,0,"32", 32 __},
+{M,0,"33", 33 __},
+{M,0,"34", 34 __},
+{M,0,"35", 35 __},
+{M,0,"36", 36 __},
+{M,0,"37", 37 __},
+{M,0,"38", 38 __},
+{M,0,"39", 39 __},
+{M,0,"40", 40 __},
+{M,0,"41", 41 __},
+{M,0,"42", 42 __},
+{M,0,"43", 43 __},
+{M,0,"44", 44 __},
 
 {CM,0,"campaigns/human/01",									 117, 63 _2},
 {CM,0,"campaigns/human/02",									 119, 55 _2},
@@ -2001,6 +2052,49 @@ int ConvertWav(char* file, int wave)
 	return 0;
 }
 
+//----------------------------------------------------------------------------
+//  XMI Midi
+//----------------------------------------------------------------------------
+
+/**
+**  Convert XMI Midi sound to Midi
+*/
+
+int ConvertXmi(char* file, int xmi) 
+{
+        unsigned char* xmip;
+        size_t xmil;
+
+        xmip = ExtractEntry(ArchiveOffsets[xmi], &xmil);
+
+        unsigned char* midp;
+        size_t midl;
+
+        midp = TranscodeXmiToMid(xmip, xmil, &midl);
+
+        free(xmip);
+
+        char buf[1024];
+        gzFile gf;
+
+        sprintf(buf, "%s/%s/%s.mid.gz", Dir, MUSIC_PATH, file);
+        CheckPath(buf);
+        gf = gzopen(buf, "wb9");
+        if (!gf) {
+                perror("");
+                printf("Can't open %s\n", buf);
+                exit(-1);
+        }    
+        if (midl != (size_t)gzwrite(gf, midp, midl)) {
+                printf("Can't write %d bytes\n", (int)midl);
+        }    
+
+        free(midp);
+
+        gzclose(gf);
+        return 0;
+}
+
 /**
 **  Convert voc to my format.
 */
@@ -2533,6 +2627,9 @@ int main(int argc, char** argv)
 				break;
 			case W:
 				ConvertWav(Todo[u].File, Todo[u].Arg1);
+				break;
+			case M:
+				ConvertXmi(Todo[u].File, Todo[u].Arg1);
 				break;
 			case VOC:
 				ConvertVoc(Todo[u].File, Todo[u].Arg1);
