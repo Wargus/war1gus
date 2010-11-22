@@ -48,7 +48,15 @@
 --	o Frame is increment to the frame of the image
 --
 
---------
+-- TODO remove this once replaced by correct animation
+DefineAnimations("animations-todo", {
+Still = {"frame 0", "wait 4"},
+Move = {"frame 0", "wait 4"},
+Attack = {"frame 0", "wait 4"},
+Death = {"frame 0", "wait 4"}
+})
+
+-------
 --	Footman, Grunt
 DefineAnimations("animations-footman", {
   Still = {

@@ -38,12 +38,13 @@ SetEditorUnitsIcon("icon-footman")
 --	editor-unit-types a sorted list of unit-types for the editor.
 --	FIXME: this is only a temporary hack, for better sorted units.
 --
-DefineEditorUnitTypes(
-  "unit-human-start-location",
+local editor_types = {
+--  "unit-human-start-location",
 
   "unit-peasant",
   "unit-footman",
   "unit-archer",
+
   "unit-knight",
   "unit-human-catapult",
   "unit-conjurer",
@@ -58,12 +59,14 @@ DefineEditorUnitTypes(
   "unit-human-stable",
   "unit-human-church",
   "unit-human-tower",
+  "unit-stormwind-keep",
 
 --- - - - - - - - - - - - - - - - - - -
 
-  "unit-orc-start-location",
+--  "unit-orc-start-location",
 
   "unit-peon",
+
   "unit-grunt",
   "unit-spearman",
   "unit-raider",
@@ -80,15 +83,31 @@ DefineEditorUnitTypes(
   "unit-orc-kennel",
   "unit-orc-temple",
   "unit-orc-tower",
+  "unit-blackrock-spire",
 
 --- - - - - - - - - - - - - - - - - - -
 
   "unit-gold-mine",
+  "unit-brigand",
+  "unit-daemon",
+  "unit-fire-elemental",
+  "unit-grizelda",
+  "unit-garona",
+  "unit-ogre",
+  "unit-scorpion",
+  "unit-skeleton",
+  "unit-slime",
+  "unit-spider",
+  "unit-the-dead",
+  "unit-water-elemental",
+  "unit-wounded",
 
 -- Placing this unit-types on map is not (yet?) supported.
 --  "unit-dead-body",
---  "unit-destroyed-1x1-place",
---  "unit-destroyed-2x2-place",
---  "unit-destroyed-3x3-place",
---  "unit-destroyed-4x4-place",
-)
+
+}
+
+Editor.UnitTypes:clear()
+for key,value in ipairs(editor_types) do
+  Editor.UnitTypes:push_back(value)
+end
