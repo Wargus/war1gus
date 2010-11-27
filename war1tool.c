@@ -594,7 +594,7 @@ Control Todo[] = {
 {I,0,"ui/human/victory_1",									 457, 456 _2},
 {I,0,"ui/orc/victory_1",									 459, 458 _2},
 {I,0,"ui/human/victory_2",									 457, 470 _2},
-{I,0,"ui/orc/victory_2",									 459, 471 _2},
+{I,0,"ui/orc/victory_2",									 260, 471 _2},
 
 // Sounds
 {W,0,"logo",												 472 __},
