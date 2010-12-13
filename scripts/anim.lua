@@ -193,8 +193,8 @@ local frameNumbers_5_5_4_5 = GetFrameNumbers(5, {5, 4, 5})
 local frameNumbers_5_5_4_4 = GetFrameNumbers(5, {5, 4, 4})
 local frameNumbers_5_5_4_3 = GetFrameNumbers(5, {5, 4, 3})
 local frameNumbers_5_5_2_3 = GetFrameNumbers(5, {5, 2, 3})
+local frameNumbers_5_4_4_2 = GetFrameNumbers(5, {4, 4, 2})
 local frameNumbers_5_2_5_3 = GetFrameNumbers(5, {2, 5, 3})
-local frameNumbers_5_4_4_2 = GetFrameNumbers(5, {2, 5, 3})
 
 
 local animation_5move_5att_3death = BuildAnimations(frameNumbers_5_5_5_3)
