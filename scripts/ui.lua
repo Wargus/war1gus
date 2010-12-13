@@ -28,6 +28,9 @@
 --
 --      $Id$
 
+UI.MessageFont = Fonts["game"]
+UI.MessageScrollSpeed = 5
+
 Load("scripts/widgets.lua")
 
 Load("scripts/human/ui.lua")

@@ -38,6 +38,17 @@ war1gus.Homepage = "https://launchpad.net/war1gus"
 war1gus.Licence = "GPL v2"
 war1gus.Copyright = "Copyright (c) 1998-2010 by The Stratagus Project"
 
+InitFuncs = {}
+function InitFuncs:add(f)
+  table.insert(self, f)
+end
+
+function InitGameVariables()
+  for i=1,table.getn(InitFuncs) do
+    InitFuncs[i]()
+  end
+end
+
 -- Config file version
 --(define media-version (list 'wc1 'class 'wc1 'version '(1 18 0)))
 
@@ -341,11 +352,11 @@ SetAllPlayersTotalUnitLimit(400)
 
 function SinglePlayerTriggers()
   AddTrigger(
-    function() return IfUnit("this", "==", 0, "all") end,
+    function() return GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0 end,
     function() return ActionDefeat() end)
 
   AddTrigger(
-    function() return IfOpponents("this", "==", 0) end,
+    function() return GetNumOpponents(GetThisPlayer()) == 0 end,
     function() return ActionVictory() end)
 end
 
@@ -405,7 +416,7 @@ Load("scripts/wc1.lua")
 --Load("scripts/tilesets.lua")
 Load("scripts/icons.lua")
 --Load("scripts/sound.lua")
---Load("scripts/missiles.lua")
+Load("scripts/missiles.lua")
 Load("scripts/constructions.lua")
 --Load("scripts/spells.lua")
 Load("scripts/units.lua")
@@ -413,7 +424,7 @@ Load("scripts/units.lua")
 Load("scripts/fonts.lua")
 --Load("scripts/buttons.lua")
 Load("scripts/ui.lua")
---Load("scripts/ai.lua")
+Load("scripts/ai.lua")
 --Load("scripts/campaigns.lua")
 --Load("scripts/tips.lua")
 --Load("scripts/ranks.lua")

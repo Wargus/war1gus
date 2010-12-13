@@ -42,5 +42,5 @@ end
 --  class   class of the AI for map editor.
 --  script  Main AI script.
 --
-DefineAi("wc2-passive", "*", "passive", AiPassive)
-
+DefineAi("wc1-passive", "*", "wc1-passive", AiPassive)
+DefineAi("ai-passive", "*", "ai-passive", AiPassive)

@@ -4,9 +4,9 @@ SetPlayerData(GetThisPlayer(), "RaceName", "orc")
 
 -- Global useful objects for menus  ----------
 
-local dark = Color(38, 38, 78)
-local clear = Color(200, 200, 120)
-local black = Color(0, 0, 0)
+dark = Color(38, 38, 78)
+clear = Color(200, 200, 120)
+black = Color(0, 0, 0)
 
 bckground = CGraphic:New("ui/title_screen.png")
 bckground:Load()
@@ -40,21 +40,15 @@ g_obsp = CGraphic:New("ui/orc/widgets/button-small-pressed.png")
 g_obsp:Load()
 g_obsg = CGraphic:New("ui/orc/widgets/button-small-grayed.png")
 g_obsg:Load()
-
+--]]
 local hpanels = {
   "ui/human/panel_1.png",
-  "ui/human/panel_2.png",
-  "ui/human/panel_3.png",
-  "ui/human/panel_4.png",
-  "ui/human/panel_5.png"
+  "ui/human/panel_2.png"
 }
 
 local opanels = {
   "ui/orc/panel_1.png",
-  "ui/orc/panel_2.png",
-  "ui/orc/panel_3.png",
-  "ui/orc/panel_4.png",
-  "ui/orc/panel_5.png"
+  "ui/orc/panel_2.png"
 }
 
 function panel(n)
@@ -64,7 +58,7 @@ function panel(n)
     return opanels[n]
   end
 end
---]]
+
 
 
 function AddMenuHelpers(menu)
@@ -370,7 +364,7 @@ function RunMap(map, objective, fow, revealmap)
   else
     Objectives = objective
   end
-  loop = true
+  local loop = true
   while (loop) do
     InitGameVariables()
     if fow ~= nil then
@@ -384,13 +378,13 @@ function RunMap(map, objective, fow, revealmap)
       loop = false
     end
   end
-  RunResultsMenu(s)
 
+  RunResultsMenu(s)
   InitGameSettings()
   SetPlayerData(GetThisPlayer(), "RaceName", "orc")
 end
 
-mapname = "campaigns/human/01.cm.gz"
+mapname = "maps/default.smp.gz"
 buttonStatut = 0 -- 0:not initialised, 1: Ok, 2: Cancel
 mapinfo = {
   playertypes = {nil, nil, nil, nil, nil, nil, nil, nil},
@@ -580,8 +574,9 @@ function BuildProgramStartMenu()
   menu:addLabel(war1gus.Name .. " V" .. war1gus.Version .. "  " .. war1gus.Homepage, offx + 320, offy + 390 + 18*0)
   menu:addLabel("Stratagus V" .. GetStratagusVersion() .. "  " .. GetStratagusHomepage(), offx + 320, offy + 390 + 18*1)
   menu:addLabel(war1gus.Copyright, offx + 320, offy + 390 + 18*4)
---[[
+
   menu:addFullButton("~!Single Player Game", "s", offx + 208, offy + 104 + 36*0, function() RunSinglePlayerGameMenu(); menu:stop(1) end)
+--[[
   menu:addFullButton("~!Multi Player Game", "m", offx + 208, offy + 104 + 36*1,
     function() RunMultiPlayerGameMenu(); menu:stop(1) end)
   menu:addFullButton("~!Campaign Game", "c", offx + 208, offy + 104 + 36*2,
@@ -592,7 +587,7 @@ function BuildProgramStartMenu()
     function() RunReplayGameMenu(); menu:stop(1) end)
 --]]
   menu:addFullButton("~!Options", "o", offx + 208, offy + 104 + 36*5, function() RunOptionsMenu(); menu:stop(1) end)
---  menu:addFullButton("~!Editor", "e", offx + 208, offy + 104 + 36*6, function() RunEditorMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Editor", "e", offx + 208, offy + 104 + 36*6, function() RunEditorMenu(); menu:stop(1) end)
   menu:addFullButton("S~!how Credits", "h", offx + 208, offy + 104 + 36*7, RunShowCreditsMenu)
   menu:addFullButton("E~!xit Program", "x", offx + 208, offy + 104 + 36*9, function() menu:stop() end)
 
@@ -613,17 +608,17 @@ function RunProgramStartMenu()
   end
 end
 
---[[
-Load("scripts/menus/campaign.lua")
+
+--Load("scripts/menus/campaign.lua")
 Load("scripts/menus/load.lua")
 Load("scripts/menus/save.lua")
 Load("scripts/menus/replay.lua")
---]]
+
 Load("scripts/menus/options.lua")
---Load("scripts/menus/editor.lua")
+Load("scripts/menus/editor.lua")
 Load("scripts/menus/credits.lua")
---[[
 Load("scripts/menus/game.lua")
+--[[
 Load("scripts/menus/help.lua")
 Load("scripts/menus/objectives.lua")
 Load("scripts/menus/endscenario.lua")
