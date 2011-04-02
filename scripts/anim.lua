@@ -44,7 +44,7 @@ local function BuildMoveAnimation(frames)
 	local tilesizeinpixel = 32
 	local halfIndex;
 	if (#frames % 2 == 0) then
-		halfIndex = (#frames ) / 2
+		halfIndex = (#frames) / 2
 	else
 		halfIndex = (#frames + 1) / 2
 	end
@@ -73,7 +73,7 @@ local function BuildMoveAnimation(frames)
 			res[1 + #res] = "wait 2"
 			tilesizeinpixel = tilesizeinpixel - 4;
 		end
-		for i = 2 + halfIndex, #frames do
+		for i = (2 + #frames - halfIndex), #frames do
 			res[1 + #res] = "frame " .. frames[i]
 			res[1 + #res] = "move 4"
 			res[1 + #res] = "wait 2"
@@ -192,15 +192,15 @@ local frameNumbers_5_5_5_3 = GetFrameNumbers(5, {5, 5, 3})
 local frameNumbers_5_5_4_5 = GetFrameNumbers(5, {5, 4, 5})
 local frameNumbers_5_5_4_4 = GetFrameNumbers(5, {5, 4, 4})
 local frameNumbers_5_5_4_3 = GetFrameNumbers(5, {5, 4, 3})
+local frameNumbers_5_5_3_2 = GetFrameNumbers(5, {5, 3, 2})
 local frameNumbers_5_5_2_3 = GetFrameNumbers(5, {5, 2, 3})
-local frameNumbers_5_4_4_2 = GetFrameNumbers(5, {4, 4, 2})
 local frameNumbers_5_2_5_3 = GetFrameNumbers(5, {2, 5, 3})
 
 
 local animation_5move_5att_3death = BuildAnimations(frameNumbers_5_5_5_3)
 
 --	brigand
-DefineAnimations("animations-brigand", BuildAnimations(frameNumbers_5_4_4_2))
+DefineAnimations("animations-brigand", BuildAnimations(frameNumbers_5_5_3_2))
 DefineAnimations("animations-spider", BuildAnimations(frameNumbers_5_5_4_5))
 
 
