@@ -51,6 +51,7 @@
 #endif
 #include <ctype.h>
 #include <png.h>
+#include <zlib.h>
 
 #include "xmi2mid.h"
 
@@ -828,7 +829,7 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 		return 1;
 	}
 
-	if (setjmp(png_ptr->jmpbuf)) {
+	if (png_jmpbuf(png_ptr)) {
 		// FIXME: must free buffers!!
 		png_destroy_write_struct(&png_ptr, &info_ptr);
 		fclose(fp);
@@ -837,17 +838,16 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	png_init_io(png_ptr, fp);
 
 	// zlib parameters
-	png_set_compression_level(png_ptr ,Z_BEST_COMPRESSION);
+	//png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
 
 	// prepare the file information
-	info_ptr->width = w;
-	info_ptr->height = h;
-	info_ptr->bit_depth = 8;
-	info_ptr->color_type = PNG_COLOR_TYPE_PALETTE;
-	info_ptr->interlace_type = 0;
-	info_ptr->valid |= PNG_INFO_PLTE;
-	info_ptr->palette = (void*)pal;
-	info_ptr->num_palette = 256;
+	const int bit_depth = 8;
+	const int interlace_type = 0;
+	png_set_IHDR(png_ptr, info_ptr, w, h, bit_depth, PNG_COLOR_TYPE_PALETTE, interlace_type, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+
+	//info_ptr->valid |= PNG_INFO_PLTE;
+	const int num_palette = 256;
+	png_set_PLTE(png_ptr, info_ptr, (png_colorp) pal, num_palette);
 
 	if (transparent != -1) {
 		png_byte trans[256];
@@ -1290,49 +1290,37 @@ void ConvertFLC_COPY(unsigned char* buf)
 */
 void ConvertFLC_PSTAMP(unsigned char* buf)
 {
-	unsigned char* p;
-	int height;
-	int width;
-	int xlate;
-	int pstamp_size;
-	int pstamp_type;
-	int h;
-	int w;
-	unsigned char* image;
-	unsigned char* i;
-
 	//
 	//  Read header
 	//
-	p = buf;
-	height = FetchLE16(p);
-	width = FetchLE16(p);
-	xlate = FetchLE16(p);
+	unsigned char* p = buf;
+	int height = FetchLE16(p);
+	int width = FetchLE16(p);
+	/* int xlate =*/ FetchLE16(p);
 
-	image = malloc(height * width);
+	unsigned char* image = malloc(height * width);
 	if (!image) {
 		printf("Can't allocate image\n");
 		exit(-1);
 	}
 	memset(image, 255, height * width);
-	i = image;
+	unsigned char* i = image;
 
 	//
 	//  PSTAMP header
 	//
-	pstamp_size = FetchLE32(p);
-	pstamp_type = FetchLE16(p);
+	/* int pstamp_size =*/ FetchLE32(p);
+	int pstamp_type = FetchLE16(p);
 
 	switch (pstamp_type) {
 		case 15:
 		{
-			char type;
-			unsigned char pixel;
-
+			int h;
 			for (h = height; h; --h) {
 				++p; // ignore first byte
+				int w;
 				for (w = width; w;) {
-					type = FetchByte(p);
+					char type = FetchByte(p);
 
 					if (type < 0) {
 						for (; type; ++type) {
@@ -1340,7 +1328,7 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 							--w;
 						}
 					} else {
-						pixel = FetchByte(p);
+						unsigned char pixel = FetchByte(p);
 						for (; type; --type) {
 							*i++ = pixel;
 							--w;
@@ -2060,7 +2048,7 @@ int ConvertWav(char* file, int wave)
 **  Convert XMI Midi sound to Midi
 */
 
-int ConvertXmi(char* file, int xmi) 
+int ConvertXmi(char* file, int xmi)
 {
         unsigned char* xmip;
         size_t xmil;
@@ -2084,10 +2072,10 @@ int ConvertXmi(char* file, int xmi)
                 perror("");
                 printf("Can't open %s\n", buf);
                 exit(-1);
-        }    
+        }
         if (midl != (size_t)gzwrite(gf, midp, midl)) {
                 printf("Can't write %d bytes\n", (int)midl);
-        }    
+        }
 
         free(midp);
 
