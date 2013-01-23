@@ -10,7 +10,7 @@
 --
 --      ai.lua - Define the AI.
 --
---      (c) Copyright 2000-2004 by Lutz Sammer and Jimmy Salmon
+--      (c) Copyright 2000-2013 by Lutz Sammer, Jimmy Salmon, and Joris Dauphin
 --
 --      This program is free software; you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -34,94 +34,19 @@
 race1 = "human"
 race2 = "orc"
 
---=============================================================================
---
---  AI helper table, the AI must know where to build units,
---  where to research spells, where to upgrade units.
---  If this is allowed and which dependencies exists, isn't
---  handled here. (see upgrade.lua)
---
---  NOTE: perhaps this could later be used to build the buttons?
---
---  DefineAiHelper(list)
---
-
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 --  * Race human.
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-DefineAiHelper(
-  --
-  -- Unit can build which buildings.
-  --
-  {"build", "unit-peasant",
-  "unit-human-farm", "unit-human-barracks", "unit-human-town-hall", "unit-human-lumber-mill",
-  "unit-human-blacksmith"},
-  --
-  -- Building can train which units.
-  --
-  {"train", "unit-human-town-hall", "unit-peasant"},
-  {"train", "unit-human-barracks",
-  "unit-footman", "unit-archer"},
-  --
-  -- Building can upgrade which upgrades.
-  --
-  --
-  -- Building can research which spells or upgrades.
-  --
-  --
-  -- Unit can repair which units.
-  --
-  {"repair", "unit-peasant",
-  "unit-human-farm", "unit-human-barracks", "unit-human-town-hall",
-  "unit-human-lumber-mill", "unit-human-blacksmith"},
-  --
-  -- Reduce unit limits.
-  --
-  {"unit-limit", "unit-human-farm", "food"}
-  --
-  -- Equivalence of units for the resource manager.
-  --
-)
+-- Equivalence of units for the resource manager.
+DefineAiHelper()
 
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 --  * Race orc.
 --;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-DefineAiHelper(
-  --
-  -- Unit can build which buildings.
-  --
-  {"build", "unit-peon",
-  "unit-orc-farm", "unit-orc-barracks", "unit-orc-town-hall",
-  "unit-orc-lumber-mill", "unit-orc-blacksmith"},
-  --
-  -- Building can train which units.
-  --
-  {"train", "unit-orc-town-hall", "unit-peon"},
-  {"train", "unit-orc-barracks",
-  "unit-grunt", "unit-spearman"},
-  --
-  -- Building can upgrade which upgrades.
-  --
-  --
-  -- Building can research which spells or upgrades.
-  --
-  --
-  -- Unit can build which units.
-  --
-  {"repair", "unit-peon",
-  "unit-orc-farm", "unit-orc-barracks", "unit-orc-town-hall",
-  "unit-orc-lumber-mill", "unit-orc-blacksmith"},
-  --
-  -- Reduce unit limits.
-  --
-  {"unit-limit", "unit-orc-farm", "food"}
-  --
-  -- Equivalence of units for the resource manager.
-  --
-)
+-- Equivalence of units for the resource manager.
+DefineAiHelper()
 
 --
 --  City-center of the current race.
