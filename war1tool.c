@@ -34,6 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -2259,7 +2260,7 @@ int ConvertText(char* file, int txte, int ofs)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void SmsSaveObjectives(FILE* c_sms, unsigned char* txtp, char* lvlpath, char* race)
+static void SmsSaveObjectives(FILE* c_sms, unsigned char* txtp, const char* lvlpath, char* race)
 {
 	int offset;
 
@@ -2269,12 +2270,11 @@ static void SmsSaveObjectives(FILE* c_sms, unsigned char* txtp, char* lvlpath, c
 	}
 	fprintf(c_sms, "-- Stratagus Map - Single player campaign\n\n");
 
-	fprintf(c_sms, "title = campaign mission\n");
+	fprintf(c_sms, "title = \"%s\"\n", lvlpath);
 	fprintf(c_sms, "objectives = {\"");
 	fprintf(c_sms, "%s", txtp + offset);
 	fprintf(c_sms, "\"}\n");
 
-	/* fprintf(c_sms, "Load(\"%s_c2.sms\")\n\n"); */
 	fprintf(c_sms, "Briefing(\n");
         fprintf(c_sms, "  title,\n");
         fprintf(c_sms, "  objectives,\n");
@@ -2295,7 +2295,6 @@ static void SmsSaveObjectives(FILE* c_sms, unsigned char* txtp, char* lvlpath, c
 	fprintf(c_sms, "assert(loadstring(Triggers))()\n\n");
 
 	// TODO: Allow units
-        
         
         fprintf(c_sms, "Load(\"%s.sms\")", lvlpath);
 }
@@ -2343,7 +2342,7 @@ static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, char* lvlpath)
+static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath)
 {
 	unsigned char* mtxm;
 	unsigned char* p;
@@ -2368,7 +2367,7 @@ static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, char* lvlpath)
 		gzprintf(sms, "  -- %d\n",i);
 		for (j = 0; j < 64; ++j) {
 			s = FetchLE16(p);
-			gzprintf(sms, "SetTile(80, %d, %d, 0)\n", s, s);
+			gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, i, j);
 		}
 	}
 	gzprintf(sms, "\n");
@@ -2518,7 +2517,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 {
 	unsigned char* txtp;
 	unsigned char buf[1024];
-	char* race = Dir;
+	char* race;
 	gzFile smp, sms;
 	FILE* c_sms;
 
@@ -2541,16 +2540,17 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	}
 
 	// Get the race
+	race = (char*)calloc(sizeof(char), 1024);
+	strcpy(race, file);
+	assert(strlen(race) > 3 && race[strlen(race) - 3] == '/');
+	race[strlen(race) - 3] = '\0';
 	while (strstr(race, "/")) {
 		race++;
 	}
-	printf("Saving %s for race %s\n", file, race);
-	// Get the path-prefix for the map files
-	sprintf((char*)buf, "%s/%s/%s", Dir, CM_PATH, file);
 
-	SmsSaveObjectives(c_sms, txtp, (char*)buf, race);
+	SmsSaveObjectives(c_sms, txtp, file, race);
 	SmsSavePlayers(race, sms, smp);
-	SmsSaveMap(sms, smp, mtxme, (char*)buf);
+	SmsSaveMap(sms, smp, mtxme, file);
 	SmsSaveUnits(sms, txtp);
 
 	free(txtp);
