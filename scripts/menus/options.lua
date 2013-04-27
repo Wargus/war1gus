@@ -154,28 +154,29 @@ function BuildOptionsMenu()
   menu:addLabel("Global Options", offx + 176, offy + 1)
   menu:addLabel("Video Resolution", offx + 16, offy + 34, Fonts["game"], false)
   group = "resolution"
-  b = menu:addRadioButton("640 x 480", group, offx + 16, offy + 55 + 26*0, function() SetVideoSize(640, 480) menu:stop(1) end)
+  b = menu:addRadioButton("640 x 400", group, offx + 16, offy + 55 + 26*4,
+    function() SetVideoSize(640, 400) menu:stop(1) end)
   if (Video.Width == 640) then b:setMarked(true) end
-  b = menu:addRadioButton("800 x 480", group, offx + 16, offy + 55 + 26*1, function() SetVideoSize(800, 480) menu:stop(1) end)
-  if (Video.Width == 800 and Video.Height == 480) then b:setMarked(true) end
-  b = menu:addRadioButton("800 x 600", group, offx + 16, offy + 55 + 26*2, function() SetVideoSize(800, 600) menu:stop(1) end)
-  if (Video.Width == 800 and Video.Height == 600) then b:setMarked(true) end
-  b = menu:addRadioButton("1024 x 768", group, offx + 16, offy + 55 + 26*3, function() SetVideoSize(1024, 768) menu:stop(1) end)
-  if (Video.Width == 1024) then b:setMarked(true) end
-  b = menu:addRadioButton("1280 x 800", group, offx + 16, offy + 55 + 26*4, function() SetVideoSize(1280, 800) menu:stop(1) end)
-  if (Video.Height == 800) then b:setMarked(true) end
-  b = menu:addRadioButton("1280 x 960", group, offx + 16, offy + 55 + 26*5, function() SetVideoSize(1280, 960) menu:stop(1) end)
-  if (Video.Height == 960) then b:setMarked(true) end
-  b = menu:addRadioButton("1280 x 1024", group, offx + 16, offy + 55 + 26*6, function() SetVideoSize(1280, 1024) menu:stop(1) end)
-  if (Video.Height == 1024) then b:setMarked(true) end
-  b = menu:addRadioButton("1400 x 1050", group, offx + 16, offy + 55 + 26*7, function() SetVideoSize(1400, 1050) menu:stop(1) end)
-  if (Video.Width == 1400) then b:setMarked(true) end
-  b = menu:addRadioButton("1600 x 1200", group, offx + 16, offy + 55 + 26*8, function() SetVideoSize(1600, 1200) menu:stop(1) end)
-  if (Video.Width == 1600) then b:setMarked(true) end
-  b = menu:addRadioButton("1680 x 1050", group, offx + 16, offy + 55 + 26*9, function() SetVideoSize(1680, 1050) menu:stop(1) end)
-  if (Video.Width == 1680) then b:setMarked(true) end
+  -- b = menu:addRadioButton("800 x 480", group, offx + 16, offy + 55 + 26*1, function() SetVideoSize(800, 480) menu:stop(1) end)
+  -- if (Video.Width == 800 and Video.Height == 480) then b:setMarked(true) end
+  -- b = menu:addRadioButton("800 x 600", group, offx + 16, offy + 55 + 26*2, function() SetVideoSize(800, 600) menu:stop(1) end)
+  -- if (Video.Width == 800 and Video.Height == 600) then b:setMarked(true) end
+  -- b = menu:addRadioButton("1024 x 768", group, offx + 16, offy + 55 + 26*3, function() SetVideoSize(1024, 768) menu:stop(1) end)
+  -- if (Video.Width == 1024) then b:setMarked(true) end
+  -- b = menu:addRadioButton("1280 x 800", group, offx + 16, offy + 55 + 26*4, function() SetVideoSize(1280, 800) menu:stop(1) end)
+  -- if (Video.Height == 800) then b:setMarked(true) end
+  -- b = menu:addRadioButton("1280 x 960", group, offx + 16, offy + 55 + 26*5, function() SetVideoSize(1280, 960) menu:stop(1) end)
+  -- if (Video.Height == 960) then b:setMarked(true) end
+  -- b = menu:addRadioButton("1280 x 1024", group, offx + 16, offy + 55 + 26*6, function() SetVideoSize(1280, 1024) menu:stop(1) end)
+  -- if (Video.Height == 1024) then b:setMarked(true) end
+  -- b = menu:addRadioButton("1400 x 1050", group, offx + 16, offy + 55 + 26*7, function() SetVideoSize(1400, 1050) menu:stop(1) end)
+  -- if (Video.Width == 1400) then b:setMarked(true) end
+  -- b = menu:addRadioButton("1600 x 1200", group, offx + 16, offy + 55 + 26*8, function() SetVideoSize(1600, 1200) menu:stop(1) end)
+  -- if (Video.Width == 1600) then b:setMarked(true) end
+  -- b = menu:addRadioButton("1680 x 1050", group, offx + 16, offy + 55 + 26*9, function() SetVideoSize(1680, 1050) menu:stop(1) end)
+  -- if (Video.Width == 1680) then b:setMarked(true) end
 
-  b = menu:addCheckBox("Full Screen", offx + 17, offy + 55 + 26*10 + 14,
+  b = menu:addCheckBox("Full Screen", offx + 17, offy + 55 + 26*5 + 14,
     function()
       ToggleFullScreen()
       preferences.VideoFullScreen = Video.FullScreen
@@ -184,7 +185,7 @@ function BuildOptionsMenu()
     end)
   b:setMarked(Video.FullScreen)
 
-  checkTexture = menu:addCheckBox("Set Maximum OpenGL Texture to 256", offx + 127, offy + 55 + 26*10 + 14,
+  checkTexture = menu:addCheckBox("Set Maximum OpenGL Texture to 256", offx + 17, offy + 55 + 26*7 + 14,
     function()
       if (checkTexture:isMarked()) then
         preferences.MaxOpenGLTexture = 256
@@ -196,7 +197,7 @@ function BuildOptionsMenu()
     end)
   if (preferences.MaxOpenGLTexture == 128) then checkTexture:setMarked(true) end
 
-  checkOpenGL = menu:addCheckBox("Use OpenGL / OpenGL ES 1.1 (restart required)", offx + 17, offy + 55 + 26*11 + 14,
+  checkOpenGL = menu:addCheckBox("OpenGL / OpenGL ES 1.1 (restart required)", offx + 17, offy + 55 + 26*6 + 14,
     function()
 --TODO: Add function for immediately change state of OpenGL
       preferences.UseOpenGL = checkOpenGL:isMarked()
@@ -204,10 +205,8 @@ function BuildOptionsMenu()
 --      menu:stop(1) --TODO: Enable if we have an OpenGL function
     end)
   checkOpenGL:setMarked(preferences.UseOpenGL)
---  checkOpenGL:setMarked(UseOpenGL) --TODO: Enable if we have an OpenGL function
 
---  menu:addHalfButton("~!OK", "o", offx + 123, offy + 55 + 26*12 + 14, function() menu:stop() end)
-  menu:addHalfButton("~!OK", "o", offx + 123, offy + 55 + 26*12 + 14, function() menu:stop() end)
+  menu:addHalfButton("~!OK", "o", offx + 123, offy + 55 + 26*8 + 14, function() menu:stop() end)
   return menu:run()
 end
 
