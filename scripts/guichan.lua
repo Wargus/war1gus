@@ -471,6 +471,26 @@ function RunSelectScenarioMenu()
   menu:run()
 end
 
+function RunSinglePlayerSubMenu()
+  local menu = WarMenu()
+  local offx = (Video.Width - 640) / 2
+  local offy = (Video.Height - 480) / 2
+
+  menu:addFullButton("~!Solo Game", "s", offx + 208, offy + 104 + 36*3,
+    function() RunSinglePlayerGameMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Campaign Game", "c", offx + 208, offy + 104 + 36*4,
+    function() RunCampaignGameMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Load Game", "l", offx + 208, offy + 104 + 36*5,
+    function() RunLoadGameMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Replay Game", "r", offx + 208, offy + 104 + 36*6,
+    function() RunReplayGameMenu(); menu:stop(1) end)
+
+  menu:addFullButton("Go ~!Back", "b", offx + 208, offy + 104 + 36*8,
+    function() menu:stop() end)
+
+  return menu:run()
+end
+
 function RunSinglePlayerGameMenu()
   local menu = WarMenu()
   local offx = (Video.Width - 640) / 2
@@ -489,7 +509,7 @@ function RunSinglePlayerGameMenu()
   descriptionl = menu:addLabel("descriptionl", offx + 16 + 70, offy + 360, Fonts["game"], false)
 
   menu:addLabel("~<Single Player Game Setup~>", offx + 640/2 + 12, offy + 192)
-  menu:addFullButton("S~!elect Scenario", "e", offx + 640 - 224 - 16, offy + 360 + 36*0,
+  menu:addFullButton("S~!elect Scenario", "e", offx + 640 - 224 - 16, offy + 360 + 36 * -1,
     function()
       local oldmapname = mapname
       RunSelectScenarioMenu()
@@ -498,7 +518,7 @@ function RunSinglePlayerGameMenu()
         MapChanged()
       end
     end)
-  menu:addFullButton("~!Start Game", "s", offx + 640 - 224 - 16, offy + 360 + 36*1,
+  menu:addFullButton("~!Start Game", "s", offx + 640 - 224 - 16, offy + 360 + 36*0,
     function()
       GameSettings.Presets[0].Race = race:getSelected()
       GameSettings.Resources = resources:getSelected()
@@ -508,7 +528,7 @@ function RunSinglePlayerGameMenu()
       RunMap(mapname)
       menu:stop()
     end)
-  menu:addFullButton("~!Cancel Game", "c", offx + 640 - 224 - 16, offy + 360 + 36*2, function() menu:stop() end)
+  menu:addFullButton("~!Cancel Game", "c", offx + 640 - 224 - 16, offy + 360 + 36*1, function() RunSinglePlayerSubMenu(); menu:stop() end)
 
   menu:addLabel("~<Your Race:~>", offx + 40, offy + (10 + 240) - 20, Fonts["game"], false)
   race = menu:addDropDown({"Map Default", "Human", "Orc"}, offx + 40, offy + 10 + 240,
@@ -571,25 +591,17 @@ function BuildProgramStartMenu()
   local offx = (Video.Width - 640) / 2
   local offy = (Video.Height - 480) / 2
 
-  menu:addLabel(war1gus.Name .. " V" .. war1gus.Version .. "  " .. war1gus.Homepage, offx + 320, offy + 390 + 18*0)
-  menu:addLabel("Stratagus V" .. GetStratagusVersion() .. "  " .. GetStratagusHomepage(), offx + 320, offy + 390 + 18*1)
-  menu:addLabel(war1gus.Copyright, offx + 320, offy + 390 + 18*4)
+  menu:addLabel(war1gus.Name .. " V" .. war1gus.Version .. "  " .. war1gus.Homepage, offx + 440, offy + 390 + 10*3, Fonts["small"])
+  menu:addLabel("Stratagus V" .. GetStratagusVersion() .. "  " .. GetStratagusHomepage(), offx + 440, offy + 390 + 10*2, Fonts["small"])
+  menu:addLabel(war1gus.Copyright, offx + 440, offy + 390 + 10*4, Fonts["small"])
 
-  menu:addFullButton("~!Single Player Game", "s", offx + 208, offy + 104 + 36*0, function() RunSinglePlayerGameMenu(); menu:stop(1) end)
---[[
-  menu:addFullButton("~!Multi Player Game", "m", offx + 208, offy + 104 + 36*1,
+  menu:addFullButton("~!Single Player Game", "s", offx + 208, offy + 104 + 34*3, function() RunSinglePlayerSubMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Multi Player Game", "m", offx + 208, offy + 104 + 34*4,
     function() RunMultiPlayerGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Campaign Game", "c", offx + 208, offy + 104 + 36*2,
-    function() RunCampaignGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Load Game", "l", offx + 208, offy + 104 + 36*3,
-    function() RunLoadGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Replay Game", "r", offx + 208, offy + 104 + 36*4,
-    function() RunReplayGameMenu(); menu:stop(1) end)
---]]
-  menu:addFullButton("~!Options", "o", offx + 208, offy + 104 + 36*5, function() RunOptionsMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Editor", "e", offx + 208, offy + 104 + 36*6, function() RunEditorMenu(); menu:stop(1) end)
-  menu:addFullButton("S~!how Credits", "h", offx + 208, offy + 104 + 36*7, RunShowCreditsMenu)
-  menu:addFullButton("E~!xit Program", "x", offx + 208, offy + 104 + 36*9, function() menu:stop() end)
+  menu:addFullButton("~!Options", "o", offx + 208, offy + 104 + 34*5, function() RunOptionsMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Editor", "e", offx + 208, offy + 104 + 34*6, function() RunEditorMenu(); menu:stop(1) end)
+  menu:addFullButton("S~!how Credits", "h", offx + 208, offy + 104 + 34*7, RunShowCreditsMenu)
+  menu:addFullButton("E~!xit Program", "x", offx + 208, offy + 104 + 34*8, function() menu:stop() end)
 
   return menu:run()
 end
