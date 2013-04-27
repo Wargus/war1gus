@@ -485,7 +485,7 @@ function RunSinglePlayerSubMenu()
   menu:addFullButton("~!Replay Game", "r", offx + 208, offy + 104 + 36*6,
     function() RunReplayGameMenu(); menu:stop(1) end)
 
-  menu:addFullButton("Go ~!Back", "b", offx + 208, offy + 104 + 36*8,
+  menu:addFullButton("~!Previous Menu", "p", offx + 208, offy + 104 + 36*8,
     function() menu:stop() end)
 
   return menu:run()
@@ -621,7 +621,7 @@ function RunProgramStartMenu()
 end
 
 
---Load("scripts/menus/campaign.lua")
+Load("scripts/menus/campaign.lua")
 Load("scripts/menus/load.lua")
 Load("scripts/menus/save.lua")
 Load("scripts/menus/replay.lua")
