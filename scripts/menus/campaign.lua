@@ -1,11 +1,13 @@
 --      (c) Copyright 2010      by Pali Rohár
 
 function Briefing(title, objs, bg, text, voices)
-  SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
+  -- TODO: don't hardcode here
+  SetPlayerData(GetThisPlayer(), "RaceName", "orc")
+  currentRace = "orc"
 
   local menu = WarMenu(nil, bg)
 
-  wargus.playlist = {}
+  -- wargus.playlist = {}
   if (currentRace == "human") then
     PlayMusic("music/Human Briefing.ogg")
     Load("scripts/human/ui.lua")
