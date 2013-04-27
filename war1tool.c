@@ -859,7 +859,7 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	info_ptr->num_palette = num_palette;
 #endif
 
-	if (transparent) {
+	if (transparent != -1) {
 		unsigned char* p;
 		unsigned char* end;
 		png_byte trans[256];
