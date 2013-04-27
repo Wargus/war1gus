@@ -2259,7 +2259,7 @@ int ConvertText(char* file, int txte, int ofs)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void CmSaveObjectives(gzFile f, unsigned char* txtp)
+static void SmsSaveObjectives(FILE* c_sms, unsigned char* txtp, char* lvlpath, char* race)
 {
 	int offset;
 
@@ -2267,9 +2267,37 @@ static void CmSaveObjectives(gzFile f, unsigned char* txtp)
 	if (!offset) {
 		return;
 	}
-	gzprintf(f, "--[[ Objectives:\n");
-	gzprintf(f, "%s", txtp + offset);
-	gzprintf(f, "\n]]\n");
+	fprintf(c_sms, "-- Stratagus Map - Single player campaign\n\n");
+
+	fprintf(c_sms, "title = campaign mission\n");
+	fprintf(c_sms, "objectives = {\"");
+	fprintf(c_sms, "%s", txtp + offset);
+	fprintf(c_sms, "\"}\n");
+
+	/* fprintf(c_sms, "Load(\"%s_c2.sms\")\n\n"); */
+	fprintf(c_sms, "Briefing(\n");
+        fprintf(c_sms, "  title,\n");
+        fprintf(c_sms, "  objectives,\n");
+        fprintf(c_sms, "  \"../graphics/ui/%s/briefing.png\",\n", race);
+	fprintf(c_sms, "  \"%s_intro.txt\",\n", lvlpath);
+	fprintf(c_sms, "  {\"%s_intro.wav\"}\n", lvlpath);
+	fprintf(c_sms, ")\n\n");
+
+	// TODO: Use actual triggers
+	fprintf(c_sms, "Trigger = [[\n");
+	fprintf(c_sms, "AddTrigger(\n");
+	fprintf(c_sms, "  function() return GetNumOpponents(GetThisPlayer()) == 0 end,\n");
+	fprintf(c_sms, "  function() return ActionVictory() end)\n");
+	fprintf(c_sms, "AddTrigger(\n");
+	fprintf(c_sms, "  function() return GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 end,\n");
+	fprintf(c_sms, "  function() return ActionDefeat() end)\n");
+	fprintf(c_sms, "]]\n\n");
+	fprintf(c_sms, "assert(loadstring(Triggers))()\n\n");
+
+	// TODO: Allow units
+        
+        
+        fprintf(c_sms, "Load(\"%s.sms\")", lvlpath);
 }
 
 /**
@@ -2278,37 +2306,35 @@ static void CmSaveObjectives(gzFile f, unsigned char* txtp)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void CmSavePlayers(gzFile f)
+static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 {
 	int i;
-
+	
 	for (i = 0; i < 16; ++i) {
-		gzprintf(f, "Player(%d,\n", i);
-		gzprintf(f, "  \"name\", \"Player %d\",\n", i);
+		gzprintf(sms, "SetStartView(%d, 0, 0)\n", i);
+		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"gold\", 1000)\n", i);
+		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"wood\", 1000)\n", i);
 		if (i == 0) {
-			gzprintf(f, "  \"type\", \"person\", \"race\", \"human\", \"ai\", 0,\n");
-			gzprintf(f, "  \"team\", 2, \"enemy\", \"_X______________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
-		} else if (i == 1) {
-			gzprintf(f, "  \"type\", \"computer\", \"race\", \"orc\", \"ai\", 0,\n");
-			gzprintf(f, "  \"team\", 1, \"enemy\", \"X_______________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
+			gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"%s\")\n", i, race);
 		} else if (i == 15) {
-			gzprintf(f, "  \"type\", \"neutral\", \"race\", \"neutral\", \"ai\", 0,\n");
-			gzprintf(f, "  \"team\", 0, \"enemy\", \"________________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
+			gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"neutral\")\n", i);
 		} else {
-			gzprintf(f, "  \"type\", \"nobody\", \"race\", \"human\", \"ai\", 0,\n");
-			gzprintf(f, "  \"team\", 0, \"enemy\", \"________________\", \"allied\", \"_______________\", \"shared-vision\", \"________________\",\n");
+			if (strcmp(race, "orc")) {
+				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"human\")\n", i);
+			} else {
+				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"orc\")\n", i);
+			}
 		}
-		gzprintf(f, "  \"start\", {0, 0},\n");
-		gzprintf(f, "  \"resources\", {\"time\", 0, \"gold\", 1000, \"wood\", 1000},\n");
-		gzprintf(f, "  \"incomes\", {\"time\", 0, \"gold\", 100, \"wood\", 100},\n");
-		if (i != 1) {
-			gzprintf(f, "  \"ai-disabled\"\n");
-		} else {
-			gzprintf(f, "  \"ai-enabled\"\n");
-		}
-		gzprintf(f, ")\n");
+		gzprintf(sms, "SetAiType(%d, \"wc2-land-attack\")\n", i);
 	}
-	gzprintf(f, "SetThisPlayer(0)\n");
+	gzprintf(smp, "-- Stratagus Map Presentation\n");
+	gzprintf(smp, "-- Generated from war1tool\n\n");
+
+	gzprintf(smp, "DefinePlayerTypes(\"person\", \"computer\", ");
+	for (i = 2; i < 15; ++i) {
+		gzprintf(smp, "\"nobody\", ");
+	}
+	gzprintf(smp, "\"neutral\")\n");
 }
 
 /**
@@ -2317,7 +2343,7 @@ static void CmSavePlayers(gzFile f)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void CmSaveMap(gzFile f, int mtxme)
+static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, char* lvlpath)
 {
 	unsigned char* mtxm;
 	unsigned char* p;
@@ -2332,29 +2358,20 @@ static void CmSaveMap(gzFile f, int mtxme)
 
 	p = mtxm;
 
-	gzprintf(f, "StratagusMap(\n");
-	gzprintf(f, "  \"the-map\", {\n");
-	gzprintf(f, "  \"terrain\", {\"tileset-forest\", \"forest\"},\n");
-	gzprintf(f, "  \"size\", {64, 64},\n");
-	gzprintf(f, "  \"map-fields\", {\n");
+	gzprintf(smp, "PresentMap(\"(unnamed)\", 16, 64, 64, 1)\n");
+	gzprintf(smp, "DefineMapSetup(\"%s_c.sms\")\n", lvlpath);
 
+	gzprintf(sms, "LoadTileModels(\"scripts/tilesets/forest.lua\")\n\n");
+
+	// TODO: Save actual map layout
 	for (i = 0; i < 64; ++i) {
-		gzprintf(f, "  -- %d\n",i);
+		gzprintf(sms, "  -- %d\n",i);
 		for (j = 0; j < 64; ++j) {
-			if (!(j & 1)) {
-				gzprintf(f, "  ");
-			} else {
-				gzprintf(f, "\t");
-			}
 			s = FetchLE16(p);
-			gzprintf(f, "{%d, %d, \"land\"},", s, s);
-			if (j & 1) {
-				gzprintf(f, "\n");
-			}
+			gzprintf(sms, "SetTile(80, %d, %d, 0)\n", s, s);
 		}
 	}
-
-	gzprintf(f, "}})\n");
+	gzprintf(sms, "\n");
 
 	free(mtxm);
 }
@@ -2401,7 +2418,7 @@ char *UnitTypes[] = {
 **
 **  @param f  File handle
 */
-static void CmSaveUnits(gzFile f, unsigned char* txtp)
+static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 {
 	unsigned char* p;
 	unsigned char* p2;
@@ -2444,7 +2461,7 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 		++numunits;
 	}
 
-	gzprintf(f, "SlotUsage(0, \"-\", %d)\n", numunits - 1);
+	/* gzprintf(f, "SlotUsage(0, \"-\", %d)\n", numunits - 1); */
 
 	i = 0;
 	while (p[0] != 0xFF || p[1] != 0xFF) {
@@ -2466,12 +2483,10 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 			value = 0;
 		}
 
-		gzprintf(f, "Unit(%d, \"type\", \"%s\", \"player\", %d,\n", i, UnitTypes[type], player);
-		gzprintf(f, "  \"tile\", {%d, %d}", x, y);
+		gzprintf(f, "unit = CreateUnit(\"%s\", %d, {%d, %d})\n", UnitTypes[type], player, x, y);
 		if (value) {
-			gzprintf(f, ",\n  \"resources-held\", %d", value);
+			gzprintf(f, "SetResourcesHeld(unit, %d)\n", value);
 		}
-		gzprintf(f, "\n)\n");
 		++i;
 	}
 
@@ -2486,45 +2501,62 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 		endy = FetchByte(p);
 		endy /= 2;
 		type = FetchByte(p);
-		gzprintf(f, "-- Roads (%d):", type);
+		/* gzprintf(f, "-- Roads (%d):", type); */
 		for (x = startx; x <= endx; ++x) {
 			for (y = starty; y <= endy; ++y) {
-				gzprintf(f, " {%d, %d}", x, y);
+				/* gzprintf(f, " {%d, %d}", x, y); */
 			}
 		}
-		gzprintf(f, "\n");
+		/* gzprintf(f, "\n"); */
 	}
 }
 
 /**
-**  Convert a map to cm.
+**  Convert a map to Stratagus map format.
 */
-int ConvertCm(const char* file, int txte, int mtxme)
+int ConvertMap(const char* file, int txte, int mtxme)
 {
 	unsigned char* txtp;
 	unsigned char buf[1024];
-	gzFile f;
+	char* race = Dir;
+	gzFile smp, sms;
+	FILE* c_sms;
 
 	txtp = ExtractEntry(ArchiveOffsets[txte], NULL);
 	if (!txtp) {
 		return 0;
 	}
-	sprintf((char*)buf, "%s/%s/%s.cm.gz", Dir, CM_PATH, file);
+	sprintf((char*)buf, "%s/%s/%s.smp.gz", Dir, CM_PATH, file);
 	CheckPath((char*)buf);
-	f = gzopen((char*)buf, "wb9");
-	if (!f) {
+	smp = gzopen((char*)buf, "wb9");
+	sprintf((char*)buf, "%s/%s/%s.sms.gz", Dir, CM_PATH, file);
+	sms = gzopen((char*)buf, "wb9");
+	sprintf((char*)buf, "%s/%s/%s_c.sms", Dir, CM_PATH, file);
+	c_sms = fopen((char*)buf, "wb");
+	if (!smp || !sms || !c_sms) {
 		perror("");
-		fprintf(stderr, "Can't open %s\n", buf);
+		fprintf(stderr, "Can't open campaign file for %s/%s/%s\n",
+			Dir, CM_PATH, file);
 		exit(-1);
 	}
 
-	CmSaveObjectives(f, txtp);
-	CmSavePlayers(f);
-	CmSaveMap(f, mtxme);
-	CmSaveUnits(f, txtp);
+	// Get the race
+	while (strstr(race, "/")) {
+		race++;
+	}
+	printf("Saving %s for race %s\n", file, race);
+	// Get the path-prefix for the map files
+	sprintf((char*)buf, "%s/%s/%s", Dir, CM_PATH, file);
+
+	SmsSaveObjectives(c_sms, txtp, (char*)buf, race);
+	SmsSavePlayers(race, sms, smp);
+	SmsSaveMap(sms, smp, mtxme, (char*)buf);
+	SmsSaveUnits(sms, txtp);
 
 	free(txtp);
-	gzclose(f);
+	fclose(c_sms);
+	gzclose(sms);
+	gzclose(smp);
 	return 0;
 }
 
@@ -2656,7 +2688,7 @@ int main(int argc, char** argv)
 				ConvertText(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case CM:
-				ConvertCm(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
+				ConvertMap(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			default:
 				break;
