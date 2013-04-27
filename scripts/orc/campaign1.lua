@@ -32,18 +32,18 @@
 --	Define the campaign
 
 campaign_steps = {
-  CreateMapStep("campaigns/orc/01.cm"),
-  CreateMapStep("campaigns/orc/02.cm"),
-  CreateMapStep("campaigns/orc/03.cm"),
-  CreateMapStep("campaigns/orc/04.cm"),
-  CreateMapStep("campaigns/orc/05.cm"),
-  CreateMapStep("campaigns/orc/06.cm"),
-  CreateMapStep("campaigns/orc/07.cm"),
-  CreateMapStep("campaigns/orc/08.cm"),
-  CreateMapStep("campaigns/orc/09.cm"),
-  CreateMapStep("campaigns/orc/10.cm"),
-  CreateMapStep("campaigns/orc/11.cm"),
-  CreateMapStep("campaigns/orc/12.cm"),
+  CreateMapStep("campaigns/orc/01.smp"),
+  CreateMapStep("campaigns/orc/02.smp"),
+  CreateMapStep("campaigns/orc/03.smp"),
+  CreateMapStep("campaigns/orc/04.smp"),
+  CreateMapStep("campaigns/orc/05.smp"),
+  CreateMapStep("campaigns/orc/06.smp"),
+  CreateMapStep("campaigns/orc/07.smp"),
+  CreateMapStep("campaigns/orc/08.smp"),
+  CreateMapStep("campaigns/orc/09.smp"),
+  CreateMapStep("campaigns/orc/10.smp"),
+  CreateMapStep("campaigns/orc/11.smp"),
+  CreateMapStep("campaigns/orc/12.smp"),
 }
 
 campaign_menu = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }

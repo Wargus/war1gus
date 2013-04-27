@@ -34,18 +34,18 @@
 --	(define-campagin 'ident 'name "name" 'campaign (list elements)
 
 campaign_steps = {
-  CreateMapStep("campaigns/human/01.cm"),
-  CreateMapStep("campaigns/human/02.cm"),
-  CreateMapStep("campaigns/human/03.cm"),
-  CreateMapStep("campaigns/human/04.cm"),
-  CreateMapStep("campaigns/human/05.cm"),
-  CreateMapStep("campaigns/human/06.cm"),
-  CreateMapStep("campaigns/human/07.cm"),
-  CreateMapStep("campaigns/human/08.cm"),
-  CreateMapStep("campaigns/human/09.cm"),
-  CreateMapStep("campaigns/human/10.cm"),
-  CreateMapStep("campaigns/human/11.cm"),
-  CreateMapStep("campaigns/human/12.cm"),
+  CreateMapStep("campaigns/human/01.smp"),
+  CreateMapStep("campaigns/human/02.smp"),
+  CreateMapStep("campaigns/human/03.smp"),
+  CreateMapStep("campaigns/human/04.smp"),
+  CreateMapStep("campaigns/human/05.smp"),
+  CreateMapStep("campaigns/human/06.smp"),
+  CreateMapStep("campaigns/human/07.smp"),
+  CreateMapStep("campaigns/human/08.smp"),
+  CreateMapStep("campaigns/human/09.smp"),
+  CreateMapStep("campaigns/human/10.smp"),
+  CreateMapStep("campaigns/human/11.smp"),
+  CreateMapStep("campaigns/human/12.smp"),
 }
 
 campaign_menu = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }
