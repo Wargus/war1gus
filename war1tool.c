@@ -869,21 +869,18 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 #endif
 
 	if (transparent != -1) {
-		printf("Transparency %s: ", name);
 		unsigned char* p;
 		unsigned char* end;
 		png_byte trans[256];
 
 		p = image;
-		end = image + h;
+		end = image + (w * h);
 		while (p < end) {
 			if (!*p) {
-				printf(".");
 				*p = 0xFF;
 			}
 			++p;
 		}
-		printf("\n");
 
 		memset(trans, 0xFF, sizeof(trans));
 		trans[255] = 0x0;
