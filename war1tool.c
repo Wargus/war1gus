@@ -76,19 +76,27 @@ typedef unsigned long u_int32_t;
      defined(__x86_64__) || \
      defined(__LITTLE_ENDIAN__)
 #ifdef __cplusplus
+static inline void SkipLE16(unsigned char*& p) {
+	p += 2;
+}
 static inline unsigned short FetchLE16(unsigned char*& p) {
 	unsigned short s = *(unsigned short*)p;
-	p += 2;
+	SkipLE16(p);
 	return s;
+}
+static inline void SkipLE32(unsigned char*& p) {
+	p += 4;
 }
 static inline unsigned int FetchLE32(unsigned char*& p) {
 	unsigned int s = *(unsigned int*)p;
-	p += 4;
+	SkipLE32(p);
 	return s;
 }
 #else
-#define FetchLE16(p) (*((unsigned short*)(p))); p += 2
-#define FetchLE32(p) (*((unsigned int*)(p))); p += 4
+#define SkipLE16(p) p += 2
+#define FetchLE16(p) (*((unsigned short*)(p))); SkipLE16(p)
+#define SkipLE32(p) p += 4
+#define FetchLE32(p) (*((unsigned int*)(p))); SkipLE32(p)
 #endif
 #define AccessLE16(p) (*((unsigned short*)(p)))
 #define AccessLE32(p) (*((unsigned int*)(p)))
@@ -107,7 +115,8 @@ static inline unsigned int Swap32(unsigned int D) {
 #define ConvertLE16(v) Swap16(v)
 #endif
 
-#define FetchByte(p) (*((unsigned char*)(p))); ++p
+#define SkipByte(p) ++p
+#define FetchByte(p) (*((unsigned char*)(p))); SkipByte(p)
 
 //----------------------------------------------------------------------------
 //  Config
@@ -176,7 +185,7 @@ char* Dir;
 typedef struct _control_ {
 	int				Type;		/// Entry type
 	int				Version;	/// Only in this version
-	char*			File;		/// Save file
+	char*			        File;		/// Save file
 	int				Arg1;		/// Extra argument 1
 	int				Arg2;		/// Extra argument 2
 	int				Arg3;		/// Extra argument 3
@@ -860,9 +869,21 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 #endif
 
 	if (transparent != -1) {
+		printf("Transparency %s: ", name);
 		unsigned char* p;
 		unsigned char* end;
 		png_byte trans[256];
+
+		p = image;
+		end = image + h;
+		while (p < end) {
+			if (!*p) {
+				printf(".");
+				*p = 0xFF;
+			}
+			++p;
+		}
+		printf("\n");
 
 		memset(trans, 0xFF, sizeof(trans));
 		trans[255] = 0x0;
@@ -1308,7 +1329,7 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	unsigned char* p = buf;
 	int height = FetchLE16(p);
 	int width = FetchLE16(p);
-	/* int xlate =*/ FetchLE16(p);
+	SkipLE16(p);
 
 	unsigned char* image = malloc(height * width);
 	if (!image) {
@@ -1321,7 +1342,7 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	//
 	//  PSTAMP header
 	//
-	/* int pstamp_size =*/ FetchLE32(p);
+	SkipLE32(p);
 	int pstamp_type = FetchLE16(p);
 
 	switch (pstamp_type) {
@@ -1464,7 +1485,7 @@ void ConvertFLC(const char* file, const char* flc)
 	close(f);
 
 	sprintf(FLCFile, "%s/%s/%s", Dir, FLC_PATH, flc);
-	p = strrchr(FLCFile, '.');
+	p = (unsigned char*)strrchr(FLCFile, '.');
 	if (p) {
 		*p = '\0';
 	}
@@ -1734,7 +1755,7 @@ void DecodeGfuEntry(int index, unsigned char* start,
 **  Convert graphics into image.
 */
 unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
-	unsigned char* bp2,int start2)
+	unsigned char* bp2)
 {
 	int i;
 	int count;
@@ -1836,7 +1857,7 @@ int ConvertGfu(char* file, int pale, int gfue)
 		return 0;
 	}
 
-	image = ConvertGraphic(gfup, &w, &h, NULL, 0);
+	image = ConvertGraphic(gfup, &w, &h, NULL);
 
 	free(gfup);
 	ConvertPalette(palp);
@@ -2028,7 +2049,7 @@ int ConvertWav(char* file, int wave)
 		return 0;
 	}
 
-	if (strncmp(wavp, "RIFF", 4)) {
+	if (strncmp((char*)wavp, "RIFF", 4)) {
 		printf("Not a wav file: %s\n", file);
 		free(wavp);
 		return 0;
@@ -2065,7 +2086,7 @@ int ConvertXmi(char* file, int xmi)
         unsigned char* xmip;
         size_t xmil;
 
-        xmip = ExtractEntry(ArchiveOffsets[xmi], &xmil);
+        xmip = ExtractEntry(ArchiveOffsets[xmi], (int*)&xmil);
 
         unsigned char* midp;
         size_t midl;
@@ -2414,14 +2435,14 @@ static void CmSaveUnits(gzFile f, unsigned char* txtp)
 	numunits = 0;
 	p2 = p;
 	while (p2[0] != 0xFF || p2[1] != 0xFF) {
-		FetchByte(p2);
-		FetchByte(p2);
+		SkipByte(p2);
+		SkipByte(p2);
 		type = FetchByte(p2);
-		FetchByte(p2);
+		SkipByte(p2);
 		if (type == 0x32) {
 			// gold mine
-			FetchByte(p2);
-			FetchByte(p2);
+			SkipByte(p2);
+			SkipByte(p2);
 		}
 		++numunits;
 	}
@@ -2491,9 +2512,9 @@ int ConvertCm(const char* file, int txte, int mtxme)
 	if (!txtp) {
 		return 0;
 	}
-	sprintf(buf, "%s/%s/%s.cm.gz", Dir, CM_PATH, file);
-	CheckPath(buf);
-	f = gzopen(buf, "wb9");
+	sprintf((char*)buf, "%s/%s/%s.cm.gz", Dir, CM_PATH, file);
+	CheckPath((char*)buf);
+	f = gzopen((char*)buf, "wb9");
 	if (!f) {
 		perror("");
 		fprintf(stderr, "Can't open %s\n", buf);
@@ -2583,7 +2604,7 @@ int main(int argc, char** argv)
 					int i = 0;
 					char filename[1024];
 					strcpy(filename, Todo[u].File);
-					Todo[u].File = filename;
+					Todo[u].File = filename ;
 					while (Todo[u].File[i]) {
 						Todo[u].File[i] = toupper(Todo[u].File[i]);
 						++i;
