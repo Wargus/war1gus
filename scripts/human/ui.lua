@@ -407,13 +407,13 @@ UI.ButtonPanel.X = 0
 UI.ButtonPanel.Y = 336
 UI.ButtonPanel.AutoCastBorderColorRGB = CColor(0, 0, 252)
 
-UI.MapArea.X = 176
+UI.MapArea.X = 144
 UI.MapArea.Y = 16
 UI.MapArea.EndX = Video.Width - 16 - 1
 UI.MapArea.EndY = Video.Height - 16 - 1
 
-UI.Minimap.X = 24
-UI.Minimap.Y = 24 + 2
+UI.Minimap.X = 6
+UI.Minimap.Y = 12
 UI.Minimap.W = 128
 UI.Minimap.H = 128
 
@@ -422,9 +422,9 @@ UI.StatusLine.TextY = Video.Height + 2 - 16
 UI.StatusLine.Width = Video.Width - 16 - 2 - 176
 UI.StatusLine.Font = Fonts["game"]
 
-UI.MenuButton.X = 24
-UI.MenuButton.Y = 2
-UI.MenuButton.Text = "Menu (~<F10~>)"
+UI.MenuButton.X = 6
+UI.MenuButton.Y = 376
+UI.MenuButton.Text = "            "
 UI.MenuButton.Style = FindButtonStyle("main")
 UI.MenuButton:SetCallback(
   function()
