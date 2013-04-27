@@ -2260,43 +2260,49 @@ int ConvertText(char* file, int txte, int ofs)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void SmsSaveObjectives(FILE* c_sms, unsigned char* txtp, const char* lvlpath, char* race)
+static void SmsSaveObjectives(gzFile sms, unsigned char* txtp, const char* lvlpath, char* race)
 {
 	int offset;
+	unsigned int i;
+	char objectives[1024];
 
 	offset = ConvertLE16(*(unsigned short*)(txtp + 0x94));
 	if (!offset) {
 		return;
 	}
-	fprintf(c_sms, "-- Stratagus Map - Single player campaign\n\n");
+	gzprintf(sms, "-- Stratagus Map - Single player campaign\n\n");
 
-	fprintf(c_sms, "title = \"%s\"\n", lvlpath);
-	fprintf(c_sms, "objectives = {\"");
-	fprintf(c_sms, "%s", txtp + offset);
-	fprintf(c_sms, "\"}\n");
+	gzprintf(sms, "title = \"%s\"\n", lvlpath);
+	gzprintf(sms, "objectives = {\"");
+	strcpy(objectives, (const char*)(txtp + offset));
+	for (i = 0; i < strlen(objectives); i++) {
+		if (objectives[i] == '\n' || objectives[i] == '\r') {
+			objectives[i] = ' ';
+		}
+	}
+	gzprintf(sms, objectives);
+	gzprintf(sms, "\"}\n");
 
-	fprintf(c_sms, "Briefing(\n");
-        fprintf(c_sms, "  title,\n");
-        fprintf(c_sms, "  objectives,\n");
-        fprintf(c_sms, "  \"../graphics/ui/%s/briefing.png\",\n", race);
-	fprintf(c_sms, "  \"%s_intro.txt\",\n", lvlpath);
-	fprintf(c_sms, "  {\"%s_intro.wav\"}\n", lvlpath);
-	fprintf(c_sms, ")\n\n");
+	gzprintf(sms, "Briefing(\n");
+        gzprintf(sms, "  title,\n");
+        gzprintf(sms, "  objectives,\n");
+        gzprintf(sms, "  \"../graphics/ui/%s/briefing.png\",\n", race);
+	gzprintf(sms, "  \"%s_intro.txt\",\n", lvlpath);
+	gzprintf(sms, "  {\"%s_intro.wav\"}\n", lvlpath);
+	gzprintf(sms, ")\n\n");
 
 	// TODO: Use actual triggers
-	fprintf(c_sms, "Trigger = [[\n");
-	fprintf(c_sms, "AddTrigger(\n");
-	fprintf(c_sms, "  function() return GetNumOpponents(GetThisPlayer()) == 0 end,\n");
-	fprintf(c_sms, "  function() return ActionVictory() end)\n");
-	fprintf(c_sms, "AddTrigger(\n");
-	fprintf(c_sms, "  function() return GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 end,\n");
-	fprintf(c_sms, "  function() return ActionDefeat() end)\n");
-	fprintf(c_sms, "]]\n\n");
-	fprintf(c_sms, "assert(loadstring(Triggers))()\n\n");
+	gzprintf(sms, "Triggers = [[\n");
+	gzprintf(sms, "AddTrigger(\n");
+	gzprintf(sms, "  function() return GetNumOpponents(GetThisPlayer()) == 0 end,\n");
+	gzprintf(sms, "  function() return ActionVictory() end)\n");
+	gzprintf(sms, "AddTrigger(\n");
+	gzprintf(sms, "  function() return GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 end,\n");
+	gzprintf(sms, "  function() return ActionDefeat() end)\n");
+	gzprintf(sms, "]]\n\n");
+	gzprintf(sms, "assert(loadstring(Triggers))()\n\n");
 
-	// TODO: Allow units
-        
-        fprintf(c_sms, "Load(\"%s.sms\")", lvlpath);
+	// TODO: Restrict units
 }
 
 /**
@@ -2324,7 +2330,7 @@ static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"orc\")\n", i);
 			}
 		}
-		gzprintf(sms, "SetAiType(%d, \"wc2-land-attack\")\n", i);
+		gzprintf(sms, "SetAiType(%d, \"wc1-passive\")\n", i);
 	}
 	gzprintf(smp, "-- Stratagus Map Presentation\n");
 	gzprintf(smp, "-- Generated from war1tool\n\n");
@@ -2358,7 +2364,8 @@ static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath)
 	p = mtxm;
 
 	gzprintf(smp, "PresentMap(\"(unnamed)\", 16, 64, 64, 1)\n");
-	gzprintf(smp, "DefineMapSetup(\"%s_c.sms\")\n", lvlpath);
+	// TODO: this next line causes loading of the maps to fail. investigate.
+	// gzprintf(smp, "DefineMapSetup(\"%s_c.sms\")\n", lvlpath);
 
 	gzprintf(sms, "LoadTileModels(\"scripts/tilesets/forest.lua\")\n\n");
 
@@ -2432,6 +2439,8 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 	int starty;
 	int endx;
 	int endy;
+
+	gzprintf(f, "if (MapUnitsInit ~= nil) then MapUnitsInit() end\n");
 
 	p = txtp;
 	while (p[0] != 0xFF || p[1] != 0xFF || p[2] != 0xFF || p[3] != 0xFF) {
@@ -2519,7 +2528,6 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	unsigned char buf[1024];
 	char* race;
 	gzFile smp, sms;
-	FILE* c_sms;
 
 	txtp = ExtractEntry(ArchiveOffsets[txte], NULL);
 	if (!txtp) {
@@ -2530,9 +2538,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	smp = gzopen((char*)buf, "wb9");
 	sprintf((char*)buf, "%s/%s/%s.sms.gz", Dir, CM_PATH, file);
 	sms = gzopen((char*)buf, "wb9");
-	sprintf((char*)buf, "%s/%s/%s_c.sms", Dir, CM_PATH, file);
-	c_sms = fopen((char*)buf, "wb");
-	if (!smp || !sms || !c_sms) {
+	if (!smp || !sms) {
 		perror("");
 		fprintf(stderr, "Can't open campaign file for %s/%s/%s\n",
 			Dir, CM_PATH, file);
@@ -2548,13 +2554,12 @@ int ConvertMap(const char* file, int txte, int mtxme)
 		race++;
 	}
 
-	SmsSaveObjectives(c_sms, txtp, file, race);
+	SmsSaveObjectives(sms, txtp, file, race);
 	SmsSavePlayers(race, sms, smp);
 	SmsSaveMap(sms, smp, mtxme, file);
 	SmsSaveUnits(sms, txtp);
 
 	free(txtp);
-	fclose(c_sms);
 	gzclose(sms);
 	gzclose(smp);
 	return 0;
