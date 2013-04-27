@@ -829,7 +829,7 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 		return 1;
 	}
 
-	if (png_jmpbuf(png_ptr)) {
+	if (setjmp(png_jmpbuf(png_ptr))) {
 		// FIXME: must free buffers!!
 		png_destroy_write_struct(&png_ptr, &info_ptr);
 		fclose(fp);
@@ -838,32 +838,44 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	png_init_io(png_ptr, fp);
 
 	// zlib parameters
-	//png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
+	png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
 
 	// prepare the file information
 	const int bit_depth = 8;
 	const int interlace_type = 0;
-	png_set_IHDR(png_ptr, info_ptr, w, h, bit_depth, PNG_COLOR_TYPE_PALETTE, interlace_type, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-
-	//info_ptr->valid |= PNG_INFO_PLTE;
 	const int num_palette = 256;
-	png_set_PLTE(png_ptr, info_ptr, (png_colorp) pal, num_palette);
+#if PNG_LIBPNG_VER >= 10504
+	png_set_IHDR(png_ptr, info_ptr, w, h, bit_depth, PNG_COLOR_TYPE_PALETTE, interlace_type,
+				PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+	png_set_PLTE(png_ptr, info_ptr, (png_colorp)pal, num_palette);
+#else
+	info_ptr->width = w;
+	info_ptr->height = h;
+	info_ptr->bit_depth = bit_depth;
+	info_ptr->color_type = PNG_COLOR_TYPE_PALETTE;
+	info_ptr->interlace_type = interlace_type;
+	info_ptr->valid |= PNG_INFO_PLTE;
+	info_ptr->palette = (png_colorp)pal;
+	info_ptr->num_palette = num_palette;
+#endif
 
-	if (transparent != -1) {
+	if (transparent) {
+		unsigned char* p;
+		unsigned char* end;
 		png_byte trans[256];
 
 		memset(trans, 0xFF, sizeof(trans));
-		trans[transparent] = 0x0;
+		trans[255] = 0x0;
 		png_set_tRNS(png_ptr, info_ptr, trans, 256, 0);
 	}
 
 	// write the file header information
-	png_write_info(png_ptr, info_ptr);  // write the file header information
+	png_write_info(png_ptr, info_ptr);
 
 	// set transformation
 
 	// prepare image
-	lines = malloc(h * sizeof(*lines));
+	lines = (unsigned char**)malloc(h * sizeof(*lines));
 	if (!lines) {
 		png_destroy_write_struct(&png_ptr, &info_ptr);
 		fclose(fp);
