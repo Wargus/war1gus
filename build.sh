@@ -95,7 +95,7 @@ rm -Rf `find $DIR/scripts | grep .svn`
 $BINPATH/war1tool "$DATADIR" "$DIR" || exit
 
 # Copy flv animation and convert to theora
-VIDEOS=""#"cave1.war cave2.war cave3.war hfinale.war hintro1.war hintro2.war hmap01.war hmap02.war hmap03.war hmap04.war hmap05.war hmap06.war hmap07.war hmap08.war hmap09.war hmap10.war hmap11.war hmap12.war lose1.war lose2.war ofinale.war ointro1.war ointro2.war ointro3.war omap01.war omap02.war omap03.war omap04.war omap05.war omap06.war omap07.war omap08.war omap09.war omap10.war omap11.war omap12.war title.war win1.war win2.war"
+VIDEOS="cave1.war cave2.war cave3.war hfinale.war hintro1.war hintro2.war hmap01.war hmap02.war hmap03.war hmap04.war hmap05.war hmap06.war hmap07.war hmap08.war hmap09.war hmap10.war hmap11.war hmap12.war lose1.war lose2.war ofinale.war ointro1.war ointro2.war ointro3.war omap01.war omap02.war omap03.war omap04.war omap05.war omap06.war omap07.war omap08.war omap09.war omap10.war omap11.war omap12.war title.war win1.war win2.war"
 mkdir -p "$DIR/videos/"
 for f in $VIDEOS; do
 	if [ ! -f "$DATADIR/$f" ]; then
