@@ -2377,7 +2377,7 @@ static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath)
 		gzprintf(sms, "  -- %d\n",i);
 		for (j = 0; j < 64; ++j) {
 			s = FetchLE16(p);
-			gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, i, j);
+			gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, j, i);
 		}
 	}
 	gzprintf(sms, "\n");
