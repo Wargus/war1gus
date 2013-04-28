@@ -169,16 +169,16 @@ UI.Resources[ScoreCost].TextY = 1
 
 b = CUIButton:new()
 b.X = 9
-b.Y = 160 + 9
+b.Y = 140 + 6
 b.Style = FindButtonStyle("icon")
 UI.SingleSelectedButton = b
 
 UI.SelectedButtons:clear()
 
-AddSelectedButton(6, 160 + 6)
-AddSelectedButton(62, 160 + 6)
-AddSelectedButton(6, 160 + 60)
-AddSelectedButton(62, 160 + 60)
+AddSelectedButton(9, 140 + 6)
+AddSelectedButton(70, 140 + 6)
+AddSelectedButton(9, 140 + 47)
+AddSelectedButton(70, 140 + 47)
 
 UI.MaxSelectedFont = Fonts["game"]
 UI.MaxSelectedTextX = info_panel_x + 10
@@ -194,10 +194,12 @@ UI.SingleTrainingButton = b
 
 UI.TrainingButtons:clear()
 
-AddTrainingButton(6, 216)
-AddTrainingButton(62, 216)
-AddTrainingButton(6, 263)
-AddTrainingButton(62, 263)
+AddTrainingButton(6, 200)
+AddTrainingButton(62, 200)
+AddTrainingButton(6, 200 + 47)
+AddTrainingButton(62, 200 + 47)
+AddTrainingButton(6, 200 + 47 * 2)
+AddTrainingButton(62, 200 + 47 * 2)
 
 --
 
@@ -220,9 +222,9 @@ UI.ResearchingButton = b
 UI.TransportingButtons:clear()
 
 AddTransportingButton(9, 387)
-AddTransportingButton(65, 387)
+AddTransportingButton(70, 387)
 AddTransportingButton(9, 434)
-AddTransportingButton(65, 434)
+AddTransportingButton(70, 434)
 
 --
 
@@ -387,15 +389,15 @@ UI.CompletedBarShadow = true
 
 UI.ButtonPanel.Buttons:clear()
 
-AddButtonPanelButton(9, 340)
-AddButtonPanelButton(65, 340)
-AddButtonPanelButton(9, 387)
-AddButtonPanelButton(65, 387)
-AddButtonPanelButton(9, 434)
-AddButtonPanelButton(65, 434)
+AddButtonPanelButton(9, 240 + 47 * 0)
+AddButtonPanelButton(70, 240 + 47 * 0)
+AddButtonPanelButton(9, 240 + 47 * 1)
+AddButtonPanelButton(70, 240 + 47 * 1)
+AddButtonPanelButton(9, 240 + 47 * 2)
+AddButtonPanelButton(70, 240 + 47 * 2)
 
 UI.ButtonPanel.X = 0
-UI.ButtonPanel.Y = 306
+UI.ButtonPanel.Y = 200
 UI.ButtonPanel.AutoCastBorderColorRGB = CColor(0, 0, 252)
 
 UI.MapArea.X = 144

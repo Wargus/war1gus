@@ -248,7 +248,7 @@ SetHoldClickDelay(1000)
 --SetShowCommandKey(false)
 
 --  Uncomment next, to reveal the complete map.
---RevealMap()
+RevealMap()
 
 --  Choose your default fog of war state (enabled #t/disabled #f).
 --    disabled is a C&C like fog of war.
@@ -422,7 +422,7 @@ Load("scripts/constructions.lua")
 Load("scripts/units.lua")
 --Load("scripts/upgrade.lua")
 Load("scripts/fonts.lua")
---Load("scripts/buttons.lua")
+Load("scripts/buttons.lua")
 Load("scripts/ui.lua")
 Load("scripts/ai.lua")
 --Load("scripts/campaigns.lua")

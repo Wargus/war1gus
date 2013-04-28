@@ -79,7 +79,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword1",
   Action = "attack",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-peasant",
+    "unit-dwarves", "unit-human-catapult",
     "unit-female-hero",
     "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
     "unit-man-of-light", "unit-white-mage", "unit-gryphon-rider", "human-group"} } )
@@ -124,15 +124,6 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-attack-ground",
 
 -- paladin specific actions ---------------------------------------------------
 
---(if extensions
---DefineButton( { Pos = 6, Level = 0, Icon = "icon-heal
---  Action = "cast-spell", Value = "spell-area-healing
---  Allowed = "check-upgrade", AllowArg = {"upgrade-area-healing)
---  Key = "l", Hint = "AREA HEA~!LING (per 1 HP)",
---  ForUnit = {"unit-paladin", "unit-knight-rider 
---    "unit-man-of-light"} } )
---)
-
 --[[
 DefineButton( { Pos = 7, Level = 0, Icon = "icon-holy-vision",
   Action = "cast-spell", Value = "spell-holy-vision",
@@ -157,12 +148,12 @@ DefineButton( { Pos = 9, Level = 0, Icon = "icon-exorcism",
 ]]
 
 -- mage specific actions ------------------------------------------------------
-
+--[[
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-lightning",
   Action = "attack",
   Key = "a", Hint = "LIGHTNING ~!ATTACK",
   ForUnit = {"unit-mage", "unit-white-mage"} } )
-
+]]
 --[[
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-fireball",
   Action = "cast-spell", Value = "spell-fireball",
@@ -286,12 +277,12 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-road",
   Key = "r", Hint = "BUILD ~!ROAD",
   ForUnit = {"unit-human-town-hall"} } )
 ]]
-
+--[[
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-wall",
   Action = "build", Value = "unit-human-wall",
   Key = "w", Hint = "BUILD ~!WALL",
   ForUnit = {"unit-human-town-hall"} } )
-
+]]
 
 -- training commands ---------------------------------------------------------
 
@@ -327,6 +318,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-cleric",
 
 -- upgrades -------------------------------------------------------------------
 
+--[[
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-sword2",
   Action = "research", Value = "upgrade-sword1",
   Allowed = "check-single-research",
@@ -413,3 +405,4 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-water-elemental",
   Key = "b", Hint = "RESEARCH ~!MAJOR SUMMONING",
   ForUnit = {"unit-human-tower"} } )
 
+]]
