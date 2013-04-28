@@ -113,18 +113,21 @@ function OrcScreen(screen_width, screen_height)
 -- gold
 UI.Resources[1].G = CGraphic:New("ui/gold_icon_1.png", 26, 12)
 UI.Resources[1].IconFrame = 0
-UI.Resources[1].IconX = 176 + 0
-UI.Resources[1].IconY = 0
-UI.Resources[1].TextX = 176 + 0 + 18
+UI.Resources[1].IconX = Video.Width - 66 - 26
+UI.Resources[1].IconY = 1
+UI.Resources[1].TextX = Video.Width - 66 - 26 - 80
 UI.Resources[1].TextY = 1
+UI.Resources[1].Font = Fonts["game"]
 
 -- wood
 UI.Resources[2].G = CGraphic:New("ui/lumber_icon_1.png", 18, 18)
 UI.Resources[2].IconFrame = 1
-UI.Resources[2].IconX = 176 + 75
+UI.Resources[2].IconX = Video.Width - 258 - 18
 UI.Resources[2].IconY = 0
-UI.Resources[2].TextX = 176 + 75 + 18
+UI.Resources[2].TextX = Video.Width - 258 - 18 - 80
 UI.Resources[2].TextY = 1
+UI.Resources[2].Font = Fonts["game"]
+
 --[[
 -- oil
 UI.Resources[3].G = CGraphic:New("ui/gold,wood,oil,mana.png", 14, 14)
@@ -174,13 +177,8 @@ UI.SelectedButtons:clear()
 
 AddSelectedButton(6, 160 + 6)
 AddSelectedButton(62, 160 + 6)
-AddSelectedButton(118, 160 + 6)
 AddSelectedButton(6, 160 + 60)
 AddSelectedButton(62, 160 + 60)
-AddSelectedButton(118, 160 + 60)
-AddSelectedButton(6, 160 + 114)
-AddSelectedButton(62, 160 + 114)
-AddSelectedButton(118, 160 + 114)
 
 UI.MaxSelectedFont = Fonts["game"]
 UI.MaxSelectedTextX = info_panel_x + 10
@@ -198,10 +196,8 @@ UI.TrainingButtons:clear()
 
 AddTrainingButton(6, 216)
 AddTrainingButton(62, 216)
-AddTrainingButton(118, 216)
 AddTrainingButton(6, 263)
 AddTrainingButton(62, 263)
-AddTrainingButton(118, 263)
 
 --
 
@@ -225,10 +221,8 @@ UI.TransportingButtons:clear()
 
 AddTransportingButton(9, 387)
 AddTransportingButton(65, 387)
-AddTransportingButton(121, 387)
 AddTransportingButton(9, 434)
 AddTransportingButton(65, 434)
-AddTransportingButton(121, 434)
 
 --
 
@@ -395,16 +389,13 @@ UI.ButtonPanel.Buttons:clear()
 
 AddButtonPanelButton(9, 340)
 AddButtonPanelButton(65, 340)
-AddButtonPanelButton(121, 340)
 AddButtonPanelButton(9, 387)
 AddButtonPanelButton(65, 387)
-AddButtonPanelButton(121, 387)
 AddButtonPanelButton(9, 434)
 AddButtonPanelButton(65, 434)
-AddButtonPanelButton(121, 434)
 
 UI.ButtonPanel.X = 0
-UI.ButtonPanel.Y = 336
+UI.ButtonPanel.Y = 306
 UI.ButtonPanel.AutoCastBorderColorRGB = CColor(0, 0, 252)
 
 UI.MapArea.X = 144
@@ -423,7 +414,7 @@ UI.StatusLine.Width = Video.Width - 16 - 2 - 176
 UI.StatusLine.Font = Fonts["game"]
 
 UI.MenuButton.X = 6
-UI.MenuButton.Y = 376
+UI.MenuButton.Y = Video.Height - 24
 UI.MenuButton.Text = "            "
 UI.MenuButton.Style = FindButtonStyle("main")
 UI.MenuButton:SetCallback(
