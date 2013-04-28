@@ -464,6 +464,7 @@ DefineUnitType("unit-human-town-hall", { Name = "Town hall",
   ExplodeWhenKilled = "missile-explosion",
   Type = "land",
   Building = true, VisibleUnderFog = true, 
+  CanStore = {"wood", "gold"},
   Sounds = {
     "selected", "farm-selected",
 --    "acknowledge", "farm-acknowledge",
