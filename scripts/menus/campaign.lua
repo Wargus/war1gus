@@ -1,13 +1,11 @@
 --      (c) Copyright 2010      by Pali Rohár
 
 function Briefing(title, objs, bg, text, voices)
-  -- TODO: don't hardcode here
-  SetPlayerData(GetThisPlayer(), "RaceName", "orc")
-  currentRace = "orc"
+  SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
 
   local menu = WarMenu(nil, bg)
 
-  -- wargus.playlist = {}
+  war1gus.playlist = {}
   if (currentRace == "human") then
     PlayMusic("music/Human Briefing.ogg")
     Load("scripts/human/ui.lua")
@@ -123,7 +121,7 @@ end
 function CreatePictureStep(bg, sound, title, text)
   return function()
     SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
-    wargus.playlist = {}
+    war1gus.playlist = {}
     PlayMusic(sound)
     local menu = WarMenu(nil, bg)
     local offx = (Video.Width - 640) / 2
@@ -163,17 +161,9 @@ end
 
 function CampaignButtonTitle(race, exp, i)
   local name = "campaigns/" .. race
-  if (exp == "exp") then name = name .. "-exp" end
-  name = name .. "/level"
-  if (exp == "exp") then name = name .. "x" end
+  name = name .. "/"
   if (i<10) then name = name .. "0" end
   name = name .. i
-
-  if (race == "orc") then
-    name = name .. "o"
-  else
-    name = name .. "h"
-  end
 
   name = name .. "_c2.sms"
 
@@ -202,8 +192,9 @@ end
 function RunCampaignSubmenu(campaign, race, exp)
   Load(campaign)
 
-  wargus.playlist = { "music/Orc Briefing.ogg" }
-  SetPlayerData(GetThisPlayer(), "RaceName", "orc")
+  war1gus.playlist = { "music/Orc Briefing.ogg" }
+  currentRace = race
+  SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
 
   if not (IsMusicPlaying()) then
     PlayMusic("music/Orc Briefing.ogg")

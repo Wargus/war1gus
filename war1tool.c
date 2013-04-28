@@ -2260,7 +2260,7 @@ int ConvertText(char* file, int txte, int ofs)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void SmsSaveObjectives(gzFile sms, unsigned char* txtp, const char* lvlpath, char* race)
+static void SmsSaveObjectives(gzFile sms, FILE* sms_c2, unsigned char* txtp, const char* lvlpath, char* race)
 {
 	int offset;
 	unsigned int i;
@@ -2270,19 +2270,22 @@ static void SmsSaveObjectives(gzFile sms, unsigned char* txtp, const char* lvlpa
 	if (!offset) {
 		return;
 	}
-	gzprintf(sms, "-- Stratagus Map - Single player campaign\n\n");
 
-	gzprintf(sms, "title = \"%s\"\n", lvlpath);
-	gzprintf(sms, "objectives = {\"");
+	
+	fprintf(sms_c2, "title = \"%s\"\n", lvlpath);
+	fprintf(sms_c2, "objectives = {\"");
 	strcpy(objectives, (const char*)(txtp + offset));
 	for (i = 0; i < strlen(objectives); i++) {
 		if (objectives[i] == '\n' || objectives[i] == '\r') {
 			objectives[i] = ' ';
 		}
 	}
-	gzprintf(sms, objectives);
-	gzprintf(sms, "\"}\n");
+	fprintf(sms_c2, objectives);
+	fprintf(sms_c2, "\"}\n");
 
+	gzprintf(sms, "-- Stratagus Map - Single player campaign\n\n");
+
+	gzprintf(sms, "Load(\"%s_c2.sms\")\n\n", lvlpath);
 	gzprintf(sms, "Briefing(\n");
         gzprintf(sms, "  title,\n");
         gzprintf(sms, "  objectives,\n");
@@ -2528,6 +2531,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	unsigned char buf[1024];
 	char* race;
 	gzFile smp, sms;
+	FILE *sms_c, *sms_c2;
 
 	txtp = ExtractEntry(ArchiveOffsets[txte], NULL);
 	if (!txtp) {
@@ -2539,6 +2543,17 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	sprintf((char*)buf, "%s/%s/%s.sms.gz", Dir, CM_PATH, file);
 	sms = gzopen((char*)buf, "wb9");
 	if (!smp || !sms) {
+		perror("");
+		fprintf(stderr, "Can't open map file for %s/%s/%s\n",
+			Dir, CM_PATH, file);
+		exit(-1);
+	}
+
+	sprintf((char*)buf, "%s/%s/%s_c.sms", Dir, CM_PATH, file);
+	sms_c = fopen((char*)buf, "wb");
+	sprintf((char*)buf, "%s/%s/%s_c2.sms", Dir, CM_PATH, file);
+	sms_c2 = fopen((char*)buf, "wb");
+	if (!sms_c || !sms_c2) {
 		perror("");
 		fprintf(stderr, "Can't open campaign file for %s/%s/%s\n",
 			Dir, CM_PATH, file);
@@ -2554,10 +2569,14 @@ int ConvertMap(const char* file, int txte, int mtxme)
 		race++;
 	}
 
-	SmsSaveObjectives(sms, txtp, file, race);
+	SmsSaveObjectives(sms, sms_c2, txtp, file, race);
 	SmsSavePlayers(race, sms, smp);
 	SmsSaveMap(sms, smp, mtxme, file);
 	SmsSaveUnits(sms, txtp);
+
+	fprintf(sms_c, "Load(\"%s.sms\")", file);
+	fclose(sms_c);
+	fclose(sms_c2);
 
 	free(txtp);
 	gzclose(sms);
