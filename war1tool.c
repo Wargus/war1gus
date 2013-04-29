@@ -64,6 +64,13 @@ typedef unsigned long u_int32_t;
 #define __attribute__(args)  // Does nothing for non GNU CC
 #endif
 
+#ifdef WIN32
+#define mkdir(x, y) _mkdir(x)
+#define open(x, y, z) _open(x, y, z)
+#define read(x, y, z) _read(x, y, z)
+#define close(x) _close(x)
+#endif
+
 #ifndef O_BINARY
 #define O_BINARY 0
 #endif
@@ -749,11 +756,7 @@ void CheckPath(const char* path)
 			if (s) {
 				*s = '\0';
 			}
-#ifdef WIN32
-			mkdir(cp);
-#else
 			mkdir(cp, 0777);
-#endif
 			if (s) {
 				*s++ = '/';
 			} else {
@@ -820,6 +823,9 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	png_infop info_ptr;
 	unsigned char** lines;
 	int i;
+	const int bit_depth = 8;
+	const int interlace_type = 0;
+	const int num_palette = 256;
 
 	if (!(fp = fopen(name, "wb"))) {
 		fprintf(stderr,"%s:", name);
@@ -851,9 +857,6 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
 
 	// prepare the file information
-	const int bit_depth = 8;
-	const int interlace_type = 0;
-	const int num_palette = 256;
 #if PNG_LIBPNG_VER >= 10504
 	png_set_IHDR(png_ptr, info_ptr, w, h, bit_depth, PNG_COLOR_TYPE_PALETTE, interlace_type,
 				PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
@@ -940,6 +943,7 @@ int OpenArchive(const char* file, int type)
 	//  Open the archive file
 	//
 	f = open(file, O_RDONLY | O_BINARY, 0);
+
 	if (f == -1) {
 		printf("Can't open %s\n", file);
 		exit(-1);
@@ -1324,32 +1328,34 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	//
 	//  Read header
 	//
-	unsigned char* p = buf;
-	int height = FetchLE16(p);
-	int width = FetchLE16(p);
+	unsigned char *p, *image, *i;
+	int height, width, pstamp_type;
+	
+	p = buf;
+	height = FetchLE16(p);
+	width = FetchLE16(p);
 	SkipLE16(p);
-
-	unsigned char* image = malloc(height * width);
+	
+	image = (unsigned char*)malloc(height * width);
 	if (!image) {
 		printf("Can't allocate image\n");
 		exit(-1);
 	}
 	memset(image, 255, height * width);
-	unsigned char* i = image;
+	i = image;
 
 	//
 	//  PSTAMP header
 	//
 	SkipLE32(p);
-	int pstamp_type = FetchLE16(p);
+	pstamp_type = FetchLE16(p);
 
 	switch (pstamp_type) {
 		case 15:
 		{
-			int h;
+			int h, w;
 			for (h = height; h; --h) {
 				++p; // ignore first byte
-				int w;
 				for (w = width; w;) {
 					char type = FetchByte(p);
 
@@ -2083,18 +2089,15 @@ int ConvertXmi(char* file, int xmi)
 {
         unsigned char* xmip;
         size_t xmil;
-
-        xmip = ExtractEntry(ArchiveOffsets[xmi], (int*)&xmil);
-
         unsigned char* midp;
         size_t midl;
+		char buf[1024];
+        gzFile gf;
 
+        xmip = ExtractEntry(ArchiveOffsets[xmi], (int*)&xmil);
         midp = TranscodeXmiToMid(xmip, xmil, &midl);
 
         free(xmip);
-
-        char buf[1024];
-        gzFile gf;
 
         sprintf(buf, "%s/%s/%s.mid.gz", Dir, MUSIC_PATH, file);
         CheckPath(buf);
@@ -2131,10 +2134,7 @@ int ConvertVoc(char* file,int voce)
 	int compression_type;
 	unsigned char a,b,c;
 	unsigned char* wavp;
-	int w;
-	int wavlen;
-	int i;
-	short s;
+	int w, wavlen, i, s;
 
 	vocp = ExtractEntry(ArchiveOffsets[voce], &l);
 	if (!vocp) {
