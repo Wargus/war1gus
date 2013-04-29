@@ -30,19 +30,9 @@ find_package(ZLIB REQUIRED)
 include_directories(${PNG_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS})
 set(war1gus_LIBS ${PNG_LIBRARIES} ${ZLIB_LIBRARIES})
 
-# Needs to have char by default signed
-# No idea how to tell this to other compilers
-if(CMAKE_COMPILER_IS_GNUCXX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsigned-char")
-endif()
-if(CMAKE_COMPILER_IS_GNUC)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsigned-char")
-endif()
-# TODO: Add support for other compilers
-
 add_executable(war1tool ${war1gus_SRCS} ${war1gus_HDRS})
 target_link_libraries(war1tool ${war1gus_LIBS})
-install(TARGETS war1tool DESTINATION ".")
+install(TARGETS war1tool DESTINATION "bin")
 
 if (WIN32 AND MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
