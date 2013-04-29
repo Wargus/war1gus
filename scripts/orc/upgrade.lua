@@ -74,31 +74,31 @@ end
 --	NOTE: Save can generate this table.
 
 DefineModifier("upgrade-axe1",
-  {"piercing-damage", 2},
+  {"PiercingDamage", 2},
   {"apply-to", "unit-grunt"}, {"apply-to", "unit-raider"})
 DefineModifier("upgrade-axe2",
-  {"piercing-damage", 2},
+  {"PiercingDamage", 2},
   {"apply-to", "unit-grunt"}, {"apply-to", "unit-raider"})
 
 DefineModifier("upgrade-spear1",
-  {"piercing-damage", 1},
+  {"PiercingDamage", 1},
   {"apply-to", "unit-spearman"})
 DefineModifier("upgrade-spear2",
-  {"piercing-damage", 1},
+  {"PiercingDamage", 1},
   {"apply-to", "unit-spearman"})
 
 DefineModifier("upgrade-wolves1",
-  {"piercing-damage", 1},
+--  {"Speed", 1},
   {"apply-to", "unit-raider"})
 DefineModifier("upgrade-wolves2",
-  {"piercing-damage", 1},
+--  {"Speed", 1},
   {"apply-to", "unit-raider"})
 
 DefineModifier("upgrade-orc-shield1",
-  {"armor", 2},
+  {"Armor", 2},
   {"apply-to", "unit-grunt"}, {"apply-to", "unit-raider"})
 DefineModifier("upgrade-orc-shield2",
-  {"armor", 2},
+  {"Armor", 2},
   {"apply-to", "unit-grunt"}, {"apply-to", "unit-raider"})
 
 DefineModifier("upgrade-raise-dead",

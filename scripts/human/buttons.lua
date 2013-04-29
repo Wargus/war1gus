@@ -41,22 +41,16 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peasant",
   Action = "move",
   Key = "m", Hint = "~!MOVE",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-peasant",
-    "unit-female-hero",
-    "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
-    "unit-man-of-light", "unit-white-mage", "unit-balloon",
-    "unit-gryphon-rider", "unit-mage",
-    "human-group"} } )
+    "unit-human-catapult", "unit-peasant",
+    "unit-cleric", "unit-conjurer", "unit-midevh",
+    "human-group" } } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
   Action = "stop",
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
     "unit-dwarves", "unit-human-catapult", "unit-peasant",
-    "unit-female-hero",
-    "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
-    "unit-man-of-light", "unit-white-mage", "unit-balloon",
-    "unit-gryphon-rider", "unit-mage",
+    "unit-cleric", "unit-conjurer", "unit-midevh",
     "human-group"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield2",
@@ -64,96 +58,86 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield2",
   Allowed = "check-upgrade", AllowArg = {"upgrade-human-shield1"},
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-arthor-literios", "unit-knight-rider",
-    "unit-wise-man", "unit-man-of-light"} } )
+    "unit-human-catapult"}} )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield3",
   Action = "stop",
   Allowed = "check-upgrade", AllowArg = {"upgrade-human-shield2"},
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-arthor-literios", "unit-knight-rider",
-    "unit-wise-man", "unit-man-of-light"} } )
+    "unit-human-catapult"}} )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword1",
   Action = "attack",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult",
-    "unit-female-hero",
-    "unit-flying-angle", "unit-arthor-literios", "unit-knight-rider", "unit-wise-man",
-    "unit-man-of-light", "unit-white-mage", "unit-gryphon-rider", "human-group"} } )
+    "unit-human-catapult", "human-group"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword2",
   Action = "attack",
   Allowed = "check-upgrade", AllowArg = {"upgrade-sword1"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-arthor-literios", "unit-knight-rider",
-    "unit-wise-man", "unit-man-of-light"} } )
+    "unit-human-catapult"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword3",
   Action = "attack",
   Allowed = "check-upgrade", AllowArg = {"upgrade-sword2"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-dwarves", "unit-human-catapult", "unit-arthor-literios", "unit-knight-rider",
-    "unit-wise-man", "unit-man-of-light"} } )
+    "unit-human-catapult"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-arrow1",
   Action = "attack",
   Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-archer", "unit-female-hero"} } )
+  ForUnit = {"unit-archer"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-arrow2",
   Action = "attack",
   Allowed = "check-upgrade", AllowArg = {"upgrade-arrow1"},
   Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-archer", "unit-female-hero"} } )
+  ForUnit = {"unit-archer"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-arrow3",
   Action = "attack",
   Allowed = "check-upgrade", AllowArg = {"upgrade-arrow2"},
   Key = "a", Hint = "~!ATTACK",
-  ForUnit = {"unit-archer", "unit-female-hero"} } )
+  ForUnit = {"unit-archer"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-attack-ground",
   Action = "attack-ground",
   Key = "g", Hint = "ATTACK ~!GROUND",
   ForUnit = {"unit-human-catapult", "human-group"} } )
 
--- paladin specific actions ---------------------------------------------------
+-- cleric specific actions ---------------------------------------------------
 
---[[
-DefineButton( { Pos = 7, Level = 0, Icon = "icon-holy-vision",
-  Action = "cast-spell", Value = "spell-holy-vision",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-holy-vision"},
-  Key = "v", Hint = "HOLY ~!VISION",
-  ForUnit = {"unit-paladin", "unit-knight-rider",
-    "unit-man-of-light"} } )
-
-DefineButton( { Pos = 8, Level = 0, Icon = "icon-heal",
-  Action = "cast-spell", Value = "spell-healing",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-healing"},
-  Key = "h", Hint = "~!HEALING (per 1 HP)",
-  ForUnit = {"unit-paladin", "unit-knight-rider",
-    "unit-man-of-light"} } )
-
-DefineButton( { Pos = 9, Level = 0, Icon = "icon-exorcism",
-  Action = "cast-spell", Value = "spell-exorcism",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-exorcism"},
-  Key = "e", Hint = "~!EXORCISM",
-  ForUnit = {"unit-paladin", "unit-knight-rider",
-    "unit-man-of-light"} } )
-]]
-
--- mage specific actions ------------------------------------------------------
 --[[
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-lightning",
   Action = "attack",
-  Key = "a", Hint = "LIGHTNING ~!ATTACK",
-  ForUnit = {"unit-mage", "unit-white-mage"} } )
+  Key = "a", Hint = "HOLY SPEAR ~!ATTACK",
+  ForUnit = {"unit-cleric"} } )
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-holy-vision",
+  Action = "cast-spell", Value = "spell-holy-vision",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-holy-vision"},
+  Key = "v", Hint = "HOLY ~!VISION",
+  ForUnit = {"unit-cleric"} } )
+
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-heal",
+  Action = "cast-spell", Value = "spell-healing",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-healing"},
+  Key = "h", Hint = "~!HEALING (per 1 HP)",
+  ForUnit = {"unit-cleric"} } )
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-invisibility",
+  Action = "cast-spell", Value = "spell-invisibility",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-invisibility"},
+  Key = "i", Hint = "~!INVISIBILITY",
+  ForUnit = {"unit-cleric"} } )
 ]]
+
+-- conjurer specific actions ------------------------------------------------------
+
 --[[
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-fireball",
   Action = "cast-spell", Value = "spell-fireball",
@@ -171,12 +155,6 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-flame-shield",
   Action = "cast-spell", Value = "spell-flame-shield",
   Allowed = "check-upgrade", AllowArg = {"upgrade-flame-shield"},
   Key = "l", Hint = "F~!LAME SHIELD",
-  ForUnit = {"unit-mage", "unit-white-mage"} } )
-
-DefineButton( { Pos = 7, Level = 0, Icon = "icon-invisibility",
-  Action = "cast-spell", Value = "spell-invisibility",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-invisibility"},
-  Key = "i", Hint = "~!INVISIBILITY",
   ForUnit = {"unit-mage", "unit-white-mage"} } )
 
 DefineButton( { Pos = 9, Level = 0, Icon = "icon-blizzard",

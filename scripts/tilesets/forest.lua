@@ -46,10 +46,10 @@ DefineTileset("name", "Forest",
 	"solid", {"same", "water", {114}}, -- water                    -- 010
 	"solid", {"unused", {}},                                       -- 020
 	"solid", {"unused", {}},                                       -- 030
-	"solid", {"forest", "unpassable",
+	"solid", {"forest", "land", "forest", "unpassable",
 	  {0, 0, 0, 0, 0, 0, 0, 71, 72, 73,
 	   74, 75, 76, 77, 78, 79}},                                   -- 040
-	"solid", {"forest", "unpassable",
+	"solid", {"forest", "land", "forest", "unpassable",
 	  {80, 81, 82, 83, 84, 85, 86, 87, 88,
 	   89, 90, 91, 92, 93, 94, 0}},                                -- 050
 	"solid", {"land",

@@ -187,8 +187,8 @@ UI.MaxSelectedTextY = info_panel_y + 10
 --
 
 b = CUIButton:new()
-b.X = 110
-b.Y = 160 + 11 + 70
+b.X = 6
+b.Y = 200
 b.Style = FindButtonStyle("icon")
 UI.SingleTrainingButton = b
 
@@ -204,16 +204,16 @@ AddTrainingButton(62, 200 + 47 * 2)
 --
 
 b = CUIButton:new()
-b.X = 110
-b.Y = 160 + 11 + 70
+b.X = 6
+b.Y = 200
 b.Style = FindButtonStyle("icon")
 UI.UpgradingButton = b
 
 --
 
 b = CUIButton:new()
-b.X = 110
-b.Y = 160 + 11 + 70
+b.X = 6
+b.Y = 200
 b.Style = FindButtonStyle("icon")
 UI.ResearchingButton = b
 

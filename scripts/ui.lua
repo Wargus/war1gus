@@ -126,3 +126,4 @@ DefineCursor({
   File = "ui/cursors/lower_right_arrow.png",
   HotSpot = {21, 19},
   Size = {32, 32}})
+

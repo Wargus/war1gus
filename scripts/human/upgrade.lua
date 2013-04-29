@@ -74,31 +74,31 @@ end
 --	NOTE: Save can generate this table.
 
 DefineModifier("upgrade-sword1",
-  {"piercing-damage", 2},
+  {"PiercingDamage", 2},
   {"apply-to", "unit-footman"}, {"apply-to", "unit-knight"})
 DefineModifier("upgrade-sword2",
-  {"piercing-damage", 2},
+  {"PiercingDamage", 2},
   {"apply-to", "unit-footman"}, {"apply-to", "unit-knight"})
 
 DefineModifier("upgrade-arrow1",
-  {"piercing-damage", 1},
+  {"PiercingDamage", 1},
   {"apply-to", "unit-archer"})
 DefineModifier("upgrade-arrow2",
-  {"piercing-damage", 1},
+  {"PiercingDamage", 1},
   {"apply-to", "unit-archer"})
 
 DefineModifier("upgrade-horse1",
---  {"speed", 1},
+--  {"Speed", 1},
   {"apply-to", "unit-knight"})
 DefineModifier("upgrade-horse2",
---  {"speed", 1},
+--  {"Speed", 1},
   {"apply-to", "unit-knight"})
 
 DefineModifier("upgrade-human-shield1",
-  {"armor", 2},
+  {"Armor", 2},
   {"apply-to", "unit-footman"}, {"apply-to", "unit-knight"})
 DefineModifier("upgrade-human-shield2",
-  {"armor", 2},
+  {"Armor", 2},
   {"apply-to", "unit-footman"}, {"apply-to", "unit-knight"})
 
 DefineModifier("upgrade-healing",
