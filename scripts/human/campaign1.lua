@@ -34,18 +34,31 @@
 --	(define-campagin 'ident 'name "name" 'campaign (list elements)
 
 campaign_steps = {
+  CreateVideoStep("videos/hmap01.avi"),
   CreateMapStep("campaigns/human/01.smp"),
+  CreateVideoStep("videos/hmap02.avi"),
   CreateMapStep("campaigns/human/02.smp"),
+  CreateVideoStep("videos/hmap03.avi"),
   CreateMapStep("campaigns/human/03.smp"),
+  CreateVideoStep("videos/hmap04.avi"),
   CreateMapStep("campaigns/human/04.smp"),
+  CreateVideoStep("videos/hmap05.avi"),
   CreateMapStep("campaigns/human/05.smp"),
+  CreateVideoStep("videos/hmap06.avi"),
   CreateMapStep("campaigns/human/06.smp"),
+  CreateVideoStep("videos/hmap07.avi"),
   CreateMapStep("campaigns/human/07.smp"),
+  CreateVideoStep("videos/hmap08.avi"),
   CreateMapStep("campaigns/human/08.smp"),
+  CreateVideoStep("videos/hmap09.avi"),
   CreateMapStep("campaigns/human/09.smp"),
+  CreateVideoStep("videos/hmap10.avi"),
   CreateMapStep("campaigns/human/10.smp"),
+  CreateVideoStep("videos/hmap11.avi"),
   CreateMapStep("campaigns/human/11.smp"),
+  CreateVideoStep("videos/hmap12.avi"),
   CreateMapStep("campaigns/human/12.smp"),
+  CreateVideoStep("videos/ofinale.avi"),
 }
 
-campaign_menu = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }
+campaign_menu = { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23 }

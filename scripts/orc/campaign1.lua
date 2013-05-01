@@ -32,19 +32,32 @@
 --	Define the campaign
 
 campaign_steps = {
+  CreateVideoStep("videos/omap01.avi"),
   CreateMapStep("campaigns/orc/01.smp"),
+  CreateVideoStep("videos/omap02.avi"),
   CreateMapStep("campaigns/orc/02.smp"),
+  CreateVideoStep("videos/omap03.avi"),
   CreateMapStep("campaigns/orc/03.smp"),
+  CreateVideoStep("videos/omap04.avi"),
   CreateMapStep("campaigns/orc/04.smp"),
+  CreateVideoStep("videos/omap05.avi"),
   CreateMapStep("campaigns/orc/05.smp"),
+  CreateVideoStep("videos/omap06.avi"),
   CreateMapStep("campaigns/orc/06.smp"),
+  CreateVideoStep("videos/omap07.avi"),
   CreateMapStep("campaigns/orc/07.smp"),
+  CreateVideoStep("videos/omap08.avi"),
   CreateMapStep("campaigns/orc/08.smp"),
+  CreateVideoStep("videos/omap09.avi"),
   CreateMapStep("campaigns/orc/09.smp"),
+  CreateVideoStep("videos/omap10.avi"),
   CreateMapStep("campaigns/orc/10.smp"),
+  CreateVideoStep("videos/omap11.avi"),
   CreateMapStep("campaigns/orc/11.smp"),
+  CreateVideoStep("videos/omap12.avi"),
   CreateMapStep("campaigns/orc/12.smp"),
+  CreateVideoStep("videos/ofinale.avi"),
 }
 
-campaign_menu = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }
+campaign_menu = { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23 }
 
