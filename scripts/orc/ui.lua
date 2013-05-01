@@ -177,8 +177,8 @@ UI.SelectedButtons:clear()
 
 AddSelectedButton(9, 140 + 6)
 AddSelectedButton(70, 140 + 6)
-AddSelectedButton(9, 140 + 47)
-AddSelectedButton(70, 140 + 47)
+AddSelectedButton(9, 140 + 52)
+AddSelectedButton(70, 140 + 52)
 
 UI.MaxSelectedFont = Fonts["game"]
 UI.MaxSelectedTextX = info_panel_x + 10
