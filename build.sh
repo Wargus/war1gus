@@ -92,6 +92,9 @@ rm -Rf `find $DIR/scripts | grep CVS`
 rm -Rf `find $DIR/scripts | grep cvsignore`
 rm -Rf `find $DIR/scripts | grep .svn`
 
+# copy our game fonts
+cp -R contrib $DIR/
+
 $BINPATH/war1tool "$DATADIR" "$DIR" || exit
 
 # Copy flv animation and convert to theora
@@ -105,7 +108,7 @@ for f in $VIDEOS; do
 		OUTPUT="$DIR/videos/${f%%.war}"
 		OUTPUT=${OUTPUT%%.WAR}.avi
 		OUTPUT="`echo $OUTPUT | tr A-Z a-z`"
-		ffmpeg2theora "$DATADIR/$f" -o "$OUTPUT"
+		ffmpeg2theora "$DATADIR/$f" --resize-method lanczos -v 10 --max_size 640 -o "$OUTPUT"
 	fi
 done
 
