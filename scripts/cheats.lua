@@ -34,27 +34,30 @@ godcheat = false
 function HandleCheats(str)
   local resources = { "gold", "wood", "oil" }
 
-  if (str == "there is no aliens level") then
+  if (str == "eye of newy") then
     -- FIXME: no function yet
-    AddMessage("cheat enabled")
+    AddMessage("All wizard spells cheat ... not working yet")
+
+  elseif (str == "ides of march") then
+    -- FIXME: no function yet
+    AddMessage("Final campaign sequence cheat ... not working yet")
+
+  elseif (str == "iron forge") then
+    -- FIXME: no function yet
+    AddMessage("Upgraded technology cheat ... not working yet")
 
   elseif (str == "hatchet") then
     SetSpeedResourcesHarvest("wood", 52 / 2)
     AddMessage("Wow -- I got jigsaw!")
 
-  elseif (str == "glittering prizes") then
+  elseif (str == "pot of gold") then
     SetPlayerData(GetThisPlayer(), "Resources", "gold",
-      GetPlayerData(GetThisPlayer(), "Resources", "gold") + 12000)
+      GetPlayerData(GetThisPlayer(), "Resources", "gold") + 10000)
     SetPlayerData(GetThisPlayer(), "Resources", "wood",
       GetPlayerData(GetThisPlayer(), "Resources", "wood") + 5000)
-    SetPlayerData(GetThisPlayer(), "Resources", "oil",
-      GetPlayerData(GetThisPlayer(), "Resources", "oil") + 5000)
     AddMessage("!!! :)")
 
-  elseif (str == "on screen") then
-    RevealMap()
-
-  elseif (str == "showpath") then
+  elseif (str == "sally shears") then
     RevealMap()
 
   elseif (str == "fow on") then
@@ -85,7 +88,7 @@ function HandleCheats(str)
     SetSpeedResearch(1)
     AddMessage("NORMAL DEBUG SPEED")
 
-  elseif (str == "make it so") then
+  elseif (str == "hurry up guys") then
     if (speedcheat) then
       speedcheat = false
       for i = 1,table.getn(resources) do
@@ -114,13 +117,13 @@ function HandleCheats(str)
       AddMessage("SO!")
     end
 
-  elseif (str == "unite the clans") then
+  elseif (str == "yours truly") then
     ActionVictory()
 
-  elseif (str == "you pitiful worm") then
+  elseif (str == "crushing defeat") then
     ActionDefeat()
 
-  elseif (str == "it is a good day to die") then
+  elseif (str == "there can be only one") then
     if (godcheat) then
       godcheat = false
       SetGodMode(false)
@@ -131,11 +134,9 @@ function HandleCheats(str)
       AddMessage("God Mode ON")
     end
 
-  elseif (str == "fill mana") then
-    t = GetUnits("this");
-    for i = 1,table.getn(t) do
-      SetUnitMana(t[i], 255)
-    end
+  elseif (str == "chronus") then
+     SetSpeedUpgrade(10)
+     SetSpeedResearch(10)
 
   else
     return false
