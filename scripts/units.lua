@@ -173,6 +173,13 @@ for idx,unit in ipairs(units) do
 	 Demand = 1,
 	 CanAttack = true, Coward = false,
 	 CanGatherResources = {},
+	 Sounds = {
+	    "attack", unitname .. "-attack",
+	    "selected", race .. " selected",
+	    "acknowledge", race .. " acknowledge",
+	    "ready", race .. " ready",
+	    "help", race .. " help 3",
+	    "dead", race .. " dead"},
 	 SelectableByRectangle = true}
 
       for k,v in pairs(unit) do

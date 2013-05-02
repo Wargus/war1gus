@@ -161,9 +161,11 @@ for idx,building in ipairs(buildings) do
 	 Type = "land",
 	 Building = true,
 	 VisibleUnderFog = true,
-	 Sounds = {"selected", race .. " selected",
-		   "help", race .. " help 2",
-		   "dead", "building destroyed"}}
+	 Sounds = {
+	    "ready", race .. " work complete",
+	    "selected", fullname .. "-selected",
+	    "help", race .. " help 4",
+	    "dead", "building destroyed"}}
 
 	 for k,v in pairs(building) do
 	    if unitType[k] then

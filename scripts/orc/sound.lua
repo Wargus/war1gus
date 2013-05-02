@@ -81,8 +81,7 @@ MapSound("warlock-attack", "lightning")
 --	Define orc selected sounds.
 --
 
-MakeSound("orc-temple-selected",
-  "orc/temple.wav")
-MakeSound("orc-kennel-selected",
-  "orc/kennel.wav")
+MakeSound("orc-temple-selected", "orc/temple.wav")
+MakeSound("orc-kennel-selected", "orc/kennel.wav")
+MakeSound("orc-blacksmith-selected", "blacksmith")
 

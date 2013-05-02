@@ -81,4 +81,5 @@ MapSound("conjurer-attack", "lightning")
 
 MakeSound("human-church-selected", "human/church.wav")
 MakeSound("human-stable-selected", "human/stable.wav")
+MakeSound("human-blacksmith-selected", "blacksmith")
 

@@ -413,9 +413,8 @@ SetGrabMouse(preferences.GrabMouse)
 --- Uses Stratagus Library path!
 Load("scripts/wc1.lua")
 
---Load("scripts/tilesets.lua")
 Load("scripts/icons.lua")
---Load("scripts/sound.lua")
+Load("scripts/sound.lua")
 Load("scripts/missiles.lua")
 
 -- Load the animations for the units.
