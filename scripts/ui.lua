@@ -33,9 +33,6 @@ UI.MessageScrollSpeed = 5
 
 Load("scripts/widgets.lua")
 
-Load("scripts/human/ui.lua")
-Load("scripts/orc/ui.lua")
-
 DefineCursor({
   Name = "cursor-point",
   Race = "any",
@@ -127,3 +124,194 @@ DefineCursor({
   HotSpot = {21, 19},
   Size = {32, 32}})
 
+function AddFiller(file, x, y)
+        if CanAccessFile(file) == true then
+                b = CFiller:new_local()
+                b.G = CGraphic:New(file)
+                b.X = x 
+                b.Y = y 
+                UI.Fillers:push_back(b)
+        end    
+end
+
+function AddSelectedButton(x, y)
+        b = CUIButton:new_local()
+        b.X = x
+        b.Y = y
+        b.Style = FindButtonStyle("icon")
+        UI.SelectedButtons:push_back(b)
+end
+
+function AddTrainingButton(x, y)
+        b = CUIButton:new_local()
+        b.X = x
+        b.Y = y
+        b.Style = FindButtonStyle("icon")
+        UI.TrainingButtons:push_back(b)
+end
+
+function AddTransportingButton(x, y)
+        b = CUIButton:new_local()
+        b.X = x
+        b.Y = y
+        b.Style = FindButtonStyle("icon")
+        UI.TransportingButtons:push_back(b)
+end
+
+function AddButtonPanelButton(x, y)
+        b = CUIButton:new_local()
+        b.X = x
+        b.Y = y
+        b.Style = FindButtonStyle("icon")
+        UI.ButtonPanel.Buttons:push_back(b)
+end
+
+local info_panel_x = 0
+local info_panel_y = 160
+
+UI.NormalFontColor = "white";
+UI.ReverseFontColor = "yellow";
+
+-- gold
+UI.Resources[1].G = CGraphic:New("ui/gold_icon_1.png", 26, 12)
+UI.Resources[1].IconFrame = 0
+UI.Resources[1].IconX = Video.Width - 66 - 26
+UI.Resources[1].IconY = 1
+UI.Resources[1].TextX = Video.Width - 66 - 26 - 80
+UI.Resources[1].TextY = 1
+UI.Resources[1].Font = Fonts["game"]
+
+-- wood
+UI.Resources[2].G = CGraphic:New("ui/lumber_icon_1.png", 18, 18)
+UI.Resources[2].IconFrame = 1
+UI.Resources[2].IconX = Video.Width - 258 - 18
+UI.Resources[2].IconY = 0
+UI.Resources[2].TextX = Video.Width - 258 - 18 - 80
+UI.Resources[2].TextY = 1
+UI.Resources[2].Font = Fonts["game"]
+
+b = CUIButton:new()
+b.X = 9
+b.Y = 140 + 6
+b.Style = FindButtonStyle("icon")
+UI.SingleSelectedButton = b
+
+UI.SelectedButtons:clear()
+
+AddSelectedButton(9, 140 + 6)
+AddSelectedButton(70, 140 + 6)
+AddSelectedButton(9, 140 + 52)
+AddSelectedButton(70, 140 + 52)
+
+UI.MaxSelectedFont = Fonts["game"]
+UI.MaxSelectedTextX = info_panel_x + 10
+UI.MaxSelectedTextY = info_panel_y + 10
+
+--
+
+b = CUIButton:new()
+b.X = 6
+b.Y = 200
+b.Style = FindButtonStyle("icon")
+UI.SingleTrainingButton = b
+
+UI.TrainingButtons:clear()
+
+AddTrainingButton(6, 200)
+AddTrainingButton(62, 200)
+AddTrainingButton(6, 200 + 47)
+AddTrainingButton(62, 200 + 47)
+AddTrainingButton(6, 200 + 47 * 2)
+AddTrainingButton(62, 200 + 47 * 2)
+
+--
+
+b = CUIButton:new()
+b.X = 6
+b.Y = 200
+b.Style = FindButtonStyle("icon")
+UI.UpgradingButton = b
+
+--
+
+b = CUIButton:new()
+b.X = 6
+b.Y = 200
+b.Style = FindButtonStyle("icon")
+UI.ResearchingButton = b
+
+--
+
+UI.TransportingButtons:clear()
+
+AddTransportingButton(9, 387)
+AddTransportingButton(70, 387)
+AddTransportingButton(9, 434)
+AddTransportingButton(70, 434)
+
+--
+
+UI.CompletedBarColorRGB = CColor(48, 100, 4)
+UI.CompletedBarShadow = true
+
+UI.ButtonPanel.Buttons:clear()
+
+AddButtonPanelButton(9, 240 + 47 * 0)
+AddButtonPanelButton(70, 240 + 47 * 0)
+AddButtonPanelButton(9, 240 + 47 * 1)
+AddButtonPanelButton(70, 240 + 47 * 1)
+AddButtonPanelButton(9, 240 + 47 * 2)
+AddButtonPanelButton(70, 240 + 47 * 2)
+
+UI.ButtonPanel.X = 0
+UI.ButtonPanel.Y = 200
+UI.ButtonPanel.AutoCastBorderColorRGB = CColor(0, 0, 252)
+
+UI.MapArea.X = 144
+UI.MapArea.Y = 16
+UI.MapArea.EndX = Video.Width - 16 - 1
+UI.MapArea.EndY = Video.Height - 16 - 1
+
+UI.Minimap.X = 6
+UI.Minimap.Y = 12
+UI.Minimap.W = 128
+UI.Minimap.H = 128
+
+UI.StatusLine.TextX = 2 + 176
+UI.StatusLine.TextY = Video.Height + 2 - 16
+UI.StatusLine.Width = Video.Width - 16 - 2 - 176
+UI.StatusLine.Font = Fonts["game"]
+
+UI.MenuButton.X = 6
+UI.MenuButton.Y = Video.Height - 24
+UI.MenuButton.Text = "            "
+UI.MenuButton.Style = FindButtonStyle("main")
+UI.MenuButton:SetCallback(
+   function()
+      if (Editor.Running == EditorNotRunning) then
+	 RunGameMenu()
+      else
+	 RunInEditorMenu()
+      end
+   end)
+
+UI.NetworkMenuButton.X = 6
+UI.NetworkMenuButton.Y = 2
+UI.NetworkMenuButton.Text = "Menu"
+UI.NetworkMenuButton.Style = FindButtonStyle("network")
+UI.NetworkMenuButton:SetCallback(function() RunGameMenu() end)
+
+UI.NetworkDiplomacyButton.X = 90
+UI.NetworkDiplomacyButton.Y = 2
+UI.NetworkDiplomacyButton.Text = "Diplomacy"
+UI.NetworkDiplomacyButton.Style = FindButtonStyle("network")
+UI.NetworkDiplomacyButton:SetCallback(function() RunDiplomacyMenu() end)
+
+function LoadUI(race, screen_width, screen_height)
+  UI.Fillers:clear()
+  AddFiller("ui/" .. race .. "/minimap.png", 0, 0)
+  AddFiller("ui/" .. race .. "/left_panel.png", 0, 144)
+  AddFiller("ui/" .. race .. "/top_resource_bar.png", 144, 0)
+  AddFiller("ui/" .. race .. "/right_panel.png", 624, 0)
+  AddFiller("ui/" .. race .. "/bottom_panel.png", 144, 376)
+end

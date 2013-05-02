@@ -32,317 +32,52 @@
 --	Define unit-types.
 --
 
-UnitTypeFiles["unit-gold-mine"] = {
-  forest = "tilesets/forest/neutral/buildings/gold_mine.png",
-  swamp = "tilesets/swamp/neutral/buildings/gold_mine.png"
-}
+local units = {
+   {Names = {neutral = "Brigand"},
+    HitPoints = 60},
+   {Names = {neutral = "Daemon"},
+    Size = {neutral = {96, 96}},
+    HitPoints = 100},
+   {Names = {neutral = "Fire elemental"},
+    Size = {neutral = {96, 96}},
+    HitPoints = 100},
+   {Names = {neutral = "Water elemental"},
+    Size = {neutral = {96, 96}},
+    HitPoints = 100},
+   {Names = {neutral = "Grizelda"},
+    Image = {"file", "neutral/units/grizelda,garona.png", "size", {64, 64}},
+    Animations = "animations-todo",
+    HitPoints = 60},
+   {Names = {neutral = "Garona"},
+    Image = {"file", "neutral/units/grizelda,garona.png", "size", {64, 64}},
+    Animations = "animations-todo",
+    HitPoints = 60},
+   {Names = {neutral = "Ogre"},
+    Animations = "animations-knight",
+    HitPoints = 100,
+    Size = {neutral = {96, 96}}},
+   {Names = {neutral = "Scorpion"},
+    Animations = "animations-knight",
+    HitPoints = 60},
+   {Names = {neutral = "Skeleton"},
+    Animations = "animations-knight",
+    HitPoints = 60},
+   {Names = {neutral = "Slime"},
+    Animations = "animations-todo",
+    HitPoints = 60},
+   {Names = {neutral = "Spider"},
+    HitPoints = 60},
+   {Names = {neutral = "The dead"},
+    HitPoints = 60,
+    Animations = "animations-todo"},
+   {Names = {neutral = "Wounded"},
+    HitPoints = 60,
+    Animations = "animations-todo"},
+   {Names = {neutral = "Dead body"},
+    HitPoints = 60,
+    Image = {"file", "neutral/units/dead_bodies.png", "size", {64, 64}},
+    Animations = "animations-todo"},
 
-DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
-  Image = {"size", {128, 128}},
-  Animations = "animations-building", Icon = "icon-gold-mine",
-  NeutralMinimapColor = {255, 255, 0},
-  Costs = {"time", 150},
-  Construction = "construction-none",
---  Speed = 0,
-  HitPoints = 25500,
-  DrawLevel = 40,
-  TileSize = {3, 3}, BoxSize = {95, 95},
-  SightRange = 1,
-  Armor = 20, BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
-  Priority = 0,
-  Corpse = "unit-destroyed-3x3-place",
-  ExplodeWhenKilled = "missile-explosion",
-  Type = "land",
-  Building = true, VisibleUnderFog = true,
-  GivesResource = "gold", CanHarvest = true,
-  Sounds = {
-    "selected", "gold-mine-selected",
-    "acknowledge", "gold-mine-acknowledge",
-    "ready", "gold-mine-ready",
-    "help", "gold-mine-help",
-    "dead", "building destroyed",
---    "attack", "gold-mine-attack"
-}} )
-
-DefineUnitType("unit-brigand", { Name = "Brigand",
-  Image = {"file", "neutral/units/brigand.png", "size", {64, 64}},
-  Animations = "animations-brigand", Icon = "icon-brigand",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-daemon", { Name = "Daemon",
-  Image = {"file", "neutral/units/daemon.png", "size", {96, 96}},
-  Animations = "animations-knight", Icon = "icon-daemon",
-  Costs = {"time", 70, "gold", 500, "oil", 50},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
---  Type = "fly", ShadowFly = {Value = 1, Enable = true},
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  AirUnit = true,
---  DetectCloak = true,
---  Organic = true,
-  SelectableByRectangle = true,
-  Sounds = {
-    "selected", "daemon-selected",
---    "acknowledge", "daemon-acknowledge",
---    "ready", "daemon-ready",
-    "help", "basic orc voices help 1",
-    "dead", "basic orc voices dead"} } )
-
-DefineUnitType("unit-fire-elemental", { Name = "Fire elemental",
-  Image = {"file", "neutral/units/fire_elemental.png", "size", {96, 96}},
-  Animations = "animations-todo", Icon = "icon-fire-elemental",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-grizelda", { Name = "Grizelda",
-  Image = {"file", "neutral/units/grizelda,garona.png", "size", {64, 64}},
-  Animations = "animations-todo", Icon = "icon-grizelda",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-garona", { Name = "Garona",
-  Image = {"file", "neutral/units/grizelda,garona.png", "size", {64, 64}},
-  Animations = "animations-todo", Icon = "icon-garona",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-ogre", { Name = "Ogre",
-  Image = {"file", "neutral/units/ogre.png", "size", {96, 96}},
-  Animations = "animations-knight", Icon = "icon-ogre",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-scorpion", { Name = "Scorpion",
-  Image = {"file", "neutral/units/scorpion.png", "size", {64, 64}},
-  Animations = "animations-knight", Icon = "icon-scorpion",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-skeleton", { Name = "Skeleton",
-  Image = {"file", "neutral/units/skeleton.png", "size", {64, 64}},
-  Animations = "animations-knight", Icon = "icon-skeleton",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-slime", { Name = "Slime",
-  Image = {"file", "neutral/units/slime.png", "size", {64, 64}},
-  Animations = "animations-todo", Icon = "icon-slime",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-spider", { Name = "Spider",
-  Image = {"file", "neutral/units/spider.png", "size", {64, 64}},
-  Animations = "animations-spider", Icon = "icon-spider",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-  
-DefineUnitType("unit-the-dead", { Name = "The dead",
-  Image = {"file", "neutral/units/the_dead.png", "size", {64, 64}},
-  Animations = "animations-todo", Icon = "icon-the-dead",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-water-elemental", { Name = "Water elemental",
-  Image = {"file", "neutral/units/water_elemental.png", "size", {96, 96}},
-  Animations = "animations-todo", Icon = "icon-water-elemental",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-wounded", { Name = "Wounded",
-  Image = {"file", "neutral/units/wounded.png", "size", {64, 64}},
-  Animations = "animations-todo", Icon = "icon-wounded",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
-DefineUnitType("unit-dead-body", { Name = "Dead body",
-  Image = {"file", "neutral/units/dead_bodies.png", "size", {64, 64}},
-  Animations = "animations-todo", Icon = "icon-wounded",
-  Costs = {"time", 70},
-  NeutralMinimapColor = {192, 0, 0},
-  HitPoints = 60,
-  DrawLevel = 60,
-  TileSize = {1, 1}, BoxSize = {31, 31},
-  SightRange = 5, ComputerReactionRange = 7, PersonReactionRange = 5,
-  Armor = 3, BasicDamage = 10, PiercingDamage = 2, Missile = "missile-none",
-  MaxAttackRange = 3,
-  Priority = 63,
-  Points = 100,
-  Demand = 1,
-  RightMouseAction = "attack",
-  CanAttack = true,
-  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
-  SelectableByRectangle = true} )
-
--- Load the different races
-
-local commonUnits = {
    {Names = {orc = "Peon", human = "Peasant"},
     Costs = {"time", 70},
     HitPoints = 60,
@@ -387,14 +122,29 @@ local commonUnits = {
    {Names = {orc = "Necrolyte", human = "Cleric"},
     Costs = {"time", 70},
     HitPoints = 50,
-    MaxAttackRange = 1}}
+    MaxAttackRange = 1},
 
-for idx,unit in ipairs(commonUnits) do
+   {Names = {orc = "Lothar"},
+    Size = {orc = {96, 96}},
+    HitPoints = 100},
+
+   {Names = {human = "Midevh"},
+    HitPoints = 100}}
+
+-- build units from specs
+for idx,unit in ipairs(units) do
    for race,name in pairs(unit.Names) do
-      local filename = string.lower(name)
-      local animations = "animations-" .. string.lower(unit.Names.human)
-      local unitname = filename
-      if unit.Names.orc == unit.Names.human then
+      local filename = string.lower(string.gsub(name, " ", "_"))
+      local unitname = string.gsub(filename, "_", "-")
+
+      local animations = ""
+      if unit.Names.human then
+	 animations = "animations-" .. string.lower(unit.Names.human)
+      else
+	 animations = "animations-" .. unitname
+      end
+
+      if unit.Names.orc and unit.Names.orc == unit.Names.human then
 	 unitname = race .. "-" .. filename
       end
 
@@ -405,12 +155,12 @@ for idx,unit in ipairs(commonUnits) do
 
       local unitType = {
 	 Name = name,
+	 Animations = animations,
+	 Icon = "icon-" .. unitname,
 	 Image = {
 	    "file", race .. "/units/" .. filename .. ".png",
 	    "size", size},
-	 Animations = animations,
-	 Icon = "icon-" .. unitname,
-	 Costs = unit.Costs,
+	 Costs = {},
 	 HitPoints = unit.HitPoints,
 	 DrawLevel = 60,
 	 TileSize = {1, 1},
@@ -433,6 +183,3 @@ for idx,unit in ipairs(commonUnits) do
       DefineUnitType("unit-" .. unitname, unitType)
    end
 end
-
-Load("scripts/human/units.lua")
-Load("scripts/orc/units.lua")

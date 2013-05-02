@@ -90,9 +90,16 @@ local buildings = {
     Costs = {"time", 100, "gold", 500, "wood", 250},
     HitPoints = 400,
     Size = {128, 128},
-    DrawLevel = 20}}
+    DrawLevel = 20},
 
+   {Names = {human = "Stormwind keep", orc = "Blackrock spire"},
+    Costs = {"time", 100, "gold", 500, "wood", 250},
+    HitPoints = 1200,
+    Size = {160, 160},
+    NotConstructable = true,
+    Corpse = "unit-destroyed-3x3-place"}}
 
+-- create buildings and their constructions from specs
 for idx,building in ipairs(buildings) do
    for race,name in pairs(building.Names) do
       local size = building.Size
@@ -104,21 +111,23 @@ for idx,building in ipairs(buildings) do
 	 swamp = ("tilesets/swamp/" .. race ..
 		     "/buildings/" .. filename .. "_construction.png") }
 
-      DefineConstruction(
-	 "construction-" .. fullname,
-	 {Files = {
-	     File = files[war1gus.tileset],
-	     Size = size},
-	  Constructions = {
-	     {Percent = 0,
-	      File = "construction",
-	      Frame = 0},
-	     {Percent = 33,
-	      File = "construction",
-	      Frame = 1},
-	     {Percent = 67,
-	      File = "construction",
-	      Frame = 2}}})
+      if not building.NotConstructable then
+	 DefineConstruction(
+	    "construction-" .. fullname,
+	    {Files = {
+		File = files[war1gus.tileset],
+		Size = size},
+	     Constructions = {
+		{Percent = 0,
+		 File = "construction",
+		 Frame = 0},
+		{Percent = 33,
+		 File = "construction",
+		 Frame = 1},
+		{Percent = 67,
+		 File = "construction",
+		 Frame = 2}}})
+      end
 
       UnitTypeFiles["unit-" .. fullname] = {
 	 forest = ("tilesets/forest/" .. race ..
@@ -165,3 +174,35 @@ for idx,building in ipairs(buildings) do
 
    end
 end
+
+UnitTypeFiles["unit-gold-mine"] = {
+  forest = "tilesets/forest/neutral/buildings/gold_mine.png",
+  swamp = "tilesets/swamp/neutral/buildings/gold_mine.png"
+}
+
+DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
+  Image = {"size", {128, 128}},
+  Animations = "animations-building", Icon = "icon-gold-mine",
+  NeutralMinimapColor = {255, 255, 0},
+  Costs = {"time", 150},
+  Construction = "construction-none",
+--  Speed = 0,
+  HitPoints = 25500,
+  DrawLevel = 40,
+  TileSize = {3, 3}, BoxSize = {95, 95},
+  SightRange = 1,
+  Armor = 20, BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+  Priority = 0,
+  Corpse = "unit-destroyed-3x3-place",
+  ExplodeWhenKilled = "missile-explosion",
+  Type = "land",
+  Building = true, VisibleUnderFog = true,
+  GivesResource = "gold", CanHarvest = true,
+  Sounds = {
+    "selected", "gold-mine-selected",
+    "acknowledge", "gold-mine-acknowledge",
+    "ready", "gold-mine-ready",
+    "help", "gold-mine-help",
+    "dead", "building destroyed",
+--    "attack", "gold-mine-attack"
+}} )

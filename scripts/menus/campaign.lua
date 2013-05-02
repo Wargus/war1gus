@@ -8,10 +8,10 @@ function Briefing(title, objs, bg, text, voices)
   war1gus.playlist = {}
   if (currentRace == "human") then
     PlayMusic("music/Human Briefing.ogg")
-    Load("scripts/human/ui.lua")
+    LoadUI("human", Video.Width, Video.Height)
   elseif (currentRace == "orc") then
     PlayMusic("music/Orc Briefing.ogg")
-    Load("scripts/orc/ui.lua")
+    LoadUI("orc", Video.Width, Video.Height)
   else
     StopMusic()
   end
