@@ -421,7 +421,7 @@ Load("scripts/missiles.lua")
 Load("scripts/anim.lua")
 Load("scripts/buildings.lua")
 Load("scripts/units.lua")
---Load("scripts/spells.lua")
+-- Load("scripts/spells.lua")
 
 Load("scripts/upgrade.lua")
 Load("scripts/fonts.lua")
