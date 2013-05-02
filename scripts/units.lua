@@ -28,11 +28,6 @@
 --
 --      $Id$
 
-UnitTypeFiles = {}
-
--- Load the animations for the units.
-Load("scripts/anim.lua")
-
 --=============================================================================
 --	Define unit-types.
 --
@@ -346,5 +341,98 @@ DefineUnitType("unit-dead-body", { Name = "Dead body",
   SelectableByRectangle = true} )
 
 -- Load the different races
+
+local commonUnits = {
+   {Names = {orc = "Peon", human = "Peasant"},
+    Costs = {"time", 70},
+    HitPoints = 60,
+    CanAttack = false,
+    Coward = true,
+    CanGatherResources = {
+       {"resource-id", "gold",
+	"resource-capacity", 100,
+	"wait-at-resource", 150,
+	"wait-at-depot", 150},
+       {"resource-id", "wood",
+	"resource-capacity", 100,
+	"resource-step", 2,
+	"wait-at-resource", 24,
+	"wait-at-depot", 150,
+	"lose-resources",
+	"terrain-harvester"}}},
+   {Names = {orc = "Grunt", human = "Footman"},
+    Costs = {"time", 70},
+    HitPoints = 60,
+    Size = {human = {96, 96}},
+    MaxAttackRange = 1},
+   {Names = {orc = "Spearman", human = "Archer"},
+    Costs = {"time", 70},
+    HitPoints = 60,
+    Missile = "missile-arrow",
+    MaxAttackRange = 3},
+   {Names = {orc = "Catapult", human = "Catapult"},
+    Costs = {"time", 70},
+    HitPoints = 60,
+    Missile = "missile-catapult-rock",
+    MaxAttackRange = 4},
+   {Names = {orc = "Raider", human = "Knight"},
+    Costs = {"time", 70},
+    HitPoints = 100,
+    Size = {orc = {96, 96}},
+    MaxAttackRange = 1},
+   {Names = {orc = "Warlock", human = "Conjurer"},
+    Costs = {"time", 70},
+    HitPoints = 50,
+    MaxAttackRange = 1},
+   {Names = {orc = "Necrolyte", human = "Cleric"},
+    Costs = {"time", 70},
+    HitPoints = 50,
+    MaxAttackRange = 1}}
+
+for idx,unit in ipairs(commonUnits) do
+   for race,name in pairs(unit.Names) do
+      local filename = string.lower(name)
+      local animations = "animations-" .. string.lower(unit.Names.human)
+      local unitname = filename
+      if unit.Names.orc == unit.Names.human then
+	 unitname = race .. "-" .. filename
+      end
+
+      local size = {64, 64}
+      if unit.Size and unit.Size[race] then
+	 size = unit.Size[race]
+      end
+
+      local unitType = {
+	 Name = name,
+	 Image = {
+	    "file", race .. "/units/" .. filename .. ".png",
+	    "size", size},
+	 Animations = animations,
+	 Icon = "icon-" .. unitname,
+	 Costs = unit.Costs,
+	 HitPoints = unit.HitPoints,
+	 DrawLevel = 60,
+	 TileSize = {1, 1},
+	 BoxSize = {31, 31},
+	 SightRange = 5,
+	 Armor =  3,
+	 BasicDamage = 5, PiercingDamage = 2, Missile = "missile-none",
+	 Priority = 63,
+	 Points = 100,
+	 Demand = 1,
+	 CanAttack = true, Coward = false,
+	 CanGatherResources = {},
+	 SelectableByRectangle = true}
+
+      for k,v in pairs(unit) do
+	 if unitType[k] then
+	    unitType[k] = v
+	 end
+      end
+      DefineUnitType("unit-" .. unitname, unitType)
+   end
+end
+
 Load("scripts/human/units.lua")
 Load("scripts/orc/units.lua")

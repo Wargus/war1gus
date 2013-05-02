@@ -84,7 +84,7 @@ DefinePlaySections("race", "orc", "type", "stats-victory",
     "cd", {"order", "all", "tracks", {16}})
 DefinePlaySections("race", "orc", "type", "stats-defeat",
     "cd", {"order", "all", "tracks", {17}})
-]]
+--]]
 ------------------------------------------------------------------------------
 --	Define simple misc sounds.
 --
