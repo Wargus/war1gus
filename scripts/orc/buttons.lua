@@ -158,29 +158,29 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-attack-ground",
 
 -- peon specific actions ------------------------------------------------------
 
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-repair",
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-repair",
   Action = "repair",
   Key = "r", Hint = "~!REPAIR",
   ForUnit = {"unit-peon"} } )
 
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-harvest",
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-harvest",
   Action = "harvest",
   Key = "h", Hint = "~!HARVEST LUMBER/MINE GOLD",
   ForUnit = {"unit-peon"} } )
 
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-return-goods",
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-return-goods",
   Action = "return-goods",
   Key = "g", Hint = "RETURN WITH ~!GOODS",
   ForUnit = {"unit-peon"} } )
 
 -- build basic/advanced structs -----------------------------------------------
 
-DefineButton( { Pos = 7, Level = 0, Icon = "icon-build-basic",
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-build-basic",
   Action = "button", Value = 1,
   Key = "b", Hint = "~!BUILD BASIC STRUCTURE",
   ForUnit = {"unit-peon"} } )
 
-DefineButton( { Pos = 8, Level = 0, Icon = "icon-build-advanced",
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-build-advanced",
   Action = "button", Value = 2,
   Allowed = "check-units-or", AllowArg = {"unit-orc-lumber-mill"},
   Key = "v", Hint = "BUILD AD~!VANCED STRUCTURE",
@@ -203,14 +203,14 @@ DefineButton( { Pos = 3, Level = 1, Icon = "icon-orc-town-hall",
   Key = "h", Hint = "BUILD GREAT ~!HALL",
   ForUnit = {"unit-peon"} } )
 
-DefineButton( { Pos = 9, Level = 1, Icon = "icon-cancel",
+DefineButton( { Pos = 6, Level = 1, Icon = "icon-cancel",
   Action = "button", Value = 0,
   Key = "\27", Hint = "~<ESC~> CANCEL",
   ForUnit = {"unit-peon"} } )
 
 -- orc advanced buildings -----------------------------------------------------
 
-DefineButton( { Pos = 9, Level = 2, Icon = "icon-cancel",
+DefineButton( { Pos = 6, Level = 2, Icon = "icon-cancel",
   Action = "button", Value = 0,
   Key = "\27", Hint = "~<ESC~> CANCEL",
   ForUnit = {"unit-peon"} } )
