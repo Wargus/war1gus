@@ -35,202 +35,248 @@
 --
 DefineTileset(--"tileset-swamp", "class", "swamp",
   "name", "Swamp",
-  "image", "tilesets/swamp/terrain/swamp.png",
+  "image", "tilesets/swamp/terrain.png",
   -- Slots descriptions
-  "slots", { "special", {		-- Can't be in pud
-    "top-one-tree", 121, "mid-one-tree", 122, "bot-one-tree", 123,
-    "removed-tree", 126,
-    "growing-tree", { -1, -1 },
-    "top-one-rock", 155, "mid-one-rock", 156, "bot-one-rock", 157,
-    "removed-rock", 161 },
-  "solid", { "unused",
-    {}},								-- 000
-  "solid", { "light-water", "water",
-    { 330, 331, 331, 332}},						-- 010
-  "solid", { "dark-water", "water",
-    { 333, 334, 334, 335}},						-- 020
-  "solid", { "light-mud", "land", "no-building",
-    { 336, 337, 338,   0, 339, 340, 341, 342, 343, 344}},		-- 030
-  "solid", { "dark-mud", "land", "no-building",
-    { 345, 346, 347,   0, 348, 349, 350, 351, 352, 353}},		-- 040
-  "solid", { "light-dry-mud", "land",
-    { 354, 355, 356,   0, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368}},-- 050
-  "solid", { "dark-dry-mud", "land",
-    { 369, 370, 371,   0, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383}},-- 060
-  "solid", { "forest", "land", "forest", "unpassable",
-    { 125, 135, 136}},							-- 070
-  "solid", { "rocks", "land", "rock", "unpassable",
-    { 160, 172, 173, 174}},						-- 080
-  "solid", { "human-closed-wall", "land", "human", "wall", "unpassable",
-    {  16,   0,  52,   0,  88}},					-- 090
-  "solid", { "orc-closed-wall", "land", "wall", "unpassable",
-    {  34,   0,  70,   0,  88}},					-- 0A0
-  "solid", { "human-open-wall", "land", "human", "wall", "unpassable",
-    {  33,   0,  69,   0, 101}},					-- 0B0
-  "solid", { "orc-open-wall", "land", "wall", "unpassable",
-    {  51,   0,  87,   0, 101}},					-- 0C0
-  "solid", { "unused",
-    {}},								-- 0D0
-  "solid", { "unused",
-    {}},								-- 0E0
-  "solid", { "unused",
-    {}},								-- 0F0
-  "mixed", { "dark-water", "light-water", "water",
-    { 302, 302},							-- 100
-    { 303, 303},							-- 110
-    { 304, 305, 306},							-- 120
-    { 307, 307},							-- 130
-    { 308, 309, 310},							-- 140
-    { 311, 312},							-- 150
-    { 313, 314},							-- 160
-    { 315, 315},							-- 170
-    { 316, 317},							-- 180
-    { 318, 319, 320},							-- 190
-    { 321, 322},							-- 1A0
-    { 323, 324, 325},							-- 1B0
-    { 326, 327},							-- 1C0
-    { 328, 329},							-- 1D0
-    {},									-- 1E0
-    {}},								-- 1F0
-  "mixed", { "light-water", "light-mud", "coast",
-    { 207, 208},							-- 200
-    { 209, 210},							-- 210
-    { 211, 212, 213},							-- 220
-    { 214, 215},							-- 230
-    { 216, 217, 218},							-- 240
-    { 219, 219},							-- 250
-    { 220, 221},							-- 260
-    { 222, 223},							-- 270
-    { 224, 224},							-- 280
-    { 225, 226, 227},							-- 290
-    { 228, 229},							-- 2A0
-    { 230, 231, 232},							-- 2B0
-    { 233, 234},							-- 2C0
-    { 235, 236},							-- 2D0
-    {},									-- 2E0
-    {}},								-- 2F0
-  "mixed", { "dark-mud", "light-mud", "land", "no-building",
-    { 175, 176},							-- 300
-    { 177, 178},							-- 310
-    { 179, 180, 181},							-- 320
-    { 182, 183},							-- 330
-    { 184, 185, 186},							-- 340
-    { 187, 188},							-- 350
-    { 189, 190},							-- 360
-    { 191, 192},							-- 370
-    { 193, 194},							-- 380
-    { 195, 196, 197},							-- 390
-    { 198, 199},							-- 3A0
-    { 200, 201, 202},							-- 3B0
-    { 203, 204},							-- 3C0
-    { 205, 206},							-- 3D0
-    {},									-- 3E0
-    {}},								-- 3F0
-  "mixed", { "rocks", "light-mud", "land", "rock", "unpassable",
-    { 145, 168},							-- 400
-    { 137, 162},							-- 410
-    { 159, 171},							-- 420
-    { 142, 166},							-- 430
-    { 144, 167},							-- 440
-    { 149, 170},							-- 450
-    { 146},								-- 460
-    { 139, 164},							-- 470
-    { 148, 169},							-- 480
-    { 138, 163},							-- 490
-    { 147},								-- 4A0
-    { 141, 165},							-- 4B0
-    { 143},								-- 4C0
-    { 140},								-- 4D0
-    {},									-- 4E0
-    {}},								-- 4F0
-  "mixed", { "light-mud", "light-dry-mud", "land", "no-building",
-    { 270, 271},							-- 500
-    { 272, 273},							-- 510
-    { 274, 275, 276},							-- 520
-    { 277, 278},							-- 530
-    { 279, 280, 281},							-- 540
-    { 282, 283},							-- 550
-    { 284, 285},							-- 560
-    { 286, 287},							-- 570
-    { 288, 289},							-- 580
-    { 290, 291, 292},							-- 590
-    { 293, 294},							-- 5A0
-    { 295, 296, 297},							-- 5B0
-    { 298, 299},							-- 5C0
-    { 300, 301},							-- 5D0
-    {},									-- 5E0
-    {}},								-- 5F0
-  "mixed", { "dark-dry-mud", "light-dry-mud", "land",
-    { 239, 240},							-- 600
-    { 241, 242},							-- 610
-    { 243, 244, 245},							-- 620
-    { 246, 247},							-- 630
-    { 248, 249, 250},							-- 640
-    { 251, 252},							-- 650
-    { 253, 253},							-- 660
-    { 254, 255},							-- 670
-    { 256, 257},							-- 680
-    { 258, 259, 260},							-- 690
-    { 261, 261},							-- 6A0
-    { 262, 263, 264},							-- 6B0
-    { 265, 265}	,							-- 6C0
-    { 266, 266},							-- 6D0
-    {},									-- 6E0
-    {}},								-- 6F0
-  "mixed", { "forest", "light-dry-mud", "land", "forest", "unpassable",
-    { 110, 133},							-- 700
-    { 102, 127},							-- 710
-    { 124, 134},							-- 720
-    { 107, 131},							-- 730
-    { 109, 132},							-- 740
-    { 114, 114},							-- 750
-    { 111, 111},							-- 760
-    { 104, 129},							-- 770
-    { 113, 113},							-- 780
-    { 103, 128},							-- 790
-    { 112, 112},							-- 7A0
-    { 106, 130},							-- 7B0
-    { 108, 108},							-- 7C0
-    { 105, 105},							-- 7D0
-    {},									-- 7E0
-    {}},								-- 7F0
-  "mixed", { "human-wall", "dark-dry-mud", "land", "human", "wall", "unpassable",
-    {  17,   0,  53,   0,  89},						-- 800
-    {  18,   0,  54,   0,  90},						-- 810
-    {  19,   0,  55,   0,  91},						-- 820
-    {  20,   0,  56,   0,  92},						-- 830
-    {  21,  22,   0,  57,  58,   0,  93,  95},				-- 840
-    {  23,   0,  59,   0,  94},						-- 850
-    {  24,   0,  60,   0,  93},						-- 860
-    {  25,   0,  61,   0,  96},						-- 870
-    {  26,   0,  62,   0,  97},						-- 880
-    {  27,  28,   0,  63,  64,   0,  98,  99},				-- 890
-    {  29,   0,  65,   0,  98},						-- 8A0
-    {  30,   0,  66,   0, 100},						-- 8B0
-    {  31,   0,  67,   0,  95},						-- 8C0
-    {  32,   0,  68,   0,  99},						-- 8D0
-    {},									-- 8E0
-    {}},								-- 8F0
-  "mixed", { "orc-wall", "dark-dry-mud", "land", "wall", "unpassable",
-    {  35,   0,  71,   0,  89},						-- 900
-    {  36,   0,  73,   0,  90},						-- 910
-    {  37,   0,  73,   0,  91},						-- 920
-    {  38,   0,  77,   0,  92},						-- 930
-    {  39,  40,   0,  75,  76,   0,  93,  95},				-- 940
-    {  41,   0,  77,   0,  94},						-- 950
-    {  42,   0,  78,   0,  93},						-- 960
-    {  43,   0,  79,   0,  96},						-- 970
-    {  44,   0,  80,   0,  97},						-- 980
-    {  45,  46,   0,  81,  82,   0,  98,  99},				-- 990
-    {  47,   0,  83,   0,  98},						-- 9A0
-    {  48,   0,  84,   0, 100},						-- 9B0
-    {  49,   0,  85,   0,  95},						-- 9C0
-    {  50,   0,  86,   0,  99}}						-- 9D0
-  }
-  -- Animated tiles
---  "animations", {{}},
-  -- Object tiles
---  "objects", {{}}
+  "slots",
+	{
+	"special", {		-- Can't be in pud
+	  "top-one-tree", 91, "mid-one-tree", 92, "bot-one-tree", 93,
+          "removed-tree", 96 },
+	"solid", {"unused", {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}}, -- fow    -- 000
+	"solid", {"same", "water", {114}}, -- water                    -- 010
+	"solid", {"wall", "land", "human", "wall", "unpassable",
+          {16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+	   26, 27, 28, 29, 30, 31}},                                       -- 020
+	"solid", {"unused", {}},                                       -- 030
+	"solid", {"forest", "land", "forest", "unpassable",
+	  {0, 0, 0, 0, 0, 0, 0, 71, 72, 73,
+	   74, 75, 76, 77, 78, 79}},                                   -- 040
+	"solid", {"forest", "land", "forest", "unpassable",
+	  {80, 81, 82, 83, 84, 85, 86, 87, 88,
+	   89, 90, 91, 92, 93, 94, 95}},                                -- 050
+	"solid", {"land",
+          {96, -- chopped tree
+	   97, {"land", "no-building"},
+	   98, {"land", "no-building"},
+	   99, {"land", "no-building"},
+	   100, {"land", "no-building"},
+	   101, {"land", "no-building"},
+	   102, 103,
+	   104, {"land", "no-building"},
+	   105, {"land", "no-building"},
+	   106, {"land", "no-building"},
+	   107, 108,
+	   109, {"land", "no-building"},
+	   110, {"land", "no-building"},
+	   111, {"land", "no-building"}}},                     -- 060
+	"solid", {"land",
+          {112, 113,
+	   114, {"land", "no-building"},
+	   115, {"land", "no-building"},
+	   116, {"land", "no-building"},
+	   117, {"land", "no-building"},
+	   118, 119, 120, 121,
+	   122, {"land", "no-building"},
+	   123, {"land", "no-building"},
+	   124, {"land", "no-building"},
+	   125, 126, 127}},                                  -- 070
+	"solid", {"land",
+          {128, 129, 130, 131, 132, 133, 134, 135, 136, 137,
+	   138, {"land", "no-building"},
+	   139, {"land", "no-building"},
+	   140, {"land", "no-building"},
+	   141, 142, 143}},                                  -- 080
+	"solid", {"land",
+          {144, 145, 146, 147, 148, 149, 150, 151,
+	   152, 153, 154,155, 156, 157, 158,
+	   159, {"land", "no-building"}}},              -- 090
+	"solid", {"land",
+          {160, {"land", "no-building"},
+	   161, {"land", "no-building"},
+	   162, {"land", "no-building"},
+	   163, {"land", "no-building"},
+	   164, 165, 166, 167, 168, 169, 170, 171, 172,
+	   173, {"land", "no-building"},
+	   174, {"land", "no-building"},
+	   175, {"land", "no-building"}}},              -- 0A0
+	"solid", {"land",
+          {176, {"land", "no-building"},
+	   177, {"land", "no-building"},
+	   178, 179, 180,
+	   181, {"land", "no-building"},
+	   182, {"land", "no-building"},
+	   183, {"land", "no-building"},
+	   184, {"land", "no-building"},
+	   185, {"land", "no-building"},
+	   186,
+	   187, {"coast", "land", "no-building"},
+	   188, {"water"},
+	   189, {"coast", "land", "no-building"},
+	   190, 191}},                             -- 0B0
+	"solid", {"land",
+          {192, 193, 194, 195, 196, 197, 198, 199, 200, 201,
+	   201, 203, 204, 205, 206, 207}},                             -- 0C0
+	"solid", {"land",
+          {208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 
+	   218, 219, 220, 221, 222, 223}},                             -- 0D0
+	"solid", {"land",
+          {224, 225, 226, 227, 228, 229, 230, 231, 232, 233,
+	   234, 235, 236, 237, 238, 239}},                             -- 0E0
+	"solid", {"land",
+          {240, 241, 242, 243, 244, 245, 246, 247, 248, 249,
+	   250, 251, 252, 253, 254, 255}},                             -- 0F0
+	"solid", {"land",
+          {256, 257, 258, 259, 260, 261, 262, 263, 264, 265,
+	   266, 267, 268, 269, 270, 271}}, -- 100
+	"solid", {"land",
+          {272, 273, 274, 275, 276, 277, 278, 279, 280, 281,
+	   282}}, -- 110
+	"solid", {"land", {}}, -- 120
+	"solid", {"unused", {}}, -- 130
+	"solid", {"unused", {}}, -- 140
+	"solid", {"unused", {}}, -- 150
+	"solid", {"unused", {}}, -- 160
+	"solid", {"unused", {}}, -- 170
+	"solid", {"unused", {}}, -- 180
+	"solid", {"unused", {}}, -- 190
+	"solid", {"unused", {}}, -- 1A0
+	"solid", {"unused", {}}, -- 1B0
+	"solid", {"unused", {}}, -- 1C0
+	"solid", {"unused", {}}, -- 1D0
+	"solid", {"unused", {}}, -- 1E0
+	"solid", {"unused", {}}, -- 1F0
+	"solid", {"unused", {}}, -- 200
+	"solid", {"unused", {}}, -- 210
+	"solid", {"unused", {}}, -- 220
+	"solid", {"unused", {}}, -- 230
+	"solid", {"unused", {}}, -- 240
+	"solid", {"unused", {}}, -- 250
+	"solid", {"unused", {}}, -- 260
+	"solid", {"unused", {}}, -- 270
+	"solid", {"unused", {}}, -- 280
+	"solid", {"unused", {}}, -- 290
+	"solid", {"unused", {}}, -- 2A0
+	"solid", {"unused", {}}, -- 2B0
+	"solid", {"unused", {}}, -- 2C0
+	"solid", {"unused", {}}, -- 2D0
+	"solid", {"unused", {}}, -- 2E0
+	"solid", {"unused", {}}, -- 2F0
+	"solid", {"unused", {}}, -- 300
+	"solid", {"unused", {}}, -- 310
+	"solid", {"unused", {}}, -- 320
+	"solid", {"unused", {}}, -- 330
+	"solid", {"unused", {}}, -- 340
+	"solid", {"unused", {}}, -- 350
+	"solid", {"unused", {}}, -- 360
+	"solid", {"unused", {}}, -- 370
+	"solid", {"unused", {}}, -- 380
+	"solid", {"unused", {}}, -- 390
+	"solid", {"unused", {}}, -- 3A0
+	"solid", {"unused", {}}, -- 3B0
+	"solid", {"unused", {}}, -- 3C0
+	"solid", {"unused", {}}, -- 3D0
+	"solid", {"unused", {}}, -- 3E0
+	"solid", {"unused", {}}, -- 3F0
+	"solid", {"unused", {}}, -- 400
+	"solid", {"unused", {}}, -- 410
+	"solid", {"unused", {}}, -- 420
+	"solid", {"unused", {}}, -- 430
+	"solid", {"unused", {}}, -- 440
+	"solid", {"unused", {}}, -- 450
+	"solid", {"unused", {}}, -- 460
+	"solid", {"unused", {}}, -- 470
+	"solid", {"unused", {}}, -- 480
+	"solid", {"unused", {}}, -- 490
+	"solid", {"unused", {}}, -- 4A0
+	"solid", {"unused", {}}, -- 4B0
+	"solid", {"unused", {}}, -- 4C0
+	"solid", {"unused", {}}, -- 4D0
+	"solid", {"unused", {}}, -- 4E0
+	"solid", {"unused", {}}, -- 4F0
+	"solid", {"unused", {}}, -- 400
+	"solid", {"unused", {}}, -- 510
+	"solid", {"unused", {}}, -- 520
+	"solid", {"unused", {}}, -- 530
+	"solid", {"unused", {}}, -- 540
+	"solid", {"unused", {}}, -- 550
+	"solid", {"unused", {}}, -- 560
+	"solid", {"unused", {}}, -- 570
+	"solid", {"unused", {}}, -- 580
+	"solid", {"unused", {}}, -- 590
+	"solid", {"unused", {}}, -- 5A0
+	"solid", {"unused", {}}, -- 5B0
+	"solid", {"unused", {}}, -- 5C0
+	"solid", {"unused", {}}, -- 5D0
+	"solid", {"unused", {}}, -- 5E0
+	"solid", {"unused", {}}, -- 5F0
+	"solid", {"unused", {}}, -- 600
+	"solid", {"unused", {}}, -- 610
+	"solid", {"unused", {}}, -- 620
+	"solid", {"unused", {}}, -- 630
+	"solid", {"unused", {}}, -- 640
+	"solid", {"unused", {}}, -- 650
+	"solid", {"unused", {}}, -- 660
+	"solid", {"unused", {}}, -- 670
+	"solid", {"unused", {}}, -- 680
+	"solid", {"unused", {}}, -- 690
+	"solid", {"unused", {}}, -- 6A0
+	"solid", {"unused", {}}, -- 6B0
+	"solid", {"unused", {}}, -- 6C0
+	"solid", {"unused", {}}, -- 6D0
+	"solid", {"unused", {}}, -- 6E0
+	"solid", {"unused", {}}, -- 6F0
+	"mixed", { "forest", "land", "forest", "unpassable",
+          { 71, 79},	-- bottom left, right		        -- 700
+	  { 71, 93},	-- bottom left, bottom middle		-- 710
+	  { 93, 76},	-- bottom middle, top right		-- 720
+	  { 76, 80},	-- top right, centerpiece		-- 730
+	  { 75, 81},	-- top middle, centerpiece2             -- 740
+	  { 82, 83},	-- centerpiece3, centerpiece4		-- 750
+	  { 94, 94},	-- centerpiece5, centerpiece5		-- 760
+	  { 73, 77},	-- top left, centerpiece-top-open	-- 770
+	  { 81, 82},	-- center-bottom, center-bottom		-- 780
+	  { 72, 73},	-- left, top left			-- 790
+	  { 94, 94},	-- centerpiece5, centerpiece5		-- 7A0
+	  { 93, 72},	-- top right, left			-- 7B0
+	  { 94, 94},	-- center-bottom, center-bottom		-- 7C0
+	  { 74, 74},	-- center-top, center-top		-- 7D0
+	  {},							-- 7E0
+	  {}},							-- 7F0
+	"mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
+          {  21,   0,  23,   0,  34},						-- 800
+	  {  10,   0,  22,   0,  36},						-- 810
+	  {  17,   0,  29,   0,  33},						-- 820
+	  {  11,   0,  40,   0,  34},						-- 830
+	  {  21,  21,   0,  23,  23,   0,  34,  34},				-- 840
+	  {  10,   0,  22,   0,  36},						-- 850
+	  {  13,   0,  25,   0,  36},						-- 860
+	  {  12,   0,  24,   0,  38},						-- 870
+	  {  20,   0,  32,   0,  35},						-- 880
+	  {  18,  18,   0,  30,  30,   0,  37,  37},				-- 890
+	  {  19,   0,  31,   0,  37},						-- 8A0
+	  {  12,   0,  24,   0,  38},						-- 8B0
+	  {  15,   0,  27,   0,  33},						-- 8C0
+	  {  14,   0,  26,   0,  39},						-- 8D0
+	  {},									-- 8E0
+	  {}},								        -- 8F0
+	"mixed", { "orc-wall", "dark-grass", "land", "human", "wall", "unpassable",
+          {  21,   0,  23,   0,  34},						-- 900
+	  {  10,   0,  22,   0,  36},						-- 910
+	  {  17,   0,  29,   0,  33},						-- 920
+	  {  11,   0,  40,   0,  34},						-- 930
+	  {  21,  21,   0,  23,  23,   0,  34,  34},				-- 940
+	  {  10,   0,  22,   0,  36},						-- 950
+	  {  13,   0,  25,   0,  36},						-- 960
+	  {  12,   0,  24,   0,  38},						-- 970
+	  {  20,   0,  32,   0,  35},						-- 980
+	  {  18,  18,   0,  30,  30,   0,  37,  37},				-- 990
+	  {  19,   0,  31,   0,  37},						-- 9A0
+	  {  12,   0,  24,   0,  38},						-- 9B0
+	  {  15,   0,  27,   0,  33},						-- 9C0
+	  {  14,   0,  26,   0,  39},						-- 9D0
+	  {},									-- 9E0
+	  {}},								        -- 9F0
+	}
 )
 
 BuildTilesetTables()
