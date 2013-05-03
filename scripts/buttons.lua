@@ -34,6 +34,9 @@
 Load("scripts/human/buttons.lua")
 Load("scripts/orc/buttons.lua")
 
+-- general buttons -----------------------------------------------------------
+
+
 ------------------------------------------------------------------------------
 --  Define unit-button.
 --
