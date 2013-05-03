@@ -282,4 +282,4 @@ DefineTileset(--"tileset-swamp", "class", "swamp",
 BuildTilesetTables()
 
 war1gus.tileset = "swamp"
---Load("scripts/scripts.lua")
+Load("scripts/scripts.lua")
