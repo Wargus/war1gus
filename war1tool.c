@@ -2412,7 +2412,7 @@ char *UnitTypes[] = {
 	"unit-human-tower", "unit-orc-tower",
 	// 40
 	"unit-human-town-hall", "unit-orc-town-hall",
-	"unit-elven-lumber-mill", "unit-troll-lumber-mill",
+	"unit-human-lumber-mill", "unit-orc-lumber-mill",
 	"unit-human-stable", "unit-orc-kennel",
 	"unit-human-blacksmith", "unit-orc-blacksmith",
 	"unit-stormwind-keep", "unit-blackrock-spire",
