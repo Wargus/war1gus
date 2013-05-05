@@ -742,7 +742,7 @@ typedef struct _campaign_info_ {
 CampaignInfo campaigns[] = {
     {"I. Intro",
      "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-human-farm\") >= 6 and"
-     "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-human-barracks\") >= 1",
+     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-human-barracks\") >= 1",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
      "forest"},
     {"II. Grand Hamlet",
@@ -755,9 +755,9 @@ CampaignInfo campaigns[] = {
      "swamp"},
     {"IV. Dead Mines",
      "GetPlayerData(15, \"UnitTypesCount\", \"unit-lothar\") == 0 and"
-     "IfRescuedNearUnit(\"this\", \">=\", 1, \"unit-archer\", \"unit-circle-of-power\")",
+     " IfRescuedNearUnit(\"this\", \">=\", 1, \"unit-archer\", \"unit-circle-of-power\")",
      "GetPlayerData(15, \"UnitTypesCount\", \"unit-lothar\") == 0 and"
-     "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-lothar\") == 0",
+     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-lothar\") == 0",
      "dungeon"},
     {"V. Elwynn Forest",
      "GetNumOpponents(GetThisPlayer()) == 0",
@@ -769,7 +769,7 @@ CampaignInfo campaigns[] = {
      "forest"},
     {"VII. Sunnyglade",
      "GetPlayerData(15, \"UnitTypesCount\", \"unit-peasant\") == 0 and"
-     "GetNumOpponents(GetThisPlayer()) == 0",
+     " GetNumOpponents(GetThisPlayer()) == 0",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
      "forest"},
     {"VIII. Medivh's Tower",
@@ -794,7 +794,7 @@ CampaignInfo campaigns[] = {
      "swamp"},
     {"I. Intro",
      "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-orc-farm\") >= 6 and"
-     "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-orc-barracks\") >= 1",
+     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-orc-barracks\") >= 1",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
      "swamp"},
     {"II. Kyross",
@@ -816,20 +816,20 @@ CampaignInfo campaigns[] = {
     {"VI. Sunnyglade",
      "GetNumOpponents(GetThisPlayer()) == 0",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 or"
-     "GetPlayerData(1, \"UnitTypesCount\" \"unit-human-tower\") == 0",
+     " GetPlayerData(1, \"UnitTypesCount\" \"unit-human-tower\") == 0",
      "forest"},
     {"VII. Black Morass",
      "GetPlayerData(15, \"UnitTypesCount\", \"unit-peasant\") == 0 and"
-     "GetNumOpponents(GetThisPlayer()) == 0",
+     " GetNumOpponents(GetThisPlayer()) == 0",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
      "swamp"},
     {"VIII. Northshire Abbey",
      "GetNumOpponents(GetThisPlayer()) == 0 and"
      "GetPlayerData(15, \"UnitTypesCount\" \"unit-garona\") == 0 and"
-     "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\" \"unit-garona\") == 0",
+     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\" \"unit-garona\") == 0",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 or"
-     "(GetPlayerData(15, \"UnitTypesCount\" \"unit-garona\") == 0 and"
-     "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\" \"unit-garona\") == 0)",
+     " (GetPlayerData(15, \"UnitTypesCount\" \"unit-garona\") == 0 and"
+     "  GetPlayerData(GetThisPlayer(), \"UnitTypesCount\" \"unit-garona\") == 0)",
      "forest"},
     {"IX. (unknown)",
      "GetNumOpponents(GetThisPlayer()) == 0",
