@@ -812,11 +812,11 @@ CampaignInfo campaigns[] = {
     {"V. Red Ridge Mountains",
      "GetNumOpponents(GetThisPlayer()) == 0",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
+     "swamp"},
     {"VI. Sunnyglade",
      "GetNumOpponents(GetThisPlayer()) == 0",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 or"
-     " GetPlayerData(1, \"UnitTypesCount\" \"unit-human-tower\") == 0",
+     " GetPlayerData(1, \"UnitTypesCount\", \"unit-human-tower\") == 0",
      "forest"},
     {"VII. Black Morass",
      "GetPlayerData(15, \"UnitTypesCount\", \"unit-peasant\") == 0 and"
@@ -825,11 +825,11 @@ CampaignInfo campaigns[] = {
      "swamp"},
     {"VIII. Northshire Abbey",
      "GetNumOpponents(GetThisPlayer()) == 0 and"
-     "GetPlayerData(15, \"UnitTypesCount\" \"unit-garona\") == 0 and"
-     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\" \"unit-garona\") == 0",
+     " GetPlayerData(15, \"UnitTypesCount\", \"unit-garona\") == 0 and"
+     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-garona\") == 0",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 or"
-     " (GetPlayerData(15, \"UnitTypesCount\" \"unit-garona\") == 0 and"
-     "  GetPlayerData(GetThisPlayer(), \"UnitTypesCount\" \"unit-garona\") == 0)",
+     " (GetPlayerData(15, \"UnitTypesCount\", \"unit-garona\") == 0 and"
+     "  GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-garona\") == 0)",
      "forest"},
     {"IX. (unknown)",
      "GetNumOpponents(GetThisPlayer()) == 0",
@@ -2452,8 +2452,11 @@ static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 	gzprintf(smp, "-- Stratagus Map Presentation\n");
 	gzprintf(smp, "-- Generated from war1tool\n\n");
 
-	gzprintf(smp, "DefinePlayerTypes(\"person\", \"computer\", ");
-	for (i = 2; i < 15; ++i) {
+	gzprintf(smp, "DefinePlayerTypes(\"person\", ");
+	for (i = 1; i < 4; ++i) {
+		gzprintf(smp, "\"computer\", ");
+	}
+	for (i = 4; i < 15; ++i) {
 		gzprintf(smp, "\"nobody\", ");
 	}
 	gzprintf(smp, "\"neutral\")\n");
@@ -2510,14 +2513,14 @@ char *UnitTypes[] = {
 	"unit-conjurer", "unit-warlock",
 	"unit-cleric", "unit-necrolyte",
 	"unit-midevh", "unit-lothar",
-	"unit-garona", "unit-grizelda",
-	"unit-water-elemental", "unit-daemon",
+	"unit-wounded", "unit-grizelda",
+	"unit-water-elemental", "unit-ogre",
 	// 20
 	"unit-scorpion", "unit-spider",
-	"unit-22", "unit-23",
-	"unit-24", "unit-25",
-	"unit-26", "unit-27",
-	"unit-28", "unit-29",
+	"unit-slime", "unit-fire-elemental",
+	"unit-garona", "unit-brigand",
+	"unit-26", "unit-skeleton",
+	"unit-daemon", "unit-29",
 	// 30
 	"unit-30", "unit-31",
 	"unit-human-farm", "unit-orc-farm",
@@ -2529,7 +2532,7 @@ char *UnitTypes[] = {
 	"unit-human-lumber-mill", "unit-orc-lumber-mill",
 	"unit-human-stable", "unit-orc-kennel",
 	"unit-human-blacksmith", "unit-orc-blacksmith",
-	"unit-stormwind-keep", "unit-blackrock-spire",
+	"unit-human-stormwind-keep", "unit-orc-blackrock-spire",
 	// 50
 	"unit-gold-mine", "unit-51",
 	"unit-peasant-with-wood", "unit-peon-with-wood",

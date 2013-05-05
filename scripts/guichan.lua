@@ -639,5 +639,17 @@ Load("scripts/menus/results.lua")
 Load("scripts/menus/network.lua")
 --]]
 
-RunProgramStartMenu()
+-- RunProgramStartMenu()
+
+--- debugging
+Load("scripts/orc/campaign1.lua")
+currentRace = "orc"
+SetPlayerData(GetThisPlayer(), "RaceName", "orc")
+local map = "campaigns/orc/12.smp"
+Load(map)
+RunMap(map)
+-- war1gus.playlist = { "music/Orc Briefing.ogg" }
+-- currentRace = race
+-- SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
+
 
