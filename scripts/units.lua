@@ -225,7 +225,6 @@ for idx,unit in ipairs(units) do
 	 RightMouseAction = "attack",
 	 CanAttack = true, Coward = false,
 	 CanTargetLand = true,
-	 CanGatherResources = {},
 	 Sounds = {
 	    "attack", unitname .. "-attack",
 	    "selected", race .. " selected",
@@ -236,7 +235,7 @@ for idx,unit in ipairs(units) do
 	 SelectableByRectangle = true}
 
       for k,v in pairs(unit) do
-	 if unitType[k] then
+	 if unitType[k] or k == "CanGatherResources" then
 	    unitType[k] = v
 	 end
       end
