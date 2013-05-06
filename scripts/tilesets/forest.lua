@@ -276,7 +276,8 @@ DefineTileset("name", "Forest",
   )
 
 BuildTilesetTables()
-
+AddColorCyclingRange(114, 118) -- water coast boundry
 
 war1gus.tileset = "forest"
 Load("scripts/scripts.lua")
+
