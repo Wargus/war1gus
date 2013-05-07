@@ -304,6 +304,8 @@ DefineDefaultResourceAmounts(
   "gold", 100000,
   "oil", 50000)
 
+DefineDefaultResourceMaxAmounts(-1, -1, -1, -1, -1, -1, -1)
+
 -------------------------------------------------------------------------------
 
 DefinePlayerColorIndex(208, 4)
@@ -418,10 +420,10 @@ Load("scripts/sound.lua")
 Load("scripts/missiles.lua")
 
 -- Load the animations for the units.
+Load("scripts/spells.lua")
 Load("scripts/anim.lua")
 Load("scripts/buildings.lua")
 Load("scripts/units.lua")
--- Load("scripts/spells.lua")
 
 Load("scripts/upgrade.lua")
 Load("scripts/fonts.lua")

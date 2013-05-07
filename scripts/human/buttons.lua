@@ -111,58 +111,54 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-attack-ground",
 
 -- cleric specific actions ---------------------------------------------------
 
---[[
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-lightning",
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-holy-lance",
   Action = "attack",
-  Key = "a", Hint = "HOLY SPEAR ~!ATTACK",
+  Key = "a", Hint = "HOLY LANCE ~!ATTACK",
   ForUnit = {"unit-cleric"} } )
 
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-holy-vision",
-  Action = "cast-spell", Value = "spell-holy-vision",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-holy-vision"},
-  Key = "v", Hint = "HOLY ~!VISION",
-  ForUnit = {"unit-cleric"} } )
-
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-heal",
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-healing",
   Action = "cast-spell", Value = "spell-healing",
   Allowed = "check-upgrade", AllowArg = {"upgrade-healing"},
   Key = "h", Hint = "~!HEALING (per 1 HP)",
   ForUnit = {"unit-cleric"} } )
 
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-invisibility",
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-invisibility",
   Action = "cast-spell", Value = "spell-invisibility",
   Allowed = "check-upgrade", AllowArg = {"upgrade-invisibility"},
   Key = "i", Hint = "~!INVISIBILITY",
   ForUnit = {"unit-cleric"} } )
-]]
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-far-seeing",
+  Action = "cast-spell", Value = "spell-far-seeing",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-far-seeing"},
+  Key = "s", Hint = "FAR ~!SEEING",
+  ForUnit = {"unit-cleric"} } )
 
 -- conjurer specific actions ------------------------------------------------------
 
---[[
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-fireball",
-  Action = "cast-spell", Value = "spell-fireball",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-fireball"},
-  Key = "f", Hint = "~!FIREBALL",
-  ForUnit = {"unit-mage", "unit-white-mage"} } )
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-fireball",
+  Action = "attack",
+  Key = "a", Hint = "FIREBALL ~!ATTACK",
+  ForUnit = {"unit-conjurer"} } )
 
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-slow",
-  Action = "cast-spell", Value = "spell-slow",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-slow"},
-  Key = "o", Hint = "SL~!OW",
-  ForUnit = {"unit-mage", "unit-white-mage"} } )
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-spider",
+  Action = "cast-spell", Value = "spell-summon-spiders",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-spider"},
+  Key = "s", Hint = "SUMMON S~!PIDERS",
+  ForUnit = {"unit-conjurer"} } )
 
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-flame-shield",
-  Action = "cast-spell", Value = "spell-flame-shield",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-flame-shield"},
-  Key = "l", Hint = "F~!LAME SHIELD",
-  ForUnit = {"unit-mage", "unit-white-mage"} } )
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-water-elemental",
+  Action = "cast-spell", Value = "spell-summon-elemental",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-water-elemental"},
+  Key = "e", Hint = "SUMMON E~!LEMENTAL",
+  ForUnit = {"unit-conjurer"} } )
 
-DefineButton( { Pos = 9, Level = 0, Icon = "icon-blizzard",
-  Action = "cast-spell", Value = "spell-blizzard",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-blizzard"},
-  Key = "b", Hint = "~!BLIZZARD",
-  ForUnit = {"unit-mage", "unit-white-mage"} } )
-]]
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-rain-of-fire",
+  Action = "cast-spell", Value = "spell-rain-of-fire",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-rain-of-fire"},
+  Key = "r", Hint = "~!RAIN OF FIRE",
+  ForUnit = {"unit-conjurer"} } )
 
 -- peasant specific actions ---------------------------------------------------
 
@@ -296,7 +292,6 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-cleric",
 
 -- upgrades -------------------------------------------------------------------
 
---[[
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-sword2",
   Action = "research", Value = "upgrade-sword1",
   Allowed = "check-single-research",
@@ -336,13 +331,13 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow3",
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse1",
   Action = "research", Value = "upgrade-horse1",
   Allowed = "check-single-research",
-  Key = "u", Hint = "~!BREED FASTER HORSES",
+  Key = "b", Hint = "~!BREED FASTER HORSES",
   ForUnit = {"unit-human-stable"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse2",
   Action = "research", Value = "upgrade-horse2",
   Allowed = "check-single-research",
-  Key = "u", Hint = "~!BREED FASTER HORSES",
+  Key = "b", Hint = "~!BREED FASTER HORSES",
   ForUnit = {"unit-human-stable"} } )
 
 -- spells -------------------------------------------------------------------
@@ -356,31 +351,29 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-healing",
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-far-seeing",
   Action = "research", Value = "upgrade-far-seeing",
   Allowed = "check-single-research",
-  Key = "e", Hint = "RESEARCH ~!FAR SEEING",
+  Key = "f", Hint = "RESEARCH ~!FAR SEEING",
   ForUnit = {"unit-human-church"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-invisibility",
   Action = "research", Value = "upgrade-invisibility",
   Allowed = "check-single-research",
-  Key = "o", Hint = "RESEARCH ~!INVISIBILITY",
+  Key = "i", Hint = "RESEARCH ~!INVISIBILITY",
   ForUnit = {"unit-human-church"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-scorpion",
   Action = "research", Value = "upgrade-scorpion",
   Allowed = "check-single-research",
-  Key = "b", Hint = "RESEARCH ~!MINOR SUMMONING",
+  Key = "s", Hint = "RESEARCH SUMMON ~!SPIDERS",
   ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-rain-of-fire",
   Action = "research", Value = "upgrade-rain-of-fire",
   Allowed = "check-single-research",
-  Key = "b", Hint = "RESEARCH ~!RAIN OF FIRE",
+  Key = "r", Hint = "RESEARCH ~!RAIN OF FIRE",
   ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-water-elemental",
   Action = "research", Value = "upgrade-water-elemental",
   Allowed = "check-single-research",
-  Key = "b", Hint = "RESEARCH ~!MAJOR SUMMONING",
+  Key = "e", Hint = "RESEARCH SUMMON ~!ELEMENTAL",
   ForUnit = {"unit-human-tower"} } )
-
-]]

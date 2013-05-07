@@ -69,6 +69,7 @@ local buildings = {
    {Names = {orc = "Lumber mill", human = "Lumber mill"},
     Costs = {"time", 150, "gold", 600, "wood", 500},
     HitPoints = 600,
+    CanStore = {"wood"},
     Size = {128, 128}},
 
    {Names = {orc = "Town hall", human = "Town hall"},

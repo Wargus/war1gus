@@ -123,25 +123,6 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-catapult2",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-catapult"} } )
 
-if (extensions) then
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-patrol-land",
-  Action = "patrol",
-  Key = "p", Hint = "~!PATROL",
-  ForUnit = {"unit-grunt", "unit-ogre", "unit-axethrower", "unit-ogre-mage",
-    "unit-goblin-sappers", "unit-berserker", "unit-catapult", "unit-fad-man",
-    "unit-double-head", "unit-sharp-axe", "unit-beast-cry", "unit-quick-blade",
-    "unit-skeleton", "unit-dragon", "unit-fire-breeze", "orc-group", "unit-daemon",
-    "unit-zeppelin", "unit-eye-of-vision"} } )
-else
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-patrol-land",
-  Action = "patrol",
-  Key = "p", Hint = "~!PATROL",
-  ForUnit = {"unit-grunt", "unit-ogre", "unit-axethrower", "unit-ogre-mage",
-    "unit-goblin-sappers", "unit-berserker", "unit-catapult", "unit-fad-man",
-    "unit-double-head", "unit-sharp-axe", "unit-beast-cry", "unit-quick-blade",
-    "unit-skeleton", "unit-dragon", "unit-fire-breeze", "orc-group", "unit-daemon"} } )
-end
-
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-orc-stand-ground",
   Action = "stand-ground",
   Key = "t", Hint = "S~!TAND GROUND",

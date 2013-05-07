@@ -59,7 +59,7 @@ local editor_types = {
   "unit-human-stable",
   "unit-human-church",
   "unit-human-tower",
-  "unit-stormwind-keep",
+  "unit-human-stormwind-keep",
 
 --- - - - - - - - - - - - - - - - - - -
 
@@ -83,7 +83,7 @@ local editor_types = {
   "unit-orc-kennel",
   "unit-orc-temple",
   "unit-orc-tower",
-  "unit-blackrock-spire",
+  "unit-orc-blackrock-spire",
 
 --- - - - - - - - - - - - - - - - - - -
 

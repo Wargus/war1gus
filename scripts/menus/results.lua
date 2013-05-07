@@ -1,38 +1,33 @@
-local hvictory = "ui/human/victory.png"
-local hdefeat =  "ui/human/defeat.png"
-local ovictory = "ui/orc/victory.png"
-local odefeat =  "ui/orc/defeat.png"
+local houtcome = "ui/human/outcome_windows.png"
+local ooutcome =  "ui/orc/outcome_windows.png"
 
 function RunResultsMenu()
   local background
-  local result
+  local result = "Humpf"
   local human = (GetPlayerData(GetThisPlayer(), "RaceName") == "human")
+
+  if (human) then
+     background = houtcome
+  else
+     background = ooutcome
+  end
 
   if (GameResult == GameVictory) then
     result = "Victory!"
     if (human) then
-      background = hvictory
       PlayMusic("music/Human Victory.ogg")
     else
-      background = ovictory
       PlayMusic("music/Orc Victory.ogg")
     end
   elseif (GameResult == GameDefeat) then
     result = "Defeat!"
     if (human) then
-      background = hdefeat
       PlayMusic("music/Human Defeat.ogg")
     else
-      background = odefeat
       PlayMusic("music/Orc Defeat.ogg")
     end
   elseif (GameResult == GameDraw) then
     result = "Draw!"
-    if (human) then
-      background = hdefeat
-    else
-      background = odefeat
-    end
   else
     return -- quit to menu
   end
@@ -40,78 +35,61 @@ function RunResultsMenu()
   local menu = WarMenu(nil, background)
   local offx = (Video.Width - 640) / 2
   local offy = (Video.Height - 480) / 2
+  local multx = Video.Width / 640
+  local multy = Video.Height / 400
 
   local names_font = Fonts["small-title"]
-  local top_offset = 57
-  local bottom_offset = 178
-  local description_offset = 30
 
-  local c = 0
-  for i=0,7 do
+  menu:addLabel(result, 125 * multx, 52 * multy, Fonts["small-title"])
+
+  local kills = {you = 0, enemy = 0, neutral = 0}
+  local units = {you = 0, enemy = 0, neutral = 0}
+  local razings = {you = 0, enemy = 0, neutral = 0}
+  local buildings = {you = 0, enemy = 0, neutral = 0}
+  local gold = {you = 0, enemy = 0, neutral = 0}
+  local wood = {you = 0, enemy = 0, neutral = 0}
+
+  for i=0,14 do
     if (GetPlayerData(i, "TotalUnits") > 0 ) then
-      c = c + 1
-    end
-  end
-
-  local line_spacing = (432 - bottom_offset - description_offset) / c
-
-  menu:addLabel("Outcome", offx + 106, offy + top_offset)
-  menu:addLabel(result, offx + 106, offy + top_offset + 21, Fonts["large-title"])
-
-  menu:addLabel("Units", offx + 50, offy + bottom_offset, Fonts["large"], true)
-  menu:addLabel("Buildings", offx + 140, offy + bottom_offset, Fonts["large"], true)
-  menu:addLabel("Gold", offx + 230, offy + bottom_offset, Fonts["large"], true)
-  menu:addLabel("Wood", offx + 320, offy + bottom_offset, Fonts["large"], true)
-  menu:addLabel("Oil", offx + 410, offy + bottom_offset, Fonts["large"], true)
-  menu:addLabel("Kills", offx + 500, offy + bottom_offset, Fonts["large"], true)
-  menu:addLabel("Razings", offx + 590, offy + bottom_offset, Fonts["large"], true)
-
-  c = 0
-  for i=0,7 do
-    if (GetPlayerData(i, "TotalUnits") > 0 ) then
-      local name = GetPlayerData(i, "Name")
-      if (ThisPlayer.Index == i) then
-        name = name .. " - You"
-      elseif (ThisPlayer:IsAllied(Players[i])) then
-        name = name .. " - Ally"
+      local name = ""
+      if (ThisPlayer.Index == i) or (ThisPlayer:IsAllied(Players[i])) then
+  	 name = "you"
       elseif (ThisPlayer:IsEnemy(Players[i])) then
-        name = name .. " - Enemy"
+  	 name = "enemy"
       else
-        name = name .. " - Neutral"
+  	-- ignored for now
+        name = "neutral"
       end
-      menu:addLabel(name, offx + 320,
-        offy + bottom_offset + description_offset + 26 + line_spacing * c + 5,
-        names_font, true)
-      menu:addLabel(GetPlayerData(i, "TotalUnits"), offx + 10 + 40,
-        offy + bottom_offset + description_offset + line_spacing * c + 5,
-        Fonts["large"], true)
-      menu:addLabel(GetPlayerData(i, "TotalBuildings"), offx + 100 + 40,
-        offy + bottom_offset + description_offset + line_spacing * c + 5,
-        Fonts["large"], true)
-      menu:addLabel(GetPlayerData(i, "TotalResources", "gold"), offx + 190 + 40,
-        offy + bottom_offset + description_offset + line_spacing * c + 5,
-        Fonts["large"], true)
-      menu:addLabel(GetPlayerData(i, "TotalResources", "wood"), offx + 280 + 40,
-        offy + bottom_offset + description_offset + line_spacing * c + 5,
-        Fonts["large"], true)
-      menu:addLabel(GetPlayerData(i, "TotalResources", "oil"), offx + 370 + 40,
-        offy + bottom_offset + description_offset + line_spacing * c + 5,
-        Fonts["large"], true)
-      menu:addLabel(GetPlayerData(i, "TotalKills"), offx + 460 + 40,
-        offy + bottom_offset + description_offset + line_spacing * c + 5,
-        Fonts["large"], true)
-      menu:addLabel(GetPlayerData(i, "TotalRazings"), offx + 550 + 40,
-        offy + bottom_offset + description_offset + line_spacing * c + 5,
-        Fonts["large"], true)
-
-      c = c + 1
+      kills[name] = kills[name] + GetPlayerData(i, "TotalKills")
+      units[name] = units[name] + GetPlayerData(i, "TotalUnits")
+      razings[name] = razings[name] + GetPlayerData(i, "TotalRazings")
+      buildings[name] = buildings[name] + GetPlayerData(i, "TotalBuildings")
+      gold[name] = gold[name] + GetPlayerData(i, "TotalResources", "gold")
+      wood[name] = wood[name] + GetPlayerData(i, "TotalResources", "wood")        
     end
   end
+  
+  local lineHeight = 17 * multy
 
-  menu:addFullButton("~!Save Replay", "s", offx + 150, offy + 440,
+  menu:addLabel(kills.you, 115 * multx, 280 * multy, Fonts["large"], true)
+  menu:addLabel(kills.enemy, 115 * multx, 280 * multy + lineHeight, Fonts["large"], true)
+  menu:addLabel(units.you, 115 * multx, 346 * multy, Fonts["large"], true)
+  menu:addLabel(units.enemy, 115 * multx, 346 * multy + lineHeight, Fonts["large"], true)
+
+  menu:addLabel(razings.you, 315 * multx, 280 * multy, Fonts["large"], true)
+  menu:addLabel(razings.enemy, 315 * multx, 280 * multy + lineHeight, Fonts["large"], true)
+  menu:addLabel(buildings.you, 315 * multx, 346 * multy, Fonts["large"], true)
+  menu:addLabel(buildings.enemy, 315 * multx, 346 * multy + lineHeight, Fonts["large"], true)
+
+  menu:addLabel(gold.you, 515 * multx, 280 * multy, Fonts["large"], true)
+  menu:addLabel(gold.enemy, 515 * multx, 280 * multy + lineHeight, Fonts["large"], true)
+  menu:addLabel(wood.you, 515 * multx, 346 * multy, Fonts["large"], true)
+  menu:addLabel(wood.enemy, 515 * multx, 346 * multy + lineHeight, Fonts["large"], true)
+
+  menu:addFullButton("~!Save Replay", "s", 16 * multx, 180 * multy,
     function() RunSaveReplayMenu() end)
 
-  menu:addFullButton("~!Continue", "c", offx + 400, offy + 440,
+  menu:addFullButton("~!Continue", "c", 16 * multx, 210 * multy,
     function() StopMusic(); menu:stop() end)
 
   menu:run()

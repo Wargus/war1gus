@@ -41,6 +41,7 @@ local units = {
     Size = {neutral = {96, 96}},
     HitPoints = 300,
     Armor = 0,
+    Animations = "animations-knight",
     BasicDamage = 65},
    {Names = {neutral = "Fire elemental"},
     Size = {neutral = {96, 96}},
@@ -157,12 +158,31 @@ local units = {
     Costs = {"time", 90, "gold", 900},
     HitPoints = 40,
     Armor = 0,
+    CanCastSpell = {
+       human = {
+	  "spell-summon-scorpions",
+	  "spell-summon-elemental",
+	  "spell-rain-of-fire"},
+       orc = {
+	  "spell-summon-spiders",
+	  "spell-summon-daemon",
+	  "spell-poison-cloud" } },
+    Missile = "missile-fireball",
     BasicDamage = 6,
     MaxAttackRange = 3},
    {Names = {orc = "Necrolyte", human = "Cleric"},
     Costs = {"time", 80, "gold", 700},
     HitPoints = 40,
     Armor = 0,
+    CanCastSpell = {
+       human = {
+	  "spell-healing",
+	  "spell-far-seeing",
+	  "spell-invisibility"},
+       orc = {
+	  "spell-raise-dead",
+	  "spell-dark-vision",
+	  "spell-unholy-armor" } },
     BasicDamage = 6,
     MaxAttackRange = 1},
 
@@ -175,6 +195,7 @@ local units = {
    {Names = {human = "Midevh"},
     HitPoints = 110,
     Armor = 0,
+    Missile = "missile-fireball",
     BasicDamage = 10,
     MaxAttackRange = 5}}
 
@@ -225,7 +246,6 @@ for idx,unit in ipairs(units) do
 	 RightMouseAction = "attack",
 	 CanAttack = true, Coward = false,
 	 CanTargetLand = true,
-	 CanGatherResources = {},
 	 Sounds = {
 	    "attack", unitname .. "-attack",
 	    "selected", race .. " selected",
@@ -236,10 +256,15 @@ for idx,unit in ipairs(units) do
 	 SelectableByRectangle = true}
 
       for k,v in pairs(unit) do
-	 if unitType[k] then
+	 if unitType[k] or k == "CanGatherResources" then
 	    unitType[k] = v
 	 end
       end
+
+      if unit.CanCastSpell then
+	 unitType.CanCastSpell = unit.CanCastSpell[race]
+      end
+
       DefineUnitType("unit-" .. unitname, unitType)
    end
 end

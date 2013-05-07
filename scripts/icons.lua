@@ -130,9 +130,8 @@ icons = {
   {"icon-human-attack-ground", 40},
   {"icon-orc-attack-ground", 40},
 
-  {"icon-holy-vision", 0},
-  {"icon-catapult", 0},
-  {"icon-human-wall", 41},
+  -- {"icon-catapult", 0},
+  -- {"icon-human-wall", 41},
 }
 
 --[[
