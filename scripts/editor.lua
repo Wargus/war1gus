@@ -49,7 +49,7 @@ local editor_types = {
   "unit-human-catapult",
   "unit-conjurer",
   "unit-cleric",
-  "unit-midevh",
+  "unit-medivh",
 
   "unit-human-town-hall",
   "unit-human-farm",

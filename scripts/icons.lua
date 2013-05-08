@@ -83,7 +83,7 @@ icons = {
   {"icon-daemon", 51},
   {"icon-water-elemental", 52},
   {"icon-lothar", 53},
-  {"icon-midevh", 54},
+  {"icon-medivh", 54},
   {"icon-garona", 55},
   {"icon-grizelda", 56},
   {"icon-wounded", 57},

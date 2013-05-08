@@ -234,8 +234,8 @@ DefineAnimations("animations-necrolyte", BuildAnimations(frameNumbers_5_5_5_4))
 --	Conjurer, Warlock
 DefineAnimations("animations-conjurer", BuildAnimations(frameNumbers_5_5_4_4))
 
---	Midevh
-DefineAnimations("animations-midevh", animation_5move_5att_3death)
+--	Medivh
+DefineAnimations("animations-medivh", animation_5move_5att_3death)
 
 --	Human Farm, Orc Farm, Human Barracks, Orc Barracks,
 --	Human Church, Orc Temple, Human Stable, Orc Kennel,

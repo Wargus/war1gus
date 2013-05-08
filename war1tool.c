@@ -448,7 +448,7 @@ Control Todo[] = {
 {U,0,"orc/units/warlock",									 191, 290 _2},
 {U,0,"human/units/cleric",									 191, 291 _2},
 {U,0,"orc/units/necrolyte",									 191, 292 _2},
-{U,0,"human/units/midevh",									 191, 293 _2},
+{U,0,"human/units/medivh",									 191, 293 _2},
 {U,0,"human/units/lothar",									 191, 294 _2},
 {U,0,"neutral/units/wounded",								 191, 295 _2},
 {U,0,"neutral/units/grizelda,garona",						 191, 296 _2},

@@ -194,7 +194,7 @@ local units = {
     Armor = 5,
     BasicDamage = 15},
 
-   {Names = {human = "Midevh"},
+   {Names = {human = "Medivh"},
     HitPoints = 110,
     Armor = 0,
     Missile = "missile-fireball",
