@@ -43,7 +43,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peasant",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
     "unit-human-catapult", "unit-peasant",
     "unit-water-elemental", "unit-scorpion",
-    "unit-cleric", "unit-conjurer", "unit-midevh",
+    "unit-cleric", "unit-conjurer", "unit-midevh", "unit-lothar",
     "human-group" } } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
@@ -52,7 +52,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
     "unit-dwarves", "unit-human-catapult", "unit-peasant",
     "unit-water-elemental", "unit-scorpion",
-    "unit-cleric", "unit-conjurer", "unit-midevh",
+    "unit-cleric", "unit-conjurer", "unit-midevh", "unit-lothar",
     "human-group"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield2",
@@ -73,7 +73,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword1",
   Action = "attack",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-water-elemental", "unit-scorpion",
+    "unit-water-elemental", "unit-scorpion", "unit-lothar",
     "unit-human-catapult", "human-group"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword2",
@@ -143,7 +143,7 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-far-seeing",
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-fireball",
   Action = "attack",
   Key = "a", Hint = "FIREBALL ~!ATTACK",
-  ForUnit = {"unit-conjurer"} } )
+  ForUnit = {"unit-conjurer", "unit-midevh"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-scorpion",
   Action = "cast-spell", Value = "spell-summon-scorpions",

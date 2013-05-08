@@ -189,7 +189,7 @@ local units = {
     MaxAttackRange = 1},
 
    {Names = {orc = "Lothar"},
-    Size = {orc = {96, 96}},
+    Size = {human = {96, 96}},
     HitPoints = 50,
     Armor = 5,
     BasicDamage = 15},
