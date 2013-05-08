@@ -33,6 +33,118 @@ UI.MessageScrollSpeed = 5
 
 Load("scripts/widgets.lua")
 
+local info_panel_x = 0
+local info_panel_y = 140
+local min_damage = Div(ActiveUnitVar("PiercingDamage"), 2)
+local max_damage = Add(ActiveUnitVar("PiercingDamage"), ActiveUnitVar("BasicDamage"))
+local damage_bonus = Sub(ActiveUnitVar("PiercingDamage", "Value", "Type"),
+							ActiveUnitVar("PiercingDamage", "Value", "Initial"));
+
+DefinePanelContents(
+-- Default presentation. ------------------------
+  {
+  Ident = "panel-general-contents",
+  Pos = {info_panel_x, info_panel_y}, DefaultFont = "game",
+  Contents = {
+     { Pos = {70, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
+       More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 49}}
+     },
+     { Pos = {98, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
+       More = {"FormattedText2", {
+		  Font = "small", Variable = "HitPoints", Format = "%d/%d",
+		  Component1 = "Value", Component2 = "Max", Centered = true}}
+     },
+     { Pos = {105, 8}, More = {"Text", {Text = Line(1, UnitName("Active"), 90, "small"), Centered = true}} },
+     { Pos = {105, 22}, More = {"Text", {Text = Line(2, UnitName("Active"), 90, "small"), Centered = true}} },
+-- Ressource Left
+     { Pos = {68, 86}, Condition = {ShowOpponent = false, GiveResource = "only"},
+       More = {"FormattedText2", {Format = "%s Left:%d", Variable = "GiveResource",
+				  Component1 = "Name", Component2 = "Value", Centered = true}}
+     },
+-- Construction
+     { Pos = {10, 153}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+       More = {"CompleteBar", {Variable = "Build", Width = 140, Height = 18}}
+     },
+     { Pos = {50, 154}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+       More = {"Text", "% Complete"}},
+     { Pos = {9, 78}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+       More = {"Icon", {Unit = "Worker"}}}
+  } },
+-- Supply Building constructed.----------------
+  {
+  Ident = "panel-building-contents",
+  Pos = {info_panel_x, info_panel_y}, DefaultFont = "game",
+  Condition = {ShowOpponent = false, HideNeutral = true, Build = "false", Supply = "only", Training = "false", UpgradeTo = "false"},
+-- FIXME more condition. not town hall.
+  Contents = {
+-- Food building
+	{ Pos = {16, 51}, More = {"Text", "Usage"} },
+	{ Pos = {38, 66}, More = {"Text", {Text = "Supply : ", Variable = "Supply", Component = "Max"}} },
+	{ Pos = {31, 82}, More = { "Text", {Text = Concat("Demand : ",
+									If(GreaterThan(ActiveUnitVar("Demand", "Max"), ActiveUnitVar("Supply", "Max")),
+										InverseVideo(String(ActiveUnitVar("Demand", "Max"))),
+										String(ActiveUnitVar("Demand", "Max")) ))}}
+    }
+
+  } },
+-- All own unit -----------------
+  {
+  Ident = "panel-all-unit-contents",
+  Pos = {info_panel_x, info_panel_y},
+  DefaultFont = "game",
+  Condition = {ShowOpponent = false, HideNeutral = true, Build = "false"},
+  Contents = {
+     { Pos = {33, 82}, Condition = {AttackRange = "only"},
+       More = {"Text", {Text = "Range: ", Variable = "AttackRange" , Stat = true}}
+     },
+-- Research
+     { Pos = {10, 153}, Condition = {Research = "only"},
+       More = {"CompleteBar", {Variable = "Research", Width = 140, Height = 18}}
+     },
+     { Pos = {16, 86}, Condition = {Research = "only"}, More = {"Text", "Researching:"}},
+     { Pos = {50, 154}, Condition = {Research = "only"}, More = {"Text", "% Complete"}},
+-- Training
+     { Pos = {10, 153}, Condition = {Training = "only"},
+       More = {"CompleteBar", {Variable = "Training", Width = 140, Height = 18}}
+     },
+     { Pos = {50, 154}, Condition = {Training = "only"}, More = {"Text", "% Complete"}},
+-- Upgrading To
+     { Pos = {10, 153}, Condition = {UpgradeTo = "only"},
+       More = {"CompleteBar", {Variable = "UpgradeTo", Width = 140, Height = 18}}
+     },
+     { Pos = {16,  86}, More = {"Text", "Upgrading:"}, Condition = {UpgradeTo = "only"} },
+     { Pos = {50, 154}, More = {"Text", "% Complete"}, Condition = {UpgradeTo = "only"} },
+-- Mana
+     { Pos = {70, 45}, Condition = {Mana = "only"},
+       More = {"CompleteBar", {Variable = "Mana", Height = 7, Width = 49, Border = true}}
+     },
+     { Pos = {98, 45},
+       Condition = {Mana = "only"},
+       More = {"FormattedText2", {
+		  Font = "small", Variable = "Mana", Format = "%d/%d",
+		  Component1 = "Value", Component2 = "Max", Centered = true}} },
+-- Resource Carry
+     { Pos = {61, 149}, Condition = {CarryResource = "only"},
+       More = {"FormattedText2", {Format = "Carry: %d %s", Variable = "CarryResource",
+				  Component1 = "Value", Component2 = "Name"}}
+     }
+  } },
+-- Attack Unit -----------------------------
+  {
+  Ident = "panel-attack-unit-contents",
+  Pos = {info_panel_x, info_panel_y},
+  DefaultFont = "game",
+  Condition = {ShowOpponent = true, HideNeutral = true, Building = "false", Build = "false"},
+  Contents = {
+-- Unit caracteristics
+     { Pos = {22, 52}, Condition = {Armor = "only"},
+       More = {"Text", {
+		  Text = "Armor: ", Variable = "Armor", Stat = true}}
+     },
+     { Pos = {25, 67}, Condition = {Speed = "only"},
+       More = {"Text", {Text = "Speed: ", Variable = "Speed", Stat = true}}
+     } } })
+
 DefineCursor({
   Name = "cursor-point",
   Race = "any",
@@ -165,9 +277,6 @@ function AddButtonPanelButton(x, y)
         b.Style = FindButtonStyle("icon")
         UI.ButtonPanel.Buttons:push_back(b)
 end
-
-local info_panel_x = 0
-local info_panel_y = 160
 
 UI.NormalFontColor = "white";
 UI.ReverseFontColor = "yellow";
@@ -314,4 +423,14 @@ function LoadUI(race, screen_width, screen_height)
   AddFiller("ui/" .. race .. "/top_resource_bar.png", 144, 0)
   AddFiller("ui/" .. race .. "/right_panel.png", 624, 0)
   AddFiller("ui/" .. race .. "/bottom_panel.png", 144, 376)
+
+  local ui = {
+    "info-panel", {
+      "panels", {"panel-general-contents", "panel-attack-unit-contents",
+                "panel-all-unit-contents", "panel-building-contents"},
+      "completed-bar", {
+        "color", {48, 100, 4}
+      }
+    }
+  }
 end

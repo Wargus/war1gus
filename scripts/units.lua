@@ -160,6 +160,7 @@ local units = {
     Costs = {"time", 90, "gold", 900},
     HitPoints = 40,
     Armor = 0,
+    Mana = {Enable = true},
     CanCastSpell = {
        human = {
 	  "spell-summon-scorpions",
@@ -176,6 +177,7 @@ local units = {
     Costs = {"time", 80, "gold", 700},
     HitPoints = 40,
     Armor = 0,
+    Mana = {Enable = true},
     CanCastSpell = {
        human = {
 	  "spell-healing",
@@ -197,6 +199,7 @@ local units = {
    {Names = {human = "Medivh"},
     HitPoints = 110,
     Armor = 0,
+    Mana = {Enable = true},
     Missile = "missile-fireball",
     BasicDamage = 10,
     MaxAttackRange = 5}}
@@ -246,6 +249,7 @@ for idx,unit in ipairs(units) do
 	 Points = 100,
 	 Demand = 1,
 	 Type = "land",
+	 Mana = {Enable = false},
 	 RightMouseAction = "attack",
 	 CanAttack = true, Coward = false,
 	 CanTargetLand = true,
