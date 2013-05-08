@@ -88,10 +88,10 @@ DefineModifier("upgrade-spear2",
   {"apply-to", "unit-spearman"})
 
 DefineModifier("upgrade-wolves1",
---  {"Speed", 1},
+ {"Speed", 1},
   {"apply-to", "unit-raider"})
 DefineModifier("upgrade-wolves2",
---  {"Speed", 1},
+ {"Speed", 1},
   {"apply-to", "unit-raider"})
 
 DefineModifier("upgrade-orc-shield1",

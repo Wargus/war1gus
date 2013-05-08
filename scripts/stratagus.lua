@@ -248,12 +248,12 @@ SetHoldClickDelay(1000)
 --SetShowCommandKey(false)
 
 --  Uncomment next, to reveal the complete map.
-RevealMap()
+-- RevealMap()
 
 --  Choose your default fog of war state (enabled #t/disabled #f).
 --    disabled is a C&C like fog of war.
 SetFogOfWar(false)
---SetFogOfWar(false)
+-- SetFogOfWar(false)
 
 SetFogOfWarGraphics("tilesets/forest/fog.png")
 
@@ -374,7 +374,7 @@ if (preferences == nil) then
     VideoHeight = 400,
     VideoFullScreen = false,
     PlayerName = "Player",
-    FogOfWar = true,
+    FogOfWar = false,
     ShowCommandKey = true,
     GroupKeys = "0123456789`",
     GameSpeed = 30,
@@ -391,8 +391,6 @@ if (preferences == nil) then
     MaxOpenGLTexture = 0,
     CampaignOrc = 1,
     CampaignHuman = 1,
-    CampaignOrcX = 1,
-    CampaignHumanX = 1,
   }
 end
 

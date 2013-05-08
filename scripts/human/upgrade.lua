@@ -88,10 +88,10 @@ DefineModifier("upgrade-arrow2",
   {"apply-to", "unit-archer"})
 
 DefineModifier("upgrade-horse1",
---  {"Speed", 1},
+ {"Speed", 1},
   {"apply-to", "unit-knight"})
 DefineModifier("upgrade-horse2",
---  {"Speed", 1},
+ {"Speed", 1},
   {"apply-to", "unit-knight"})
 
 DefineModifier("upgrade-human-shield1",

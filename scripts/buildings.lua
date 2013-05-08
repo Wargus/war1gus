@@ -144,6 +144,7 @@ for idx,building in ipairs(buildings) do
 	 Armor =  20,
 	 BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
 	 RightMouseAction = "none",
+	 Speed = 0,
 	 Type = "land",
 	 CanAttack = false,
 	 Coward = false,

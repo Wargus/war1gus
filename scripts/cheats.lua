@@ -34,7 +34,7 @@ godcheat = false
 function HandleCheats(str)
   local resources = { "gold", "wood", "oil" }
 
-  if (str == "eye of newy") then
+  if (str == "eye of newt") then
     -- FIXME: no function yet
     AddMessage("All wizard spells cheat ... not working yet")
 

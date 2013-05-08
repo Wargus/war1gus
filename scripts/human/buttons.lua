@@ -142,10 +142,10 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-fireball",
   Key = "a", Hint = "FIREBALL ~!ATTACK",
   ForUnit = {"unit-conjurer"} } )
 
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-spider",
-  Action = "cast-spell", Value = "spell-summon-spiders",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-spider"},
-  Key = "s", Hint = "SUMMON S~!PIDERS",
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-scorpion",
+  Action = "cast-spell", Value = "spell-summon-scorpions",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-scorpion"},
+  Key = "u", Hint = "S~!UMMON SCORPIONS",
   ForUnit = {"unit-conjurer"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-water-elemental",
@@ -363,7 +363,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-invisibility",
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-scorpion",
   Action = "research", Value = "upgrade-scorpion",
   Allowed = "check-single-research",
-  Key = "s", Hint = "RESEARCH SUMMON ~!SPIDERS",
+  Key = "s", Hint = "RESEARCH SUMMON ~!SCORPIONS",
   ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-rain-of-fire",
