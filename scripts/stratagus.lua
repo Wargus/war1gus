@@ -420,8 +420,8 @@ Load("scripts/sound.lua")
 Load("scripts/missiles.lua")
 
 -- Load the animations for the units.
-Load("scripts/spells.lua")
 Load("scripts/anim.lua")
+Load("scripts/spells.lua")
 Load("scripts/buildings.lua")
 Load("scripts/units.lua")
 

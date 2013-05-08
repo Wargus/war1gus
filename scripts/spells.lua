@@ -35,7 +35,21 @@ DefineVariables("Mana", {Max = 255, Value = 84, Increase = 1, Enable = false}, "
 
 --  Declare some unit types used in spells. This is quite accetable, the other
 --  way would be to define can-cast-spell outside unit definitions, not much of an improvement.
-DefineUnitType("unit-revealer", {})
+DefineUnitType(
+   "unit-revealer", {
+      Name = "Dummy unit",
+      Animations = "animations-building", Icon = "icon-far-seeing",
+      HitPoints = 1,
+      TileSize = {1, 1}, BoxSize = {1, 1},
+      SightRange = 12,
+      BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+      Priority = 0,
+      DecayRate = 1,
+      Type = "land",
+      Building = true, VisibleUnderFog = true,
+      Revealer = true,
+      DetectCloak = true,
+      Sounds = {} })
 -- These following units are redefined in units.lua
 DefineUnitType("unit-the-dead", {})
 DefineUnitType("unit-spider", {})
