@@ -42,6 +42,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peon",
   Key = "m", Hint = "~!MOVE",
   ForUnit = {"unit-grunt", "unit-raider", "unit-spearman",
     "unit-orc-catapult", "unit-peon",
+    "unit-daemon", "unit-spider",
     "unit-necrolyte", "unit-warlock", "unit-garona",
     "orc-group" } } )
 
@@ -50,6 +51,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield1",
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-grunt", "unit-raider", "unit-spearman",
     "unit-dwarves", "unit-orc-catapult", "unit-peon",
+    "unit-daemon", "unit-spider",
     "unit-necrolyte", "unit-warlock", "unit-garona",
     "orc-group"} } )
 
@@ -71,6 +73,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe1",
   Action = "attack",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-grunt", "unit-raider", "unit-spearman",
+    "unit-daemon", "unit-spider",
     "unit-orc-catapult", "orc-group"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe2",
