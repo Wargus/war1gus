@@ -263,9 +263,25 @@ for idx,unit in ipairs(units) do
 	 SelectableByRectangle = true}
 
       for k,v in pairs(unit) do
-	 if unitType[k] or k == "CanGatherResources" then
+	 if unitType[k] then
 	    unitType[k] = v
 	 end
+      end
+
+      if unit.CanGatherResources then
+	 unitType.CanGatherResources = unit.CanGatherResources
+      	 for idx,tbl in ipairs(unit.CanGatherResources) do
+	    local resource = ""
+	    for idx,v in ipairs(tbl) do
+	       if v == "resource-id" then
+		  resource = tbl[idx + 1]
+		  break
+	       end
+	    end
+	    tbl[table.getn(tbl) + 1] = "file-when-loaded"
+	    tbl[table.getn(tbl) + 1] = race .. "/units/" .. unitname ..
+	       "_with_" .. resource .. ".png"
+      	 end
       end
 
       if unit.CanCastSpell then
