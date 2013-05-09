@@ -145,5 +145,7 @@ DefineUnitType(
      SightRange = 1,
      Indestructible = 1,
      DrawLevel = 0,
+     IsNotSelectable = true,
+     NonSolid = true,
      Type = "land", Building = true,
      VisibleUnderFog = true })

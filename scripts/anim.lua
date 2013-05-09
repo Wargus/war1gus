@@ -263,10 +263,13 @@ DefineAnimations("animations-building", {
 --------
 --	Dead Body
 DefineAnimations("animations-dead-body", {
-  Still = {
-	"frame 0", "wait 4",
-	"frame 0", "wait 1",
-  },
+  Death = {"unbreakable begin",
+	   "frame 0", "wait 300",
+	   "frame 10", "wait 300",
+	   "frame 15", "wait 300",
+	   "frame 20", "wait 300",
+	   "unbreakable end",
+	   "wait 1"},
 })
 
 --!!!TODO!!!

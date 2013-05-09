@@ -165,7 +165,7 @@ function DefineUnitFromSpec(unit)
 	 ComputerReactionRange = 6,
 	 PersonReactionRange = 4,
 	 Armor =  3,
-	 BasicDamage = 5, PiercingDamage = 2, Missile = "missile-none",
+	 BasicDamage = 5, PiercingDamage = 0, Missile = "missile-none",
 	 Priority = 63,
 	 Points = 100,
 	 Demand = 1,
@@ -174,6 +174,9 @@ function DefineUnitFromSpec(unit)
 	 RightMouseAction = "attack",
 	 CanAttack = true, Coward = false,
 	 CanTargetLand = true,
+	 Vanishes = false,
+	 NonSolid = false,
+	 IsNotSelectable = false,
 	 Corpse = "unit-dead-body",
 	 Sounds = {
 	    "attack", unitname .. "-attack",
