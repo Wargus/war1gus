@@ -79,6 +79,7 @@ icons = {
   {"icon-fire-elemental", 47},
   {"icon-scorpion", 48},
   {"icon-the-dead", 49},
+  {"icon-dead-body", 49},
   {"icon-skeleton", 50},
   {"icon-daemon", 51},
   {"icon-water-elemental", 52},

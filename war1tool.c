@@ -830,7 +830,7 @@ CampaignInfo campaigns[] = {
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 or"
      " (GetPlayerData(15, \"UnitTypesCount\", \"unit-garona\") == 0 and"
      "  GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-garona\") == 0)",
-     "forest"},
+     "dungeon"},
     {"IX. (unknown)",
      "GetNumOpponents(GetThisPlayer()) == 0",
      "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
