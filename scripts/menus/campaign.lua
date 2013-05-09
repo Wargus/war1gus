@@ -172,7 +172,7 @@ end
 
 function CampaignButtonFunction(campaign, race, exp, i, menu)
   return function()
-    position = campaign_menu[i]
+    position = campaign.menu[i]
     currentCampaign = campaign
     currentRace = race
     currentExp = exp
@@ -182,8 +182,9 @@ function CampaignButtonFunction(campaign, race, exp, i, menu)
   end
 end
 
-function RunCampaignSubmenu(campaign, race, exp)
-  Load(campaign)
+function RunCampaignSubmenu(race, exp)
+  Load("scripts/campaigns.lua")
+  campaign = CreateCampaign(race)
 
   war1gus.playlist = { "music/Orc Briefing.ogg" }
   currentRace = race
@@ -216,16 +217,14 @@ function RunCampaignSubmenu(campaign, race, exp)
 end
 
 function RunCampaign(campaign)
-  Load(campaign)
-
   if (campaign ~= currentCampaign or position == nil) then
     position = 1
   end
 
   currentCampaign = campaign
 
-  while (position <= table.getn(campaign_steps)) do
-    campaign_steps[position]()
+  while (position <= table.getn(campaign.steps)) do
+    campaign.steps[position]()
     if (GameResult == GameVictory) then
       position = position + 1
     elseif (GameResult == GameDefeat) then
@@ -249,9 +248,9 @@ function RunCampaignGameMenu()
   local offy = (Video.Height - 480) / 2
 
   menu:addFullButton("~!Orc campaign", "o", offx + 208, offy + 212 + (36 * 0),
-    function() RunCampaignSubmenu("scripts/orc/campaign1.lua", "orc", ""); menu:stop() end)
+    function() RunCampaignSubmenu("orc", ""); menu:stop() end)
   menu:addFullButton("~!Human campaign", "h", offx + 208, offy + 212 + (36 * 1),
-    function() RunCampaignSubmenu("scripts/human/campaign1.lua", "human", ""); menu:stop() end)
+    function() RunCampaignSubmenu("human", ""); menu:stop() end)
 
   menu:addFullButton("~!Previous Menu", "p", offx + 208, offy + 212 + (36 * 5),
     function() RunSinglePlayerSubMenu(); menu:stop() end)

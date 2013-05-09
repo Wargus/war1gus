@@ -41,24 +41,11 @@ local buildings = {
     Supply = 5,
     Size = {96, 96}},
 
-   {Names = {orc = "Blacksmith", human = "Blacksmith"},
-    Costs = {"time", 150, "gold", 900, "wood", 400},
-    HitPoints = 800,
-    Size = {96, 96}},
-
-   {Names = {orc = "Tower", human = "Tower"},
-    Costs = {"time", 200, "gold", 1400, "wood", 300},
-    HitPoints = 900,
-    Size = {96, 96}},
-
-   {Names = {orc = "Kennel"},
-    Costs = {"time", 150, "gold", 1000, "wood", 400},
-    HitPoints = 500,
-    Size = {128, 96}},
-
-   {Names = {human = "Stable"},
-    Costs = {"time", 150, "gold", 1000, "wood", 400},
-    HitPoints = 500,
+   {Names = {orc = "Town hall", human = "Town hall"},
+    Costs = {"time", 100, "gold", 400, "wood", 400},
+    HitPoints = 2500,
+    CanStore = {"wood", "gold"},
+    Supply = 5,
     Size = {128, 128}},
 
    {Names = {orc = "Barracks", human = "Barracks"},
@@ -72,17 +59,35 @@ local buildings = {
     CanStore = {"wood"},
     Size = {128, 128}},
 
-   {Names = {orc = "Town hall", human = "Town hall"},
-    Costs = {"time", 100, "gold", 400, "wood", 400},
-    HitPoints = 2500,
-    CanStore = {"wood", "gold"},
-    Supply = 5,
-    Size = {128, 128}},
+   {Names = {orc = "Kennel"},
+    Costs = {"time", 150, "gold", 1000, "wood", 400},
+    HitPoints = 500,
+    Size = {128, 96},
+    Dependency = {orc = "lumber-mill"}},
+
+   {Names = {human = "Stable"},
+    Costs = {"time", 150, "gold", 1000, "wood", 400},
+    HitPoints = 500,
+    Size = {128, 128},
+    Dependency = {human = "lumber-mill"}},
+
+   {Names = {orc = "Blacksmith", human = "Blacksmith"},
+    Costs = {"time", 150, "gold", 900, "wood", 400},
+    HitPoints = 800,
+    Size = {96, 96},
+    Dependency = {orc = "lumber-mill", human = "lumber-mill"}},
 
    {Names = {human = "Church", orc = "Temple"},
     Costs = {"time", 200, "gold", 800, "wood", 500},
     HitPoints = 700,
-    Size = {128, 128}},
+    Size = {128, 128},
+    Dependency = {orc = "lumber-mill", human = "lumber-mill"}},
+
+   {Names = {orc = "Tower", human = "Tower"},
+    Costs = {"time", 200, "gold", 1400, "wood", 300},
+    HitPoints = 900,
+    Size = {96, 96},
+    Dependency = {orc = "blacksmith", human = "blacksmith"}},
 
    {Names = {human = "Stormwind keep", orc = "Blackrock spire"},
     Costs = {"time", 100, "gold", 500, "wood", 250},
@@ -91,87 +96,8 @@ local buildings = {
     NotConstructable = true,
     Corpse = "unit-destroyed-3x3-place"}}
 
--- create buildings and their constructions from specs
 for idx,building in ipairs(buildings) do
-   for race,name in pairs(building.Names) do
-      local size = building.Size
-      local filename = string.lower(string.gsub(name, " ", "_"))
-      local fullname = race .. "-" .. string.gsub(filename, "_", "-")
-      local files = {
-	 forest = ("tilesets/forest/" .. race ..
-		      "/buildings/" .. filename .. "_construction.png"),
-	 swamp = ("tilesets/swamp/" .. race ..
-		     "/buildings/" .. filename .. "_construction.png") }
-
-      if not building.NotConstructable then
-	 DefineConstruction(
-	    "construction-" .. fullname,
-	    {Files = {
-		File = files[war1gus.tileset],
-		Size = size},
-	     Constructions = {
-		{Percent = 0,
-		 File = "construction",
-		 Frame = 0},
-		{Percent = 33,
-		 File = "construction",
-		 Frame = 1},
-		{Percent = 67,
-		 File = "construction",
-		 Frame = 2}}})
-      end
-
-      UnitTypeFiles["unit-" .. fullname] = {
-	 forest = ("tilesets/forest/" .. race ..
-		      "/buildings/" .. filename .. ".png"),
-	 swamp = ("tilesets/swamp/" .. race ..
-		     "/buildings/" .. filename .. ".png") }
-
-      local unitType = {
-	 Name = name,
-	 Image = {"size", size},
-	 Animations = "animations-building",
-	 Icon = "icon-" .. fullname,
-	 Costs = building.Costs,
-	 RepairHp = 4,
-	 RepairCosts = {"gold", 1, "wood", 1},
-	 Construction = "construction-" .. fullname,
-	 HitPoints = building.HitPoints,
-	 DrawLevel = 20,
-	 TileSize = { size[1] / 32 - 1, size[2] / 32 - 1 },
-	 BoxSize = { size[1] - 1, size[2] - 1 },
-	 SightRange = 1,
-	 Armor =  20,
-	 BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
-	 RightMouseAction = "none",
-	 Speed = 0,
-	 Type = "land",
-	 CanAttack = false,
-	 Coward = false,
-	 Priority = 20,
-	 AnnoyComputerFactor = 45,
-	 Points = 100,
-	 Supply = 0,
-	 CanStore = {},
-	 Corpse = "unit-destroyed-2x2-place",
-	 ExplodeWhenKilled = "missile-explosion",
-	 Type = "land",
-	 Building = true,
-	 VisibleUnderFog = true,
-	 Sounds = {
-	    "ready", race .. " work complete",
-	    "selected", fullname .. "-selected",
-	    "help", race .. " help 4",
-	    "dead", "building destroyed"}}
-
-	 for k,v in pairs(building) do
-	    if unitType[k] then
-	       unitType[k] = v
-	    end
-	 end
-	 DefineUnitType("unit-" .. fullname, unitType)
-
-   end
+   DefineBuildingFromSpec(building)
 end
 
 UnitTypeFiles["unit-gold-mine"] = {

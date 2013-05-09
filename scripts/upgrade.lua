@@ -28,9 +28,75 @@
 --
 --      $Id$
 
--- Load the different races
-Load("scripts/human/upgrade.lua")
-Load("scripts/orc/upgrade.lua")
+local upgrades = {
+   {orc = {"axe1", {"grunt", "raider"}},
+    human = {"sword1", {"footman", "knight"}},
+    cost = {   120,   750,     0,     0,     0,     0,     0},
+    modifier = {"PiercingDamage", 2}},
+   {orc = {"axe2", {"grunt", "raider"}},
+    human = {"sword2", {"footman", "knight"}},
+    cost = {   120,   1500,     0,     0,     0,     0,     0},
+    modifier = {"PiercingDamage", 2},
+    dependency = {orc = "axe1", human = "sword1"}},
+
+   {orc = {"spear1", {"spearman"}},
+    human = {"arrow1", {"archer"}},
+    cost = {   140,   750,     0,     0,     0,     0,     0},
+    modifier = {"PiercingDamage", 1}},
+   {orc = {"spear2", {"spearman"}},
+    human = {"arrow2", {"archer"}},
+    cost = {   140,   1500,     0,     0,     0,     0,     0},
+    modifier = {"PiercingDamage", 1},
+    dependency = {orc = "spear1", human = "arrow1"}},
+
+   {orc = {"orc-shield1", {"grunt", "raider"}},
+    human = {"human-shield1", {"footman", "knight"}},
+    cost = {   120,   750,     0,     0,     0,     0,     0},
+    modifier = {"Armor", 2}},
+   {orc = {"orc-shield2", {"grunt", "raider"}},
+    human = {"human-shield2", {"footman", "knight"}},
+    cost = {   120,   1500,     0,     0,     0,     0,     0},
+    modifier = {"Armor", 2},
+    dependency = {orc = "orc-shield1", human = "human-shield1"}},
+
+   {orc = {"wolves1", {"raider"}},
+    human = {"horse1", {"knight"}},
+    cost = {   140,   750,     0,     0,     0,     0,     0},
+    modifier = {"Speed", 2}},
+   {orc = {"wolves2", {"raider"}},
+    human = {"horse2", {"knight"}},
+    cost = {   140,   1500,     0,     0,     0,     0,     0},
+    modifier = {"Speed", 2},
+    dependency = {orc = "wolves1", human = "horse1"}},
+
+   {orc = {"raise-dead", {"necrolyte"}},
+    human = {"healing", {"cleric"}},
+    cost = {   120,   750,     0,     0,     0,     0,     0}},
+
+   {orc = {"dark-vision", {"necrolyte"}},
+    human = {"far-seeing", {"cleric"}},
+    cost = {   120,   1500,     0,     0,     0,     0,     0}},
+
+   {orc = {"unholy-armor", {"necrolyte"}},
+    human = {"invisibility", {"cleric"}},
+    cost = {   120,   3000,     0,     0,     0,     0,     0}},
+
+   {orc = {"spider", {"warlock"}},
+    human = {"scorpion", {"conjurer"}},
+    cost = {   140,   750,     0,     0,     0,     0,     0}},
+
+   {orc = {"poison-cloud", {"warlock"}},
+    human = {"rain-of-fire", {"conjurer"}},
+    cost = {   140,   1500,     0,     0,     0,     0,     0}},
+
+   {orc = {"daemon", {"warlock"}},
+    human = {"water-elemental", {"conjurer"}},
+    cost = {   140,   3000,     0,     0,     0,     0,     0}}
+}
+
+for idx,spec in ipairs(upgrades) do
+   DefineUpgradeFromSpec(spec)
+end
 
 DefineAllow("unit-gold-mine",           "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-wall",                "AAAAAAAAAAAAAAAA")
@@ -39,3 +105,9 @@ DefineAllow("unit-destroyed-1x1-place",	"AAAAAAAAAAAAAAAA")
 DefineAllow("unit-destroyed-2x2-place",	"AAAAAAAAAAAAAAAA")
 DefineAllow("unit-destroyed-3x3-place",	"AAAAAAAAAAAAAAAA")
 DefineAllow("unit-destroyed-4x4-place",	"AAAAAAAAAAAAAAAA")
+
+DefineAllowOrcUnits = CreateAllowanceFunction("orc")
+DefineAllowOrcUnits("AAAAAAAAAAAAAAAA")
+
+DefineAllowHumanUnits = CreateAllowanceFunction("human")
+DefineAllowHumanUnits("AAAAAAAAAAAAAAAA")

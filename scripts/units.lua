@@ -138,7 +138,8 @@ local units = {
     Armor = 1,
     BasicDamage = 4,
     Missile = "missile-arrow",
-    MaxAttackRange = 5},
+    MaxAttackRange = 5,
+    Dependencies = {orc = {"lumber-mill"}, human = {"lumber-mill"}}},
    {Names = {orc = "Catapult", human = "Catapult"},
     Costs = {"time", 100, "gold", 900, "wood", 200},
     HitPoints = 120,
@@ -147,7 +148,9 @@ local units = {
     Armor = 0,
     Speed = 5,
     Missile = "missile-catapult-rock",
-    MaxAttackRange = 4},
+    MaxAttackRange = 4,
+    Dependencies = {orc = {"blacksmith", "lumber-mill"},
+		    human = {"blacksmith", "lumber-mill"}}},
    {Names = {orc = "Raider", human = "Knight"},
     Costs = {"time", 80, "gold", 850},
     HitPoints = 90,
@@ -155,7 +158,9 @@ local units = {
     Speed = 13,
     BasicDamage = 13,
     Size = {orc = {96, 96}},
-    MaxAttackRange = 1},
+    MaxAttackRange = 1,
+    Dependencies = {orc = {"blacksmith", "kennel"},
+		    human = {"blacksmith", "stable"}}},
    {Names = {orc = "Warlock", human = "Conjurer"},
     Costs = {"time", 90, "gold", 900},
     HitPoints = 40,
@@ -207,89 +212,5 @@ local units = {
 
 -- build units from specs
 for idx,unit in ipairs(units) do
-   for race,name in pairs(unit.Names) do
-      local filename = string.lower(string.gsub(name, " ", "_"))
-      local unitname = string.gsub(filename, "_", "-")
-
-      local animations = ""
-      if unit.Names.human then
-	 animations = "animations-" .. string.lower(unit.Names.human)
-      else
-	 animations = "animations-" .. unitname
-      end
-
-      if unit.Names.orc and unit.Names.orc == unit.Names.human then
-	 unitname = race .. "-" .. filename
-      end
-
-      local size = {64, 64}
-      if unit.Size and unit.Size[race] then
-	 size = unit.Size[race]
-      end
-
-      local unitType = {
-	 Name = name,
-	 Animations = animations,
-	 Icon = "icon-" .. unitname,
-	 Image = {
-	    "file", race .. "/units/" .. filename .. ".png",
-	    "size", size},
-	 Costs = {},
-	 HitPoints = unit.HitPoints,
-	 DrawLevel = 60,
-	 MaxAttackRange = 1,
-	 TileSize = {1, 1},
-	 BoxSize = {31, 31},
-	 SightRange = 8,
-	 Speed = 9,
-	 ComputerReactionRange = 6,
-	 PersonReactionRange = 4,
-	 Armor =  3,
-	 BasicDamage = 5, PiercingDamage = 2, Missile = "missile-none",
-	 Priority = 63,
-	 Points = 100,
-	 Demand = 1,
-	 Type = "land",
-	 Mana = {Enable = false},
-	 RightMouseAction = "attack",
-	 CanAttack = true, Coward = false,
-	 CanTargetLand = true,
-	 Corpse = "unit-dead-body",
-	 Sounds = {
-	    "attack", unitname .. "-attack",
-	    "selected", race .. " selected",
-	    "acknowledge", race .. " acknowledge",
-	    "ready", race .. " ready",
-	    "help", race .. " help 3",
-	    "dead", race .. " dead"},
-	 SelectableByRectangle = true}
-
-      for k,v in pairs(unit) do
-	 if unitType[k] then
-	    unitType[k] = v
-	 end
-      end
-
-      if unit.CanGatherResources then
-	 unitType.CanGatherResources = unit.CanGatherResources
-      	 for idx,tbl in ipairs(unit.CanGatherResources) do
-	    local resource = ""
-	    for idx,v in ipairs(tbl) do
-	       if v == "resource-id" then
-		  resource = tbl[idx + 1]
-		  break
-	       end
-	    end
-	    tbl[table.getn(tbl) + 1] = "file-when-loaded"
-	    tbl[table.getn(tbl) + 1] = race .. "/units/" .. unitname ..
-	       "_with_" .. resource .. ".png"
-      	 end
-      end
-
-      if unit.CanCastSpell then
-	 unitType.CanCastSpell = unit.CanCastSpell[race]
-      end
-
-      DefineUnitType("unit-" .. unitname, unitType)
-   end
+   DefineUnitFromSpec(unit)
 end

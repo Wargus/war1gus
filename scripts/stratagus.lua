@@ -413,6 +413,8 @@ SetGrabMouse(preferences.GrabMouse)
 --- Uses Stratagus Library path!
 Load("scripts/wc1.lua")
 
+Load("scripts/helpers.lua")
+
 Load("scripts/icons.lua")
 Load("scripts/sound.lua")
 Load("scripts/missiles.lua")
@@ -422,8 +424,8 @@ Load("scripts/anim.lua")
 Load("scripts/spells.lua")
 Load("scripts/buildings.lua")
 Load("scripts/units.lua")
-
 Load("scripts/upgrade.lua")
+
 Load("scripts/fonts.lua")
 Load("scripts/buttons.lua")
 Load("scripts/ui.lua")
