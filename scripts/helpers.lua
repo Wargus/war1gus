@@ -162,6 +162,7 @@ function DefineUnitFromSpec(unit)
 	 BoxSize = {31, 31},
 	 SightRange = 8,
 	 Speed = 9,
+	 organic = true,
 	 ComputerReactionRange = 6,
 	 PersonReactionRange = 4,
 	 Armor =  3,
