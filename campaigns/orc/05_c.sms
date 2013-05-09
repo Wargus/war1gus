@@ -1,0 +1,52 @@
+Load("campaigns/orc/05_c2.sms")
+Load("campaigns/orc/campaign_titles.lua")
+title = campaign_titles[5]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/orc/briefing.png",
+  "campaigns/orc/05_intro.txt",
+  {"campaigns/orc/05_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+--Units
+local allowedHumanUnits = {"unit-human-farm",
+	"unit-human-town-hall", "unit-peasant",
+	"unit-human-barracks", "unit-footman",
+	"unit-human-lumber-mill", "unit-archer",
+	"upgrade-arrow1", "upgrade-arrow2",
+	"unit-human-church", "unit-cleric",
+	"upgrade-far-seeing", "upgrade-healing",
+	"unit-human-blacksmith",
+        "upgrade-sword1", "upgrade-human-shield1",
+	"unit-human-stable", "unit-knight"}
+local allowedOrcUnits = {"unit-orc-farm",
+	"unit-orc-town-hall", "unit-peon",
+	"unit-orc-barracks", "unit-grunt",
+	"unit-orc-lumber-mill", "unit-spearman",
+	"upgrade-spear1", "upgrade-spear2",
+	"unit-orc-temple", "unit-necrolyte"
+	"upgrade-dark-vision", "upgrade-raise-dead",
+        "unit-orc-blacksmith",
+        "upgrade-axe1", "upgrade-orc-shield1",
+	"unit-orc-kennel", "unit-raider"}
+local function DefineAllowTable(table, flags)
+	for i, unitName in ipairs(table) do
+		DefineAllow(unitName, flags)
+	end
+end
+DefineAllowHumanUnits("FFFFFFFFFFFFFFFF")
+DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
+DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
+DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
+
+LoadTileModels("scripts/tilesets/swamp.lua")
+Load("campaigns/orc/05.sms")

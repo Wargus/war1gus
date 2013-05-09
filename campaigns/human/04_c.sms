@@ -1,0 +1,28 @@
+Load("campaigns/human/04_c2.sms")
+Load("campaigns/human/campaign_titles.lua")
+title = campaign_titles[4]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/human/briefing.png",
+  "campaigns/human/04_intro.txt",
+  {"campaigns/human/04_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetPlayerData(15, "UnitTypesCount", "unit-lothar") == 0 and
+		     IfRescuedNearUnit("this", ">=", 1, "unit-lothar", "unit-start-location")) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0 or 
+			(GetPlayerData(15, "UnitTypesCount", "unit-lothar") == 0
+			 and GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-lothar") == 0)) end,
+  function() return ActionDefeat() end)
+
+LoadTileModels("scripts/tilesets/dungeon.lua")
+
+unit = CreateUnit("unit-start-location", 1, {54, 5})
+Load("campaigns/human/04.sms")
+
+unit = CreateUnit("unit-start-location", 0, {54, 5})

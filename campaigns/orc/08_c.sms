@@ -1,0 +1,28 @@
+Load("campaigns/orc/08_c2.sms")
+Load("campaigns/orc/campaign_titles.lua")
+title = campaign_titles[8]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/orc/briefing.png",
+  "campaigns/orc/08_intro.txt",
+  {"campaigns/orc/08_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetPlayerData(15, "UnitTypesCount", "unit-garona") == 0 and
+		     IfRescuedNearUnit("this", ">=", 1, "unit-garona", "unit-start-location")) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0 or 
+		     (GetPlayerData(15, "UnitTypesCount", "unit-garona") == 0 and 
+		      GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-garona") == 0)) end,
+  function() return ActionDefeat() end)
+
+LoadTileModels("scripts/tilesets/dungeon.lua")
+Load("campaigns/orc/08.sms")
+
+-- XXX: hack because garone is owned by player 1 after extraction, but
+-- should be neutral (player 15)
+unit = CreateUnit("unit-start-location", 0, {54, 2})

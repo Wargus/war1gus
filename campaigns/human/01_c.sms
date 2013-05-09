@@ -1,0 +1,34 @@
+Load("campaigns/human/01_c2.sms")
+Load("campaigns/human/campaign_titles.lua")
+title = campaign_titles[1]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/human/briefing.png",
+  "campaigns/human/01_intro.txt",
+  {"campaigns/human/01_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-human-farm") >= 6 and GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-human-barracks") >= 1) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+--Units
+local allowedHumanUnits = {"unit-human-farm",
+	"unit-human-town-hall", "unit-peasant",
+	"unit-human-barracks", "unit-footman"}
+local function DefineAllowTable(table, flags)
+	for i, unitName in ipairs(table) do
+		DefineAllow(unitName, flags)
+	end
+end
+DefineAllowHumanUnits("FFFFFFFFFFFFFFFF")
+DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
+
+
+LoadTileModels("scripts/tilesets/forest.lua")
+Load("campaigns/human/01.sms")

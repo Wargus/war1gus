@@ -1,0 +1,34 @@
+Load("campaigns/orc/02_c2.sms")
+Load("campaigns/orc/campaign_titles.lua")
+title = campaign_titles[2]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/orc/briefing.png",
+  "campaigns/orc/02_intro.txt",
+  {"campaigns/orc/02_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+--Units
+local allowedOrcUnits = {"unit-orc-farm",
+	"unit-orc-town-hall", "unit-peon",
+	"unit-orc-barracks", "unit-grunt",
+	"unit-orc-lumber-mill", "unit-spearman"}
+local function DefineAllowTable(table, flags)
+	for i, unitName in ipairs(table) do
+		DefineAllow(unitName, flags)
+	end
+end
+DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
+DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
+
+LoadTileModels("scripts/tilesets/swamp.lua")
+Load("campaigns/orc/02.sms")

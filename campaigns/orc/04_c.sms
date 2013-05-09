@@ -1,0 +1,21 @@
+Load("campaigns/orc/04_c2.sms")
+Load("campaigns/orc/campaign_titles.lua")
+title = campaign_titles[4]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/orc/briefing.png",
+  "campaigns/orc/04_intro.txt",
+  {"campaigns/orc/04_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+LoadTileModels("scripts/tilesets/dungeon.lua")
+Load("campaigns/orc/04.sms")

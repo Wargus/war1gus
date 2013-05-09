@@ -1,0 +1,43 @@
+Load("campaigns/human/06_c2.sms")
+Load("campaigns/human/campaign_titles.lua")
+title = campaign_titles[6]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/human/briefing.png",
+  "campaigns/human/06_intro.txt",
+  {"campaigns/human/06_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+--Units
+local allowedHumanUnits = {"unit-human-farm",
+	"unit-human-town-hall", "unit-peasant",
+	"unit-human-barracks", "unit-footman",
+	"unit-human-lumber-mill", "unit-archer",
+	"upgrade-arrow1", "upgrade-arrow2",
+	"unit-human-church", "unit-cleric",
+	"upgrade-far-seeing", "upgrade-healing",
+	"unit-human-blacksmith", "unit-human-catapult",
+        "upgrade-sword1", "upgrade-human-shield1",
+	"upgrade-sword2", "upgrade-human-shield2",
+        "unit-human-stable", "unit-knight"}
+local function DefineAllowTable(table, flags)
+	for i, unitName in ipairs(table) do
+		DefineAllow(unitName, flags)
+	end
+end
+DefineAllowHumanUnits("FFFFFFFFFFFFFFFF")
+DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
+DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
+
+
+LoadTileModels("scripts/tilesets/forest.lua")
+Load("campaigns/human/06.sms")

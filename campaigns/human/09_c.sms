@@ -1,0 +1,60 @@
+Load("campaigns/human/09_c2.sms")
+Load("campaigns/human/campaign_titles.lua")
+title = campaign_titles[9]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/human/briefing.png",
+  "campaigns/human/09_intro.txt",
+  {"campaigns/human/09_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+--Units
+local allowedHumanUnits = {"unit-human-farm",
+	"unit-human-town-hall", "unit-peasant",
+	"unit-human-barracks", "unit-footman",
+	"unit-human-lumber-mill", "unit-archer",
+	"upgrade-arrow1", "upgrade-arrow2",
+	"unit-human-church", "unit-cleric",
+	"upgrade-far-seeing", "upgrade-healing",
+	"unit-human-blacksmith", "unit-human-catapult",
+        "upgrade-sword1", "upgrade-human-shield1",
+	"upgrade-sword2", "upgrade-human-shield2",
+        "unit-human-stable", "unit-knight",
+        "upgrade-horse1", "upgrade-horse2",
+        "unit-human-tower", "unit-conjurer",
+        "upgrade-scorpion", "upgrade-rain-of-fire"}
+local allowedOrcUnits = {"unit-orc-farm",
+	"unit-orc-town-hall", "unit-peon",
+	"unit-orc-barracks", "unit-grunt",
+	"unit-orc-lumber-mill", "unit-spearman",
+	"upgrade-spear1", "upgrade-spear2",
+	"unit-orc-temple", "unit-necrolyte"
+	"upgrade-dark-vision", "upgrade-raise-dead",
+        "unit-orc-blacksmith", "unit-orc-catapult",
+        "upgrade-axe1", "upgrade-orc-shield1",
+        "upgrade-axe2", "upgrade-orc-shield2",
+	"unit-orc-kennel", "unit-raider",
+	"upgrade-wolves1", "upgrade-wolves2",
+        "unit-orc-tower", "unit-warlock",
+        "upgrade-spider", "upgrade-poison-cloud"}
+local function DefineAllowTable(table, flags)
+	for i, unitName in ipairs(table) do
+		DefineAllow(unitName, flags)
+	end
+end
+DefineAllowHumanUnits("FFFFFFFFFFFFFFFF")
+DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
+DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
+DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
+
+LoadTileModels("scripts/tilesets/swamp.lua")
+Load("campaigns/human/09.sms")

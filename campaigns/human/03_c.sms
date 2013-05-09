@@ -1,0 +1,47 @@
+Load("campaigns/human/03_c2.sms")
+Load("campaigns/human/campaign_titles.lua")
+title = campaign_titles[3]
+
+Briefing(
+  title,
+  objectives,
+  "../graphics/ui/human/briefing.png",
+  "campaigns/human/03_intro.txt",
+  {"campaigns/human/03_intro.wav"}
+)
+
+AddTrigger(
+  function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+--Units
+local allowedHumanUnits = {"unit-human-farm",
+	"unit-human-town-hall", "unit-peasant",
+	"unit-human-barracks", "unit-footman",
+	"unit-human-lumber-mill", "unit-archer",
+	"upgrade-arrow1",
+	"unit-human-church", "unit-cleric",
+	"upgrade-healing"}
+local allowedOrcUnits = {"unit-orc-farm",
+	"unit-orc-town-hall", "unit-peon",
+	"unit-orc-barracks", "unit-grunt",
+	"unit-orc-lumber-mill", "unit-spearman",
+	"upgrade-spear1",
+	"unit-orc-temple", "unit-necrolyte",
+	"upgrade-raise-dead"}
+local function DefineAllowTable(table, flags)
+	for i, unitName in ipairs(table) do
+		DefineAllow(unitName, flags)
+	end
+end
+DefineAllowHumanUnits("FFFFFFFFFFFFFFFF")
+DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
+DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
+DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
+
+
+LoadTileModels("scripts/tilesets/swamp.lua")
+Load("campaigns/human/03.sms")
