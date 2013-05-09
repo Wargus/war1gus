@@ -26,3 +26,4 @@ unit = CreateUnit("unit-start-location", 1, {54, 5})
 Load("campaigns/human/04.sms")
 
 unit = CreateUnit("unit-start-location", 0, {54, 5})
+DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")

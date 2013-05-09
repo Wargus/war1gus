@@ -32,7 +32,7 @@ local allowedOrcUnits = {"unit-orc-farm",
 	"unit-orc-barracks", "unit-grunt",
 	"unit-orc-lumber-mill", "unit-spearman",
 	"upgrade-spear1", "upgrade-spear2",
-	"unit-orc-temple", "unit-necrolyte"
+	"unit-orc-temple", "unit-necrolyte",
 	"upgrade-dark-vision", "upgrade-raise-dead",
         "unit-orc-blacksmith",
         "upgrade-axe1", "upgrade-orc-shield1"}

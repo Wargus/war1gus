@@ -19,3 +19,5 @@ AddTrigger(
 
 LoadTileModels("scripts/tilesets/dungeon.lua")
 Load("campaigns/human/08.sms")
+
+DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
