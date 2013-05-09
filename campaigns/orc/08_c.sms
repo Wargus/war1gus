@@ -23,6 +23,4 @@ AddTrigger(
 LoadTileModels("scripts/tilesets/dungeon.lua")
 Load("campaigns/orc/08.sms")
 
--- XXX: hack because garone is owned by player 1 after extraction, but
--- should be neutral (player 15)
-unit = CreateUnit("unit-start-location", 0, {54, 2})
+unit = CreateUnit("unit-start-location", 0, {33, 61})
