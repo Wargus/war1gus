@@ -2300,14 +2300,15 @@ static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 			gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"%s\")\n", i, race);
 		} else if (i == 15) {
 			gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"neutral\")\n", i);
+			gzprintf(sms, "SetAiType(%d, \"rescue-passive\")\n", i);
 		} else {
 			if (strcmp(race, "orc")) {
 				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"human\")\n", i);
 			} else {
 				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"orc\")\n", i);
 			}
+			gzprintf(sms, "SetAiType(%d, \"wc1-passive\")\n", i);
 		}
-		gzprintf(sms, "SetAiType(%d, \"wc1-passive\")\n", i);
 	}
 	gzprintf(smp, "-- Stratagus Map Presentation\n");
 	gzprintf(smp, "-- Generated from war1tool\n\n");
