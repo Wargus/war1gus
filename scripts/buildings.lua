@@ -205,3 +205,19 @@ DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
     "dead", "building destroyed",
 --    "attack", "gold-mine-attack"
 }} )
+
+DefineUnitType(
+   "unit-start-location",
+   { Name = "Start Location",
+     Image = {"size", {30, 22},
+	      "file", "graphics/ui/cursors/yellow_crosshair.png"},
+     Animations = "animations-building",
+     Priority = 0,
+     HitPoints = 1,
+     Icon = "icon-cancel",
+     TileSize = {1, 1}, BoxSize = {1, 1},
+     SightRange = 1,
+     Indestructible = 1,
+     DrawLevel = 0,
+     Type = "land", Building = true,
+     VisibleUnderFog = true })

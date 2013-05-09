@@ -87,13 +87,16 @@ fi
 ###############################################################################
 
 # copy script files
-cp -R scripts $DIR/scripts
+cp -R scripts $DIR/
 rm -Rf `find $DIR/scripts | grep CVS`
 rm -Rf `find $DIR/scripts | grep cvsignore`
 rm -Rf `find $DIR/scripts | grep .svn`
 
 # copy our game fonts
 cp -R contrib $DIR/
+
+# copy campaigns
+cp -R campaigns $DIR/
 
 $BINPATH/war1tool "$DATADIR" "$DIR" || exit
 

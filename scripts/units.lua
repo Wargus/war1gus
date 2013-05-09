@@ -193,6 +193,7 @@ local units = {
    {Names = {human = "Lothar"},
     Size = {human = {96, 96}},
     HitPoints = 50,
+    Animations = "animations-medivh",
     Armor = 5,
     BasicDamage = 15},
 
@@ -253,6 +254,7 @@ for idx,unit in ipairs(units) do
 	 RightMouseAction = "attack",
 	 CanAttack = true, Coward = false,
 	 CanTargetLand = true,
+	 Corpse = "unit-dead-body",
 	 Sounds = {
 	    "attack", unitname .. "-attack",
 	    "selected", race .. " selected",

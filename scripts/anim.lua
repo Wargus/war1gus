@@ -234,7 +234,7 @@ DefineAnimations("animations-necrolyte", BuildAnimations(frameNumbers_5_5_5_4))
 --	Conjurer, Warlock
 DefineAnimations("animations-conjurer", BuildAnimations(frameNumbers_5_5_4_4))
 
---	Medivh
+-- Medivh, Lothar
 DefineAnimations("animations-medivh", animation_5move_5att_3death)
 
 --	Human Farm, Orc Farm, Human Barracks, Orc Barracks,

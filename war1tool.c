@@ -340,30 +340,30 @@ Control Todo[] = {
 {M,0,"43", 43 __},
 {M,0,"44", 44 __},
 
-{CM,0,"campaigns/human/01", 117, 63, 0, 0},
-{CM,0,"campaigns/human/02", 119, 55, 1, 0},
-{CM,0,"campaigns/human/03", 121, 69, 2, 0},
-{CM,0,"campaigns/human/04", 123, 97, 3, 0},
-{CM,0,"campaigns/human/05", 125, 57, 4, 0},
-{CM,0,"campaigns/human/06", 127, 47, 5, 0},
-{CM,0,"campaigns/human/07", 129, 67, 6, 0},
-{CM,0,"campaigns/human/08", 131, 95, 7, 0},
-{CM,0,"campaigns/human/09", 133, 71, 8, 0},
-{CM,0,"campaigns/human/10", 135, 73, 9, 0},
-{CM,0,"campaigns/human/11", 137, 75, 10, 0},
-{CM,0,"campaigns/human/12", 139, 77, 11, 0},
-{CM,0,"campaigns/orc/01", 118, 79, 12, 0},
-{CM,0,"campaigns/orc/02", 120, 81, 13, 0},
-{CM,0,"campaigns/orc/03", 122, 49, 14, 0},
-{CM,0,"campaigns/orc/04", 124, 93, 15, 0},
-{CM,0,"campaigns/orc/05", 126, 83, 16, 0},
-{CM,0,"campaigns/orc/06", 128, 65, 17, 0},
-{CM,0,"campaigns/orc/07", 130, 85, 18, 0},
-{CM,0,"campaigns/orc/08", 132, 99, 19, 0},
-{CM,0,"campaigns/orc/09", 134, 87, 20, 0},
-{CM,0,"campaigns/orc/10", 136, 53, 21, 0},
-{CM,0,"campaigns/orc/11", 138, 45, 22, 0},
-{CM,0,"campaigns/orc/12", 140, 59, 23, 0},
+{CM,0,"campaigns/human/01", 117, 63 _2},
+{CM,0,"campaigns/human/02", 119, 55 _2},
+{CM,0,"campaigns/human/03", 121, 69 _2},
+{CM,0,"campaigns/human/04", 123, 97 _2},
+{CM,0,"campaigns/human/05", 125, 57 _2},
+{CM,0,"campaigns/human/06", 127, 47 _2},
+{CM,0,"campaigns/human/07", 129, 67 _2},
+{CM,0,"campaigns/human/08", 131, 95 _2},
+{CM,0,"campaigns/human/09", 133, 71 _2},
+{CM,0,"campaigns/human/10", 135, 73 _2},
+{CM,0,"campaigns/human/11", 137, 75 _2},
+{CM,0,"campaigns/human/12", 139, 77 _2},
+{CM,0,"campaigns/orc/01", 118, 79 _2},
+{CM,0,"campaigns/orc/02", 120, 81 _2},
+{CM,0,"campaigns/orc/03", 122, 49 _2},
+{CM,0,"campaigns/orc/04", 124, 93 _2},
+{CM,0,"campaigns/orc/05", 126, 83 _2},
+{CM,0,"campaigns/orc/06", 128, 65 _2},
+{CM,0,"campaigns/orc/07", 130, 85 _2},
+{CM,0,"campaigns/orc/08", 132, 99 _2},
+{CM,0,"campaigns/orc/09", 134, 87 _2},
+{CM,0,"campaigns/orc/10", 136, 53 _2},
+{CM,0,"campaigns/orc/11", 138, 45 _2},
+{CM,0,"campaigns/orc/12", 140, 59 _2},
 
 // Tilesets
 {T,0,"forest/terrain",										 190 __},
@@ -730,123 +730,6 @@ Control Todo[] = {
 #undef __
 #undef _2
 };
-
-// Extra campaign info that we don't know how to extract
-typedef struct _campaign_info_ {
-	char* title;
-	char* victory_condition;
-	char* defeat_condition;
-	char* tileset;
-} CampaignInfo;
-
-CampaignInfo campaigns[] = {
-    {"I. Intro",
-     "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-human-farm\") >= 6 and"
-     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-human-barracks\") >= 1",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
-    {"II. Grand Hamlet",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
-    {"III. Kyross",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"IV. Dead Mines",
-     "GetPlayerData(15, \"UnitTypesCount\", \"unit-lothar\") == 0 and"
-     " IfRescuedNearUnit(\"this\", \">=\", 1, \"unit-archer\", \"unit-circle-of-power\")",
-     "GetPlayerData(15, \"UnitTypesCount\", \"unit-lothar\") == 0 and"
-     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-lothar\") == 0",
-     "dungeon"},
-    {"V. Elwynn Forest",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
-    {"VI. Northshire Abbey",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
-    {"VII. Sunnyglade",
-     "GetPlayerData(15, \"UnitTypesCount\", \"unit-peasant\") == 0 and"
-     " GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
-    {"VIII. Medivh's Tower",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "dungeon"},
-    {"IX. Black Morass",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"X. Temple of the Damned",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"XI. Blackard & Stonard",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"XII. Black Rock Spire",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"I. Intro",
-     "GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-orc-farm\") >= 6 and"
-     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-orc-barracks\") >= 1",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"II. Kyross",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"III. Grand Hamlet",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
-    {"IV. Dead Mines",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "dungeon"},
-    {"V. Red Ridge Mountains",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"VI. Sunnyglade",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 or"
-     " GetPlayerData(1, \"UnitTypesCount\", \"unit-human-tower\") == 0",
-     "forest"},
-    {"VII. Black Morass",
-     "GetPlayerData(15, \"UnitTypesCount\", \"unit-peasant\") == 0 and"
-     " GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"VIII. Northshire Abbey",
-     "GetNumOpponents(GetThisPlayer()) == 0 and"
-     " GetPlayerData(15, \"UnitTypesCount\", \"unit-garona\") == 0 and"
-     " GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-garona\") == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0 or"
-     " (GetPlayerData(15, \"UnitTypesCount\", \"unit-garona\") == 0 and"
-     "  GetPlayerData(GetThisPlayer(), \"UnitTypesCount\", \"unit-garona\") == 0)",
-     "dungeon"},
-    {"IX. (unknown)",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "swamp"},
-    {"X. Elwynn Forest",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
-    {"XI. Goldshire & Moonbrook",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"},
-    {"XII. Stormwind Keep",
-     "GetNumOpponents(GetThisPlayer()) == 0",
-     "GetPlayerData(GetThisPlayer(), \"TotalNumUnits\") == 0",
-     "forest"}};
 
 //----------------------------------------------------------------------------
 //  TOOLS
@@ -2377,7 +2260,7 @@ int ConvertText(char* file, int txte, int ofs)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void SmsSaveObjectives(gzFile sms, FILE* sms_c2, unsigned char* txtp, const char* lvlpath, char* race, CampaignInfo ci)
+static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 {
 	int offset;
 	unsigned int i;
@@ -2388,8 +2271,6 @@ static void SmsSaveObjectives(gzFile sms, FILE* sms_c2, unsigned char* txtp, con
 		return;
 	}
 
-	
-	fprintf(sms_c2, "title = \"%s\"\n", ci.title);
 	fprintf(sms_c2, "objectives = {\"");
 	strcpy(objectives, (const char*)(txtp + offset));
 	for (i = 0; i < strlen(objectives); i++) {
@@ -2399,27 +2280,6 @@ static void SmsSaveObjectives(gzFile sms, FILE* sms_c2, unsigned char* txtp, con
 	}
 	fprintf(sms_c2, objectives);
 	fprintf(sms_c2, "\"}\n");
-
-	gzprintf(sms, "-- Stratagus Map - Single player campaign\n\n");
-
-	gzprintf(sms, "Load(\"%s_c2.sms\")\n\n", lvlpath);
-	gzprintf(sms, "Briefing(\n");
-        gzprintf(sms, "  title,\n");
-        gzprintf(sms, "  objectives,\n");
-        gzprintf(sms, "  \"../graphics/ui/%s/briefing.png\",\n", race);
-	gzprintf(sms, "  \"%s_intro.txt\",\n", lvlpath);
-	gzprintf(sms, "  {\"%s_intro.wav\"}\n", lvlpath);
-	gzprintf(sms, ")\n\n");
-
-	gzprintf(sms, "AddTrigger(\n");
-	gzprintf(sms, "  function() return (%s) end,\n", ci.victory_condition);
-	gzprintf(sms, "  function() return ActionVictory() end)\n");
-	gzprintf(sms, "AddTrigger(\n");
-	gzprintf(sms, "  function() return (%s) end,\n", ci.defeat_condition);
-	gzprintf(sms, "  function() return ActionDefeat() end)\n");
-	gzprintf(sms, "\n\n");
-
-	// TODO: Restrict units
 }
 
 /**
@@ -2468,7 +2328,7 @@ static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath, CampaignInfo ci)
+static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath)
 {
 	unsigned char* mtxm;
 	unsigned char* p;
@@ -2484,10 +2344,7 @@ static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath, C
 	p = mtxm;
 
 	gzprintf(smp, "PresentMap(\"(unnamed)\", 16, 64, 64, 1)\n");
-	// TODO: this next line causes loading of the maps to fail. investigate.
-	// gzprintf(smp, "DefineMapSetup(\"%s_c.sms\")\n", lvlpath);
-
-	gzprintf(sms, "LoadTileModels(\"scripts/tilesets/%s.lua\")\n\n", ci.tileset);
+	gzprintf(smp, "DefineMapSetup(\"%s_c.sms\")\n", lvlpath);
 
 	// TODO: Save actual map layout
 	for (i = 0; i < 64; ++i) {
@@ -2514,11 +2371,11 @@ char *UnitTypes[] = {
 	"unit-cleric", "unit-necrolyte",
 	"unit-midevh", "unit-lothar",
 	"unit-wounded", "unit-grizelda",
-	"unit-water-elemental", "unit-ogre",
+	"unit-garona", "unit-ogre",
 	// 20
-	"unit-scorpion", "unit-spider",
+	"unit-20", "unit-spider",
 	"unit-slime", "unit-fire-elemental",
-	"unit-garona", "unit-brigand",
+	"unit-scorpion", "unit-brigand",
 	"unit-26", "unit-skeleton",
 	"unit-daemon", "unit-29",
 	// 30
@@ -2642,14 +2499,13 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 /**
 **  Convert a map to Stratagus map format.
 */
-int ConvertMap(const char* file, int txte, int mtxme, int campaign_info_off)
+int ConvertMap(const char* file, int txte, int mtxme)
 {
 	unsigned char* txtp;
 	unsigned char buf[1024];
 	char* race;
 	gzFile smp, sms;
-	FILE *sms_c, *sms_c2;
-	CampaignInfo ci = campaigns[campaign_info_off];
+	FILE* sms_c2;
 
 	txtp = ExtractEntry(ArchiveOffsets[txte], NULL);
 	if (!txtp) {
@@ -2667,11 +2523,9 @@ int ConvertMap(const char* file, int txte, int mtxme, int campaign_info_off)
 		exit(-1);
 	}
 
-	sprintf((char*)buf, "%s/%s/%s_c.sms", Dir, CM_PATH, file);
-	sms_c = fopen((char*)buf, "wb");
 	sprintf((char*)buf, "%s/%s/%s_c2.sms", Dir, CM_PATH, file);
 	sms_c2 = fopen((char*)buf, "wb");
-	if (!sms_c || !sms_c2) {
+	if (!sms_c2) {
 		perror("");
 		fprintf(stderr, "Can't open campaign file for %s/%s/%s\n",
 			Dir, CM_PATH, file);
@@ -2687,13 +2541,11 @@ int ConvertMap(const char* file, int txte, int mtxme, int campaign_info_off)
 		race++;
 	}
 
-	SmsSaveObjectives(sms, sms_c2, txtp, file, race, ci);
+	SmsSaveObjectives(sms_c2, txtp);
 	SmsSavePlayers(race, sms, smp);
-	SmsSaveMap(sms, smp, mtxme, file, ci);
+	SmsSaveMap(sms, smp, mtxme, file);
 	SmsSaveUnits(sms, txtp);
 
-	fprintf(sms_c, "Load(\"%s.sms\")", file);
-	fclose(sms_c);
 	fclose(sms_c2);
 
 	free(txtp);
@@ -2830,7 +2682,7 @@ int main(int argc, char** argv)
 				ConvertText(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case CM:
-				ConvertMap(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
+				ConvertMap(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			default:
 				break;

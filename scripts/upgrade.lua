@@ -32,11 +32,10 @@
 Load("scripts/human/upgrade.lua")
 Load("scripts/orc/upgrade.lua")
 
-DefineAllow("unit-gold-mine",				"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-wall",					"AAAAAAAAAAAAAAAA")
-
-DefineAllow("unit-dead-body",				"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-destroyed-1x1-place",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-destroyed-2x2-place",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-destroyed-3x3-place",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-destroyed-4x4-place",		"AAAAAAAAAAAAAAAA")
+DefineAllow("unit-gold-mine",           "AAAAAAAAAAAAAAAA")
+DefineAllow("unit-wall",                "AAAAAAAAAAAAAAAA")
+DefineAllow("unit-dead-body",           "AAAAAAAAAAAAAAAA")
+DefineAllow("unit-destroyed-1x1-place",	"AAAAAAAAAAAAAAAA")
+DefineAllow("unit-destroyed-2x2-place",	"AAAAAAAAAAAAAAAA")
+DefineAllow("unit-destroyed-3x3-place",	"AAAAAAAAAAAAAAAA")
+DefineAllow("unit-destroyed-4x4-place",	"AAAAAAAAAAAAAAAA")

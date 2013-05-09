@@ -160,15 +160,8 @@ function CreateVictoryStep(bg, text, voices)
 end
 
 function CampaignButtonTitle(race, exp, i)
-  local name = "campaigns/" .. race
-  name = name .. "/"
-  if (i<10) then name = name .. "0" end
-  name = name .. i
-
-  name = name .. "_c2.sms"
-
-  title = "Ending - Victory"
-  Load(name)
+  Load("campaigns/" .. race .. "/campaign_titles.lua")
+  title = campaign_titles[i]
 
   if ( string.len(title) > 20 ) then
 	  title = string.sub(title, 1, 19) .. "..."

@@ -115,46 +115,46 @@ DefineModifier("upgrade-rain-of-fire",
 DefineModifier("upgrade-water-elemental",
   {"apply-to", "unit-conjurer"})
 
---	NOTE: Save can generate this table.
+function DefineAllowHumanUnits(flags)
+   local units = {
+      "unit-footman",
+      "unit-peasant",
+      "unit-human-catapult",
+      "unit-knight",
+      "unit-archer",
+      "unit-cleric",
+      "unit-conjurer",
+      "unit-human-farm",
+      "unit-human-barracks",
+      "unit-human-church",
+      "unit-human-stable",
+      "unit-human-town-hall",
+      "unit-human-lumber-mill",
+      "unit-human-tower",
+      "unit-human-blacksmith",
+      "unit-human-start-location",
+      "unit-human-wall",
 
---- units
-
-DefineAllow("unit-footman",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-peasant",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-catapult",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-knight",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-archer",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-cleric",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-conjurer",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-farm",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-barracks",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-church",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-stable",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-town-hall",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-lumber-mill",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-tower",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-blacksmith",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-start-location",	"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-human-wall",			"AAAAAAAAAAAAAAAA")
-
---- upgrades
-
-DefineAllow("upgrade-sword1",          "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-sword2",          "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-arrow1",          "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-arrow2",          "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-horse1",          "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-horse2",          "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-human-shield1",   "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-human-shield2",   "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-healing",         "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-far-seeing",      "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-invisibility",    "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-scorpion",        "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-rain-of-fire",    "AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-water-elemental", "AAAAAAAAAAAAAAAA")
-
---	NOTE: Save can generate this table.
+      --- upgradesa
+      "upgrade-sword1",
+      "upgrade-sword2",
+      "upgrade-arrow1",
+      "upgrade-arrow2",
+      "upgrade-horse1",
+      "upgrade-horse2",
+      "upgrade-human-shield1",
+      "upgrade-human-shield2",
+      "upgrade-healing",
+      "upgrade-far-seeing",
+      "upgrade-invisibility",
+      "upgrade-scorpion",
+      "upgrade-rain-of-fire",
+      "upgrade-water-elemental"}
+   for i, unitName in ipairs(units) do
+      DefineAllow(unitName, flags)
+   end
+end
+DefineAllowHumanUnits("AAAAAAAAAAAAAAAA")
 
 --- human land forces
 DefineDependency("unit-archer",

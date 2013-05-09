@@ -115,44 +115,46 @@ DefineModifier("upgrade-poison-cloud",
 DefineModifier("upgrade-daemon",
   {"apply-to", "unit-warlock"})
 
---	NOTE: Save can generate this table.
+function DefineAllowOrcUnits(flags)
+   local units = {
+      "unit-grunt",
+      "unit-peon",
+      "unit-orc-catapult",
+      "unit-raider",
+      "unit-spearman",
+      "unit-necrolyte",
+      "unit-warlock",
+      "unit-orc-farm",
+      "unit-orc-barracks",
+      "unit-orc-temple",
+      "unit-orc-kennel",
+      "unit-orc-town-hall",
+      "unit-orc-lumber-mill",
+      "unit-orc-tower",
+      "unit-orc-blacksmith",
+      "unit-orc-start-location",
+      "unit-orc-wall",
 
-DefineAllow("unit-grunt",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-peon",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-catapult",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-raider",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-spearman",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-necrolyte",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-warlock",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-farm",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-barracks",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-temple",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-kennel",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-town-hall",			"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-lumber-mill",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-tower",	"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-blacksmith",		"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-start-location",	"AAAAAAAAAAAAAAAA")
-DefineAllow("unit-orc-wall",			"AAAAAAAAAAAAAAAA")
-
---- upgrades
-
-DefineAllow("upgrade-axe1",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-axe2",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-spear1",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-spear2",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-wolves1",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-wolves2",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-orc-shield1",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-orc-shield2",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-raise-dead",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-dark-vision",		"RRRRRRRRRRRRRRRR")
-DefineAllow("upgrade-unholy-armor",		"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-spider",			"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-poison-cloud",			"AAAAAAAAAAAAAAAA")
-DefineAllow("upgrade-daemon",		"AAAAAAAAAAAAAAAA")
-
---	NOTE: Save can generate this table.
+      --- upgrades
+      "upgrade-axe1",
+      "upgrade-axe2",
+      "upgrade-spear1",
+      "upgrade-spear2",
+      "upgrade-wolves1",
+      "upgrade-wolves2",
+      "upgrade-orc-shield1",
+      "upgrade-orc-shield2",
+      "upgrade-raise-dead",
+      "upgrade-dark-vision",
+      "upgrade-unholy-armor",
+      "upgrade-spider",
+      "upgrade-poison-cloud",
+      "upgrade-daemon"}
+   for i, unitName in ipairs(units) do
+      DefineAllow(unitName, flags)
+   end
+end
+DefineAllowOrcUnits("AAAAAAAAAAAAAAAA")
 
 --- orc land forces
 DefineDependency("unit-spearman",

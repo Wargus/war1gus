@@ -32,7 +32,7 @@ speedcheat = false
 godcheat = false
 
 function HandleCheats(str)
-  local resources = { "gold", "wood", "oil" }
+  local resources = { "gold", "wood" }
 
   if (str == "eye of newt") then
     -- FIXME: no function yet
@@ -91,30 +91,26 @@ function HandleCheats(str)
   elseif (str == "hurry up guys") then
     if (speedcheat) then
       speedcheat = false
-      for i = 1,table.getn(resources) do
-        SetSpeedResourcesHarvest(resources[i], 1)
-        SetSpeedResourcesReturn(resources[i], 1)
+      for idx,res in ipairs(resources) do
+	 SetSpeedResourcesHarvest(GetThisPlayer(), res, 1)
+	 SetSpeedResourcesReturn(GetThisPlayer(), res, 1)
       end
-      SetSpeedBuild(1)
-      SetSpeedTrain(1)
-      SetSpeedUpgrade(1)
-      SetSpeedResearch(1)
-      AddMessage("NO SO!")
+      SetSpeedBuild(GetThisPlayer(), 1)
+      SetSpeedTrain(GetThisPlayer(), 1)
+      SetSpeedUpgrade(GetThisPlayer(), 1)
+      SetSpeedResearch(GetThisPlayer(), 1)
+      AddMessage("NO RUSH!")
     else
       speedcheat = true
-      for i = 1,table.getn(resources) do
-        SetSpeedResourcesHarvest(resources[i], 10)
-        SetSpeedResourcesReturn(resources[i], 10)
+      for idx,res in ipairs(resources) do
+	 SetSpeedResourcesHarvest(GetThisPlayer(), res, 10)
+	 SetSpeedResourcesReturn(GetThisPlayer(), res, 10)
       end
-      SetSpeedBuild(10)
-      SetSpeedTrain(10)
-      SetSpeedUpgrade(10)
-      SetSpeedResearch(10)
-      for i = 1,table.getn(resources) do
-        SetPlayerData(GetThisPlayer(), "Resources", resources[i],
-          GetPlayerData(GetThisPlayer(), "Resources", resources[i]) + 32000)
-      end
-      AddMessage("SO!")
+      SetSpeedBuild(GetThisPlayer(), 10)
+      SetSpeedTrain(GetThisPlayer(), 10)
+      SetSpeedUpgrade(GetThisPlayer(), 10)
+      SetSpeedResearch(GetThisPlayer(), 10)
+      AddMessage("HURRY!")
     end
 
   elseif (str == "yours truly") then
