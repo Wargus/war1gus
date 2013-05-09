@@ -114,23 +114,50 @@ DefineTileset(--"tileset-swamp", "class", "swamp",
 	   189, {"coast", "land", "no-building"},
 	   190, 191}},                             -- 0B0
 	"solid", {"land",
-          {192, 193, 194, 195, 196, 197, 198, 199, 200, 201,
+          {192, 193, 194, 195, 196, 197,
+	   198, {"coast", "land", "no-building"},
+	   199, {"water"}, 200, {"water"},
+	   201, {"coast", "land", "no-building"},
 	   201, 203, 204, 205, 206, 207}},                             -- 0C0
 	"solid", {"land",
-          {208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 
+          {208, 209, 210,
+	   211, {"coast", "land", "no-building"},
+	   212, {"water"},
+	   213, {"water"},
+	   214, {"water"},
+	   215, {"coast", "land", "no-building"},
+	   216, 217, 
 	   218, 219, 220, 221, 222, 223}},                             -- 0D0
 	"solid", {"land",
-          {224, 225, 226, 227, 228, 229, 230, 231, 232, 233,
-	   234, 235, 236, 237, 238, 239}},                             -- 0E0
+          {224, {"coast", "land", "no-building"},
+	   225, {"water"},
+	   226, {"water"},
+	   227, {"water"},
+	   228, {"coast", "land", "no-building"},
+	   229, {"water"}, 230, {"water"},
+	   231, 232, 233, 234, 235, 236, 237, 238,
+	   239, {"coast", "land", "no-building"}}},                             -- 0E0
 	"solid", {"land",
-          {240, 241, 242, 243, 244, 245, 246, 247, 248, 249,
-	   250, 251, 252, 253, 254, 255}},                             -- 0F0
+          {240, {"coast", "land", "no-building"},
+	   241, {"coast", "land", "no-building"},
+	   242, 243, 244, 245, 246, 247, 248, 249,
+	   250, {"coast", "land", "no-building"},
+	   251, {"coast", "land", "no-building"},
+	   252, {"coast", "land", "no-building"},
+	   253, {"water"},
+	   254, {"water"},
+	   255}},                             -- 0F0
 	"solid", {"land",
-          {256, 257, 258, 259, 260, 261, 262, 263, 264, 265,
-	   266, 267, 268, 269, 270, 271}}, -- 100
+          {256, 257, 258, 259, 260, 261,
+	   262, {"coast", "land", "no-building"},
+	   263, {"coast", "land", "no-building"},
+	   264, {"coast", "land", "no-building"},
+	   265, 266, 267, 268, 269, 270, 271}}, -- 100
 	"solid", {"land",
-          {272, 273, 274, 275, 276, 277, 278, 279, 280, 281,
-	   282}}, -- 110
+          {272, {"coast", "land", "no-building"},
+	   273, {"coast", "land", "no-building"},
+	   274, {"coast", "land", "no-building"},
+	   275, 276, 277, 278, 279, 280, 281, 282}}, -- 110
 	"solid", {"land", {}}, -- 120
 	"solid", {"unused", {}}, -- 130
 	"solid", {"unused", {}}, -- 140
@@ -226,20 +253,20 @@ DefineTileset(--"tileset-swamp", "class", "swamp",
 	"solid", {"unused", {}}, -- 6E0
 	"solid", {"unused", {}}, -- 6F0
 	"mixed", { "forest", "land", "forest", "unpassable",
-          { 71, 79},	-- bottom left, right		        -- 700
-	  { 71, 93},	-- bottom left, bottom middle		-- 710
-	  { 93, 76},	-- bottom middle, top right		-- 720
-	  { 76, 80},	-- top right, centerpiece		-- 730
-	  { 75, 81},	-- top middle, centerpiece2             -- 740
-	  { 82, 83},	-- centerpiece3, centerpiece4		-- 750
-	  { 94, 94},	-- centerpiece5, centerpiece5		-- 760
-	  { 73, 77},	-- top left, centerpiece-top-open	-- 770
-	  { 81, 82},	-- center-bottom, center-bottom		-- 780
-	  { 72, 73},	-- left, top left			-- 790
-	  { 94, 94},	-- centerpiece5, centerpiece5		-- 7A0
-	  { 93, 72},	-- top right, left			-- 7B0
-	  { 94, 94},	-- center-bottom, center-bottom		-- 7C0
-	  { 74, 74},	-- center-top, center-top		-- 7D0
+          { 94, 80},	-- bottom left, right		        -- 700
+	  { 72, 94},	-- bottom left, bottom middle		-- 710
+	  { 94, 77},	-- bottom middle, top right		-- 720
+	  { 77, 81},	-- top right, centerpiece		-- 730
+	  { 76, 82},	-- top middle, centerpiece2             -- 740
+	  { 83, 84},	-- centerpiece3, centerpiece4		-- 750
+	  { 95, 95},	-- centerpiece5, centerpiece5		-- 760
+	  { 83, 78},	-- top left, centerpiece-top-open	-- 770
+	  { 82, 94},	-- center-bottom, center-bottom		-- 780
+	  { 73, 83},	-- left, top left			-- 790
+	  { 95, 95},	-- centerpiece5, centerpiece5		-- 7A0
+	  { 94, 73},	-- top right, left			-- 7B0
+	  { 95, 95},	-- center-bottom, center-bottom		-- 7C0
+	  { 75, 75},	-- center-top, center-top		-- 7D0
 	  {},							-- 7E0
 	  {}},							-- 7F0
 	"mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
