@@ -108,7 +108,7 @@ UnitTypeFiles["unit-gold-mine"] = {
 DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
   Image = {"size", {128, 128}},
   Animations = "animations-building", Icon = "icon-gold-mine",
-  NeutralMinimapColor = {255, 255, 0},
+  NeutralMinimapColor = {200, 200, 200},
   Costs = {"time", 150},
   Construction = "construction-none",
 --  Speed = 0,
