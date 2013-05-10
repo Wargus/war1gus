@@ -21,3 +21,6 @@ LoadTileModels("scripts/tilesets/dungeon.lua")
 Load("campaigns/human/08.sms")
 
 DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
+-- Medivh's spells
+DefineAllow("upgrade-spider", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-daemon", "RRRRRRRRRRRRRRRR")

@@ -81,7 +81,7 @@ local upgrades = {
     human = {"invisibility", {"cleric"}},
     cost = {   120,   3000,     0,     0,     0,     0,     0}},
 
-   {orc = {"spider", {"warlock"}},
+   {orc = {"spider", {"warlock", "medivh"}},
     human = {"scorpion", {"conjurer"}},
     cost = {   140,   750,     0,     0,     0,     0,     0}},
 
@@ -89,7 +89,7 @@ local upgrades = {
     human = {"rain-of-fire", {"conjurer"}},
     cost = {   140,   1500,     0,     0,     0,     0,     0}},
 
-   {orc = {"daemon", {"warlock"}},
+   {orc = {"daemon", {"warlock", "medivh"}},
     human = {"water-elemental", {"conjurer"}},
     cost = {   140,   3000,     0,     0,     0,     0,     0}}
 }

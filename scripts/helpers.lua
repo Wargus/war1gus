@@ -160,13 +160,13 @@ function DefineUnitFromSpec(unit)
 	 MaxAttackRange = 1,
 	 TileSize = {1, 1},
 	 BoxSize = {31, 31},
-	 SightRange = 8,
+	 SightRange = 5,
 	 Speed = 9,
 	 organic = true,
-	 ComputerReactionRange = 6,
+	 ComputerReactionRange = 5,
 	 PersonReactionRange = 4,
 	 Armor =  3,
-	 BasicDamage = 5, PiercingDamage = 0, Missile = "missile-none",
+	 BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
 	 Priority = 63,
 	 Points = 100,
 	 Demand = 1,
@@ -190,7 +190,11 @@ function DefineUnitFromSpec(unit)
 
       for k,v in pairs(unit) do
 	 if unitType[k] then
-	    unitType[k] = v
+	    if type(v) == "table" and v[race] then
+	       unitType[k] = v[race]
+	    else
+	       unitType[k] = v
+	    end
 	 end
       end
 

@@ -31,7 +31,7 @@
 -- For documentation see stratagus/doc/ccl/ccl.html
 
 DefineBoolFlags("isundead", "organic", "hero", "volatile")
-DefineVariables("Mana", {Max = 255, Value = 84, Increase = 1, Enable = false}, "Speed", "ShadowFly", {Max = 2}, "Level")
+DefineVariables("Mana", {Max = 100, Value = 64, Increase = 1, Enable = false}, "Speed", "ShadowFly", {Max = 2}, "Level")
 
 --  Declare some unit types used in spells. This is quite accetable, the other
 --  way would be to define can-cast-spell outside unit definitions, not much of an improvement.
@@ -103,6 +103,7 @@ DefineSpell("spell-healing",
 	"manacost", 6,
 	"range", 8,
 	"target", "unit",
+	"repeat-cast",
 	"action", {{"adjust-vitals", "hit-points", 1},
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
@@ -118,11 +119,11 @@ DefineSpell("spell-healing",
 
 DefineSpell("spell-raise-dead",
 	"showname", "raise dead",
-	"manacost", 50,
+	"manacost", 25,
 	"range", 5,
 	"repeat-cast",
 	"target", "position",
-	"action", {{"summon", "unit-type", "unit-the-dead", "time-to-live", 3600, "require-corpse"},
+	"action", {{"summon", "unit-type", "unit-the-dead", "time-to-live", 4500, "require-corpse"},
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"sound-when-cast", "raise dead",
@@ -132,15 +133,17 @@ DefineSpell("spell-raise-dead",
 
 DefineSpell("spell-unholy-armor",
 	"showname", "unholyarmor",
-	"manacost", 100,
+	"manacost", 60,
 	"range", 8,
 	"target", "unit",
-	"action", {{"adjust-variable", {UnholyArmor = 500}},
-		{"spawn-missile", "missile", "missile-normal-spell",
+	"action", {{"adjust-variable", {UnholyArmor = 500},
+		   {"adjust-vitals", "hit-points", 20}}, -- TODO: This should be 50% of the current HP
+		   {"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"condition", {
-		"Building", "false",
-		"UnholyArmor", {MaxValue = 10}},
+		"organic", "only",
+		"UnholyArmor", {MaxValue = 10},
+		"HitPoints", {MaxValuePercent = 100}},
 	"sound-when-cast", "unholy armor",
 	"depend-upgrade", "upgrade-unholy-armor"
 --	"autocast", {range 6 condition (Coward false alliance only)},
@@ -148,7 +151,7 @@ DefineSpell("spell-unholy-armor",
 
 DefineSpell("spell-invisibility",
 	"showname", "invisibility",
-	"manacost", 200,
+	"manacost", 60,
 	"range", 8,
 	"target", "unit",
 	"action", {{"adjust-variable", {Invisible = 2000}},
@@ -164,15 +167,12 @@ DefineSpell("spell-invisibility",
 
 DefineSpell("spell-summon-scorpions",
 	"showname", "summon scorpions",
-	"manacost", 50,
+	"manacost", 20,
 	"range", 3,
 	"repeat-cast",
 	"target", "position",
 	"action", {
-	   {"summon", "unit-type", "unit-scorpion", "time-to-live", 3600},
-	   {"summon", "unit-type", "unit-scorpion", "time-to-live", 3600},
-	   {"summon", "unit-type", "unit-scorpion", "time-to-live", 3600},
-	   {"summon", "unit-type", "unit-scorpion", "time-to-live", 3600},
+	   {"summon", "unit-type", "unit-scorpion", "time-to-live", 4500},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -182,12 +182,11 @@ DefineSpell("spell-summon-scorpions",
 
 DefineSpell("spell-summon-elemental",
 	"showname", "summan elemental",
-	"manacost", 50,
+	"manacost", 60,
 	"range", 3,
-	"repeat-cast",
 	"target", "position",
 	"action", {
-	   {"summon", "unit-type", "unit-water-elemental", "time-to-live", 3600},
+	   {"summon", "unit-type", "unit-water-elemental", "time-to-live", 4500},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -212,15 +211,12 @@ DefineSpell("spell-rain-of-fire",
 
 DefineSpell("spell-summon-spiders",
 	"showname", "summon spiders",
-	"manacost", 50,
+	"manacost", 20,
 	"range", 3,
 	"repeat-cast",
 	"target", "position",
 	"action", {
-	   {"summon", "unit-type", "unit-spider", "time-to-live", 3600},
-	   {"summon", "unit-type", "unit-spider", "time-to-live", 3600},
-	   {"summon", "unit-type", "unit-spider", "time-to-live", 3600},
-	   {"summon", "unit-type", "unit-spider", "time-to-live", 3600},
+	   {"summon", "unit-type", "unit-spider", "time-to-live", 4500},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -230,12 +226,11 @@ DefineSpell("spell-summon-spiders",
 
 DefineSpell("spell-summon-daemon",
 	"showname", "summan daemon",
-	"manacost", 50,
+	"manacost", 60,
 	"range", 3,
-	"repeat-cast",
 	"target", "position",
 	"action", {
-	   {"summon", "unit-type", "unit-daemon", "time-to-live", 3600},
+	   {"summon", "unit-type", "unit-daemon", "time-to-live", 4500},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
