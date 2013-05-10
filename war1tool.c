@@ -2302,7 +2302,7 @@ static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 			gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"neutral\")\n", i);
 			gzprintf(sms, "SetAiType(%d, \"rescue-passive\")\n", i);
 		} else {
-			if (strcmp(race, "orc")) {
+			if (!strcmp(race, "orc")) {
 				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"human\")\n", i);
 			} else {
 				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"orc\")\n", i);
