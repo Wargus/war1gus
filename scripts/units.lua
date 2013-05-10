@@ -109,8 +109,7 @@ local units = {
     Animations = "animations-knight",
     organic = false},
    {Names = {neutral = "Wounded"},
-    HitPoints = 60,
-    Animations = "animations-todo"},
+    HitPoints = 60},
 
    {Names = {orc = "Peon", human = "Peasant"},
     Costs = {"time", 75, "gold", 400},
@@ -214,6 +213,15 @@ local units = {
     Armor = 5,
     PiercingDamage = 1,
     BasicDamage = 15},
+
+   {Names = {human = "Wounded Lothar"},
+    Name = "Wounded",
+    HitPoints = 60,
+    Icon = "icon-wounded",
+    Image = {
+       "file", "neutral/units/wounded.png",
+       "size", {64, 64}},
+    Animations = "animations-wounded"},
 
    {Names = {human = "Medivh"},
     HitPoints = 110,

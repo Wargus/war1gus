@@ -272,6 +272,11 @@ DefineAnimations("animations-dead-body", {
 	   "wait 1"},
 })
 
+
+DefineAnimations("animations-wounded", {
+  Still = {"frame 0", "wait 5"},
+})
+
 --!!!TODO!!!
 --[[
   "die", {	-- #201

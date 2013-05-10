@@ -16,14 +16,56 @@ AddTrigger(
   function() return ActionVictory() end)
 AddTrigger(
   function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0 or 
-			(GetPlayerData(15, "UnitTypesCount", "unit-lothar") == 0
+			(GetPlayerData(15, "UnitTypesCount", "unit-wounded-lothar") == 0
+			 and GetPlayerData(15, "UnitTypesCount", "unit-lothar") == 0
+			 and GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-wounded-lothar") == 0
 			 and GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-lothar") == 0)) end,
   function() return ActionDefeat() end)
 
 LoadTileModels("scripts/tilesets/dungeon.lua")
 
-unit = CreateUnit("unit-start-location", 1, {54, 5})
 Load("campaigns/human/04.sms")
-
-unit = CreateUnit("unit-start-location", 0, {54, 5})
+unit = CreateUnit("unit-start-location", 0, {54, 2})
 DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
+
+-- wounded units should here become soldiers if healed
+-- lothar should look wounded first, then become himself
+for i,unit in ipairs(GetUnits(15)) do
+   replacement_unit = "unit-footman"
+   if GetUnitVariable(unit, "Ident") == "unit-lothar" then
+      posx = GetUnitVariable(unit, "PosX")
+      posy = GetUnitVariable(unit, "PosY")
+      KillUnit("unit-lothar", 15)
+      unit = CreateUnit("unit-wounded-lothar", 15, {41, 6})
+      replacement_unit = "unit-lothar"
+   end
+
+   SetUnitVariable(unit, "HitPoints", 5)
+   AddTrigger(
+      function()
+	 return GetUnitVariable(unit, "HitPoints") > 20
+      end,
+      function()
+	 hp = GetUnitVariable(unit, "HitPoints")
+	 posx = GetUnitVariable(unit, "PosX")
+	 posy = GetUnitVariable(unit, "PosY")
+	 player = GetUnitVariable(unit, "Player")
+	 ident = GetUnitVariable(unit, "Ident")
+	 nu = nil
+	 if ident == "unit-wounded-lothar" then
+	    -- Hack: to circumvent defeat ... i know there's space there ...
+	    nu = CreateUnit("unit-lothar", player, {42, 6})
+	    KillUnit("unit-wounded-lothar", player)
+	    MoveUnit(nu, {41, 6})
+	 else
+	    KillUnitAt(ident,
+		       player,
+		       1,
+		       {posx, posy},
+		       {posx, posy})
+	    nu = CreateUnit(replacement_unit, player, {posx, posy})
+	 end
+	 SetUnitVariable(nu, "HitPoints", hp)
+	 return true
+      end)
+end

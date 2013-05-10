@@ -100,7 +100,7 @@ DefineSpell("spell-dark-vision",
 
 DefineSpell("spell-healing",
 	"showname", "Healing",
-	"manacost", 6,
+	"manacost", 1,
 	"range", 8,
 	"target", "unit",
 	"repeat-cast",
