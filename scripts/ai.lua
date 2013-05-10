@@ -34,544 +34,349 @@
 race1 = "human"
 race2 = "orc"
 
---;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
---  * Race human.
---;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
--- Equivalence of units for the resource manager.
 DefineAiHelper()
-
---;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
---  * Race orc.
---;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
--- Equivalence of units for the resource manager.
 DefineAiHelper()
 
 --
 --  City-center of the current race.
 --
 function AiCityCenter()
-  if (AiGetRace() == race1) then
-    return "unit-human-town-hall"
-  else
-    return "unit-orc-town-hall"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-human-town-hall"
+   else
+      return "unit-orc-town-hall"
+   end
 end
 
 --
 --  Worker of the current race.
 --
 function AiWorker()
-  if (AiGetRace() == race1) then
-    return "unit-peasant"
-  else
-    return "unit-peon"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-peasant"
+   else
+      return "unit-peon"
+   end
 end
 
 --
 --  Lumber mill of the current race.
 --
 function AiLumberMill()
-  if (AiGetRace() == race1) then
-    return "unit-human-lumber-mill"
-  else
-    return "unit-orc-lumber-mill"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-human-lumber-mill"
+   else
+      return "unit-orc-lumber-mill"
+   end
 end
 
 --
 --  Blacksmith of the current race.
 --
 function AiBlacksmith()
-  if (AiGetRace() == race1) then
-    return "unit-human-blacksmith"
-  else
-    return "unit-orc-blacksmith"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-human-blacksmith"
+   else
+      return "unit-orc-blacksmith"
+   end
 end
 
 --
 --  Upgrade armor 1 of the current race.
 --
 function AiUpgradeArmor1()
-  if (AiGetRace() == race1) then
-    return "upgrade-human-shield1"
-  else
-    return "upgrade-orc-shield1"
-  end
+   if (AiGetRace() == race1) then
+      return "upgrade-human-shield1"
+   else
+      return "upgrade-orc-shield1"
+   end
 end
 
 --
 --  Upgrade armor 2 of the current race.
 --
 function AiUpgradeArmor2()
-  if (AiGetRace() == race1) then
-    return "upgrade-human-shield2"
-  else
-    return "upgrade-orc-shield2"
-  end
+   if (AiGetRace() == race1) then
+      return "upgrade-human-shield2"
+   else
+      return "upgrade-orc-shield2"
+   end
 end
 
 --
 --  Upgrade weapon 1 of the current race.
 --
 function AiUpgradeWeapon1()
-  if (AiGetRace() == race1) then
-    return "upgrade-sword1"
-  else
-    return "upgrade-battle-axe1"
-  end
+   if (AiGetRace() == race1) then
+      return "upgrade-sword1"
+   else
+      return "upgrade-axe1"
+   end
 end
 
 --
 --  Upgrade weapon 2 of the current race.
 --
 function AiUpgradeWeapon2()
-  if (AiGetRace() == race1) then
-    return "upgrade-sword2"
-  else
-    return "upgrade-battle-axe2"
-  end
+   if (AiGetRace() == race1) then
+      return "upgrade-sword2"
+   else
+      return "upgrade-axe2"
+   end
 end
 
 --
 --  Upgrade missile 1 of the current race.
 --
 function AiUpgradeMissile1()
-  if (AiGetRace() == race1) then
-    return "upgrade-arrow1"
-  else
-    return "upgrade-throwing-axe1"
-  end
+   if (AiGetRace() == race1) then
+      return "upgrade-arrow1"
+   else
+      return "upgrade-spear1"
+   end
 end
 
 --
 --  Upgrade missile 2 of the current race.
 --
 function AiUpgradeMissile2()
-  if (AiGetRace() == race1) then
-    return "upgrade-arrow2"
-  else
-    return "upgrade-throwing-axe2"
-  end
-end
-
---
---  Research of the current race.
---
-function AiScientific()
-  if (AiGetRace() == race1) then
-    return "unit-inventor"
-  else
-    return "unit-alchemist"
-  end
+   if (AiGetRace() == race1) then
+      return "upgrade-arrow2"
+   else
+      return "upgrade-spear2"
+   end
 end
 
 --
 --  Stables of the current race.
 --
 function AiStables()
-  if (AiGetRace() == race1) then
-    return "unit-stables"
-  else
-    return "unit-ogre-mound"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-human-stables"
+   else
+      return "unit-orc-kennel"
+   end
 end
 
 --
 --  Temple of the current race.
 --
 function AiTemple()
-  if (AiGetRace() == race1) then
-    return "unit-church"
-  else
-    return "unit-altar-of-storms"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-human-church"
+   else
+      return "unit-orc-temple"
+   end
 end
 
 --
 --  Mage tower of the current race.
 --
 function AiMageTower()
-  if (AiGetRace() == race1) then
-    return "unit-mage-tower"
-  else
-    return "unit-temple-of-the-damned"
-  end
-end
-
---
---  Airport of the current race.
---
-function AiAirport()
-  if (AiGetRace() == race1) then
-    return "unit-gryphon-aviary"
-  else
-    return "unit-dragon-roost"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-human-tower"
+   else
+      return "unit-orc-tower"
+   end
 end
 
 --
 --  Barracks of the current race.
 --
 function AiBarracks()
-  if (AiGetRace() == race1) then
-    return "unit-human-barracks"
-  else
-    return "unit-orc-barracks"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-human-barracks"
+   else
+      return "unit-orc-barracks"
+   end
 end
 
 --
 --  Soldier of the current race.
 --
 function AiSoldier()
-  if (AiGetRace() == race1) then
-    return "unit-footman"
-  else
-    return "unit-grunt"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-footman"
+   else
+      return "unit-grunt"
+   end
 end
 
 --
 --  Shooter of the current race.
 --
 function AiShooter()
-  if (AiGetRace() == race1) then
-    return "unit-archer"
-  else
-    return "unit-axethrower"
-  end
-end
-
---
---  Elite Shooter of the current race.
---
-function AiEliteShooter()
-  if (AiGetRace() == race1) then
-    return "unit-ranger"
-  else
-    return "unit-berserker"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-archer"
+   else
+      return "unit-spearman"
+   end
 end
 
 --
 --  Cavalry of the current race.
 --
 function AiCavalry()
-  if (AiGetRace() == race1) then
-    return "unit-knight"
-  else
-    return "unit-ogre"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-knight"
+   else
+      return "unit-raider"
+   end
 end
 
 --
---  Cavalry mages of the current race.
---
-function AiCavalryMage()
-  if (AiGetRace() == race1) then
-    return "unit-paladin"
-  else
-    return "unit-ogre-mage"
-  end
-end
-
---
---  Mage of the current race.
+-- Supporting mage
 --
 function AiMage()
-  if (AiGetRace() == race1) then
-    return "unit-mage"
-  else
-    return "unit-death-knight"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-cleric"
+   else
+      return "unit-necrolyte"
+   end
+end
+
+--
+--  Summoner of the current race.
+--
+function AiSummoner()
+   if (AiGetRace() == race1) then
+      return "unit-conjurer"
+   else
+      return "unit-warlock"
+   end
 end
 
 --
 --  Catapult of the current race.
 --
 function AiCatapult()
-  if (AiGetRace() == race1) then
-    return "unit-ballista"
-  else
-    return "unit-catapult"
-  end
-end
-
---
---  Scout of the current race.
---
-function AiScout()
-  if (AiGetRace() == race1) then
-    return "unit-balloon"
-  else
-    return "unit-zeppelin"
-  end
-end
-
---
---  Flyer of the current race.
---
-function AiFlyer()
-  if (AiGetRace() == race1) then
-    return "unit-gryphon-rider"
-  else
-    return "unit-dragon"
-  end
-end
-
---
---  Tower of the current race.
---
-function AiTower()
-  if (AiGetRace() == race1) then
-    return "unit-human-watch-tower"
-  else
-    return "unit-orc-watch-tower"
-  end
-end
-
---
---  Guard-Tower of the current race.
---
-function AiGuardTower()
-  if (AiGetRace() == race1) then
-    return "unit-human-guard-tower"
-  else
-    return "unit-orc-guard-tower"
-  end
-end
-
---
---  Cannon-Tower of the current race.
---
-function AiCannonTower()
-  if (AiGetRace() == race1) then
-    return "unit-human-cannon-tower"
-  else
-    return "unit-orc-cannon-tower"
-  end
-end
-
---
---  Harbor of the current race.
---
-function AiHarbor()
-  if (AiGetRace() == race1) then
-    return "unit-human-shipyard"
-  else
-    return "unit-orc-shipyard"
-  end
-end
-
---
---  Refinery of the current race.
---
-function AiRefinery()
-  if (AiGetRace() == race1) then
-    return "unit-human-refinery"
-  else
-    return "unit-orc-refinery"
-  end
-end
-
---
---  Foundry of the current race.
---
-function AiFoundry()
-  if (AiGetRace() == race1) then
-    return "unit-human-foundry"
-  else
-    return "unit-orc-foundry"
-  end
-end
-
---
---  Ship armor 1 of the current race.
---
-function AiUpgradeShipArmor1()
-  if (AiGetRace() == race1) then
-    return "upgrade-human-ship-armor1"
-  else
-    return "upgrade-orc-ship-armor1"
-  end
-end
-
---
---  Ship armor 2 of the current race.
---
-function AiUpgradeShipArmor2()
-  if (AiGetRace() == race1) then
-    return "upgrade-human-ship-armor2"
-  else
-    return "upgrade-orc-ship-armor2"
-  end
-end
-
---
---  Ship weapon 1 of the current race.
---
-function AiUpgradeShipCannon1()
-  if (AiGetRace() == race1) then
-    return "upgrade-human-ship-cannon1"
-  else
-    return "upgrade-orc-ship-cannon1"
-  end
-end
-
---
---  Ship weapon 2 of the current race.
---
-function AiUpgradeShipCannon2()
-  if (AiGetRace() == race1) then
-    return "upgrade-human-ship-cannon2"
-  else
-    return "upgrade-orc-ship-cannon2"
-  end
-end
-
---
---  Platform of the current race.
---
-function AiPlatform()
-  if (AiGetRace() == race1) then
-    return "unit-human-oil-platform"
-  else
-    return "unit-orc-oil-platform"
-  end
-end
-
---
---  Tanker of the current race.
---
-function AiTanker()
-  if (AiGetRace() == race1) then
-    return "unit-human-oil-tanker"
-  else
-    return "unit-orc-oil-tanker"
-  end
-end
-
---
---  Destroyer of the current race.
---
-function AiDestroyer()
-  if (AiGetRace() == race1) then
-    return "unit-human-destroyer"
-  else
-    return "unit-orc-destroyer"
-  end
-end
-
---
---  1st Upgrade of elite Shooter of the current race.
---
-function AiUpgradeEliteShooter1()
-  if (AiGetRace() == race1) then
-    return "upgrade-ranger-scouting"
-  else
-    return "upgrade-berserker-scouting"
-  end
-end
-
---
---  2nd Upgrade of elite Shooter of the current race.
---
-function AiUpgradeEliteShooter2()
-  if (AiGetRace() == race1) then
-    return "upgrade-longbow"
-  else
-    return "upgrade-light-axes"
-  end
-end
-
---
---  3th Upgrade of elite Shooter of the current race.
---
-function AiUpgradeEliteShooter3()
-  if (AiGetRace() == race1) then
-    return "upgrade-ranger-marksmanship"
-  else
-    return "upgrade-berserker-regeneration"
-  end
+   if (AiGetRace() == race1) then
+      return "unit-human-catapult"
+   else
+      return "unit-orc-catapult"
+   end
 end
 
 --
 --  1st spell of the cavalry mages of the current race.
 --
-function AiCavalryMageSpell1()
-  if (AiGetRace() == race1) then
-    return "upgrade-healing"
-  else
-    return "upgrade-bloodlust"
-  end
+function AiMageSpell1()
+   if (AiGetRace() == race1) then
+      return "upgrade-far-seeing"
+   else
+      return "upgrade-dark-vision"
+   end
 end
 
 --
 --  2nd spell of the cavalry mages of the current race.
 --
-function AiCavalryMageSpell2()
-  if (AiGetRace() == race1) then
-    return "upgrade-exorcism"
-  else
-    return "upgrade-runes"
-  end
-end
-
---
---  1st spell of the mages of the current race.
---
-function AiMageSpell1()
-  if (AiGetRace() == race1) then
-    return "upgrade-slow"
-  else
-    return "upgrade-haste"
-  end
-end
-
---
---  2nd spell of the mages of the current race.
---
 function AiMageSpell2()
-  if (AiGetRace() == race1) then
-    return "upgrade-flame-shield"
-  else
-    return "upgrade-raise-dead"
-  end
+   if (AiGetRace() == race1) then
+      return "upgrade-healing"
+   else
+      return "upgrade-raise-dead"
+   end
+end
+
+--
+--  3rd spell of the cavalry mages of the current race.
+--
+function AiMageSpell3()
+   if (AiGetRace() == race1) then
+      return "upgrade-invisibility"
+   else
+      return "upgrade-unholy-armor"
+   end
+end
+
+--
+--  1st spell of the summoners of the current race.
+--
+function AiSummonerSpell1()
+   if (AiGetRace() == race1) then
+      return "upgrade-scorpion"
+   else
+      return "upgrade-spider"
+   end
+end
+
+--
+--  2nd spell of the summoners of the current race.
+--
+function AiSummonerSpell2()
+   if (AiGetRace() == race1) then
+      return "upgrade-rain-of-fire"
+   else
+      return "upgrade-poison-cloud"
+   end
 end
 
 --
 --  3th spell of the mages of the current race.
 --
-function AiMageSpell3()
-  if (AiGetRace() == race1) then
-    return "upgrade-invisibility"
-  else
-    return "upgrade-whirlwind"
-  end
+function AiSummonerSpell3()
+   if (AiGetRace() == race1) then
+      return "upgrade-water-elemental"
+   else
+      return "upgrade-daemon"
+   end
 end
 
 --
---  5th spell of the mages of the current race.
+--  Some functions used by Ai
 --
-function AiMageSpell5()
-  if (AiGetRace() == race1) then
-    return "upgrade-blizzard"
-  else
-    return "upgrade-death-and-decay"
-  end
+
+-- Create some counters used by ai
+local function CreateAiGameData()
+   if stratagus == nil then
+      stratagus = {}
+   end
+   if stratagus.gameData == nil then
+      stratagus.gameData = {}
+   end
+   if stratagus.gameData.AIState == nil then
+      stratagus.gameData.AIState = {}
+      stratagus.gameData.AIState.index = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+      stratagus.gameData.AIState.loop_index = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+   end
 end
 
+local function CleanAiGameData()
+   if stratagus ~= nil and stratagus.gameData ~= nil then
+      stratagus.gameData.AIState = nil
+   end
+end
+
+function ReInitAiGameData()
+   CleanAiGameData()
+   CreateAiGameData()
+end
+
+function DebugMessage(message)
+   message = "Game cycle(" .. GameCycle .. "):".. message
+   --	AddMessage(message)
+   DebugPrint(message .. "\n")
+end
+
+function AiLoop(loop_funcs, indexes)
+   local playerIndex = AiPlayer() + 1
+
+   while (true) do
+      local ret = loop_funcs[indexes[playerIndex]]()
+      if (ret) then
+	 break
+      end
+      indexes[playerIndex] = indexes[playerIndex] + 1
+   end
+   return true
+end
 
 --
 --  Load the actual individual scripts.
 --
+ReInitAiGameData()
 Load("scripts/ai/passive.lua")
-Load("scripts/ai/air_attack.lua")
 Load("scripts/ai/land_attack.lua")
-Load("scripts/ai/sea_attack.lua")
 Load("scripts/ai/campaign.lua")
 

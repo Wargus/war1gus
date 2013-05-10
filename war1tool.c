@@ -2307,7 +2307,7 @@ static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 			} else {
 				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"orc\")\n", i);
 			}
-			gzprintf(sms, "SetAiType(%d, \"wc1-passive\")\n", i);
+			gzprintf(sms, "SetAiType(%d, \"wc1-land-attack\")\n", i);
 		}
 	}
 	gzprintf(smp, "-- Stratagus Map Presentation\n");

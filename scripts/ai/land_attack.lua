@@ -35,12 +35,11 @@ local player
 
 local end_loop_funcs = {
   function() print("Looping !") return false end,
-  function() return AiForce(0, {AiSoldier(), 1, AiEliteShooter(), 2, AiCavalryMage(), 4, AiCatapult(), 1, AiMage(), 4}) end,
-  function() return AiForce(1, {AiSoldier(), 1, AiEliteShooter(), 2, AiCavalryMage(), 4, AiCatapult(), 1, AiMage(), 2}) end,
-  function() return AiForce(2, {AiFlyer(), 1}) end,
-  function() return AiWaitForce(2) end,
+  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 4, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 4}) end,
+  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 4, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 2}) end,
+  function() return AiWaitForce(1) end,
+  function() return AiAttackWithForce(0) end,
   function() return AiAttackWithForce(1) end,
-  function() return AiAttackWithForce(2) end,
   function() return AiSleep(500) end,
   function() ai_land_attack_end_loop_func[player] = 0; return false end,
 }
@@ -118,10 +117,6 @@ local land_funcs = {
   function() return AiAttackWithForce(1) end,
     
   function() return AiSleep(500) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
   function() return AiNeed(AiBarracks()) end,
   function() return AiSet(AiWorker(), 19) end,
 
@@ -131,103 +126,61 @@ local land_funcs = {
   function() return AiAttackWithForce(1) end,
 
   function() return AiSleep(500) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
   function() return AiNeed(AiTemple()) end,
-  function() return AiResearch(AiUpgradeCavalryMage()) end,
-  function() return AiResearch(AiCavalryMageSpell1()) end,
-  function() return AiResearch(AiCavalryMageSpell2()) end,
-
-  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 0, AiCavalryMage(), 5, AiCatapult(), 1}) end,
-  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 0, AiCavalryMage(), 3, AiCatapult(), 1}) end,
-  function() return AiWaitForce(1) end,
-  function() return AiAttackWithForce(1) end,
-
-  function() return AiSleep(500) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiNeed(AiMageTower()) end,
-  function() return AiResearch(AiMageSpell4()) end,
-  function() return AiResearch(AiMageSpell5()) end,
-
-  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalryMage(), 6, AiCatapult(), 3, AiMage(), 2}) end,
-  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalryMage(), 2, AiCatapult(), 1, AiMage(), 1}) end,
-  function() return AiWaitForce(1) end,
-  function() return AiAttackWithForce(1) end,
-
-  function() return AiSleep(500) end,
-  function() return AiResearch(AiMageSpell1()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
+  function() return AiResearch(AiMageSpell2()) end,
   function() return AiResearch(AiMageSpell3()) end,
 
-  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalryMage(), 6, AiCatapult(), 1, AiMage(), 5}) end,
-  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalryMage(), 2, AiCatapult(), 1, AiMage(), 1}) end,
+  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 4, AiMage(), 1, AiCatapult(), 1}) end,
+  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiMage(), 1, AiCatapult(), 1}) end,
   function() return AiWaitForce(1) end,
   function() return AiAttackWithForce(1) end,
 
   function() return AiSleep(500) end,
-  function() return AiNeed(AiAirport()) end,
+  function() return AiNeed(AiMageTower()) end,
+  function() return AiResearch(AiSummonerSpell1()) end,
+  function() return AiResearch(AiSummonerSpell3()) end,
 
-  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalryMage(), 6, AiCatapult(), 1, AiMage(), 5}) end,
-  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalryMage(), 2, AiCatapult(), 1, AiMage(), 1}) end,
-  function() return AiForce(2, {AiFlyer(), 1}) end,
-  function() return AiWaitForce(2) end,
+  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
+  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+  function() return AiWaitForce(1) end,
   function() return AiAttackWithForce(1) end,
-  function() return AiAttackWithForce(2) end,
 
   function() return AiSleep(500) end,
-  function() return AiResearch(AiUpgradeEliteShooter()) end,
-  function() return AiResearch(AiUpgradeEliteShooter1()) end,
-  function() return AiResearch(AiMageSpell2()) end,
-  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 0, AiEliteShooter(), 2, AiCavalryMage(), 6, AiCatapult(), 1, AiMage(), 5}) end,
-  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 0, AiEliteShooter(), 2, AiCavalryMage(), 2, AiCatapult(), 1, AiMage(), 1}) end,
-  function() return AiForce(2, {AiFlyer(), 1}) end,
-  function() return AiWaitForce(2) end,
+  function() return AiResearch(AiSummonerSpell2()) end,
+
+  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
+  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+  function() return AiWaitForce(1) end,
   function() return AiAttackWithForce(1) end,
-  function() return AiAttackWithForce(2) end,
+
+  function() return AiSleep(500) end,
+
+  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
+  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+  function() return AiWaitForce(1) end,
+  function() return AiAttackWithForce(1) end,
+
+  function() return AiSleep(500) end,
+
+  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
+  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+  function() return AiWaitForce(1) end,
+  function() return AiAttackWithForce(0) end,
+  function() return AiAttackWithForce(1) end,
 
   function() return AiSleep(500) end,
   function() return AiNeed(AiCityCenter()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiNeed(AiScientific()) end,
-  function() return AiResearch(AiUpgradeEliteShooter2()) end,
 
-  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 0, AiEliteShooter(), 2, AiCavalryMage(), 6, AiCatapult(), 1, AiMage(), 5}) end,
-  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 0, AiEliteShooter(), 2, AiCavalryMage(), 2, AiCatapult(), 1, AiMage(), 1}) end,
-  function() return AiForce(2, {AiFlyer(), 1}) end,
-  function() return AiWaitForce(2) end,
+  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
+  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+  function() return AiWaitForce(1) end,
+  function() return AiAttackWithForce(0) end,
   function() return AiAttackWithForce(1) end,
-  function() return AiAttackWithForce(2) end,
 
   function() return AiSleep(500) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiCannonTower()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiResearch(AiUpgradeCatapult1()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiCannonTower()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
-  function() return AiResearch(AiUpgradeCatapult2()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiCannonTower()) end,
-  function() return AiNeed(AiTower()) end,
-  function() return AiUpgradeTo(AiGuardTower()) end,
   function() return AiSet(AiWorker(), 25) end,
 
   -- Everything researched...
-
   function() return AiLandAttackEndloop() end,
 }
 
@@ -246,5 +199,4 @@ function AiLandAttack()
   end
 end
 
-DefineAi("wc2-land-attack", "*", "land-attack", AiLandAttack)
-
+DefineAi("wc1-land-attack", "*", "wc1-land-attack", AiLandAttack)
