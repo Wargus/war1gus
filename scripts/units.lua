@@ -145,7 +145,7 @@ local units = {
     PiercingDamage = {orc = 5, human = 4},
     BasicDamage = 0,
     Missile = "missile-arrow",
-    MaxAttackRange = 5,
+    MaxAttackRange = {human = 5, orc = 4},
     Dependencies = {orc = {"lumber-mill"}, human = {"lumber-mill"}}},
    {Names = {orc = "Catapult", human = "Catapult"},
     Costs = {"time", 100, "gold", 900, "wood", 200},
