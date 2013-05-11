@@ -90,6 +90,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiForce(1, {AiSoldier(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
+      function() return AiSleep(1) end,      
 
       function() return AiSet(AiWorker(), 9) end,
       function() return AiSleep(500) end,
@@ -97,9 +98,9 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiWaitForce(1) end,
+      function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
       function() return AiResearch(AiUpgradeWeapon1()) end,
       function() return AiResearch(AiUpgradeArmor1()) end,
       function() return AiResearch(AiUpgradeMissile1()) end,
@@ -111,6 +112,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1}) end,
       function() return AiWaitForce(1) end,
+      function() return AiSleep(600) end,
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
@@ -118,6 +120,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
+      function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
