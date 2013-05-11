@@ -30,55 +30,5 @@ end
 DefineAllowHumanUnits("FFFFFFFFFFFFFFFF")
 DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
 
-
--- AI
---[[ human 02 campaign AI]]--
--- This AI script attacks (rarely)
-five_minutes = 30--[[~fps]] * 60--[[seconds]] * 5
-local hum_02_loop_funcs = {
-   function()
-      -- attack in pairs
-      AiForce(0, {AiSoldier(), 1, AiShooter(), 1})
-      if not AiCheckForce(0) then
-	 -- attack with remaining units
-	 AiForce(0, {AiShooter(), 1})
-	 if not AiCheckForce(0) then
-	    AiForce(0, {AiSoldier(), 1})
-	 end
-      end
-      return AiSleep(five_minutes)
-   end,
-   function() return AiAttackWithForce(0) end,
-   function()
-      stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 0
-      return false
-   end
-}
-
-local hum_02_funcs = {
-   function()
-      -- a grunt
-      AiForce(0, {AiSoldier(), 1})
-      return AiSleep(five_minutes)
-   end,
-   function() return AiAttackWithForce(0) end,
-   function()
-      -- a spearman
-      AiForce(0, {AiShooter(), 1})
-      return AiSleep(five_minutes)
-   end,
-   function() return AiAttackWithForce(0) end,
-   function()
-      return AiLoop(hum_02_loop_funcs, stratagus.gameData.AIState.loop_index)
-   end
-}
-
-function AiHuman02()
-   return AiLoop(hum_02_funcs, stratagus.gameData.AIState.index)
-end
-DefineAi("hum-02", "*", "hum-02", AiHuman02)
-
 LoadTileModels("scripts/tilesets/forest.lua")
 Load("campaigns/human/02.sms")
-
-SetAiType(1, "hum-02")
