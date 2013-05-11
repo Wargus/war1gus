@@ -43,3 +43,4 @@ DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/orc/07.sms")
+SetPlayerData(1, "Race", "orc")
