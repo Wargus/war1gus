@@ -37,8 +37,6 @@ local info_panel_x = 0
 local info_panel_y = 140
 local min_damage = Div(ActiveUnitVar("PiercingDamage"), 2)
 local max_damage = Add(ActiveUnitVar("PiercingDamage"), ActiveUnitVar("BasicDamage"))
-local damage_bonus = Sub(ActiveUnitVar("PiercingDamage", "Value", "Type"),
-							ActiveUnitVar("PiercingDamage", "Value", "Initial"));
 
 DefinePanelContents(
 -- Default presentation. ------------------------
@@ -141,9 +139,14 @@ DefinePanelContents(
        More = {"Text", {
 		  Text = "Armor: ", Variable = "Armor", Stat = true}}
      },
-     { Pos = {25, 67}, Condition = {Speed = "only"},
-       More = {"Text", {Text = "Speed: ", Variable = "Speed", Stat = true}}
-     } } })
+     { Pos = {25, 67},
+       More = {"Text", {
+		  Text = Concat("Damage: ",
+				String(min_damage), "-", String(max_damage))
+		       }
+       }
+     }}
+  })
 
 DefineCursor({
   Name = "cursor-point",

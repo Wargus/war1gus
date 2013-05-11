@@ -1,9 +1,12 @@
 local houtcome = "ui/human/outcome_windows.png"
 local ooutcome =  "ui/orc/outcome_windows.png"
+local defeatscene = "ui/defeat_scene.png"
+local victoryscene = "ui/victory_scene.png"
 
 function RunResultsMenu()
   local background
   local result = "Humpf"
+  local scene
   local human = (GetPlayerData(GetThisPlayer(), "RaceName") == "human")
 
   if (human) then
@@ -14,6 +17,7 @@ function RunResultsMenu()
 
   if (GameResult == GameVictory) then
     result = "Victory!"
+    scene = victoryscene
     if (human) then
       PlayMusic("music/Human Victory.ogg")
     else
@@ -21,6 +25,7 @@ function RunResultsMenu()
     end
   elseif (GameResult == GameDefeat) then
     result = "Defeat!"
+    scene = defeatscene
     if (human) then
       PlayMusic("music/Human Defeat.ogg")
     else
@@ -28,6 +33,7 @@ function RunResultsMenu()
     end
   elseif (GameResult == GameDraw) then
     result = "Draw!"
+    scene = victoryscene
   else
     return -- quit to menu
   end
@@ -41,6 +47,11 @@ function RunResultsMenu()
   local names_font = Fonts["small-title"]
 
   menu:addLabel(result, 125 * multx, 52 * multy, Fonts["small-title"])
+
+  sceneg = CGraphic:New(scene)
+  sceneg:Load()
+  scenew = ImageWidget(sceneg)
+  menu:add(scenew, 234, 24)
 
   local kills = {you = 0, enemy = 0, neutral = 0}
   local units = {you = 0, enemy = 0, neutral = 0}
