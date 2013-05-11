@@ -38,7 +38,7 @@ DefineMissileType("missile-catapult-rock",
   { File = "missiles/catapult_projectile.png", Size = {64, 64}, Frames = 15, NumDirections = 5,
   ImpactSound = "explosion",
   DrawLevel = 50, Class = "missile-class-parabolic", Sleep = 1, Speed = 16, Range = 2,
-  ImpactMissile = "missile-impact", SplashFactor = 4 } )
+  ImpactMissile = "missile-explosion", SplashFactor = 4 } )
 
 DefineMissileType("missile-small-fire",
   { File = "missiles/small_fire.png", Size = {32, 64}, Frames = 4, NumDirections = 1,

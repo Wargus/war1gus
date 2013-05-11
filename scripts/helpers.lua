@@ -131,13 +131,6 @@ function DefineUnitFromSpec(unit)
       local filename = string.lower(string.gsub(name, " ", "_"))
       local unitname = string.gsub(filename, "_", "-")
 
-      local animations = ""
-      if unit.Names.human then
-	 animations = "animations-" .. string.lower(unit.Names.human)
-      else
-	 animations = "animations-" .. unitname
-      end
-
       if unit.Names.orc and unit.Names.orc == unit.Names.human then
 	 unitname = race .. "-" .. filename
       end
@@ -149,7 +142,7 @@ function DefineUnitFromSpec(unit)
 
       local unitType = {
 	 Name = name,
-	 Animations = animations,
+	 Animations = "animations-" .. unitname,
 	 Icon = "icon-" .. unitname,
 	 Image = {
 	    "file", race .. "/units/" .. filename .. ".png",
@@ -163,7 +156,7 @@ function DefineUnitFromSpec(unit)
 	 SightRange = 5,
 	 Speed = 9,
 	 organic = true,
-	 ComputerReactionRange = 5,
+	 ComputerReactionRange = 4,
 	 PersonReactionRange = 4,
 	 Armor =  3,
 	 BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
@@ -178,7 +171,6 @@ function DefineUnitFromSpec(unit)
 	 Vanishes = false,
 	 NonSolid = false,
 	 IsNotSelectable = false,
-	 Corpse = "unit-dead-body",
 	 Sounds = {
 	    "attack", unitname .. "-attack",
 	    "selected", race .. " selected",
@@ -187,6 +179,14 @@ function DefineUnitFromSpec(unit)
 	    "help", race .. " help 3",
 	    "dead", race .. " dead"},
 	 SelectableByRectangle = true}
+
+      if unit.organic == nil or unit.organic == true then
+	 if race == "orc" then
+	    unitType.Corpse = "unit-orc-dead-body"
+	 else
+	    unitType.Corpse = "unit-human-dead-body"
+	 end
+      end
 
       for k,v in pairs(unit) do
 	 if unitType[k] then
