@@ -251,7 +251,11 @@ function DefineUpgradeFromSpec(spec)
       end
 
       if spec.modifier then
-      	 DefineModifier("upgrade-" .. name, spec.modifier, unpack(applicants))
+	 local modifier = {spec.modifier[1], spec.modifier[2]}
+	 if type(modifier[2]) == "table" then
+	    modifier[2] = modifier[2][race]
+	 end
+      	 DefineModifier("upgrade-" .. name, modifier, unpack(applicants))
       else
       	 DefineModifier("upgrade-" .. name, unpack(applicants))
       end

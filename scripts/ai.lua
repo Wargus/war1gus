@@ -34,8 +34,12 @@
 race1 = "human"
 race2 = "orc"
 
-DefineAiHelper()
-DefineAiHelper()
+DefineAiHelper(
+   {"unit-equiv", "unit-knight", "unit-knight1", "unit-knight2"}
+)
+DefineAiHelper(
+   {"unit-equiv", "unit-raider", "unit-raider1", "unit-raider2"}
+)
 
 --
 --  City-center of the current race.

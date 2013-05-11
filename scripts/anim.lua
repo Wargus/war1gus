@@ -40,9 +40,11 @@ local function DefaultStillAnimation()
 	return {"frame 0", "wait 4"}
 end
 
-local function BuildMoveAnimation(frames)
+local function BuildFastMoveAnimation(frames, extra_wait)
 	local tilesizeinpixel = 32
 	local halfIndex;
+	local waittime = (5 * 5 / #frames) + extra_wait
+
 	if (#frames % 2 == 0) then
 		halfIndex = (#frames) / 2
 	else
@@ -53,35 +55,35 @@ local function BuildMoveAnimation(frames)
 		for i = 1, halfIndex do
 			res[1 + #res] = "frame " .. frames[i]
 			res[1 + #res] = "move 4"
-			res[1 + #res] = "wait 2"
+			res[1 + #res] = "wait " .. waittime
 			tilesizeinpixel = tilesizeinpixel - 4;
 		end
 		for i = 1, halfIndex - 1  do
 			res[1 + #res] = "frame " .. frames[halfIndex - i]
 			res[1 + #res] = "move 4"
-			res[1 + #res] = "wait 2"
+			res[1 + #res] = "wait " .. waittime
 			tilesizeinpixel = tilesizeinpixel - 4;
 		end
 		res[1 + #res] = "frame 0"
 		res[1 + #res] = "move 4"
-		res[1 + #res] = "wait 2"
+		res[1 + #res] = "wait " .. waittime
 		tilesizeinpixel = tilesizeinpixel - 4;
 		
 		for i = 1, halfIndex do
 			res[1 + #res] = "frame " .. frames[1 + #frames - i]
 			res[1 + #res] = "move 4"
-			res[1 + #res] = "wait 2"
+			res[1 + #res] = "wait " .. waittime
 			tilesizeinpixel = tilesizeinpixel - 4;
 		end
 		for i = (2 + #frames - halfIndex), #frames do
 			res[1 + #res] = "frame " .. frames[i]
 			res[1 + #res] = "move 4"
-			res[1 + #res] = "wait 2"
+			res[1 + #res] = "wait " .. waittime
 			tilesizeinpixel = tilesizeinpixel - 4;
 		end
 		res[1 + #res] = "frame 0"
 		res[1 + #res] = "move 4"
-		res[1 + #res] = "wait 2"
+		res[1 + #res] = "wait " .. waittime
 		tilesizeinpixel = tilesizeinpixel - 4;
 	end	
 	res[1 + #res] = "unbreakable end"
@@ -92,6 +94,10 @@ local function BuildMoveAnimation(frames)
 		error("Problem in move animation")
 	end
 	return res
+end
+
+local function BuildMoveAnimation(frames)
+	return BuildFastMoveAnimation(frames, 6)
 end
 
 local function BuildAttackAnimation(frames)
@@ -246,8 +252,21 @@ DefineAnimations("animations-peon", worker_anim)
 DefineAnimations("animations-human-catapult", BuildAnimations(frameNumbers_5_2_5_3))
 DefineAnimations("animations-orc-catapult", BuildAnimations(frameNumbers_5_2_5_3))
 
-DefineAnimations("animations-knight", BuildAnimations(frameNumbers_5_5_5_5))
-DefineAnimations("animations-raider", BuildAnimations(frameNumbers_5_5_5_5))
+anim_rider = {
+   Still = DefaultStillAnimation(),
+   Move = BuildFastMoveAnimation(frameNumbers_5_5_5_5[1], 4),
+   Attack = BuildAttackAnimation(frameNumbers_5_5_5_5[2]),
+   Death = BuildDeathAnimation(frameNumbers_5_5_5_5[3])
+}
+DefineAnimations("animations-knight", anim_rider)
+DefineAnimations("animations-raider", anim_rider)
+anim_rider.Move = BuildFastMoveAnimation(frameNumbers_5_5_5_5[1], 2),
+DefineAnimations("animations-knight1", anim_rider)
+DefineAnimations("animations-raider1", anim_rider)
+anim_rider.Move = BuildFastMoveAnimation(frameNumbers_5_5_5_5[1], 0),
+DefineAnimations("animations-knight2", anim_rider)
+DefineAnimations("animations-raider2", anim_rider)
+
 DefineAnimations("animations-daemon", BuildAnimations(frameNumbers_5_5_5_5))
 DefineAnimations("animations-ogre", BuildAnimations(frameNumbers_5_5_5_5))
 DefineAnimations("animations-skeleton", BuildAnimations(frameNumbers_5_5_5_5))

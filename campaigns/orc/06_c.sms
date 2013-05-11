@@ -30,7 +30,7 @@ local allowedHumanUnits = {"unit-human-farm",
 	"unit-human-blacksmith", "unit-human-catapult",
         "upgrade-sword1", "upgrade-human-shield1",
 	"upgrade-sword2", "upgrade-human-shield2",
-	"unit-human-stable", "unit-knight",
+	"unit-human-stable", "unit-knight", "unit-knight1",
 	"upgrade-horse1",
 	"unit-human-tower", "unit-human-conjurer",
 	"upgrade-rain-of-fire", "upgrade-scorpion"}
@@ -44,7 +44,7 @@ local allowedOrcUnits = {"unit-orc-farm",
         "unit-orc-blacksmith", "unit-orc-catapult",
         "upgrade-axe1", "upgrade-orc-shield1",
 	"upgrade-axe2", "upgrade-orc-shield2",
-	"unit-orc-kennel", "unit-raider",
+	"unit-orc-kennel", "unit-raider", "unit-raider1",
 	"upgrade-wolves1"}
 local function DefineAllowTable(table, flags)
 	for i, unitName in ipairs(table) do

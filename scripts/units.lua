@@ -158,17 +158,6 @@ local units = {
     MaxAttackRange = 4,
     Dependencies = {orc = {"blacksmith", "lumber-mill"},
 		    human = {"blacksmith", "lumber-mill"}}},
-   {Names = {orc = "Raider", human = "Knight"},
-    Costs = {"time", 80, "gold", 850},
-    HitPoints = 90,
-    Armor = 5,
-    Speed = 13,
-    PiercingDamage = 1,
-    BasicDamage = 13,
-    Size = {orc = {96, 96}},
-    MaxAttackRange = 1,
-    Dependencies = {orc = {"blacksmith", "kennel"},
-		    human = {"blacksmith", "stable"}}},
    {Names = {orc = "Warlock", human = "Conjurer"},
     Costs = {"time", 90, "gold", 900},
     HitPoints = 40,
@@ -241,6 +230,25 @@ for idx,unit in ipairs(units) do
    DefineUnitFromSpec(unit)
 end
 
+local knight_raider_spec = {
+   Names = {orc = "Raider", human = "Knight"},
+   Name = {orc = "Raider", human = "Knight"},
+   Image = {orc = {"file", "orc/units/raider.png", "size", {96, 96}},
+	    human = {"file", "human/units/knight.png", "size", {64, 64}}},
+   Costs = {"time", 80, "gold", 850},
+   HitPoints = 90,
+   Armor = 5,
+   Speed = 13,
+   PiercingDamage = 1,
+   BasicDamage = 13,
+   MaxAttackRange = 1,
+   Dependencies = {orc = {"blacksmith", "kennel"},
+		   human = {"blacksmith", "stable"}}}
+DefineUnitFromSpec(knight_raider_spec)
+knight_raider_spec.Names = {orc = "Raider1", human = "Knight1"}
+DefineUnitFromSpec(knight_raider_spec)
+knight_raider_spec.Names = {orc = "Raider2", human = "Knight2"}
+DefineUnitFromSpec(knight_raider_spec)
 
 local dead_bodies = { Name = "Dead Body",
   Image = {"file", "neutral/units/dead_bodies.png", "size", {64, 64}},
