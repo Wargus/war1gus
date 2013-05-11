@@ -2288,7 +2288,7 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
 */
-static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
+static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
 {
 	int i;
 	
@@ -2307,7 +2307,7 @@ static void SmsSavePlayers(char* race, gzFile sms, gzFile smp)
 			} else {
 				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"orc\")\n", i);
 			}
-			gzprintf(sms, "SetAiType(%d, \"wc1-land-attack\")\n", i);
+			gzprintf(sms, "SetAiType(%d, \"camp%s\")\n", i, mapnum);
 		}
 	}
 	gzprintf(smp, "-- Stratagus Map Presentation\n");
@@ -2504,7 +2504,8 @@ int ConvertMap(const char* file, int txte, int mtxme)
 {
 	unsigned char* txtp;
 	unsigned char buf[1024];
-	char* race;
+	char *race, *racemem;
+	char mapnum[3] = {'\0'};
 	gzFile smp, sms;
 	FILE* sms_c2;
 
@@ -2533,8 +2534,8 @@ int ConvertMap(const char* file, int txte, int mtxme)
 		exit(-1);
 	}
 
-	// Get the race
-	race = (char*)calloc(sizeof(char), 1024);
+	// XXX: Get the race
+	race = racemem = (char*)calloc(sizeof(char), 1024);
 	strcpy(race, file);
 	assert(strlen(race) > 3 && race[strlen(race) - 3] == '/');
 	race[strlen(race) - 3] = '\0';
@@ -2542,14 +2543,19 @@ int ConvertMap(const char* file, int txte, int mtxme)
 		race++;
 	}
 
+	// XXX: Get the map number
+	mapnum[0] = file[strlen(file) - 2];
+	mapnum[1] = file[strlen(file) - 1];
+
 	SmsSaveObjectives(sms_c2, txtp);
-	SmsSavePlayers(race, sms, smp);
+	SmsSavePlayers(race, mapnum, sms, smp);
 	SmsSaveMap(sms, smp, mtxme, file);
 	SmsSaveUnits(sms, txtp);
 
 	fclose(sms_c2);
 
 	free(txtp);
+	free(racemem);
 	gzclose(sms);
 	gzclose(smp);
 	return 0;
