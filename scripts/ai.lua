@@ -379,4 +379,3 @@ ReInitAiGameData()
 Load("scripts/ai/passive.lua")
 Load("scripts/ai/land_attack.lua")
 Load("scripts/ai/campaign.lua")
-
