@@ -2370,7 +2370,7 @@ char *UnitTypes[] = {
 	// 10
 	"unit-conjurer", "unit-warlock",
 	"unit-cleric", "unit-necrolyte",
-	"unit-midevh", "unit-lothar",
+	"unit-medivh", "unit-lothar",
 	"unit-wounded", "unit-grizelda",
 	"unit-garona", "unit-ogre",
 	// 20
