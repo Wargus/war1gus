@@ -59,23 +59,6 @@ MakeSound("human-selected",
 MakeSoundGroup("human selected",
   "human-selected", "human annoyed")
 
-MakeSound("capture (human)", "alliance/misc/capture.wav")
-MakeSound("rescue (human)", "alliance/misc/rescue.wav")
-
-
-------------------------------------------------------------------------------
---	Define human attack sounds.
---
-
-MapSound("footman-attack", "sword attack")
-MapSound("human-catapult-attack", "catapult attack")
-MapSound("knight-attack", "sword attack")
-MapSound("knight1-attack", "sword attack")
-MapSound("knight2-attack", "sword attack")
-MapSound("archer-attack", "arrow attack")
-MapSound("cleric-attack", "lightning")
-MapSound("conjurer-attack", "lightning")
-
 
 ------------------------------------------------------------------------------
 --	Define human selected sounds.

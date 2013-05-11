@@ -172,7 +172,7 @@ function DefineUnitFromSpec(unit)
 	 NonSolid = false,
 	 IsNotSelectable = false,
 	 Sounds = {
-	    "attack", unitname .. "-attack",
+	    "attack", race .. " acknowledge",
 	    "selected", race .. " selected",
 	    "acknowledge", race .. " acknowledge",
 	    "ready", race .. " ready",

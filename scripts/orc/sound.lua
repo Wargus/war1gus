@@ -61,23 +61,6 @@ MakeSound("orc-selected",
 MakeSoundGroup("orc selected",
   "orc-selected", "orc annoyed")
 
-MakeSound("capture (orc)", "mythical/misc/capture.wav")
-MakeSound("rescue (orc)", "mythical/misc/rescue.wav")
-
-
-------------------------------------------------------------------------------
---	Define orc attack sounds.
---
-
-MapSound("grunt-attack", "sword attack")
-MapSound("orc-catapult-attack", "catapult attack")
-MapSound("raider-attack", "sword attack")
-MapSound("raider1-attack", "sword attack")
-MapSound("raider2-attack", "sword attack")
-MapSound("spearman-attack", "arrow attack")
-MapSound("necrolyte-attack", "lightning")
-MapSound("warlock-attack", "lightning")
-
 
 ------------------------------------------------------------------------------
 --	Define orc selected sounds.
