@@ -1113,9 +1113,9 @@ void ConvertFLC(const char* file, const char* flc)
 
 	output = (char*)calloc(sizeof(char), strlen(flc) + 1);
 	strcpy(output, flc);
-	output[strlen(output) - 3] = 'o';
-	output[strlen(output) - 2] = 'g';
-	output[strlen(output) - 1] = 'g';
+	output[strlen(output) - 3] = 'a';
+	output[strlen(output) - 2] = 'v';
+	output[strlen(output) - 1] = 'i';
 
 	buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(output) + 1);
 	sprintf(buf, "%s/%s/%s", Dir, VIDEO_PATH, output);
