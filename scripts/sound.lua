@@ -40,9 +40,21 @@
 --		This is a random music player demo
 --
 
-playlist = {
-  "music/default.mod"
-}
+playlist = {"music/00.ogg"}
+
+for i=1,44 do
+   if i < 10 then
+      table.insert(playlist, "music/0" .. i .. ".ogg")
+   else
+      table.insert(playlist, "music/" .. i .. ".ogg")
+   end
+end
+
+TitleScreenMusic = "music/00.ogg"
+HumanBriefingMusic = "music/07.ogg"
+OrcBriefingMusic = "music/14.ogg"
+VictoryMusic = "music/08.ogg"
+DefeatMusic = "music/06.ogg"
 
 function MusicStopped()
   if (table.getn(playlist) ~= 0) then
@@ -90,7 +102,7 @@ DefinePlaySections("race", "orc", "type", "stats-defeat",
 --	Define simple misc sounds.
 --
 
-MakeSound("missing", "general/misc/missing.wav")
+MakeSound("missing", "ui/cancel.wav")
 
 MakeSound("building construction", "misc/building.wav")
 
@@ -129,11 +141,11 @@ MakeSound("sword attack",
 --
 
 DefineGameSounds(
-  "placement-error", { "human", MakeSound("placement error", "general/ui/placement error.wav")},
-  "placement-error", { "orc", MakeSound("placement error", "general/ui/placement error.wav")},
+  "placement-error", { "human", MakeSound("placement error", "ui/cancel.wav")},
+  "placement-error", { "orc", MakeSound("placement error", "ui/cancel.wav")},
 
-  "placement-success", { "human", MakeSound("placement success", "general/ui/placement success.wav")},
-  "placement-success", { "orc", MakeSound("placement success", "general/ui/placement success.wav")},
+  "placement-success", { "human", MakeSound("placement success", "ui/click.wav")},
+  "placement-success", { "orc", MakeSound("placement success", "ui/click.wav")},
 
   "click", MakeSound("click", "ui/click.wav"),
 

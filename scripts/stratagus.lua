@@ -97,7 +97,7 @@ SetTitleScreens(
 --  Enter your menu music.
 --SetMenuMusic("music/default.mod")
 SetTitleScreens(
-   {Music = "music/default.mod"}
+   {Music = "music/00.ogg"}
 )
 
 --  If color-cycle-all is off (#f) only the tileset and global palette are

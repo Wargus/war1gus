@@ -68,5 +68,5 @@ MakeSoundGroup("orc selected",
 
 MakeSound("orc-temple-selected", "orc/temple.wav")
 MakeSound("orc-kennel-selected", "orc/kennel.wav")
-MakeSound("orc-blacksmith-selected", "blacksmith")
+MakeSound("orc-blacksmith-selected", "blacksmith.wav")
 

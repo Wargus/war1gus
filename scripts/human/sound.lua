@@ -66,5 +66,5 @@ MakeSoundGroup("human selected",
 
 MakeSound("human-church-selected", "human/church.wav")
 MakeSound("human-stable-selected", "human/stable.wav")
-MakeSound("human-blacksmith-selected", "blacksmith")
+MakeSound("human-blacksmith-selected", "blacksmith.wav")
 
