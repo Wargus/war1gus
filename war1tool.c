@@ -34,6 +34,10 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
+#define VERSION "2.2.7" // Version of extractor wartool
+#define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
+#define COPYRIGHT "1998-2013 by The Stratagus Project"
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -180,6 +184,8 @@ char* Dir;
 **  Path to the video files.
 */
 #define VIDEO_PATH  "videos"
+
+#define DEFAULT_DATA_DIR "data.wc1"
 
 /**
 **  How much tiles are stored in a row.
@@ -2759,11 +2765,18 @@ void CopyDirectories(char** directories) {
 */
 void Usage(const char* name)
 {
-	printf("war1tool for Stratagus (c) 2003-2004 by the Stratagus Project\n\
-Usage: %s archive-directory [destination-directory]\n\
-archive-directory\tDirectory which includes the archives maindat.war...\n\
-destination-directory\tDirectory where the extracted files are placed.\n"
-	,name);
+	printf("wartool V%s for Stratagus, (c) %s.\n\
+\tWritten by %s\n\
+\thttps://launchpad.net/war1gus\n\n\
+Usage: %s [-m] [-v] [-V] [-h] archive-directory [destination-directory]\n\
+\t-m\tExtract and convert midi sound files (may take some time)\n\
+\t-v\tExtract and convert videos\n\
+\t-V\tShow version\n\
+\t-h\tShow usage (this text)\n\
+archive-directory\tDirectory which includes the archives (data.war...)\n\
+destination-directory\tDirectory where the extracted files are placed (default: %s).\n"
+	       ,VERSION, COPYRIGHT, AUTHORS, name,
+	       DEFAULT_DATA_DIR);
 }
 
 /**
@@ -2778,13 +2791,33 @@ int main(int argc, char** argv)
 	int a;
 	int upper;
 	struct stat st;
+	int midi, video;
 	char* dirs[4] = {0x0};
+	video = midi = 0;
 
 	a = 1;
 	upper = 0;
 	while (argc >= 2) {
 		if (!strcmp(argv[a], "-h")) {
 			Usage(argv[0]);
+			++a;
+			--argc;
+			exit(0);
+		}
+		if (!strcmp(argv[a], "-m")) {
+			midi = 1;
+			++a;
+			--argc;
+			continue;
+		}
+		if (!strcmp(argv[a], "-v")) {
+			video = 1;
+			++a;
+			--argc;
+			continue;
+		}
+		if (!strcmp(argv[a], "-V")) {
+			printf(VERSION "\n");
 			++a;
 			--argc;
 			exit(0);
@@ -2806,7 +2839,7 @@ int main(int argc, char** argv)
 	if (argc == 3) {
 		Dir = argv[a + 1];
 	} else {
-		Dir = "data.wc1";
+		Dir = DEFAULT_DATA_DIR;
 	}
 
 	sprintf(buf, "%s/data.war", ArchiveDir);
@@ -2881,18 +2914,20 @@ int main(int argc, char** argv)
 				OpenArchive(buf, Todo[u].Arg1);
 				break;
 			case FLC:
-				if (upper) {
-					int i = 0;
-					char filename[1024];
-					strcpy(filename, Todo[u].File);
-					Todo[u].File = filename;
-					while (Todo[u].File[i]) {
-						Todo[u].File[i] = toupper(Todo[u].File[i]);
-						++i;
+				if (video) {
+					if (upper) {
+						int i = 0;
+						char filename[1024];
+						strcpy(filename, Todo[u].File);
+						Todo[u].File = filename;
+						while (Todo[u].File[i]) {
+							Todo[u].File[i] = toupper(Todo[u].File[i]);
+							++i;
+						}
 					}
+					sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
+					ConvertFLC(buf, Todo[u].File);
 				}
-				sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
-				ConvertFLC(buf, Todo[u].File);
 				break;
 			case T:
 				ConvertTileset(Todo[u].File, Todo[u].Arg1);
@@ -2910,7 +2945,9 @@ int main(int argc, char** argv)
 				ConvertWav(Todo[u].File, Todo[u].Arg1);
 				break;
 			case M:
-				ConvertXmi(Todo[u].File, Todo[u].Arg1);
+				if (midi) {
+					ConvertXmi(Todo[u].File, Todo[u].Arg1);
+				}
 				break;
 			case VOC:
 				ConvertVoc(Todo[u].File, Todo[u].Arg1);
