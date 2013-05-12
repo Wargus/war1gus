@@ -56,5 +56,7 @@ DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
 DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
 DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
-LoadTileModels("scripts/tilesets/swamp.lua")
+DefineAllow("upgrade-daemon", "RRRRRRRRRRRRRRRR")
+
+LoadTileModels("scripts/tilesets/forest.lua")
 Load("campaigns/orc/12.sms")

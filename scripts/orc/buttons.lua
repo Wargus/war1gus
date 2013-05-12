@@ -168,7 +168,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-spider",
   ForUnit = {"unit-warlock"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-daemon",
-  Action = "cast-spell", Value = "spell-summon-elemental",
+  Action = "cast-spell", Value = "spell-summon-daemon",
   Allowed = "check-upgrade", AllowArg = {"upgrade-daemon"},
   Key = "d", Hint = "SUMMON D~!AEMON",
   ForUnit = {"unit-warlock"} } )
