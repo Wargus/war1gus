@@ -580,12 +580,7 @@ function RunSinglePlayerGameMenu()
 end
 
 function BuildProgramStartMenu()
-  war1gus.playlist = { "music/Orc Briefing.ogg" }
   SetPlayerData(GetThisPlayer(), "RaceName", "orc")
-
-  if not (IsMusicPlaying()) then
-    PlayMusic("music/Orc Briefing.ogg")
-  end
 
   local menu = WarMenu()
   local offx = (Video.Width - 640) / 2

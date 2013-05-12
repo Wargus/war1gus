@@ -40,13 +40,13 @@
 --		This is a random music player demo
 --
 
-playlist = {"music/00.ogg"}
+war1gus.playlist = {"music/00.ogg"}
 
 for i=1,44 do
    if i < 10 then
-      table.insert(playlist, "music/0" .. i .. ".ogg")
+      table.insert(war1gus.playlist, "music/0" .. i .. ".ogg")
    else
-      table.insert(playlist, "music/" .. i .. ".ogg")
+      table.insert(war1gus.playlist, "music/" .. i .. ".ogg")
    end
 end
 
@@ -57,8 +57,8 @@ VictoryMusic = "music/08.ogg"
 DefeatMusic = "music/06.ogg"
 
 function MusicStopped()
-  if (table.getn(playlist) ~= 0) then
-    PlayMusic(playlist[math.random(table.getn(playlist))])
+  if (table.getn(war1gus.playlist) ~= 0) then
+    PlayMusic(war1gus.playlist[math.random(table.getn(war1gus.playlist))])
   end
 end
 

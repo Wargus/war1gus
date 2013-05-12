@@ -5,12 +5,11 @@ function Briefing(title, objs, bg, text, voices)
 
   local menu = WarMenu(nil, bg)
 
-  war1gus.playlist = {}
   if (currentRace == "human") then
-    PlayMusic("music/Human Briefing.ogg")
+    PlayMusic(HumanBriefingMusic)
     LoadUI("human", Video.Width, Video.Height)
   elseif (currentRace == "orc") then
-    PlayMusic("music/Orc Briefing.ogg")
+    PlayMusic(OrcBriefingMusic)
     LoadUI("orc", Video.Width, Video.Height)
   else
     StopMusic()
@@ -121,7 +120,6 @@ end
 function CreatePictureStep(bg, sound, title, text)
   return function()
     SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
-    war1gus.playlist = {}
     PlayMusic(sound)
     local menu = WarMenu(nil, bg)
     local offx = (Video.Width - 640) / 2
@@ -186,13 +184,8 @@ function RunCampaignSubmenu(race, exp)
   Load("scripts/campaigns.lua")
   campaign = CreateCampaign(race)
 
-  war1gus.playlist = { "music/Orc Briefing.ogg" }
   currentRace = race
   SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
-
-  if not (IsMusicPlaying()) then
-    PlayMusic("music/Orc Briefing.ogg")
-  end
 
   local menu = WarMenu()
   local offx = (Video.Width - 640) / 2

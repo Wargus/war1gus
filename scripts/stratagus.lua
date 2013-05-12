@@ -96,9 +96,7 @@ SetTitleScreens(
 
 --  Enter your menu music.
 --SetMenuMusic("music/default.mod")
-SetTitleScreens(
-   {Music = "music/00.ogg"}
-)
+
 
 --  If color-cycle-all is off (#f) only the tileset and global palette are
 --  color cycled.  Otherwise (#t) all palettes are color cycled.

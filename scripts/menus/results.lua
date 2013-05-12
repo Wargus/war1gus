@@ -18,19 +18,11 @@ function RunResultsMenu()
   if (GameResult == GameVictory) then
     result = "Victory!"
     scene = victoryscene
-    if (human) then
-      PlayMusic("music/Human Victory.ogg")
-    else
-      PlayMusic("music/Orc Victory.ogg")
-    end
+    PlayMusic(VictoryMusic)
   elseif (GameResult == GameDefeat) then
     result = "Defeat!"
     scene = defeatscene
-    if (human) then
-      PlayMusic("music/Human Defeat.ogg")
-    else
-      PlayMusic("music/Orc Defeat.ogg")
-    end
+    PlayMusic(DefeatMusic)
   elseif (GameResult == GameDraw) then
     result = "Draw!"
     scene = victoryscene

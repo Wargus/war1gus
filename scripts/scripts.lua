@@ -28,41 +28,9 @@
 --
 --      $Id$
 
-
 -- Set the unit type graphics to the correct tileset
 table.foreach(UnitTypeFiles,
 	function(k, v) DefineUnitType(k, {Image = {"file", v[war1gus.tileset]}}) end)
 
-
--- Fix critters sounds and name
---[[
-local CritterNames = {
-  summer = "Pig", winter = "Seal", wasteland = "Pig", swamp = "Warthog",
-}
-
-local CritterSounds = {
-  summer = "sheep-selected", winter = "seal-selected",
-  wasteland = "pig-selected", swamp = "warthog-selected",
-}
-
-DefineUnitType("unit-critter", {
-  Name = CritterNames[wargus.tileset]
-})
-
-MapSound("critter-selected", CritterSounds[wargus.tileset])
---]]
-
--- Icon and construction graphics also depend on the tileset
---[[
-Load("scripts/icons.lua")
-Load("scripts/constructions.lua")
-
-if (GetPlayerData(GetThisPlayer(), "RaceName") == "human") then
-	Load("scripts/human/ui.lua")
-elseif (GetPlayerData(GetThisPlayer(), "RaceName") == "orc") then
-	Load("scripts/orc/ui.lua")
-end
-
 StopMusic()
 MusicStopped()
---]]
