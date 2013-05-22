@@ -224,6 +224,12 @@ DefineButton( { Pos = 3, Level = 1, Icon = "icon-human-barracks",
   Key = "b", Hint = "BUILD ~!BARRACKS",
   ForUnit = {"unit-peasant"} } )
 
+DefineButton( { Pos = 4, Level = 1, Icon = "icon-human-town-hall",
+  Action = "build", Value = "unit-human-town-hall",
+  Allowed = "check-units-not", AllowArg = {"unit-human-town-hall"},
+  Key = "t", Hint = "BUILD ~!TOWN HALL",
+  ForUnit = {"unit-peasant"} } )
+
 DefineButton( { Pos = 6, Level = 1, Icon = "icon-cancel",
   Action = "button", Value = 0,
   Key = "\27", Hint = "~<ESC~> - CANCEL",
