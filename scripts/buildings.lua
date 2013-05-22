@@ -46,6 +46,8 @@ local buildings = {
     HitPoints = 2500,
     CanStore = {"wood", "gold"},
     Supply = 5,
+    RepairRange = 1000, -- basically infinite
+    BuildingRules = { { "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine"}}},
     Size = {128, 128}},
 
    {Names = {orc = "Barracks", human = "Barracks"},
@@ -143,6 +145,37 @@ DefineUnitType(
      Icon = "icon-cancel",
      TileSize = {1, 1}, BoxSize = {1, 1},
      SightRange = 1,
+     Indestructible = 1,
+     DrawLevel = 0,
+     IsNotSelectable = true,
+     NonSolid = true,
+     Type = "land", Building = true,
+     VisibleUnderFog = true })
+
+UnitTypeFiles["unit-road"] = {
+  forest = "tilesets/forest/neutral/buildings/road.png",
+  swamp = "tilesets/swamp/neutral/buildings/road.png",
+  dungeon = "tilesets/dungeon/neutral/buildings/road.png"
+}
+DefineConstruction(
+   "construction-none",
+   {Constructions = {{Percent = 0, File = "main", Frame = 0}}})
+DefineUnitType(
+   "unit-road",
+   { Name = "Road",
+     Image = {"size", {32, 32}},
+     Costs = {"time", 1, "gold", 50},
+     Animations = "animations-building",
+     Construction = "construction-none",
+     BuildingRules = { -- all buildings except the town hall need a road
+	{"distance", {
+	    Distance = 1, DistanceType = "=", Type = "unit-road"}}},
+     BuilderOutside = true,
+     Priority = 0,
+     HitPoints = 1,
+     Icon = "icon-cancel",
+     TileSize = {1, 1}, BoxSize = {32, 32},
+     SightRange = 0,
      Indestructible = 1,
      DrawLevel = 0,
      IsNotSelectable = true,

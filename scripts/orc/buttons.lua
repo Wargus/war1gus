@@ -264,19 +264,6 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-peon",
   Key = "p", Hint = "TRAIN ~!PEON",
   ForUnit = {"unit-orc-town-hall"} } )
 
---[[
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-road",
-  Action = "build", Value = "unit-orc-road",
-  Key = "r", Hint = "BUILD ~!ROAD",
-  ForUnit = {"unit-orc-town-hall"} } )
-]]
---[[
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-wall",
-  Action = "build", Value = "unit-orc-wall",
-  Key = "w", Hint = "BUILD ~!WALL",
-  ForUnit = {"unit-orc-town-hall"} } )
-]]
-
 -- training commands ---------------------------------------------------------
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-grunt",

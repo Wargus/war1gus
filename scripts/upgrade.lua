@@ -99,6 +99,7 @@ for idx,spec in ipairs(upgrades) do
 end
 
 DefineAllow("unit-gold-mine",           "AAAAAAAAAAAAAAAA")
+DefineAllow("unit-road",                "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-wall",                "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-dead-body",           "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-destroyed-1x1-place",	"AAAAAAAAAAAAAAAA")

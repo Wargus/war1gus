@@ -117,6 +117,7 @@ local units = {
     Coward = true,
     Armor = 0,
     RightMouseAction = "harvest",
+    RepairRange = 1,
     CanGatherResources = {
        {"resource-id", "gold",
 	"resource-capacity", 100,

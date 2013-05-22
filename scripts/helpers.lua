@@ -101,7 +101,12 @@ function DefineBuildingFromSpec(building)
 	 ExplodeWhenKilled = "missile-explosion",
 	 Type = "land",
 	 Building = true,
+	 BuilderOutside = false,
+	 RepairRange = 0,
 	 VisibleUnderFog = true,
+	 BuildingRules = { -- all buildings except the town hall need a road
+	    {"distance", {
+		Distance = 1, DistanceType = "=", Type = "unit-road"}}},
 	 Sounds = {
 	    "ready", race .. " work complete",
 	    "selected", fullname .. "-selected",
@@ -171,6 +176,7 @@ function DefineUnitFromSpec(unit)
 	 Vanishes = false,
 	 NonSolid = false,
 	 IsNotSelectable = false,
+	 RepairRange = 0,
 	 Sounds = {
 	    "attack", race .. " acknowledge",
 	    "selected", race .. " selected",
@@ -286,6 +292,20 @@ function CreateAllowanceFunction(race)
    return function(flags)
       for _,unitName in ipairs(all) do
 	 DefineAllow(unitName, flags)
+      end
+   end
+end
+
+function CreateRoads(positions)
+   local occupied_positions = {}
+
+   for _,pos in ipairs(positions) do
+      if not occupied_positions[pos.x] then
+	 occupied_positions[pos.x] = {}
+      end
+      if not occupied_positions[pos.x][pos.y] then
+	 occupied_positions[pos.x][pos.y] = true
+	 CreateUnit("unit-road", pos.player,{pos.x, pos.y})
       end
    end
 end

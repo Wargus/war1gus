@@ -36,6 +36,19 @@ Load("scripts/orc/buttons.lua")
 
 -- general buttons -----------------------------------------------------------
 
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-road",
+  Action = "build", Value = "unit-road",
+  Allowed = "check-no-research",
+  Key = "r", Hint = "BUILD ~!ROAD",
+  ForUnit = {"unit-orc-town-hall", "unit-human-town-hall", "unit-peasant"} } )
+--[[
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-wall",
+  Action = "build", Value = "unit-orc-wall",
+  Allowed = "check-network",
+  Key = "w", Hint = "BUILD ~!WALL",
+  ForUnit = {"unit-orc-town-hall"} } )
+]]
+
 
 ------------------------------------------------------------------------------
 --  Define unit-button.

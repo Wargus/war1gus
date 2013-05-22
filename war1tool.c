@@ -229,6 +229,7 @@ enum _archive_type_ {
 	F,						// File							(name)
 	T,						// Tileset						(name,idx)
 	U,						// Uncompressed Graphics		(name,pal,gfu)
+	TU, // Tileset unit (for walls and roads)
 	I,						// Image						(name,pal,img)
 	W,						// Wav							(name,wav)
 	M,						// XMI Midi Sound					(name,xmi)
@@ -467,6 +468,7 @@ Control Todo[] = {
 {U,0,"neutral/units/the_dead",								 191, 303 _2},
 {U,0,"neutral/units/skeleton",								 191, 304 _2},
 {U,0,"neutral/units/daemon",								 191, 305 _2},
+// what's here?
 {U,0,"neutral/units/water_elemental",						 191, 306 _2},
 {U,0,"neutral/units/dead_bodies",							 191, 326 _2},
 {U,0,"human/units/peasant_with_wood",						 191, 327 _2},
@@ -494,6 +496,7 @@ Control Todo[] = {
 {U,0,"tilesets/forest/human/buildings/stormwind_keep",			 191, 323 _2},
 {U,0,"tilesets/forest/orc/buildings/blackrock_spire",			 191, 324 _2},
 {U,0,"tilesets/forest/neutral/buildings/gold_mine",				 191, 325 _2},
+// what's here?
 {U,0,"tilesets/forest/human/buildings/farm_construction",		 191, 331 _2},
 {U,0,"tilesets/forest/orc/buildings/farm_construction",			 191, 332 _2},
 {U,0,"tilesets/forest/human/buildings/barracks_construction",	 191, 333 _2},
@@ -545,6 +548,14 @@ Control Todo[] = {
 {U,0,"tilesets/swamp/orc/buildings/kennel_construction",		 194, 344 _2},
 {U,0,"tilesets/swamp/human/buildings/blacksmith_construction",	 194, 345 _2},
 {U,0,"tilesets/swamp/orc/buildings/blacksmith_construction",	 194, 346 _2},
+
+{TU,0,"forest/neutral/buildings/wall",190,16 _2},
+{TU,0,"swamp/neutral/buildings/wall",193,16 _2},
+{TU,0,"dungeon/neutral/buildings/wall",196,66 _2},
+
+{TU,0,"forest/neutral/buildings/road",190,64 _2},
+{TU,0,"swamp/neutral/buildings/road",193,65 _2},
+{TU,0,"dungeon/neutral/buildings/road",196,81 _2},
 
 // Missiles
 {U,0,"missiles/fireball",									 217, 347 _2},
@@ -1795,6 +1806,103 @@ int ConvertTileset(char* file,int index)
 	return 0;
 }
 
+/**
+**  Convert a tileset mini image to a separate unit png
+*/
+int ConvertTilesetUnit(char* file, int index, int i)
+{
+	unsigned char* palp;
+	unsigned char* mini;
+	unsigned char* mega;
+	unsigned char* image;
+	const unsigned short* mp;
+	int msize;
+	int height;
+	int width;
+	int x;
+	int y;
+	int offset;
+	int numtiles;
+	int len;
+	char buf[1024];
+	int pale;
+
+	pale = index + 1;
+	palp = ExtractEntry(ArchiveOffsets[pale], &len);
+	if (!palp) {
+		return 0;
+	}
+	if (len < 768) {
+		palp = realloc(palp, 768);
+		memset(palp + len, 0, 768 - len);
+	}
+	if (pale == 191 || pale == 194 || pale == 197) {
+		unsigned char* gpalp;
+		int i;
+		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+		for (i = 0; i < 128; ++i) {
+			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
+					palp[i * 3 + 2] == 63) {
+				palp[i * 3 + 0] = gpalp[i * 3 + 0];
+				palp[i * 3 + 1] = gpalp[i * 3 + 1];
+				palp[i * 3 + 2] = gpalp[i * 3 + 2];
+			}
+		}
+		for (i = 128; i < 256; ++i) {
+			if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
+					gpalp[i * 3 + 2] == 63)) {
+				palp[i * 3 + 0] = gpalp[i * 3 + 0];
+				palp[i * 3 + 1] = gpalp[i * 3 + 1];
+				palp[i * 3 + 2] = gpalp[i * 3 + 2];
+			}
+		}
+		free(gpalp);
+	}
+	mini = ExtractEntry(ArchiveOffsets[index], NULL);
+	if (!mini) {
+		free(palp);
+		return 0;
+	}
+	mega = ExtractEntry(ArchiveOffsets[index - 1], &msize);
+	if (!mega) {
+		free(palp);
+		free(mini);
+		return 0;
+	}
+	numtiles = msize / 8;
+
+	width = 16;
+	height = 16;
+	image = malloc(height * width);
+	memset(image, 0, height * width);
+
+	mp = (const unsigned short*)(mega + i * 8);
+	for (y = 0; y < 2; ++y) {
+		for (x = 0; x < 2; ++x) {
+			offset = ConvertLE16(mp[x + y * 2]);
+			DecodeMiniTile(image,
+				       x, y,
+				       width, mini,
+				       (offset & 0xFFFC) << 1,
+				       offset & 2, offset & 1);
+		}
+	}
+
+	ConvertPalette(palp);
+
+	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
+	CheckPath(buf);
+	ResizeImage(&image, width, height, 2 * width, 2 * height);
+	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
+
+	free(palp);
+	free(mini);
+	free(mega);
+
+	return 0;
+}
+
+
 //----------------------------------------------------------------------------
 //  Graphics
 //----------------------------------------------------------------------------
@@ -2516,7 +2624,7 @@ static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath)
 	gzprintf(smp, "PresentMap(\"(unnamed)\", 16, 64, 64, 1)\n");
 	gzprintf(smp, "DefineMapSetup(\"%s_c.sms\")\n", lvlpath);
 
-	// TODO: Save actual map layout
+	// Warcraft I maps are always 64x64
 	for (i = 0; i < 64; ++i) {
 		gzprintf(sms, "  -- %d\n",i);
 		for (j = 0; j < 64; ++j) {
@@ -2618,6 +2726,8 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 
 	/* gzprintf(f, "SlotUsage(0, \"-\", %d)\n", numunits - 1); */
 
+	// Units, placed by calling PlaceUnits at the very end
+	gzprintf(f, "local PlaceUnits = function()\n");
 	i = 0;
 	while (p[0] != 0xFF || p[1] != 0xFF) {
 		x = FetchByte(p);
@@ -2627,24 +2737,24 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 		type = FetchByte(p);
 		player = FetchByte(p);
 		if (player == 4) {
-			player = 15;
+		    player = 15; // neutral
 		}
 		if (type == 0x32) {
 			// gold mine
-			value = FetchByte(p);
-			value = FetchByte(p);
-			value *= 250;
+		        value = FetchLE16(p);
 		} else {
 			value = 0;
 		}
 
-		gzprintf(f, "unit = CreateUnit(\"%s\", %d, {%d, %d})\n", UnitTypes[type], player, x, y);
+		gzprintf(f, "  unit = CreateUnit(\"%s\", %d, {%d, %d})\n", UnitTypes[type], player, x, y);
 		if (value) {
-			gzprintf(f, "SetResourcesHeld(unit, %d)\n", value);
+			gzprintf(f, "  SetResourcesHeld(unit, %d)\n", value);
 		}
 		++i;
 	}
+	gzprintf(f, "end\n");
 
+	gzprintf(f, "CreateRoads({\n");
 	p += 2;
 	while (p[0] != 0xFF || p[1] != 0xFF) {
 		startx = FetchByte(p);
@@ -2656,14 +2766,17 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 		endy = FetchByte(p);
 		endy /= 2;
 		type = FetchByte(p);
-		/* gzprintf(f, "-- Roads (%d):", type); */
 		for (x = startx; x <= endx; ++x) {
 			for (y = starty; y <= endy; ++y) {
-				/* gzprintf(f, " {%d, %d}", x, y); */
+			        gzprintf(f, "{player = %d, x = %d, y = %d},\n", type, x, y);
 			}
 		}
-		/* gzprintf(f, "\n"); */
 	}
+	gzprintf(f, "})\n");
+
+	// Must place units after roads. Units can be placed on top of
+	// roads, but not the other way around
+	gzprintf(f, "PlaceUnits()\n");
 }
 
 /**
@@ -2747,11 +2860,6 @@ void CopyDirectories(char** directories) {
 		if (ret != 0) {
 			fprintf(stderr, "Problem copying %s to %s\n", dir, Dir);
 			fflush(stdout);
-#if !defined(_MSC_VER) && !defined(WIN32)
-			// robocopy exits with non-zero status also
-			// when all files are just up to date
-			exit(1);
-#endif
 		}
 	}
 }
@@ -2931,6 +3039,9 @@ int main(int argc, char** argv)
 				break;
 			case T:
 				ConvertTileset(Todo[u].File, Todo[u].Arg1);
+				break;
+			case TU:
+			        ConvertTilesetUnit(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case U:
 				ConvertGfu(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);

@@ -50,6 +50,7 @@ local editor_types = {
   "unit-conjurer",
   "unit-cleric",
   "unit-medivh",
+  "unit-lothar",
 
   "unit-human-town-hall",
   "unit-human-farm",
@@ -73,7 +74,8 @@ local editor_types = {
   "unit-orc-catapult",
   "unit-warlock",
   "unit-necrolyte",
-  "unit-lothar",
+  "unit-grizelda",
+  "unit-garona",
 
   "unit-orc-town-hall",
   "unit-orc-farm",
@@ -91,8 +93,6 @@ local editor_types = {
   "unit-brigand",
   "unit-daemon",
   "unit-fire-elemental",
-  "unit-grizelda",
-  "unit-garona",
   "unit-ogre",
   "unit-scorpion",
   "unit-skeleton",
