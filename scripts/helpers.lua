@@ -309,3 +309,17 @@ function CreateRoads(positions)
       end
    end
 end
+
+function CreateWalls(positions)
+   local occupied_positions = {}
+
+   for _,pos in ipairs(positions) do
+      if not occupied_positions[pos.x] then
+	 occupied_positions[pos.x] = {}
+      end
+      if not occupied_positions[pos.x][pos.y] then
+	 occupied_positions[pos.x][pos.y] = true
+	 CreateUnit("unit-wall", pos.player,{pos.x, pos.y})
+      end
+   end
+end

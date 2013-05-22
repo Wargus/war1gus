@@ -41,13 +41,12 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-road",
   Allowed = "check-no-research",
   Key = "r", Hint = "BUILD ~!ROAD",
   ForUnit = {"unit-orc-town-hall", "unit-human-town-hall"} } )
---[[
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-wall",
-  Action = "build", Value = "unit-orc-wall",
+
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-wall",
+  Action = "build", Value = "unit-wall",
   Allowed = "check-network",
   Key = "w", Hint = "BUILD ~!WALL",
-  ForUnit = {"unit-orc-town-hall"} } )
-]]
+  ForUnit = {"unit-peasant", "unit-peon"} } )
 
 
 ------------------------------------------------------------------------------

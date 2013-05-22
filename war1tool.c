@@ -2774,6 +2774,26 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 	}
 	gzprintf(f, "})\n");
 
+	gzprintf(f, "CreateWalls({\n");
+	p += 2;
+	while (p[0] != 0xFF || p[1] != 0xFF) {
+		startx = FetchByte(p);
+		startx /= 2;
+		starty = FetchByte(p);
+		starty /= 2;
+		endx = FetchByte(p);
+		endx /= 2;
+		endy = FetchByte(p);
+		endy /= 2;
+		type = FetchByte(p);
+		for (x = startx; x <= endx; ++x) {
+			for (y = starty; y <= endy; ++y) {
+			        gzprintf(f, "{player = %d, x = %d, y = %d},\n", type, x, y);
+			}
+		}
+	}
+	gzprintf(f, "})\n");
+
 	// Must place units after roads. Units can be placed on top of
 	// roads, but not the other way around
 	gzprintf(f, "PlaceUnits()\n");

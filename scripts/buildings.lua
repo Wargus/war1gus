@@ -173,12 +173,34 @@ DefineUnitType(
      BuilderOutside = true,
      Priority = 0,
      HitPoints = 1,
-     Icon = "icon-cancel",
+     Icon = "icon-road",
      TileSize = {1, 1}, BoxSize = {32, 32},
      SightRange = 0,
      Indestructible = 1,
      DrawLevel = 0,
      IsNotSelectable = true,
      NonSolid = true,
+     Type = "land", Building = true,
+     VisibleUnderFog = true })
+
+UnitTypeFiles["unit-wall"] = {
+  forest = "tilesets/forest/neutral/buildings/wall.png",
+  swamp = "tilesets/swamp/neutral/buildings/wall.png",
+  dungeon = "tilesets/dungeon/neutral/buildings/wall.png"
+}
+DefineUnitType(
+   "unit-wall",
+   { Name = "Wall",
+     Image = {"size", {32, 32}},
+     Costs = {"time", 100, "gold", 150, "wood", 50},
+     Animations = "animations-building",
+     Construction = "construction-none",
+     Priority = 0,
+     HitPoints = 60,
+     Icon = "icon-wall",
+     TileSize = {1, 1}, BoxSize = {32, 32},
+     SightRange = 0,
+     DrawLevel = 40,
+     IsNotSelectable = true,
      Type = "land", Building = true,
      VisibleUnderFog = true })
