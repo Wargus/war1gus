@@ -249,6 +249,7 @@ char* ArchiveDir;
 Control Todo[] = {
 #define __  ,0,0,0
 #define _2  ,0,0,
+#define _1  ,0
 {FLC,0,"cave1.war",											 0 __},
 {FLC,0,"cave2.war",											 0 __},
 {FLC,0,"cave3.war",											 0 __},
@@ -549,13 +550,13 @@ Control Todo[] = {
 {U,0,"tilesets/swamp/human/buildings/blacksmith_construction",	 194, 345 _2},
 {U,0,"tilesets/swamp/orc/buildings/blacksmith_construction",	 194, 346 _2},
 
-{TU,0,"forest/neutral/buildings/wall",190,16 _2},
-{TU,0,"swamp/neutral/buildings/wall",193,16 _2},
-{TU,0,"dungeon/neutral/buildings/wall",196,66 _2},
+{TU,0,"forest/neutral/buildings/wall",190,10,12 _1},
+{TU,0,"swamp/neutral/buildings/wall",193,10,12 _1},
+{TU,0,"dungeon/neutral/buildings/wall",196,66,1 _1},
 
-{TU,0,"forest/neutral/buildings/road",190,64 _2},
-{TU,0,"swamp/neutral/buildings/road",193,65 _2},
-{TU,0,"dungeon/neutral/buildings/road",196,81 _2},
+{TU,0,"forest/neutral/buildings/road",190,56,15 _1},
+{TU,0,"swamp/neutral/buildings/road",193,57,15 _1},
+{TU,0,"dungeon/neutral/buildings/road",196,81,1 _1},
 
 // Missiles
 {U,0,"missiles/fireball",									 217, 347 _2},
@@ -1807,9 +1808,9 @@ int ConvertTileset(char* file,int index)
 }
 
 /**
-**  Convert a tileset mini image to a separate unit png
+**  Convert one ore more tileset mini image to a separate unit png
 */
-int ConvertTilesetUnit(char* file, int index, int i)
+int ConvertTilesetUnit(char* file, int index, int i, int directions)
 {
 	unsigned char* palp;
 	unsigned char* mini;
@@ -1819,8 +1820,7 @@ int ConvertTilesetUnit(char* file, int index, int i)
 	int msize;
 	int height;
 	int width;
-	int x;
-	int y;
+	int x, y, direction;
 	int offset;
 	int numtiles;
 	int len;
@@ -1871,20 +1871,22 @@ int ConvertTilesetUnit(char* file, int index, int i)
 	}
 	numtiles = msize / 8;
 
-	width = 16;
+	width = 16 * directions;
 	height = 16;
 	image = malloc(height * width);
 	memset(image, 0, height * width);
 
-	mp = (const unsigned short*)(mega + i * 8);
-	for (y = 0; y < 2; ++y) {
-		for (x = 0; x < 2; ++x) {
-			offset = ConvertLE16(mp[x + y * 2]);
-			DecodeMiniTile(image,
-				       x, y,
-				       width, mini,
-				       (offset & 0xFFFC) << 1,
-				       offset & 2, offset & 1);
+	for (direction = i; direction < directions + i; direction++) {
+		mp = (const unsigned short*)(mega + direction * 8);
+		for (y = 0; y < 2; ++y) {
+			for (x = 0; x < 2; ++x) {
+				offset = ConvertLE16(mp[x + y * 2]);
+				DecodeMiniTile(image,
+					       x + ((direction - i) * 2), y,
+					       width, mini,
+					       (offset & 0xFFFC) << 1,
+					       offset & 2, offset & 1);
+			}
 		}
 	}
 
@@ -3061,7 +3063,7 @@ int main(int argc, char** argv)
 				ConvertTileset(Todo[u].File, Todo[u].Arg1);
 				break;
 			case TU:
-			        ConvertTilesetUnit(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
+			        ConvertTilesetUnit(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
 				break;
 			case U:
 				ConvertGfu(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
