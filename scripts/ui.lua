@@ -239,12 +239,14 @@ DefineCursor({
   HotSpot = {21, 19},
   Size = {32, 32}})
 
-function AddFiller(file, x, y)
+function AddFiller(file, x, y, resize_x, resize_y)
         if CanAccessFile(file) == true then
                 b = CFiller:new_local()
                 b.G = CGraphic:New(file)
-                b.X = x 
-                b.Y = y 
+                b.G:Load()
+                b.G:Resize(resize_x, resize_y)
+                b.X = x
+                b.Y = y
                 UI.Fillers:push_back(b)
         end    
 end
@@ -421,11 +423,11 @@ UI.NetworkDiplomacyButton:SetCallback(function() RunDiplomacyMenu() end)
 
 function LoadUI(race, screen_width, screen_height)
   UI.Fillers:clear()
-  AddFiller("ui/" .. race .. "/minimap.png", 0, 0)
-  AddFiller("ui/" .. race .. "/left_panel.png", 0, 144)
-  AddFiller("ui/" .. race .. "/top_resource_bar.png", 144, 0)
-  AddFiller("ui/" .. race .. "/right_panel.png", 624, 0)
-  AddFiller("ui/" .. race .. "/bottom_panel.png", 144, 376)
+  AddFiller("ui/" .. race .. "/minimap.png", 0, 0, 144, 144)
+  AddFiller("ui/" .. race .. "/left_panel.png", 0, 144, 144, Video.Height - (400 - 256))
+  AddFiller("ui/" .. race .. "/top_resource_bar.png", 144, 0, Video.Width - (640 - 480), 24)
+  AddFiller("ui/" .. race .. "/right_panel.png", Video.Width - 16, 0, 16, Video.Height)
+  AddFiller("ui/" .. race .. "/bottom_panel.png", 144, Video.Height - 24, Video.Width - (640 - 480), 24)
 
   local ui = {
     "info-panel", {
