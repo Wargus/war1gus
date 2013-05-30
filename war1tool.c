@@ -241,6 +241,23 @@ enum _archive_type_ {
 	CM,						// Cm
 };
 
+#define NumUnitDirections 16
+
+typedef struct _unit_directions_ {
+    const char* name; // just for readability
+    int directions[NumUnitDirections];
+} UnitDirections;
+
+UnitDirections TilesetUnitDirections[] = {
+    {"forest-wall", {16, 11, 18, 12, 21, 21, 20, 15, 18, 10, 18, 14, 17, 13, 19, 16}},
+    {"swamp-wall", {16, 11, 18, 12, 21, 21, 20, 15, 18, 10, 18, 14, 17, 13, 19, 16}},
+    {"dungeon-wall", {66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66}},
+
+    {"forest-road", {64, 59, 58, 62, 57, 61, 70, 65, 56, 60, 68, 64, 67, 63, 69, 66}},
+    {"swamp-road", {65, 60, 59, 63, 58, 62, 71, 66, 57, 61, 69, 65, 68, 64, 70, 67}},
+    {"dungeon-road", {81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81}},
+};
+
 char* ArchiveDir;
 
 /**
@@ -550,13 +567,13 @@ Control Todo[] = {
 {U,0,"tilesets/swamp/human/buildings/blacksmith_construction",	 194, 345 _2},
 {U,0,"tilesets/swamp/orc/buildings/blacksmith_construction",	 194, 346 _2},
 
-{TU,0,"forest/neutral/buildings/wall",190,10,12 _1},
-{TU,0,"swamp/neutral/buildings/wall",193,10,12 _1},
-{TU,0,"dungeon/neutral/buildings/wall",196,66,1 _1},
+{TU,0,"forest/neutral/buildings/wall",190,0 _2},
+{TU,0,"swamp/neutral/buildings/wall",193,1 _2},
+{TU,0,"dungeon/neutral/buildings/wall",196,2 _2},
 
-{TU,0,"forest/neutral/buildings/road",190,56,15 _1},
-{TU,0,"swamp/neutral/buildings/road",193,57,15 _1},
-{TU,0,"dungeon/neutral/buildings/road",196,81,1 _1},
+{TU,0,"forest/neutral/buildings/road",190,3 _2},
+{TU,0,"swamp/neutral/buildings/road",193,4 _2},
+{TU,0,"dungeon/neutral/buildings/road",196,5 _2},
 
 // Missiles
 {U,0,"missiles/fireball",									 217, 347 _2},
@@ -1810,7 +1827,7 @@ int ConvertTileset(char* file,int index)
 /**
 **  Convert one ore more tileset mini image to a separate unit png
 */
-int ConvertTilesetUnit(char* file, int index, int i, int directions)
+int ConvertTilesetUnit(char* file, int index, int directions_idx)
 {
 	unsigned char* palp;
 	unsigned char* mini;
@@ -1871,18 +1888,18 @@ int ConvertTilesetUnit(char* file, int index, int i, int directions)
 	}
 	numtiles = msize / 8;
 
-	width = 16 * directions;
+	width = 16 * NumUnitDirections;
 	height = 16;
 	image = malloc(height * width);
 	memset(image, 0, height * width);
 
-	for (direction = i; direction < directions + i; direction++) {
-		mp = (const unsigned short*)(mega + direction * 8);
+	for (direction = 0; direction < NumUnitDirections; direction++) {
+		mp = (const unsigned short*)(mega + TilesetUnitDirections[directions_idx].directions[direction] * 8);
 		for (y = 0; y < 2; ++y) {
 			for (x = 0; x < 2; ++x) {
 				offset = ConvertLE16(mp[x + y * 2]);
 				DecodeMiniTile(image,
-					       x + ((direction - i) * 2), y,
+					       direction * 2 + x, y,
 					       width, mini,
 					       (offset & 0xFFFC) << 1,
 					       offset & 2, offset & 1);
@@ -3063,7 +3080,7 @@ int main(int argc, char** argv)
 				ConvertTileset(Todo[u].File, Todo[u].Arg1);
 				break;
 			case TU:
-			        ConvertTilesetUnit(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
+			        ConvertTilesetUnit(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case U:
 				ConvertGfu(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);

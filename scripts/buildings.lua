@@ -180,6 +180,8 @@ DefineUnitType(
      DrawLevel = 0,
      IsNotSelectable = true,
      NonSolid = true,
+     Wall = true,
+     NoRandomPlacing = false,
      Type = "land", Building = true,
      VisibleUnderFog = true })
 
@@ -202,5 +204,7 @@ DefineUnitType(
      SightRange = 0,
      DrawLevel = 40,
      IsNotSelectable = true,
+     Wall = true,
+     NoRandomPlacing = false,
      Type = "land", Building = true,
      VisibleUnderFog = true })
