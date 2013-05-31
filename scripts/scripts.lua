@@ -38,5 +38,7 @@ if war1gus.tileset == "forest" or war1gus.tileset == "swamp" then
    DefineUnitType("unit-road", {NumDirections = 16, Flip = false})
 end
 
+LoadUI(GetPlayerData(GetThisPlayer(), "RaceName"), Video.Width, Video.Height)
+
 StopMusic()
 MusicStopped()

@@ -38,6 +38,9 @@ local info_panel_y = 140
 local min_damage = Div(ActiveUnitVar("PiercingDamage"), 2)
 local max_damage = Add(ActiveUnitVar("PiercingDamage"), ActiveUnitVar("BasicDamage"))
 
+UI.InfoPanel.X = info_panel_x
+UI.InfoPanel.Y = info_panel_y
+
 DefinePanelContents(
 -- Default presentation. ------------------------
   {
@@ -378,7 +381,7 @@ AddButtonPanelButton(9, 240 + 47 * 2)
 AddButtonPanelButton(70, 240 + 47 * 2)
 
 UI.ButtonPanel.X = 0
-UI.ButtonPanel.Y = 200
+UI.ButtonPanel.Y = 300
 UI.ButtonPanel.AutoCastBorderColorRGB = CColor(0, 0, 252)
 
 UI.MapArea.X = 144

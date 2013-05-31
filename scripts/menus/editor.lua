@@ -6,6 +6,7 @@ local function RunEditorNewMapMenu()
   local offy = (Video.Height - 480) / 2
   local tilesets = { "forest", "swamp", "dungeon" }
   local mapSizes = {"32", "64", "96", "128", "256"}
+  LoadUI("orc", Video.Width, Video.Height)
 
   menu:addLabel("Map description :", offx + 208, offy + 104 + 32 * 0, Fonts["game"], false)
   local mapDescription = menu:addTextInputField("", offx + 208, offy + 104 + 32 * 1, 200)
