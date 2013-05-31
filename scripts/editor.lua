@@ -89,6 +89,8 @@ local editor_types = {
 
 --- - - - - - - - - - - - - - - - - - -
 
+  "unit-road",
+  "unit-wall",
   "unit-gold-mine",
   "unit-brigand",
   "unit-daemon",
