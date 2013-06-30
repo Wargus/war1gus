@@ -168,8 +168,9 @@ DefineUnitType(
      Animations = "animations-building",
      Construction = "construction-none",
      BuildingRules = { -- all buildings except the town hall need a road
-	{"distance", {
-	    Distance = 1, DistanceType = "=", Type = "unit-road"}}},
+	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}},
+	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self"}},
+        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self"}}},
      BuilderOutside = true,
      Priority = 0,
      HitPoints = 1,
@@ -194,7 +195,10 @@ DefineUnitType(
    "unit-wall",
    { Name = "Wall",
      Image = {"size", {32, 32}},
-     Costs = {"time", 100, "gold", 150, "wood", 50},
+     Costs = {"time", 100, "gold", 100, "wood", 0},
+     BuildingRules = { -- all buildings except the town hall need a road
+	{"distance", {Distance = 3, DistanceType = "<=", Owner = "allied"}}},
+     BuilderOutside = true,
      Animations = "animations-building",
      Construction = "construction-none",
      Priority = 0,
