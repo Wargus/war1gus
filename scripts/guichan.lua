@@ -384,7 +384,7 @@ function RunMap(map, objective, fow, revealmap)
   SetPlayerData(GetThisPlayer(), "RaceName", "orc")
 end
 
-mapname = "maps/default.smp.gz"
+mapname = "maps/1x1_forest.smp"
 buttonStatut = 0 -- 0:not initialised, 1: Ok, 2: Cancel
 mapinfo = {
   playertypes = {nil, nil, nil, nil, nil, nil, nil, nil},

@@ -2939,7 +2939,7 @@ int main(int argc, char** argv)
 	int upper;
 	struct stat st;
 	int midi, video;
-	char* dirs[4] = {0x0};
+	char* dirs[5] = {0x0};
 	video = midi = 0;
 
 	a = 1;
@@ -3030,7 +3030,8 @@ int main(int argc, char** argv)
 
 	dirs[0] = "scripts";
 	dirs[1] = "contrib";
-	dirs[2] = "campaigns";
+	dirs[2] = "maps";
+	dirs[3] = "campaigns";
 	CopyDirectories(dirs);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
