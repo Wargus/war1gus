@@ -1090,13 +1090,21 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 				if (bflags & 1) {
 					j = FetchByte(cp);
 					*dp++ = j;
-					buf[bi++ & 0xFFF] = j;
+                    			bi &= 0xFFF;
+					buf[bi] = j;
+                    			bi++;
 				} else {
 					o = FetchLE16(cp);
 					j = (o >> 12) + 3;
 					o &= 0xFFF;
 					while (j--) {
-						buf[bi++ & 0xFFF] = *dp++ = buf[o++ & 0xFFF];
+						o &= 0xFFF;
+                        			bi &= 0xFFF;
+                        			*dp = buf[o];
+                        			dp++;
+                        			buf[bi] = buf[o];
+                        			bi++;
+                       				 o++;
 						if (dp == ep) {
 							break;
 						}
