@@ -48,26 +48,30 @@ DefinePanelContents(
   Pos = {info_panel_x, info_panel_y}, DefaultFont = "game",
   Contents = {
      { Pos = {70, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
-       More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 49}}
+       More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 55}}
      },
      { Pos = {98, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
        More = {"FormattedText2", {
 		  Font = "small", Variable = "HitPoints", Format = "%d/%d",
 		  Component1 = "Value", Component2 = "Max", Centered = true}}
      },
-     { Pos = {105, 8}, More = {"Text", {Text = Line(1, UnitName("Active"), 90, "small"), Centered = true}} },
-     { Pos = {105, 22}, More = {"Text", {Text = Line(2, UnitName("Active"), 90, "small"), Centered = true}} },
+     { Pos = {105, 8}, More = {"Text", {Text = Line(1, UnitName("Active"), 90, "small"), Font = "small", Centered = true}} },
+     { Pos = {105, 22}, More = {"Text", {Text = Line(2, UnitName("Active"), 90, "small"), Font = "small", Centered = true}} },
 -- Ressource Left
-     { Pos = {68, 86}, Condition = {ShowOpponent = false, GiveResource = "only"},
-       More = {"FormattedText2", {Format = "%s Left:%d", Variable = "GiveResource",
-				  Component1 = "Name", Component2 = "Value", Centered = true}}
+     { Pos = {10, 86}, Condition = {ShowOpponent = false, GiveResource = "only"},
+       More = {"FormattedText", {Format = "%s Left", Variable = "GiveResource",
+				  Component = "Name"}}
+     },
+     { Pos = {10, 100}, Condition = {ShowOpponent = false, GiveResource = "only"},
+       More = {"FormattedText", {Format = "%d", Variable = "GiveResource",
+				  Component = "Value"}}
      },
 -- Construction
-     { Pos = {10, 153}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-       More = {"CompleteBar", {Variable = "Build", Width = 140, Height = 18}}
+     { Pos = {70, 22}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+       More = {"CompleteBar", {Variable = "Build", Width = 55, Height = 10}}
      },
-     { Pos = {50, 154}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-       More = {"Text", "% Complete"}},
+     { Pos = {98, 23}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
      { Pos = {9, 78}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
        More = {"Icon", {Unit = "Worker"}}}
   } },
@@ -79,9 +83,8 @@ DefinePanelContents(
 -- FIXME more condition. not town hall.
   Contents = {
 -- Food building
-	{ Pos = {16, 51}, More = {"Text", "Usage"} },
-	{ Pos = {38, 66}, More = {"Text", {Text = "Supply : ", Variable = "Supply", Component = "Max"}} },
-	{ Pos = {31, 82}, More = { "Text", {Text = Concat("Demand : ",
+	{ Pos = {9, 66}, More = {"Text", {Text = "Supply : ", Variable = "Supply", Component = "Max"}} },
+	{ Pos = {9, 82}, More = { "Text", {Text = Concat("Demand : ",
 									If(GreaterThan(ActiveUnitVar("Demand", "Max"), ActiveUnitVar("Supply", "Max")),
 										InverseVideo(String(ActiveUnitVar("Demand", "Max"))),
 										String(ActiveUnitVar("Demand", "Max")) ))}}
@@ -95,39 +98,41 @@ DefinePanelContents(
   DefaultFont = "game",
   Condition = {ShowOpponent = false, HideNeutral = true, Build = "false"},
   Contents = {
-     { Pos = {33, 82}, Condition = {AttackRange = "only"},
+     { Pos = {9, 82}, Condition = {AttackRange = "only"},
        More = {"Text", {Text = "Range: ", Variable = "AttackRange" , Stat = true}}
      },
 -- Research
-     { Pos = {10, 153}, Condition = {Research = "only"},
-       More = {"CompleteBar", {Variable = "Research", Width = 140, Height = 18}}
+     { Pos = {70, 22}, Condition = {Research = "only"},
+       More = {"CompleteBar", {Variable = "Research", Width = 55, Height = 10}}
      },
-     { Pos = {16, 86}, Condition = {Research = "only"}, More = {"Text", "Researching:"}},
-     { Pos = {50, 154}, Condition = {Research = "only"}, More = {"Text", "% Complete"}},
+     { Pos = {9, 86}, Condition = {Research = "only"}, More = {"Text", "Researching:"}},
+     { Pos = {98, 23}, Condition = {Research = "only"},
+       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
 -- Training
-     { Pos = {10, 153}, Condition = {Training = "only"},
-       More = {"CompleteBar", {Variable = "Training", Width = 140, Height = 18}}
-     },
-     { Pos = {50, 154}, Condition = {Training = "only"}, More = {"Text", "% Complete"}},
+     { Pos = {70, 22}, Condition = {Training = "only"},
+       More = {"CompleteBar", {Variable = "Training", Width = 55, Height = 10}}},
+     { Pos = {98, 23}, Condition = {Training = "only"},
+       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
 -- Upgrading To
-     { Pos = {10, 153}, Condition = {UpgradeTo = "only"},
-       More = {"CompleteBar", {Variable = "UpgradeTo", Width = 140, Height = 18}}
+     { Pos = {70, 22}, Condition = {UpgradeTo = "only"},
+       More = {"CompleteBar", {Variable = "UpgradeTo", Width = 55, Height = 10}}
      },
-     { Pos = {16,  86}, More = {"Text", "Upgrading:"}, Condition = {UpgradeTo = "only"} },
-     { Pos = {50, 154}, More = {"Text", "% Complete"}, Condition = {UpgradeTo = "only"} },
+     { Pos = {9,  86}, More = {"Text", "Upgrading:"}, Condition = {UpgradeTo = "only"} },
+     { Pos = {98, 23}, Condition = {UpgradeTo = "only"},
+       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
 -- Mana
-     { Pos = {70, 45}, Condition = {Mana = "only"},
-       More = {"CompleteBar", {Variable = "Mana", Height = 7, Width = 49, Border = true}}
+     { Pos = {70, 21}, Condition = {Mana = "only"},
+       More = {"CompleteBar", {Variable = "Mana", Height = 8, Width = 52, Border = true, Color = "light-blue"}}
      },
-     { Pos = {98, 45},
+     { Pos = {97, 23},
        Condition = {Mana = "only"},
        More = {"FormattedText2", {
 		  Font = "small", Variable = "Mana", Format = "%d/%d",
 		  Component1 = "Value", Component2 = "Max", Centered = true}} },
 -- Resource Carry
-     { Pos = {61, 149}, Condition = {CarryResource = "only"},
-       More = {"FormattedText2", {Format = "Carry: %d %s", Variable = "CarryResource",
-				  Component1 = "Value", Component2 = "Name"}}
+     { Pos = {9, 52}, Condition = {CarryResource = "only"},
+       More = {"FormattedText2", {Format = "%s: %d", Variable = "CarryResource",
+				  Component1 = "Name", Component2 = "Value"}}
      }
   } },
 -- Attack Unit -----------------------------
@@ -138,11 +143,11 @@ DefinePanelContents(
   Condition = {ShowOpponent = true, HideNeutral = true, Building = "false", Build = "false"},
   Contents = {
 -- Unit caracteristics
-     { Pos = {22, 52}, Condition = {Armor = "only"},
+     { Pos = {9, 52}, Condition = {Armor = "only"},
        More = {"Text", {
 		  Text = "Armor: ", Variable = "Armor", Stat = true}}
      },
-     { Pos = {25, 67},
+     { Pos = {9, 67},
        More = {"Text", {
 		  Text = Concat("Damage: ",
 				String(min_damage), "-", String(max_damage))
@@ -334,12 +339,12 @@ UI.SingleTrainingButton = b
 
 UI.TrainingButtons:clear()
 
-AddTrainingButton(6, 200)
-AddTrainingButton(62, 200)
-AddTrainingButton(6, 200 + 47)
-AddTrainingButton(62, 200 + 47)
-AddTrainingButton(6, 200 + 47 * 2)
-AddTrainingButton(62, 200 + 47 * 2)
+AddTrainingButton(9, 200)
+AddTrainingButton(19, 200)
+AddTrainingButton(29, 200)
+AddTrainingButton(39, 200)
+AddTrainingButton(49, 200)
+AddTrainingButton(59, 200)
 
 --
 
