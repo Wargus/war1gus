@@ -8,9 +8,31 @@ function Briefing(title, objs, bg, text, voices)
   if (currentRace == "human") then
     PlayMusic(HumanBriefingMusic)
     LoadUI("human", Video.Width, Video.Height)
+
+    warriorg = CGraphic:New("graphics/428.png", 240 / 5, 48) -- TODO: animate
+    warriorg:Load()
+    wizardg = CGraphic:New("graphics/429.png", 134, 84) -- TODO: animate
+    wizardg:Load()
+
+    warriorw = ImageWidget(warriorg)
+    wizardw = ImageWidget(wizardg)
+
+    menu:add(warriorw, 166 * Video.Width / 640, 74 * Video.Height / 400)
+    menu:add(wizardw, 414 * Video.Width / 640, 58 * Video.Height / 400)
   elseif (currentRace == "orc") then
     PlayMusic(OrcBriefingMusic)
     LoadUI("orc", Video.Width, Video.Height)
+
+    femaleg = CGraphic:New("graphics/426.png", 560 / 5, 134) -- TODO: animate
+    maleg = CGraphic:New("graphics/427.png", 690 / 5, 116) -- TODO: animate
+    femaleg:Load()
+    maleg:Load()
+
+    femalew = ImageWidget(femaleg)
+    malew = ImageWidget(maleg)
+
+    menu:add(femalew, 36 * Video.Width / 640, 134 * Video.Height / 400)
+    menu:add(malew, 404 * Video.Width / 640, 104 * Video.Height / 400)
   else
     StopMusic()
   end
