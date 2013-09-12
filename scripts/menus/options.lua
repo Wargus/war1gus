@@ -84,7 +84,7 @@ function RunGameSoundOptionsMenu()
   local menu = WarGameMenu(panel(5))
   menu:resize(352, 352)
 
-  AddSoundOptions(menu, 0, 0, 352/2 - 224/2, 352)
+  AddSoundOptions(menu, 0, 0, 352/2 - 254/2, 352)
 
   menu:run(false)
 end
@@ -120,7 +120,7 @@ function RunPreferencesMenu()
   l:adjustSize()
   menu:add(l, 230 - l:getWidth(), 40 + (36 * 3) + 6)
 
-  menu:addFullButton("~!OK", "o", 128 - (224 / 2), 288 - 40,
+  menu:addFullButton("~!OK", "o", 25, 288 - 60,
     function()
       preferences.FogOfWar = GetFogOfWar()
       preferences.ShowCommandKey = UI.ButtonPanel.ShowCommandKey
@@ -206,7 +206,7 @@ function BuildOptionsMenu()
     end)
   checkOpenGL:setMarked(preferences.UseOpenGL)
 
-  menu:addHalfButton("~!OK", "o", offx + 123, offy + 55 + 26*11.2, function() menu:stop() end)
+  menu:addHalfButton("~!OK", "o", offx + 123, offy + 46 + 26*11.2, function() menu:stop() end)
   return menu:run()
 end
 
@@ -221,13 +221,13 @@ function RunGameOptionsMenu()
   local menu = WarGameMenu(panel(1))
 
   menu:addLabel("Game Options", 128, 11)
-  menu:addFullButton("Sound (~<F7~>)", "f7", 16, 40 + 36*0,
+  menu:addFullButton("Sound (~<F7~>)", "f7", 25, 40 + 36*0,
     function() RunGameSoundOptionsMenu() end)
-  menu:addFullButton("Preferences (~<F8~>)", "f8", 16, 40 + 36*1,
+  menu:addFullButton("Preferences (~<F8~>)", "f8", 25, 40 + 36*1,
     function() RunPreferencesMenu() end)
-  menu:addFullButton("Diplomacy (~<F9~>)", "f9", 16, 40 + 36*2,
+  menu:addFullButton("Diplomacy (~<F9~>)", "f9", 25, 40 + 36*2,
     function() RunDiplomacyMenu() end)
-  menu:addFullButton("Previous (~<Esc~>", "escape", 128 - (224 / 2), 288 - 40,
+  menu:addFullButton("Previous (~<Esc~>)", "escape", 25, 288 - 60,
     function() menu:stop() end)
 
   menu:run(false)

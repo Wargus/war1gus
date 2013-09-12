@@ -11,7 +11,7 @@ function RunReplayGameMenu()
 
   local reveal = menu:addCheckBox("Reveal Map", 23, 264, function() end)
 
-  menu:addHalfButton("~!OK", "o", 48, 308,
+  menu:addHalfButton("~!OK", "o", 39, 308,
     function()
       if (browser:getSelected() < 0) then
         return
@@ -22,7 +22,7 @@ function RunReplayGameMenu()
       SetPlayerData(GetThisPlayer(), "RaceName", "orc")
       menu:stop()
     end)
-  menu:addHalfButton("~!Cancel", "c", 198, 308, function() RunSinglePlayerSubMenu(); menu:stop() end)
+  menu:addHalfButton("~!Cancel", "c", 189, 308, function() RunSinglePlayerSubMenu(); menu:stop() end)
 
   menu:run()
 end
@@ -44,7 +44,7 @@ function RunSaveReplayMenu()
   end
   browser:setActionCallback(cb)
 
-  menu:addHalfButton("~!Save", "s", 1 * (384 / 3) - 106 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Save", "s", 1 * (384 / 3) - 121 - 10, 256 - 16 - 27,
     -- FIXME: use a confirm menu if the file exists already
     function()
       local name = t:getText()
@@ -64,7 +64,7 @@ function RunSaveReplayMenu()
       menu:stop()
     end)
 
-  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 3) - 106 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 3) - 121 - 10, 256 - 16 - 27,
     function() menu:stop() end)
 
   menu:run()

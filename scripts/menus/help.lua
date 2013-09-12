@@ -2,11 +2,11 @@ function RunHelpMenu()
   local menu = WarGameMenu(panel(1))
 
   menu:addLabel("Help Menu", 128, 11)
-  menu:addFullButton("Keystroke ~!Help", "h", 16, 40 + 36*0,
+  menu:addFullButton("Keystroke ~!Help", "h", 25, 40 + 36*0,
     function() RunKeystrokeHelpMenu() end)
-  menu:addFullButton("~!Tips", "t", 16, 40 + 36*1,
+  menu:addFullButton("~!Tips", "t", 25, 40 + 36*1,
     function() RunTipsMenu() end)
-  menu:addFullButton("Previous (~<Esc~>)", "escape", 128 - (224 / 2), 248,
+  menu:addFullButton("Previous (~<Esc~>)", "escape", 25, 228,
     function() menu:stop() end)
 
   menu:run(false)
@@ -83,7 +83,7 @@ function RunKeystrokeHelpMenu()
 
   menu:addLabel("Keystroke Help Menu", 352 / 2, 11)
   menu:addFullButton("Previous (~<Esc~>)", "escape",
-    (352 / 2) - (224 / 2), 352 - 40, function() menu:stop() end)
+    (352 / 2) - (254 / 2), 352 - 40, function() menu:stop() end)
 
   menu:run(false)
 end
@@ -111,8 +111,8 @@ local tips = {
 }
 
 function RunTipsMenu()
-  local menu = WarGameMenu(panel(2))
-  menu:resize(288, 256)
+  local menu = WarGameMenu(panel(1))
+  menu:resize(304, 242)
 
   menu:addLabel("Tips", 144, 11)
 
@@ -153,9 +153,9 @@ function RunTipsMenu()
     end)
   showtips:setMarked(preferences.ShowTips)
 
-  menu:addHalfButton("~!Next Tip", "n", 14, 256 - 40,
+  menu:addHalfButton("~!Next Tip", "n", 5, 256 - 40,
     function() l:nextTip(); l:updateCaption() end)
-  menu:addHalfButton("~!Close", "c", 168, 256 - 40,
+  menu:addHalfButton("~!Close", "c", 159, 256 - 40,
     function() l:nextTip(); menu:stop() end)
 
   menu:run(false)

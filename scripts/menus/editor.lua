@@ -20,7 +20,7 @@ local function RunEditorNewMapMenu()
   local mapSizey = menu:addDropDown(mapSizes, offx + 208 + 125, offy + 104 + 32 * 3, function() end)
   mapSizey:setWidth(50)
 
-  menu:addFullButton("~!New map", "n", offx + 208, offy + 104 + 36 * 5,
+  menu:addFullButton("~!New map", "n", offx + 193, offy + 104 + 36 * 5,
     function()
       -- TODO : check value
       Map.Info.Description = mapDescription:getText()
@@ -31,7 +31,7 @@ local function RunEditorNewMapMenu()
       menu:stop()
       StartEditor(nil)
     end)
-  menu:addFullButton("~!Cancel", "c", offx + 208, offy + 104 + 36 * 6, function() menu:stop(1) end)
+  menu:addFullButton("~!Cancel", "c", offx + 193, offy + 104 + 36 * 6, function() menu:stop(1) end)
   return menu:run()
 end
 
@@ -65,7 +65,7 @@ local function RunEditorLoadMapMenu()
   labelNbPlayer = menu:addLabel("", offx + 208, offy + 104 + 32 * 2, Fonts["game"], false)
   labelMapSize = menu:addLabel("", offx + 208, offy + 104 + 32 * 3, Fonts["game"], false)
 
-  menu:addFullButton("~!Select map", "s", offx + 208, offy + 104 + 36 * 4,
+  menu:addFullButton("~!Select map", "s", offx + 193, offy + 104 + 36 * 4,
     function()
       local oldmapname = mapname
       RunSelectScenarioMenu()
@@ -75,8 +75,8 @@ local function RunEditorLoadMapMenu()
       end
     end)
 
-  menu:addFullButton("~!Edit map", "e", offx + 208, offy + 104 + 36 * 5, function() menu:stop(); StartEditor(mapname);  end)
-  menu:addFullButton("~!Cancel", "c", offx + 208, offy + 104 + 36 * 6, function() menu:stop(1) end)
+  menu:addFullButton("~!Edit map", "e", offx + 193, offy + 104 + 36 * 5, function() menu:stop(); StartEditor(mapname);  end)
+  menu:addFullButton("~!Cancel", "c", offx + 193, offy + 104 + 36 * 6, function() menu:stop(1) end)
 
   GetMapInfo(mapname)
   MapChanged()
@@ -90,9 +90,9 @@ function RunEditorMenu()
   local offy = (Video.Height - 480) / 2
 
   local buttonNewMap =
-  menu:addFullButton("~!New map", "n", offx + 208, offy + 104 + 36*3, function() RunEditorNewMapMenu(); menu:stop() end)
-  menu:addFullButton("~!Load map", "l", offx + 208, offy + 104 + 36*4, function() RunEditorLoadMapMenu(); menu:stop() end)
-  menu:addFullButton("~!Cancel", "c", offx + 208, offy + 104 + 36*5, function() menu:stop() end)
+  menu:addFullButton("~!New map", "n", offx + 193, offy + 104 + 36*3, function() RunEditorNewMapMenu(); menu:stop() end)
+  menu:addFullButton("~!Load map", "l", offx + 193, offy + 104 + 36*4, function() RunEditorLoadMapMenu(); menu:stop() end)
+  menu:addFullButton("~!Cancel", "c", offx + 193, offy + 104 + 36*5, function() menu:stop() end)
   return menu:run()
 end
 
@@ -116,7 +116,7 @@ function RunEditorSaveMenu()
   end
   browser:setActionCallback(cb)
 
-  menu:addHalfButton("~!Save", "s", 1 * (384 / 3) - 106 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Save", "s", 1 * (384 / 3) - 121 - 10, 256 - 16 - 27,
     -- FIXME: use a confirm menu if the file exists already
     function()
       local name = t:getText()
@@ -147,7 +147,7 @@ function RunEditorSaveMenu()
       menu:stop()
     end)
 
-  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 3) - 106 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 3) - 121 - 10, 256 - 16 - 27,
     function() menu:stop() end)
 
   menu:run(false)
@@ -246,7 +246,7 @@ function RunEditorPlayerProperties()
     updateProp(i)
   end
 
-  menu:addHalfButton("~!Ok", "o", 1 * (sizeX / 4) - 106 - 10, sizeY - 16 - 27,
+  menu:addHalfButton("~!Ok", "o", 1 * (sizeX / 4) - 121 - 10, sizeY - 16 - 27,
     function()
       for i = 0, 14 do
         Map.Info.PlayerType[i] = playersProp[1 + i].type:getSelected() + 2
@@ -259,7 +259,7 @@ function RunEditorPlayerProperties()
       menu:stop()
     end)
 
-  menu:addHalfButton("~!Cancel", "c", 3 * (sizeX / 4) - 106 - 10, sizeY - 16 - 27, function() menu:stop() end)
+  menu:addHalfButton("~!Cancel", "c", 3 * (sizeX / 4) - 121 - 10, sizeY - 16 - 27, function() menu:stop() end)
 
   menu:run(false)
 end
@@ -297,7 +297,7 @@ print("RunEditorMapProperties")
   end
   dropDownTileset:setEnabled(false) -- TODO : manage this properties
 
-  menu:addHalfButton("~!Ok", "o", 1 * (sizeX / 3) - 106 - 10, sizeY - 16 - 27,
+  menu:addHalfButton("~!Ok", "o", 1 * (sizeX / 3) - 121 - 10, sizeY - 16 - 27,
     function()
       Map.Info.Description = desc:getText()
       -- TODO : Add others properties
@@ -305,7 +305,7 @@ print("RunEditorMapProperties")
     end
     )
 
-  menu:addHalfButton("~!Cancel", "c", 3 * (sizeX / 3) - 106 - 10, sizeY - 16 - 27,
+  menu:addHalfButton("~!Cancel", "c", 3 * (sizeX / 3) - 121 - 10, sizeY - 16 - 27,
     function() menu:stop() end)
 
   menu:run(false)
@@ -319,17 +319,17 @@ function RunInEditorMenu()
 
   menu:addLabel("Editor Menu", 128, 11)
 
-  menu:addHalfButton("Save (~<F11~>)", "f11", 16, 40, RunEditorSaveMenu)
+  menu:addHalfButton("Save (~<F11~>)", "f11", 25, 40, RunEditorSaveMenu)
   local buttonEditorLoad = -- To be removed when enabled.
-  menu:addHalfButton("Load (~<F12~>)", "f12", 16 + 118, 40, RunEditorLoadMenu)
-  menu:addFullButton("Map Properties (~<F5~>)", "f5", 16, 40 + 36 * 1, RunEditorMapProperties)
-  menu:addFullButton("Player Properties (~<F6~>)", "f6", 16, 40 + 36 * 2, RunEditorPlayerProperties)
+  menu:addHalfButton("Load (~<F12~>)", "f12", 25 + 127, 40, RunEditorLoadMenu)
+  menu:addFullButton("Map Properties (~<F5~>)", "f5", 25, 40 + 36 * 1, RunEditorMapProperties)
+  menu:addFullButton("Player Properties (~<F6~>)", "f6", 25, 40 + 36 * 2, RunEditorPlayerProperties)
 
   buttonEditorLoad:setEnabled(false) -- To be removed when enabled.
 
-  menu:addFullButton("E~!xit to Menu", "x", 16, 40 + 36 * 4,
+  menu:addFullButton("E~!xit to Menu", "x", 25, 40 + 36 * 4,
     function() Editor.Running = EditorNotRunning; menu:stopAll(); end)
-  menu:addFullButton("Return to Editor (~<Esc~>)", "escape", 16, 288 - 40, function() menu:stop() end)
+  menu:addFullButton("Return to Editor (~<Esc~>)", "escape", 25, 288 - 60, function() menu:stop() end)
 
   menu:run(false)
 end
@@ -354,7 +354,7 @@ function EditUnitProperties()
     local activeCheckBox = menu:addCheckBox("Active", 15, 11 + 72)
     activeCheckBox:setMarked(GetUnitUnderCursor().Active)
 
-    menu:addHalfButton("~!Ok", "o", 24, sizeY - 40,
+    menu:addHalfButton("~!Ok", "o", 15, sizeY - 40,
       function() GetUnitUnderCursor().Active = activeCheckBox:isMarked();  menu:stop() end)
   else
     local resourceName = {"gold", "lumber"}
@@ -362,10 +362,10 @@ function EditUnitProperties()
     menu:addLabel("Amount of " .. resourceName[1 + resource] .. " :", 24, 11 + 36, nil, false)
 	local resourceValue = menu:addTextInputField(GetUnitUnderCursor().ResourcesHeld, sizeX / 2 - 30, 11 + 36 * 2, 60)
 
-    menu:addHalfButton("~!Ok", "o", 24, sizeY - 40,
+    menu:addHalfButton("~!Ok", "o", 15, sizeY - 40,
       function() GetUnitUnderCursor().ResourcesHeld = resourceValue:getText();  menu:stop() end)
   end
-  menu:addHalfButton("~!Cancel", "c", 134, sizeY - 40,
+  menu:addHalfButton("~!Cancel", "c", 125, sizeY - 40,
     function() menu:stop() end)
   menu:run(false)
 end

@@ -35,7 +35,7 @@ function ErrorMenu(errmsg)
   l:setBackgroundColor(dark)
   menu:add(l, 9, 38)
 
-  menu:addHalfButton("~!OK", "o", 92, 80, function() menu:stop() end)
+  menu:addHalfButton("~!OK", "o", 83, 80, function() menu:stop() end)
 
   menu:run()
 end
@@ -241,7 +241,7 @@ function RunJoiningGameMenu(s)
   local listener = LuaActionListener(checkconnection)
   menu:addLogicCallback(listener)
 
-  menu:addHalfButton("Cancel (~<Esc~>)", "escape", 92, 80,
+  menu:addHalfButton("Cancel (~<Esc~>)", "escape", 83, 80,
     function() menu:stop(1) end)
 
   menu:run()
@@ -256,7 +256,7 @@ function RunJoinIpMenu()
   menu:addLabel("Enter server IP-address:", 144, 11)
   local server = menu:addTextInputField("localhost", 40, 38, 212)
 
-  menu:addHalfButton("~!OK", "o", 24, 80,
+  menu:addHalfButton("~!OK", "o", 15, 80,
     function(s) 
       -- FIXME: allow port ("localhost:1234")
       if (NetworkSetupServerAddress(server:getText()) ~= 0) then
@@ -271,7 +271,7 @@ function RunJoinIpMenu()
       menu:stop() 
     end
   )
-  menu:addHalfButton("~!Cancel", "c", 154, 80, function() menu:stop() end)
+  menu:addHalfButton("~!Cancel", "c", 145, 80, function() menu:stop() end)
 
   menu:run()
 end

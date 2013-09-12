@@ -89,10 +89,10 @@ function RunResultsMenu()
   menu:addLabel(wood.you, 515 * multx, 346 * multy, Fonts["large"], true)
   menu:addLabel(wood.enemy, 515 * multx, 346 * multy + lineHeight, Fonts["large"], true)
 
-  menu:addFullButton("~!Save Replay", "s", 16 * multx, 180 * multy,
+  menu:addHalfButton("~!Save Replay", "s", 16 * multx, 180 * multy,
     function() RunSaveReplayMenu() end)
 
-  menu:addFullButton("~!Continue", "c", 16 * multx, 210 * multy,
+  menu:addHalfButton("~!Continue", "c", 16 * multx, 210 * multy,
     function() StopMusic(); menu:stop() end)
 
   menu:run()

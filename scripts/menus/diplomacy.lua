@@ -54,7 +54,7 @@ function RunDiplomacyMenu()
     end
   end
 
-  menu:addHalfButton("~!OK", "o", 75, 352 - 40,
+  menu:addHalfButton("~!OK", "o", 66, 352 - 40,
     function()
       for j=1,table.getn(allied) do
         local i = allied[j].index
@@ -104,7 +104,7 @@ function RunDiplomacyMenu()
       end
       menu:stop()
     end)
-  menu:addHalfButton("~!Cancel", "c", 195, 352 - 40, function() menu:stop() end)
+  menu:addHalfButton("~!Cancel", "c", 186, 352 - 40, function() menu:stop() end)
 
   menu:run(false)
 end

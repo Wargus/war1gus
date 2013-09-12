@@ -217,14 +217,14 @@ function RunCampaignSubmenu(race, exp)
   local half = math.ceil(show_buttons/2)
 
   for i=1,half do
-    menu:addFullButton(CampaignButtonTitle(race, exp, i), ".", offx + 98, offy + 64 + (36 * i), CampaignButtonFunction(campaign, race, exp, i, menu))
+    menu:addFullButton(CampaignButtonTitle(race, exp, i), ".", offx + 63, offy + 64 + (36 * i), CampaignButtonFunction(campaign, race, exp, i, menu))
   end
 
   for i=1+half,show_buttons do
-    menu:addFullButton(CampaignButtonTitle(race, exp, i), ".", offx + 326, offy + 64 + (36 * (i - half)), CampaignButtonFunction(campaign, race, exp, i, menu))
+    menu:addFullButton(CampaignButtonTitle(race, exp, i), ".", offx + 329, offy + 64 + (36 * (i - half)), CampaignButtonFunction(campaign, race, exp, i, menu))
   end
 
-  menu:addFullButton("~!Previous Menu", "p", offx + 208, offy + 212 + (36 * 5),
+  menu:addFullButton("~!Previous Menu", "p", offx + 193, offy + 212 + (36 * 5),
     function() menu:stop(); currentCampaign = nil; currentRace = nil; currentExp = nil; currentState = nil; RunCampaignGameMenu() end)
 
   menu:run()
@@ -262,12 +262,12 @@ function RunCampaignGameMenu()
   local offx = (Video.Width - 640) / 2
   local offy = (Video.Height - 480) / 2
 
-  menu:addFullButton("~!Orc campaign", "o", offx + 208, offy + 212 + (36 * 0),
+  menu:addFullButton("~!Orc campaign", "o", offx + 193, offy + 212 + (36 * 0),
     function() RunCampaignSubmenu("orc", ""); menu:stop() end)
-  menu:addFullButton("~!Human campaign", "h", offx + 208, offy + 212 + (36 * 1),
+  menu:addFullButton("~!Human campaign", "h", offx + 193, offy + 212 + (36 * 1),
     function() RunCampaignSubmenu("human", ""); menu:stop() end)
 
-  menu:addFullButton("~!Previous Menu", "p", offx + 208, offy + 212 + (36 * 5),
+  menu:addFullButton("~!Previous Menu", "p", offx + 193, offy + 212 + (36 * 5),
     function() RunSinglePlayerSubMenu(); menu:stop() end)
 
   menu:run()

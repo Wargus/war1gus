@@ -6,7 +6,7 @@ function RunConfirmErase(name,menu)
   confirm:addLabel(name, 300 / 2, 11)
   confirm:addLabel("File exists, are you sure ?", 300 / 2, 31)
 
-  confirm:addHalfButton("~!Yes", "y", 1 * (300 / 3) - 90, 120 - 16 - 27,
+  confirm:addHalfButton("~!Yes", "y", 1 * (300 / 3) - 99, 120 - 16 - 27,
     function()
         SaveGame(name)
         UI.StatusLine:Set("Saved game to: " .. name)
@@ -14,7 +14,7 @@ function RunConfirmErase(name,menu)
         menu:stop()
     end)
 
-  confirm:addHalfButton("~!No", "n", 3 * (300 / 3) - 116, 120 - 16 - 27,
+  confirm:addHalfButton("~!No", "n", 3 * (300 / 3) - 121 - 10, 120 - 16 - 27,
     function() confirm:stop() end)
 
   confirm:run(false)
@@ -36,7 +36,7 @@ function RunSaveMenu()
   end
   browser:setActionCallback(cb)
 
-  menu:addHalfButton("~!Save", "s", 1 * (384 / 3) - 106 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Save", "s", 1 * (384 / 3) - 121 - 10, 256 - 16 - 27,
     function()
       local name = t:getText()
       -- check for an empty string
@@ -64,7 +64,7 @@ function RunSaveMenu()
       end
     end)
 
-  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 3) - 106 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 3) - 121 - 10, 256 - 16 - 27,
     function() menu:stop() end)
 
   menu:run(false)
