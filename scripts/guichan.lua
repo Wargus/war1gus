@@ -591,8 +591,7 @@ function BuildProgramStartMenu()
   menu:addLabel(war1gus.Copyright, offx + 440, offy + 390 + 10*4, Fonts["small"])
 
   menu:addFullButton("~!Single Player Game", "s", offx + 208, offy + 104 + 34*3, function() RunSinglePlayerSubMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Multi Player Game", "m", offx + 208, offy + 104 + 34*4,
-    function() RunMultiPlayerGameMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Multi Player Game", "m", offx + 208, offy + 104 + 34*4, function() RunMultiPlayerGameMenu(); menu:stop(1) end)
   menu:addFullButton("~!Options", "o", offx + 208, offy + 104 + 34*5, function() RunOptionsMenu(); menu:stop(1) end)
   menu:addFullButton("~!Editor", "e", offx + 208, offy + 104 + 34*6, function() RunEditorMenu(); menu:stop(1) end)
   menu:addFullButton("S~!how Credits", "h", offx + 208, offy + 104 + 34*7, RunShowCreditsMenu)
@@ -630,7 +629,7 @@ Load("scripts/menus/objectives.lua")
 Load("scripts/menus/help.lua")
 Load("scripts/menus/diplomacy.lua")
 Load("scripts/menus/results.lua")
--- Load("scripts/menus/network.lua")
+Load("scripts/menus/network.lua")
 Load("scripts/menus/results.lua")
 --[[
 --]]
