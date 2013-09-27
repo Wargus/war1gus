@@ -1847,7 +1847,6 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 	int width;
 	int x, y, direction;
 	int offset;
-	int numtiles;
 	int len;
 	char buf[1024];
 	int pale;
@@ -1894,7 +1893,6 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 		free(mini);
 		return 0;
 	}
-	numtiles = msize / 8;
 
 	width = 16 * NumUnitDirections;
 	height = 16;
@@ -2207,8 +2205,6 @@ int ConvertCursor(char* file, int pale, int cure)
 	unsigned char* curp;
 	unsigned char* p;
 	unsigned char* image;
-	int hotx;
-	int hoty;
 	int w;
 	int h;
 	char buf[1024];
@@ -2225,8 +2221,8 @@ int ConvertCursor(char* file, int pale, int cure)
 		return 0;
 	}
 
-	hotx = FetchLE16(p);
-	hoty = FetchLE16(p);
+	SkipLE16(p); // hoty
+	SkipLE16(p); // hotx
 	w = FetchLE16(p);
 	h = FetchLE16(p);
 	image = malloc(w * h);
@@ -2432,10 +2428,7 @@ int ConvertVoc(char* file,int voce)
 	int l;
 	unsigned char* p;
 	unsigned char type;
-	int offset;
 	int size;
-	int sample_rate;
-	int compression_type;
 	unsigned char a,b,c;
 	unsigned char* wavp;
 	int w, wavlen, i, s;
@@ -2453,7 +2446,7 @@ int ConvertVoc(char* file,int voce)
 	}
 	p += 19;
 	++p; // 0x1A
-	offset = FetchLE16(p);
+	SkipLE16(p);
 	i = FetchLE16(p); // Version
 	i = FetchLE16(p); // 1's comp of version
 
@@ -2472,8 +2465,8 @@ int ConvertVoc(char* file,int voce)
 		size = (c << 16) | (b << 8) | a;
 		switch (type) {
 			case 1:
-				sample_rate = FetchByte(p);
-				compression_type = FetchByte(p);
+				SkipByte(p);
+				SkipByte(p);
 				wavlen += size - 2;
 				wavp = realloc(wavp, wavlen);
 				for (i = size - 2; i; --i) {
@@ -2582,7 +2575,7 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 			objectives[i] = ' ';
 		}
 	}
-	fprintf(sms_c2, objectives);
+	fprintf(sms_c2, "%s", objectives);
 	fprintf(sms_c2, "\"}\n");
 }
 
@@ -3029,7 +3022,7 @@ int main(int argc, char** argv)
 		exit(1);
 	}
 	buf[strlen(buf) - strlen("data.war")] = '\0';
-	sprintf(archive_dir, buf);
+	sprintf(archive_dir, "%s", buf);
 	ArchiveDir = archive_dir;
 
 	printf("Extract from \"%s\" to \"%s\"\n", ArchiveDir, Dir);
