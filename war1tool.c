@@ -1784,9 +1784,9 @@ void MuxIntroVideos(void) {
 	 		continue;
 	 	}
 	 
-	 	wavBuffer = calloc(sizeof(void), 4096);
-	 	while((readM = gzread(wavGz, wavBuffer, 4096 * sizeof(void))) > 0) {
-	 		fwrite(wavBuffer, sizeof(void), readM,  wavFile);
+	 	wavBuffer = calloc(sizeof(void*), 4096);
+	 	while((readM = gzread(wavGz, wavBuffer, 4096 * sizeof(void*))) > 0) {
+	 		fwrite(wavBuffer, sizeof(void*), readM,  wavFile);
 	 	}
 	 	free(wavBuffer);
 	 	unlink(inputWavGz);
