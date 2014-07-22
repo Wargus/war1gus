@@ -387,34 +387,12 @@ SetTranslationsFiles(preferences.StratagusTranslation, preferences.GameTranslati
 SetGrabMouse(preferences.GrabMouse)
 
 
-if file_exists("videos", "hintro1.avi") and preferences.PlayIntro then
+if file_exists("videos", "INTRO.ogv") and preferences.PlayIntro then
    SetTitleScreens(
       {Image = "ui/logo.png",
        Music = "sounds/logo.wav",
        Timeout = 3},
-      {Image = "videos/hintro1.avi",
-       Music = "sounds/intro_1.wav",
-       Iterations = 1},
-      {Image = "videos/hintro2.avi",
-       Music = "sounds/intro_2.wav",
-       Iterations = 10},
-      {Image = "videos/ointro1.avi",
-       Music = "sounds/intro_3.wav",
-       Iterations = 1},
-      {Image = "videos/ointro2.avi",
-       Iterations = 10},
-      {Image = "videos/ointro3.avi",
-       Music = "sounds/intro_door.wav",
-       Iterations = 1},
-      {Image = "videos/cave1.avi",
-       Music = "sounds/intro_4.wav",
-       Iterations = 1},
-      {Image = "videos/cave2.avi",
-       Iterations = 3},
-      {Image = "videos/cave3.avi",
-       Music = "sounds/intro_5.wav",
-       Iterations = 1},
-      {Image = "videos/title.avi",
+      {Image = "videos/INTRO.ogv",
        Iterations = 1}
    )
    preferences.PlayIntro = false

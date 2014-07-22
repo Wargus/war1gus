@@ -1642,39 +1642,223 @@ void ConvertFLC(const char* file, const char* flc)
 }
 #else
 /**
-**  Convert FLC using ffmpeg2theora. Manual conversion into PNGs
-**  (above) and then into ogv should produce better results, but
-**  ffmpeg2theora screws up the colors. Until then, just convert
-**  directly, and live with the direct conversion bugs.
+**  Convert FLC using ffmpeg. Manual conversion into PNGs (above) and
+**  then into ogv should produce better results, but ffmpeg2theora
+**  screws up the colors. Until then, just convert directly, and live
+**  with the direct conversion bugs.
 */
 void ConvertFLC(const char* file, const char* flc)
 {
 	int ret;
-	char *cmd, *output, *buf;
-	char *cmdprefix = "ffmpeg2theora --resize-method lanczos -v 10 --max_size 640 -o";
+	char *cmd, *output, *outputPath;
+	/* char *cmdprefix = "ffmpeg2theora --resize-method lanczos -v 10 -V 1000 --soft-target --two-pass --noaudio --max_size 640 -o"; */
+	char *cmdprefix = "ffmpeg -y -i ";
+	char *outputOptions = " -q:v 10 -vb 4000k -vf scale=640:-1 ";
 
 	output = (char*)calloc(sizeof(char), strlen(flc) + 1);
 	strcpy(output, flc);
-	output[strlen(output) - 3] = 'a';
-	output[strlen(output) - 2] = 'v';
-	output[strlen(output) - 1] = 'i';
+	output[strlen(output) - 3] = 'o';
+	output[strlen(output) - 2] = 'g';
+	output[strlen(output) - 1] = 'v';
 
-	buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(output) + 1);
-	sprintf(buf, "%s/%s/%s", Dir, VIDEO_PATH, output);
-	CheckPath(buf);	
+	outputPath = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(output) + 1);
+	sprintf(outputPath, "%s/%s/%s", Dir, VIDEO_PATH, output);
+	CheckPath(outputPath);	
 
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 2 + strlen(file) + 3 + strlen(buf) + 2);
-	sprintf(cmd, "%s \"%s\" \"%s\"", cmdprefix, buf, file);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 2 + strlen(file) + strlen(outputOptions) + 3 + strlen(outputPath) + 2);
+	sprintf(cmd, "%s \"%s\"%s\"%s\"", cmdprefix, file, outputOptions, outputPath);
 	ret = system(cmd);
 
-	free(buf);
+	free(outputPath);
 	free(cmd);
 	free(output);
 
 	if (ret != 0) {
-		printf("Can't convert video %s to ogv format. Is ffmpeg2theora installed in PATH?\n", file);
+		printf("Can't convert video %s to ogv format. Is ffmpeg installed in PATH?\n", file);
 		fflush(stdout);
 	}
+}
+
+/**
+** Mux intro music and video using ffmpeg. TODO: find a way to do this inline
+*/
+void MuxIntroVideos(void) {
+	char* videos[] = {"HINTRO1.ogv", "HINTRO2.ogv",
+			  "OINTRO1.ogv", "OINTRO2.ogv", "OINTRO3.ogv",
+			  "CAVE1.ogv", "CAVE2.ogv", "CAVE3.ogv",
+			  "TITLE.ogv"};
+	char* audios[] = {"intro_1.wav", "intro_2.wav",
+			  "intro_3.wav", "intro_door.wav",
+			  "intro_4.wav",
+			  "intro_5.wav"};
+
+	int repeats[] = {1, 11,
+			 1, 17, 1,
+			 1, 2, 1,
+			 1};
+
+	int i, j, streamNum, ret;
+	size_t readM;
+	gzFile wavGz;
+	FILE *wavFile;
+	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputVideo, *inputWavGz, *concatFilter, *outputIntro, *buf;
+	void *wavBuffer;
+	char *cmdprefix = "ffmpeg -y ";
+	char *encoderIntroOpts = " -q:v 10 -shortest -vb 4000k -acodec libvorbis -vcodec libtheora ";
+	char *encoderVideoOpts = " -map '[v]' -shortest -vb 4000k -acodec libvorbis ";
+	char *encoderAudioOpts = " -map '[a]' -shortest -vb 4000k -acodec libvorbis ";
+	char *concatFilterPrefix = " -filter_complex '";
+	char *concatFilterVideoSuffix = ":v=1:a=0:unsafe=1 [v]' ";
+	char *concatFilterAudioSuffix = ":v=0:a=1:unsafe=1 [a]' ";
+
+	// VIDEO
+	concatFilter = (char*)calloc(sizeof(char), strlen(concatFilterPrefix) + 1);
+	strcpy(concatFilter, concatFilterPrefix);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1);
+	strcpy(cmd, cmdprefix);
+	streamNum = 0;
+	for (i = 0; i < 9; i++) {
+		inputVideo = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 2 + strlen(videos[i]) + 2);
+		sprintf(inputVideo, "\"%s/%s/%s\"", Dir, VIDEO_PATH, videos[i]);
+		for (j = 0; j < repeats[i]; j++) {
+			printf("%s\n\n", cmd);
+			fflush(stdout);
+			printf("%s\n\n", concatFilter);
+			fflush(stdout);
+		
+			cmd = (char*)realloc(cmd, sizeof(char) * (strlen(cmd) + strlen(" -i ") + strlen(inputVideo) + 1));
+			strcat(cmd, " -i ");
+			strcat(cmd, inputVideo);
+
+			concatFilter = (char*)realloc(concatFilter, sizeof(char) * (strlen(concatFilter) + 1 + 2 + 4 + 1));
+			strcat(concatFilter, "[");
+			sprintf(concatFilter + strlen(concatFilter), "%d", streamNum);
+			strcat(concatFilter, ":0] ");
+			streamNum++;
+		}
+		free(inputVideo);
+	}
+	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
+	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
+	concatFilter = (char*)realloc(concatFilter, sizeof(char) * strlen(concatFilter) + strlen("concat=n=XX") + strlen(concatFilterVideoSuffix) + 1);
+	sprintf(concatFilter, "%sconcat=n=%02d%s", concatFilter, streamNum, concatFilterVideoSuffix);
+	cmd = (char*)realloc(cmd, sizeof(char) * strlen(cmd) + strlen(concatFilter) + strlen(encoderVideoOpts) + 1 + strlen(outputVideo) + 1);
+	sprintf(cmd, "%s%s%s %s", cmd, concatFilter, encoderVideoOpts, outputVideo);
+	printf("%s\n\n", cmd);
+	fflush(stdout);
+	ret = system(cmd);
+	if (ret != 0) {
+		printf("Can't concat intro videos. Is ffmpeg installed in PATH?\n");
+		fflush(stdout);
+		exit(-1);
+	}
+	free(concatFilter);
+	free(cmd);
+
+	// AUDIO
+	concatFilter = (char*)calloc(sizeof(char), strlen(concatFilterPrefix) + 1);
+	strcpy(concatFilter, concatFilterPrefix);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1);
+	strcpy(cmd, cmdprefix);
+	streamNum = 0;
+	for (i = 0; i < 6; i++) {
+		inputWavGz = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
+	 	sprintf(inputWavGz, "%s/%s/%s.gz", Dir, SOUND_PATH, audios[i]);
+	 	wavGz = gzopen(inputWavGz, "rb");
+	 	if (!wavGz) {
+	 		printf("Can't open %s for muxing\n", inputWavGz);
+	 		fflush(stdout);
+	 		free(inputWavGz);
+	 		continue;
+	 	}
+	 
+	 	inputAudio = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
+	 	sprintf(inputAudio, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
+	 	wavFile = fopen(inputAudio, "wb");
+	 	if (!wavGz) {
+	 		printf("Can't open %s for muxing\n", inputAudio);
+	 		fflush(stdout);
+	 		free(inputWavGz);
+	 		gzclose(wavGz);
+	 		free(inputAudio);
+	 		continue;
+	 	}
+	 
+	 	wavBuffer = calloc(sizeof(void), 4096);
+	 	while((readM = gzread(wavGz, wavBuffer, 4096 * sizeof(void))) > 0) {
+	 		fwrite(wavBuffer, sizeof(void), readM,  wavFile);
+	 	}
+	 	free(wavBuffer);
+	 	unlink(inputWavGz);
+	 	free(inputWavGz);
+	 	gzclose(wavGz);
+	 	fclose(wavFile);
+
+		cmd = (char*)realloc(cmd, sizeof(char) * (strlen(cmd) + strlen(" -i ") + strlen(inputAudio) + 1));
+		strcat(cmd, " -i ");
+		strcat(cmd, inputAudio);
+		free(inputAudio);
+
+		concatFilter = (char*)realloc(concatFilter, sizeof(char) * (strlen(concatFilter) + 1 + 2 + 4 + 1));
+		strcat(concatFilter, "[");
+		sprintf(concatFilter + strlen(concatFilter), "%d", streamNum);
+		strcat(concatFilter, ":0] ");
+		streamNum++;
+	}
+	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
+	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
+	concatFilter = (char*)realloc(concatFilter, sizeof(char) * strlen(concatFilter) + strlen("concat=n=XX") + strlen(concatFilterAudioSuffix) + 1);
+	sprintf(concatFilter, "%sconcat=n=%02d%s", concatFilter, streamNum, concatFilterAudioSuffix);
+	cmd = (char*)realloc(cmd, sizeof(char) * strlen(cmd) + strlen(concatFilter) + strlen(encoderAudioOpts) + 1 + strlen(outputAudio) + 1);
+	sprintf(cmd, "%s%s%s %s", cmd, concatFilter, encoderAudioOpts, outputAudio);
+	ret = system(cmd);
+	if (ret != 0) {
+		printf("Can't concat intro videos. Is ffmpeg installed in PATH?\n");
+		fflush(stdout);
+		exit(-1);
+	}
+	free(cmd);
+	free(concatFilter);
+
+	// Mux
+	outputIntro = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogv") + 2);
+	sprintf(outputIntro, "\"%s/%s/INTRO.ogv\"", Dir, VIDEO_PATH);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1 +
+ 			    strlen("-i") + 1 + strlen(outputVideo) + 1 +
+			    strlen("-i") + 1 + strlen(outputAudio) + 1 +
+			    1 + strlen(encoderIntroOpts) + 1 +
+			    1 + strlen(outputIntro) + 2);
+	sprintf(cmd, "%s -i %s -i %s %s %s", cmdprefix, outputVideo, outputAudio, encoderIntroOpts, outputIntro);
+ 	ret = system(cmd);
+ 	if (ret != 0) {
+		printf("Can't mux intro video and audio. Is ffmpeg installed in PATH?\n");
+		fflush(stdout);
+	}
+	free(outputIntro);
+	free(cmd);
+
+	
+	// remove unneeded files
+	for (i = 0; i < 9; i++) {
+		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(videos[i]) + 1);
+		sprintf(buf, "%s/%s/%s", Dir, VIDEO_PATH, videos[i]);
+		unlink(buf);
+		free(buf);
+	}
+	for (i = 0; i < 6; i++) {
+		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 1);
+		sprintf(buf, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
+		unlink(buf);
+		free(buf);
+	}
+
+	// remove quotes, then unlink
+	outputAudio[strlen(outputAudio) - 1] = '\0';
+	outputVideo[strlen(outputVideo) - 1] = '\0';
+	unlink(outputAudio + 1);
+	unlink(outputVideo + 1);
+	free(outputAudio);
+	free(outputVideo);
 }
 #endif
 
@@ -3113,6 +3297,11 @@ int main(int argc, char** argv)
 			default:
 				break;
 		}
+	}
+
+	if (video) {
+	    // TODO: embed this somewhere nicer
+	    MuxIntroVideos();
 	}
 
 	printf("War1gus data setup is now complete\n");
