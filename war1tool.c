@@ -1702,7 +1702,7 @@ void MuxIntroVideos(void) {
 	gzFile wavGz;
 	FILE *wavFile;
 	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputVideo, *inputWavGz, *concatFilter, *outputIntro, *buf;
-	void *wavBuffer;
+	unsigned char *wavBuffer;
 	char *cmdprefix = "ffmpeg -y ";
 	char *encoderIntroOpts = " -q:v 10 -shortest -vb 4000k -acodec libvorbis -vcodec libtheora ";
 	char *encoderVideoOpts = " -map '[v]' -shortest -vb 4000k -acodec libvorbis ";
@@ -1784,9 +1784,9 @@ void MuxIntroVideos(void) {
 	 		continue;
 	 	}
 	 
-	 	wavBuffer = calloc(sizeof(void*), 4096);
-	 	while((readM = gzread(wavGz, wavBuffer, 4096 * sizeof(void*))) > 0) {
-	 		fwrite(wavBuffer, sizeof(void*), readM,  wavFile);
+	 	wavBuffer = (unsigned char*)calloc(sizeof(char*), 1024 * 128);
+	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char*))) > 0) {
+	 		fwrite(wavBuffer, sizeof(char*), readM,  wavFile);
 	 	}
 	 	free(wavBuffer);
 	 	unlink(inputWavGz);
