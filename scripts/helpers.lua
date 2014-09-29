@@ -105,8 +105,7 @@ function DefineBuildingFromSpec(building)
 	 RepairRange = 0,
 	 VisibleUnderFog = true,
 	 BuildingRules = { -- all buildings except the town hall
-	    {"distance", {
-		Distance = 1, DistanceType = "=", Owner = "self"}}},
+	    {"distance", { Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}}},
 	 Sounds = {
 	    "ready", race .. " work complete",
 	    "selected", fullname .. "-selected",
