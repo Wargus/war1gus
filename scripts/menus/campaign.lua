@@ -102,38 +102,28 @@ function Briefing(title, objs, bg, text, voices)
   SetGameSpeed(speed)
 end
 
-function GetCampaignState(race, exp)
+function GetCampaignState(race)
   -- Loaded saved game could have other old state
   -- Make sure that we use saved state from config file
   Load("preferences.lua")
-  if (race == "orc" and exp ~= "exp") then
+  if (race == "orc") then
     return preferences.CampaignOrc
-  elseif (race == "human" and exp ~= "exp") then
+  elseif (race == "human") then
     return preferences.CampaignHuman
-  elseif (race == "orc" and exp == "exp") then
-    return preferences.CampaignOrcX
-  elseif (race == "human" and exp == "exp") then
-    return preferences.CampaignHumanX
   end
   return 1
 end
 
-function IncreaseCampaignState(race, exp, state)
+function IncreaseCampaignState(race, state)
   -- Loaded saved game could have other old state
   -- Make sure that we use saved state from config file
   Load("preferences.lua")
-  if (race == "orc" and exp ~= "exp") then
+  if (race == "orc") then
     if (state ~= preferences.CampaignOrc) then return end
     preferences.CampaignOrc = preferences.CampaignOrc + 1
-  elseif (race == "human" and exp ~= "exp") then
+  elseif (race == "human") then
     if (state ~= preferences.CampaignHuman) then return end
     preferences.CampaignHuman = preferences.CampaignHuman + 1
-  elseif (race == "orc" and exp == "exp") then
-    if (state ~= preferences.CampaignOrcX) then return end
-    preferences.CampaignOrcX = preferences.CampaignOrcX + 1
-  elseif (race == "human" and exp == "exp") then
-    if (state ~= preferences.CampaignHumanX) then return end
-    preferences.CampaignHumanX = preferences.CampaignHumanX + 1
   end
   -- Make sure that we immediately save state
   SavePreferences()
@@ -160,7 +150,7 @@ function CreateMapStep(map)
     Load(map)
     RunMap(map)
     if (GameResult == GameVictory) then
-      IncreaseCampaignState(currentRace, currentExp, currentState)
+      IncreaseCampaignState(currentRace, currentState)
     end
   end
 end
@@ -179,7 +169,7 @@ function CreateVictoryStep(bg, text, voices)
   end
 end
 
-function CampaignButtonTitle(race, exp, i)
+function CampaignButtonTitle(race, i)
   Load("campaigns/" .. race .. "/campaign_titles.lua")
   title = campaign_titles[i]
 
@@ -190,19 +180,18 @@ function CampaignButtonTitle(race, exp, i)
   return title
 end
 
-function CampaignButtonFunction(campaign, race, exp, i, menu)
+function CampaignButtonFunction(campaign, race, i, menu)
   return function()
     position = campaign.menu[i]
     currentCampaign = campaign
     currentRace = race
-    currentExp = exp
     currentState = i
     menu:stop()
     RunCampaign(campaign)
   end
 end
 
-function RunCampaignSubmenu(race, exp)
+function RunCampaignSubmenu(race)
   Load("scripts/campaigns.lua")
   campaign = CreateCampaign(race)
 
@@ -213,19 +202,19 @@ function RunCampaignSubmenu(race, exp)
   local offx = (Video.Width - 640) / 2
   local offy = (Video.Height - 480) / 2
 
-  local show_buttons = GetCampaignState(race, exp)
+  local show_buttons = GetCampaignState(race)
   local half = math.ceil(show_buttons/2)
 
   for i=1,half do
-    menu:addFullButton(CampaignButtonTitle(race, exp, i), ".", offx + 63, offy + 64 + (36 * i), CampaignButtonFunction(campaign, race, exp, i, menu))
+    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 63, offy + 64 + (36 * i), CampaignButtonFunction(campaign, race, i, menu))
   end
 
   for i=1+half,show_buttons do
-    menu:addFullButton(CampaignButtonTitle(race, exp, i), ".", offx + 329, offy + 64 + (36 * (i - half)), CampaignButtonFunction(campaign, race, exp, i, menu))
+    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 329, offy + 64 + (36 * (i - half)), CampaignButtonFunction(campaign, race, i, menu))
   end
 
   menu:addFullButton("~!Previous Menu", "p", offx + 193, offy + 212 + (36 * 5),
-    function() menu:stop(); currentCampaign = nil; currentRace = nil; currentExp = nil; currentState = nil; RunCampaignGameMenu() end)
+    function() menu:stop(); currentCampaign = nil; currentRace = nil; currentState = nil; RunCampaignGameMenu() end)
 
   menu:run()
 
@@ -252,7 +241,7 @@ function RunCampaign(campaign)
     end
   end
 
-  RunCampaignSubmenu(currentCampaign, currentRace, currentExp)
+  RunCampaignSubmenu(currentCampaign, currentRace)
 
   currentCampaign = nil
 end
