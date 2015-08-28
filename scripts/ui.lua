@@ -312,6 +312,14 @@ UI.Resources[2].TextX = Video.Width - 258 - 18 - 80
 UI.Resources[2].TextY = 1
 UI.Resources[2].Font = Fonts["game"]
 
+-- mana -- no good icon, but we need this for the info bar
+UI.Resources[ManaResCost].G = CGraphic:New("missiles/healing.png", 32, 32)
+UI.Resources[ManaResCost].IconFrame = 0
+UI.Resources[ManaResCost].IconX = -100
+UI.Resources[ManaResCost].IconY = -100
+UI.Resources[ManaResCost].TextX = UI.Resources[2].TextX
+UI.Resources[ManaResCost].TextY = UI.Resources[2].TextY
+
 b = CUIButton:new()
 b.X = 9
 b.Y = 140 + 6
