@@ -60,3 +60,4 @@ DefineAllow("upgrade-scorpion", "RRRRRRRRRRRRRRRR")
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/human/10.sms")
+SetStartView(0, 50, 40)

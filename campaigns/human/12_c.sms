@@ -60,3 +60,4 @@ DefineAllow("upgrade-water-elemental", "RRRRRRRRRRRRRRRR")
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/human/12.sms")
+SetStartView(0, 53, 57)

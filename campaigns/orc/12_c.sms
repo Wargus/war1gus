@@ -60,3 +60,4 @@ DefineAllow("upgrade-daemon", "RRRRRRRRRRRRRRRR")
 
 LoadTileModels("scripts/tilesets/forest.lua")
 Load("campaigns/orc/12.sms")
+SetStartView(0, 0, 15)

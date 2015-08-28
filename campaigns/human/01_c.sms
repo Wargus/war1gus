@@ -32,3 +32,4 @@ DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
 
 LoadTileModels("scripts/tilesets/forest.lua")
 Load("campaigns/human/01.sms")
+SetStartView(0, 45, 22)

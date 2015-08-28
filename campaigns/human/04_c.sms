@@ -69,3 +69,5 @@ for i,unit in ipairs(GetUnits(15)) do
 	 return true
       end)
 end
+
+SetStartView(0, 60, 0)

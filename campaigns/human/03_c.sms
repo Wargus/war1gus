@@ -45,3 +45,4 @@ DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/human/03.sms")
+SetStartView(0, 58, 48)

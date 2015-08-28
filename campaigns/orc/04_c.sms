@@ -21,3 +21,4 @@ LoadTileModels("scripts/tilesets/dungeon.lua")
 Load("campaigns/orc/04.sms")
 
 DefineAllow("upgrade-raise-dead", "RRRRRRRRRRRRRRRR")
+SetStartView(0, 37, 0)

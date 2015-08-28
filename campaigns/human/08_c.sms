@@ -24,3 +24,5 @@ DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
 -- Medivh's spells
 DefineAllow("upgrade-spider", "RRRRRRRRRRRRRRRR")
 DefineAllow("upgrade-daemon", "RRRRRRRRRRRRRRRR")
+
+SetStartView(0, 4, 20)

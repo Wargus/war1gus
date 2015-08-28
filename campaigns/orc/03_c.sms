@@ -44,3 +44,4 @@ DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
 LoadTileModels("scripts/tilesets/forest.lua")
 Load("campaigns/orc/03.sms")
+SetStartView(0, 0, 4)
