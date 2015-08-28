@@ -2763,6 +2763,12 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 	fprintf(sms_c2, "\"}\n");
 }
 
+static void SmsSetCurrentRace(FILE* sms_c2, unsigned char* race, int state)
+{
+	fprintf(sms_c2, "currentRace = \"%s\" -- Fix for restoring the correct race on load\n", race);
+	fprintf(sms_c2, "currentState = %d -- Fix for restoring the correct campaign pos on load\n", state);
+}
+
 /**
 **  Save the players
 **
@@ -3054,6 +3060,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	mapnum[1] = file[strlen(file) - 1];
 
 	SmsSaveObjectives(sms_c2, txtp);
+	SmsSetCurrentRace(sms_c2, race, atoi(mapnum));
 	SmsSavePlayers(race, mapnum, sms, smp);
 	SmsSaveMap(sms, smp, mtxme, file);
 	SmsSaveUnits(sms, txtp);

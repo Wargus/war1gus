@@ -17,7 +17,7 @@ function LoadGame(s)
   SetPlayerData(GetThisPlayer(), "RaceName", "orc")
 
   if (GameResult == GameVictory) then
-    IncreaseCampaignState(currentRace, currentExp, currentState)
+    IncreaseCampaignState(currentRace, currentState)
   end
 
   if currentCampaign ~= nil then
@@ -28,7 +28,7 @@ function LoadGame(s)
     elseif (GameResult == GameNoResult) then
       return
     else
-      RunCampaignSubmenu(currentCampaign, currentRace, currentExp) -- quit to menu
+      RunCampaignSubmenu(currentRace) -- quit to menu
       return
     end
     RunCampaign(currentCampaign)

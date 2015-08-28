@@ -241,7 +241,7 @@ function RunCampaign(campaign)
     end
   end
 
-  RunCampaignSubmenu(currentCampaign, currentRace)
+  RunCampaignSubmenu(currentRace)
 
   currentCampaign = nil
 end
@@ -252,9 +252,9 @@ function RunCampaignGameMenu()
   local offy = (Video.Height - 480) / 2
 
   menu:addFullButton("~!Orc campaign", "o", offx + 193, offy + 212 + (36 * 0),
-    function() RunCampaignSubmenu("orc", ""); menu:stop() end)
+    function() RunCampaignSubmenu("orc"); menu:stop() end)
   menu:addFullButton("~!Human campaign", "h", offx + 193, offy + 212 + (36 * 1),
-    function() RunCampaignSubmenu("human", ""); menu:stop() end)
+    function() RunCampaignSubmenu("human"); menu:stop() end)
 
   menu:addFullButton("~!Previous Menu", "p", offx + 193, offy + 212 + (36 * 5),
     function() RunSinglePlayerSubMenu(); menu:stop() end)

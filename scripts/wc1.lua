@@ -40,3 +40,6 @@ DefineRaceNames(
   "race", {
     "name", "neutral",
     "display", "Neutral"})
+
+-- XXX: Hack for loading savegames that are not campaigns
+currentRace = "human"
