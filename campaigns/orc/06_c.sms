@@ -11,7 +11,7 @@ Briefing(
 )
 
 AddTrigger(
-  function() return (GetPlayerData(1, "TotalNumUnits") == 1,	
+  function() return (GetPlayerData(1, "TotalNumUnits") == 1 and
 		     GetPlayerData(1, "UnitTypesCount", "unit-human-tower") == 1) end,
   function() return ActionVictory() end)
 AddTrigger(
@@ -59,3 +59,4 @@ DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
 LoadTileModels("scripts/tilesets/forest.lua")
 Load("campaigns/orc/06.sms")
+SetStartView(0, 26, 60)

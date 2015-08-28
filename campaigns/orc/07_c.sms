@@ -16,7 +16,7 @@ AddTrigger(
 AddTrigger(
   function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
   function() return ActionDefeat() end)
-
+  
 
 local allowedOrcUnits = {"unit-orc-farm",
 	"unit-orc-town-hall", "unit-peon",
@@ -43,4 +43,5 @@ DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/orc/07.sms")
-SetPlayerData(1, "Race", "orc")
+SetPlayerData(1, "RaceName", "orc")
+SetStartView(0, 45, 50)
