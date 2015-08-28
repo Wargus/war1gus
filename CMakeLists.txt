@@ -17,9 +17,12 @@
 project(war1gus)
 cmake_minimum_required(VERSION 2.6)
 
-set(war1gus_SRCS
-   war1tool.c
-   xmi2mid.cpp
+file(GLOB war1gus_SRCS
+	"scripts/*.lua"
+	"scripts/**/*.lua"
+	"war1tool.c"
+	"xmi2mid.cpp"
+	"README"
 )
 
 set(war1gus_HDRS xmi2mid.h)
@@ -35,6 +38,14 @@ target_link_libraries(war1tool ${war1gus_LIBS})
 install(TARGETS war1tool DESTINATION "bin")
 
 if (WIN32 AND MSVC)
+	if(MSVC_VERSION GREATER 1800)       # if > VC13 
+		message("The project must be compiled with VS2013 or older.") 
+		set(CMAKE_GENERATOR_TOOLSET "v120" CACHE STRING "Platform Toolset" FORCE) 
+	endif()
+
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
+	set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
 	set_target_properties(war1tool PROPERTIES LINK_FLAGS "${LINK_FLAGS} /NODEFAULTLIB:MSVCRT")
 endif()
