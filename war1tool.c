@@ -2781,8 +2781,8 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
 	
 	for (i = 0; i < 16; ++i) {
 		gzprintf(sms, "SetStartView(%d, 0, 0)\n", i);
-		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"gold\", 1000)\n", i);
-		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"wood\", 1000)\n", i);
+		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"gold\", 10000)\n", i);
+		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"wood\", 10000)\n", i);
 		if (i == 0) {
 			gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"%s\")\n", i, race);
 		} else if (i == 15) {
