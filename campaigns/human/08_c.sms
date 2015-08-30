@@ -26,3 +26,5 @@ DefineAllow("upgrade-spider", "RRRRRRRRRRRRRRRR")
 DefineAllow("upgrade-daemon", "RRRRRRRRRRRRRRRR")
 
 SetStartView(0, 4, 20)
+SetPlayerData(0, "Resources", "gold", 0)
+SetPlayerData(0, "Resources", "wood", 0)
