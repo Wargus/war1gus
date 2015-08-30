@@ -162,7 +162,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiResearch(AiSummonerSpell3()) end,
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
-      function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+      function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
