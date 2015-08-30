@@ -93,7 +93,6 @@ local units = {
     Armor = 10,
     PiercingDamage = 1,
     BasicDamage = 0,
-	Speed = 7,
     organic = false},
    {Names = {neutral = "Spider"},
     HitPoints = 30,
