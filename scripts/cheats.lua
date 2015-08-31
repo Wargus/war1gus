@@ -30,11 +30,16 @@
 
 speedcheat = false
 godcheat = false
+cheatenabled = false
 
 function HandleCheats(str)
   local resources = { "gold", "wood" }
 
-  if (str == "eye of newt") then
+  if (str == "corwin of amber") then
+	AddMessage("Cheats enabled you wascally wabbit")
+	cheatenabled = true
+
+  elseif (str == "eye of newt") then
     -- FIXME: no function yet
     AddMessage("All wizard spells cheat ... not working yet")
 
@@ -46,10 +51,6 @@ function HandleCheats(str)
     -- FIXME: no function yet
     AddMessage("Upgraded technology cheat ... not working yet")
 
-  elseif (str == "hatchet") then
-    SetSpeedResourcesHarvest("wood", 52 / 2)
-    AddMessage("Wow -- I got jigsaw!")
-
   elseif (str == "pot of gold") then
     SetPlayerData(GetThisPlayer(), "Resources", "gold",
       GetPlayerData(GetThisPlayer(), "Resources", "gold") + 10000)
@@ -59,34 +60,6 @@ function HandleCheats(str)
 
   elseif (str == "sally shears") then
     RevealMap()
-
-  elseif (str == "fow on") then
-    SetFogOfWar(true)
-
-  elseif (str == "fow off") then
-    SetFogOfWar(false)
-
-  elseif (str == "fast debug") then
-    for i = 1,table.getn(resources) do
-      SetSpeedResourcesHarvest(resources[i], 10)
-      SetSpeedResourcesReturn(resources[i], 10)
-    end
-    SetSpeedBuild(10)
-    SetSpeedTrain(10)
-    SetSpeedUpgrade(10)
-    SetSpeedResearch(10)
-    AddMessage("FAST DEBUG SPEED")
-
-  elseif (str == "normal debug") then
-    for i = 1,table.getn(resources) do
-      SetSpeedResourcesHarvest(resources[i], 1)
-      SetSpeedResourcesReturn(resources[i], 1)
-    end
-    SetSpeedBuild(1)
-    SetSpeedTrain(1)
-    SetSpeedUpgrade(1)
-    SetSpeedResearch(1)
-    AddMessage("NORMAL DEBUG SPEED")
 
   elseif (str == "hurry up guys") then
     if (speedcheat) then
@@ -114,25 +87,29 @@ function HandleCheats(str)
     end
 
   elseif (str == "yours truly") then
-    ActionVictory()
+    if (cheatenabled) then ActionVictory() end
 
   elseif (str == "crushing defeat") then
-    ActionDefeat()
+    if (cheatenabled) then ActionDefeat() end
 
   elseif (str == "there can be only one") then
-    if (godcheat) then
-      godcheat = false
-      SetGodMode(false)
-      AddMessage("God Mode OFF")
-    else
-      godcheat = true
-      SetGodMode(true)
-      AddMessage("God Mode ON")
-    end
+    if (cheatenabled) then
+      if (godcheat) then
+        godcheat = false
+        SetGodMode(false)
+        AddMessage("God Mode OFF")
+      else
+        godcheat = true
+        SetGodMode(true)
+        AddMessage("God Mode ON")
+      end
+	end
 
-  elseif (str == "chronus") then
-     SetSpeedUpgrade(10)
-     SetSpeedResearch(10)
+  elseif (str:gsub("^human%d$", "") == "") then
+     AddMessage("Skip to human lvl" .. str:gsub("human", "") .. ". Not implemented yet")
+
+  elseif (str:gsub("^orc%d$", "") == "") then
+     AddMessage("Skip to orc lvl" .. str:gsub("orc", "") .. ". Not implemented yet")
 
   else
     return false
