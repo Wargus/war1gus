@@ -47,7 +47,16 @@ local buildings = {
     CanStore = {"wood", "gold"},
     Supply = 5,
     RepairRange = 1000, -- basically infinite
-    BuildingRules = { { "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine"}}},
+    BuildingRules = {
+	  { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
+	    "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
+	    "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } }
+	},
+	AiBuildingRules = {
+	  { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
+	    "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
+	    "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } }
+	},
     Size = {128, 128}},
 
    {Names = {orc = "Barracks", human = "Barracks"},
@@ -168,8 +177,8 @@ DefineUnitType(
      Animations = "animations-building",
      Construction = "construction-none",
      BuildingRules = { -- all buildings except the town hall need a road
-	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}},
-	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self"}},
+	    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}},
+        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self"}},
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self"}}},
      BuilderOutside = true,
      Priority = 0,
