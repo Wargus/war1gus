@@ -176,10 +176,14 @@ DefineUnitType(
      Costs = {"time", 1, "gold", 50},
      Animations = "animations-building",
      Construction = "construction-none",
-     BuildingRules = { -- all buildings except the town hall need a road
+     BuildingRules = {
 	    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}},
-        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self"}},
-        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self"}}},
+        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
+        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}}},
+	 AiBuildingRules = {
+	    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}},
+        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
+        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}}},
      BuilderOutside = true,
      Priority = 0,
      HitPoints = 1,
