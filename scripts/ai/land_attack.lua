@@ -130,7 +130,6 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
-      function() return AiNeed(AiCityCenter()) end,
       function() return AiNeed(AiStables()) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
@@ -190,8 +189,6 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
-      function() return AiNeed(AiCityCenter()) end,
-
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
