@@ -34,7 +34,7 @@ function CreateAiCampaign(level)
 
    local PureAiSleep = AiSleep
    local AiSleep = function(cycles)
-      return PureAiSleep(cycles * sleep_factor)
+      return PureAiSleep(cycles * sleep_factor * 3)
    end
 
    -- This simulates a timeout around WaitForce. If, for some reason,
@@ -73,7 +73,6 @@ function CreateAiCampaign(level)
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
-      function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
@@ -81,7 +80,6 @@ function CreateAiCampaign(level)
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
-      function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
@@ -98,12 +96,13 @@ function CreateAiCampaign(level)
       -- Everything researched...
       function()
 	    stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		return false
 	  end
    }
 
    local campaign_funcs9 = {
       function() return AiResearch(AiSummonerSpell2()) end,
-
+	  function() return AiSleep(500) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
@@ -130,6 +129,7 @@ function CreateAiCampaign(level)
 		  return AiLoop(campaign_funcs10, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  return false
 		end
       end
 	}
@@ -157,6 +157,7 @@ function CreateAiCampaign(level)
 		  return AiLoop(campaign_funcs9, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  return false
 		end
       end
    }
@@ -170,14 +171,12 @@ function CreateAiCampaign(level)
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiSleep(500) end,
-      function() return AiAttackWithForce(0) end,
 	  function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
-	  function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
       
       function() return AiSleep(500) end,
@@ -185,7 +184,6 @@ function CreateAiCampaign(level)
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
-	  function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
@@ -194,7 +192,6 @@ function CreateAiCampaign(level)
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 4, AiMage(), 1, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiMage(), 1, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
-      function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
 
 	  function() print("Looping at lvl 6!") return false end,
@@ -210,6 +207,7 @@ function CreateAiCampaign(level)
 		  return AiLoop(campaign_funcs7, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  return false
 		end
       end
     }
@@ -225,7 +223,6 @@ function CreateAiCampaign(level)
       function() return AiForce(1, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiSleep(500) end,
-	  function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
@@ -234,7 +231,6 @@ function CreateAiCampaign(level)
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCavalry(), 2}) end,
       function() return AiWaitForce(1) end,
       function() return AiSleep(600) end,
-	  function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
 
 	  function() print("looping at lvl 5 !") return false end,
@@ -250,6 +246,7 @@ function CreateAiCampaign(level)
 		  return AiLoop(campaign_funcs6, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  return false
 		end
       end
     }
@@ -268,8 +265,8 @@ function CreateAiCampaign(level)
       function() return AiForce(0, {AiSoldier(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1}) end,
       function() return AiWaitForce(1) end,
-	  function() return AiAttackWithForce(0) end,
-      function() return AiAttackWithForce(1) end,
+	  function() return AiSleep(500) end,
+	  function() return AiAttackWithForce(1) end,
       function() return AiSleep(1) end,      
 
 	  function() return AiSleep(500) end,
@@ -281,7 +278,6 @@ function CreateAiCampaign(level)
 	  function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1, AiMage(), 1}) end,
 	  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiMage(), 1}) end,
 	  function() return AiWaitForce(1) end,
-	  function() return AiAttackWithForce(0) end,
 	  function() return AiAttackWithForce(1) end,
 	  function() return AiSleep(500) end,
 
@@ -290,6 +286,7 @@ function CreateAiCampaign(level)
 		  return AiLoop(campaign_funcs5, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  return false
         end
       end
     }
