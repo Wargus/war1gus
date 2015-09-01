@@ -367,10 +367,15 @@ function AiLoop(loop_funcs, indexes)
    local playerIndex = AiPlayer() + 1
 
    while (true) do
-      local ret = loop_funcs[indexes[playerIndex]]()
-      if (ret) then
-	 break
-      end
+      local func = loop_funcs[indexes[playerIndex]]
+	  local ret = false
+	  if (func == nil) then
+		AddMessage("BUG: Please file a bug 'AI loop broken' with the level and this number " .. playerIndex)
+		indexes[playerIndex] = 0
+	  else
+	    ret = func()
+	  end
+      if (ret) then break end
       indexes[playerIndex] = indexes[playerIndex] + 1
    end
    return true
