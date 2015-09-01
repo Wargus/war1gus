@@ -83,7 +83,7 @@ function DefineBuildingFromSpec(building)
 	 HitPoints = building.HitPoints,
 	 DrawLevel = 20,
 	 TileSize = { size[1] / 32 - 1, size[2] / 32 - 1 },
-	 BoxSize = { size[1] - 1, size[2] - 1 },
+	 BoxSize = { size[1] - 33, size[2] - 33 },
 	 SightRange = 1,
 	 Armor =  20,
 	 BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
