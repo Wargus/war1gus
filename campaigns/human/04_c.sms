@@ -12,7 +12,7 @@ Briefing(
 
 AddTrigger(
   function() return (GetPlayerData(15, "UnitTypesCount", "unit-lothar") == 0 and
-		     IfRescuedNearUnit("this", ">=", 1, "unit-lothar", "unit-start-location")) end,
+		     IfNearUnit("this", ">=", 1, "unit-lothar", "unit-start-location")) end,
   function() return ActionVictory() end)
 AddTrigger(
   function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0 or 
@@ -36,7 +36,7 @@ for i,unit in ipairs(GetUnits(15)) do
       posx = GetUnitVariable(unit, "PosX")
       posy = GetUnitVariable(unit, "PosY")
       KillUnit("unit-lothar", 15)
-      unit = CreateUnit("unit-wounded-lothar", 15, {41, 6})
+      unit = CreateUnit("unit-wounded-lothar", 15, {posx, posy})
       replacement_unit = "unit-lothar"
    end
 
@@ -54,16 +54,16 @@ for i,unit in ipairs(GetUnits(15)) do
 	 nu = nil
 	 if ident == "unit-wounded-lothar" then
 	    -- Hack: to circumvent defeat ... i know there's space there ...
-	    nu = CreateUnit("unit-lothar", player, {42, 6})
+	    nu = CreateUnit("unit-lothar", 0, {posx+1, posy})
 	    KillUnit("unit-wounded-lothar", player)
-	    MoveUnit(nu, {41, 6})
+	    MoveUnit(nu, {posx, posy})
 	 else
 	    KillUnitAt(ident,
 		       player,
 		       1,
 		       {posx, posy},
 		       {posx, posy})
-	    nu = CreateUnit(replacement_unit, player, {posx, posy})
+	    nu = CreateUnit(replacement_unit, 0, {posx, posy})
 	 end
 	 SetUnitVariable(nu, "HitPoints", hp)
 	 return true
