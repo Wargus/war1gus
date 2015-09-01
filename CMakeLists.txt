@@ -20,6 +20,9 @@ cmake_minimum_required(VERSION 2.6)
 file(GLOB war1gus_SRCS
 	"scripts/*.lua"
 	"scripts/**/*.lua"
+	"campaigns/**/*.sms"
+	"campaigns/**/*.lua"
+	"maps/*.sms"
 	"war1tool.c"
 	"xmi2mid.cpp"
 	"README"
