@@ -2787,7 +2787,7 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
 	gzprintf(sms, "Player(0,\n\
              \"type\", \"person\",\n\
              \"race\", \"%s\",\n\
-             \"color\", { 0, 255, 0 })\n", race);
+             \"color\", { 224, 224, 224 })\n", race);
 	for (i = 1; i < 4; ++i) {
 		gzprintf(smp, "\"computer\", ");
 		gzprintf(sms,
@@ -2807,7 +2807,7 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
              \"type\", \"rescue-passive\",\n\
              \"race\", \"neutral\",\n\
              \"ai-name\", \"rescue-passive\",\n\
-             \"color\", { 128, 128, 128 },\n\
+             \"color\", { 255, 255, 0 },\n\
              \"allied\", \"+\")\n");
 }
 
