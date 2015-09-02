@@ -486,8 +486,8 @@ Control Todo[] = {
 {U,0,"neutral/units/the_dead",								 191, 303 _2},
 {U,0,"neutral/units/skeleton",								 191, 304 _2},
 {U,0,"neutral/units/daemon",								 191, 305 _2},
-// what's here?
 {U,0,"neutral/units/water_elemental",						 191, 306 _2},
+// here come buildings
 {U,0,"neutral/units/dead_bodies",							 191, 326 _2},
 {U,0,"human/units/peasant_with_wood",						 191, 327 _2},
 {U,0,"orc/units/peon_with_wood",							 191, 328 _2},
@@ -514,7 +514,7 @@ Control Todo[] = {
 {U,0,"tilesets/forest/human/buildings/stormwind_keep",			 191, 323 _2},
 {U,0,"tilesets/forest/orc/buildings/blackrock_spire",			 191, 324 _2},
 {U,0,"tilesets/forest/neutral/buildings/gold_mine",				 191, 325 _2},
-// what's here?
+// here come dead bodies, and workers with resources
 {U,0,"tilesets/forest/human/buildings/farm_construction",		 191, 331 _2},
 {U,0,"tilesets/forest/orc/buildings/farm_construction",			 191, 332 _2},
 {U,0,"tilesets/forest/human/buildings/barracks_construction",	 191, 333 _2},
