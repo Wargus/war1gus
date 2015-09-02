@@ -54,7 +54,7 @@ for i,unit in ipairs(GetUnits(15)) do
 	 nu = nil
 	 if ident == "unit-wounded-lothar" then
 	    -- Hack: to circumvent defeat ... i know there's space there ...
-	    nu = CreateUnit("unit-lothar", 0, {posx+1, posy})
+	    nu = CreateUnit("unit-lothar", player, {posx + 1, posy})
 	    KillUnit("unit-wounded-lothar", player)
 	    MoveUnit(nu, {posx, posy})
 	 else
@@ -63,7 +63,7 @@ for i,unit in ipairs(GetUnits(15)) do
 		       1,
 		       {posx, posy},
 		       {posx, posy})
-	    nu = CreateUnit(replacement_unit, 0, {posx, posy})
+	    nu = CreateUnit(replacement_unit, player, {posx, posy})
 	 end
 	 SetUnitVariable(nu, "HitPoints", hp)
 	 return true
