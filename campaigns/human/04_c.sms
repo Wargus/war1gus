@@ -34,9 +34,8 @@ for i,unit in ipairs(GetUnits(15)) do
    if GetUnitVariable(unit, "Ident") == "unit-lothar" then
       posx = GetUnitVariable(unit, "PosX")
       posy = GetUnitVariable(unit, "PosY")
-	  unit = ReplaceUnit(unit, "unit-wounded-lothar", {58, 8}, 15, 5)
+	  unit = ReplaceUnit(unit, "unit-wounded-lothar", {posx, posy}, 15, 5)
    else
-      MoveUnit(unit, {58, 8})
       SetUnitVariable(unit, "HitPoints", 5)
    end
    local fired = false
