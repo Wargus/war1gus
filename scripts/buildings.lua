@@ -50,11 +50,15 @@ local buildings = {
     BuildingRules = {
 	  { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
 	    "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
+		"has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
+		"has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
 	    "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } }
 	},
 	AiBuildingRules = {
 	  { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
 	    "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
+		"has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
+		"has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
 	    "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } }
 	},
     Size = {128, 128}},
@@ -104,6 +108,9 @@ local buildings = {
     Costs = {"time", 100, "gold", 500, "wood", 250},
     HitPoints = 5000,
     Size = {160, 160},
+	CanStore = {"wood", "gold"},
+    Supply = 5,
+    RepairRange = 1000, -- basically infinite
     NotConstructable = true,
     Corpse = "unit-destroyed-3x3-place"}}
 

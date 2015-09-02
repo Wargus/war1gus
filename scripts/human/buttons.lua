@@ -268,7 +268,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-peasant",
   Action = "train-unit", Value = "unit-peasant",
   Allowed = "check-no-research",
   Key = "p", Hint = "TRAIN ~!PEASANT",
-  ForUnit = {"unit-human-town-hall"} } )
+  ForUnit = {"unit-human-town-hall", "unit-human-stormwind-keep"} } )
 
 -- training commands ---------------------------------------------------------
 

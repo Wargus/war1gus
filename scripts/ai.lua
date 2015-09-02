@@ -40,6 +40,12 @@ DefineAiHelper(
 DefineAiHelper(
    {"unit-equiv", "unit-raider", "unit-raider1", "unit-raider2"}
 )
+DefineAiHelper(
+   {"unit-equiv", "unit-human-town-hall", "unit-human-stormwind-keep"}
+)
+DefineAiHelper(
+   {"unit-equiv", "unit-orc-town-hall", "unit-orc-blackrock-spire"}
+)
 
 --
 --  City-center of the current race.
