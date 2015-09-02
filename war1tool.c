@@ -2778,36 +2778,37 @@ static void SmsSetCurrentRace(FILE* sms_c2, unsigned char* race, int state)
 static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
 {
 	int i;
+	const char* computerrace = strcmp(race, "orc") ? "orc" : "human";
 	
-	for (i = 0; i < 16; ++i) {
-		gzprintf(sms, "SetStartView(%d, 0, 0)\n", i);
-		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"gold\", 2000)\n", i);
-		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"wood\", 2000)\n", i);
-		if (i == 0) {
-			gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"%s\")\n", i, race);
-		} else if (i == 15) {
-			gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"neutral\")\n", i);
-			gzprintf(sms, "SetAiType(%d, \"rescue-passive\")\n", i);
-		} else {
-			if (!strcmp(race, "orc")) {
-				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"human\")\n", i);
-			} else {
-				gzprintf(sms, "SetPlayerData(%d, \"RaceName\", \"orc\")\n", i);
-			}
-			gzprintf(sms, "SetAiType(%d, \"camp%s\")\n", i, mapnum);
-		}
-	}
 	gzprintf(smp, "-- Stratagus Map Presentation\n");
 	gzprintf(smp, "-- Generated from war1tool\n\n");
 
 	gzprintf(smp, "DefinePlayerTypes(\"person\", ");
+	gzprintf(sms, "Player(0,\n\
+             \"type\", \"person\",\n\
+             \"race\", \"%s\",\n\
+             \"color\", { 0, 255, 0 })\n", race);
 	for (i = 1; i < 4; ++i) {
 		gzprintf(smp, "\"computer\", ");
+		gzprintf(sms,
+			"Player(%d,\n\
+            \"type\",\"computer\",\n\
+            \"race\", \"%s\",\n\
+            \"ai-name\", \"camp%s\",\n\
+            \"color\", { 255, 0, 0 },\n\
+            \"resources\", {\"gold\", 2000, \"wood\", 2000})\n", i, computerrace, mapnum);
 	}
-	for (i = 4; i < 15; ++i) {
+	for (i = 4; i < 4; ++i) {
 		gzprintf(smp, "\"nobody\", ");
+		gzprintf(sms, "Player(%d, \"type\",\"nobody\")\n", i);
 	}
 	gzprintf(smp, "\"neutral\")\n");
+	gzprintf(sms, "Player(15,\n\
+             \"type\", \"rescue-passive\",\n\
+             \"race\", \"neutral\",\n\
+             \"ai-name\", \"rescue-passive\",\n\
+             \"color\", { 128, 128, 128 },\n\
+             \"allied\", \"+\")\n");
 }
 
 /**
