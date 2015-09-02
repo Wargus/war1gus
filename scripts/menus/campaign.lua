@@ -11,8 +11,10 @@ function Briefing(title, objs, bg, text, voices)
 
     warriorg = CGraphic:New("graphics/428.png", 240 / 5, 48) -- TODO: animate
     warriorg:Load()
+	warriorg:Resize((240 / 5) * (Video.Width / 640), 48 * Video.Height / 400)
     wizardg = CGraphic:New("graphics/429.png", 134, 84) -- TODO: animate
     wizardg:Load()
+	wizardg:Resize(134 * Video.Width / 640, 84 * Video.Height / 400)
 
     warriorw = ImageWidget(warriorg)
     wizardw = ImageWidget(wizardg)
@@ -26,8 +28,10 @@ function Briefing(title, objs, bg, text, voices)
     femaleg = CGraphic:New("graphics/426.png", 560 / 5, 134) -- TODO: animate
     maleg = CGraphic:New("graphics/427.png", 690 / 5, 116) -- TODO: animate
     femaleg:Load()
+	femaleg:Resize(560 / 5 * Video.Width / 640, 134 * Video.Height / 400)
     maleg:Load()
-
+	femaleg:Resize(690 / 5 * Video.Width / 640, 116 * Video.Height / 400)
+    
     femalew = ImageWidget(femaleg)
     malew = ImageWidget(maleg)
 

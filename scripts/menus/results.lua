@@ -42,8 +42,9 @@ function RunResultsMenu()
 
   sceneg = CGraphic:New(scene)
   sceneg:Load()
+  sceneg:Resize(368 * Video.Width / 640, 224 * Video.Height / 400)
   scenew = ImageWidget(sceneg)
-  menu:add(scenew, 234, 24)
+  menu:add(scenew, 234 * Video.Width / 640, 24 * Video.Height / 400)
 
   local kills = {you = 0, enemy = 0, neutral = 0}
   local units = {you = 0, enemy = 0, neutral = 0}
