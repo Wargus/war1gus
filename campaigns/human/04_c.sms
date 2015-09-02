@@ -21,38 +21,29 @@ Load("campaigns/human/04.sms")
 unit = CreateUnit("unit-start-location", 0, {54, 2})
 DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
 
-local ReplaceUnit = function(oldunit, newident, position, player, hp)
-     RemoveUnit(oldunit)
-	 nu = CreateUnit(newident, player, position)
-	 SetUnitVariable(nu, "HitPoints", hp)
-	 return nu
-end
-
 -- wounded units should here become soldiers if healed
 -- lothar should look wounded first, then become himself
 for i,unit in ipairs(GetUnits(15)) do
    if GetUnitVariable(unit, "Ident") == "unit-lothar" then
-      posx = GetUnitVariable(unit, "PosX")
-      posy = GetUnitVariable(unit, "PosY")
-	  unit = ReplaceUnit(unit, "unit-wounded-lothar", {posx, posy}, 15, 5)
-   else
-      SetUnitVariable(unit, "HitPoints", 5)
+      local posx = GetUnitVariable(unit, "PosX")
+      local posy = GetUnitVariable(unit, "PosY")
+	  TransformUnit(unit, "unit-wounded-lothar")
+      local lothar = unit
+      AddTrigger(function() return (GetUnitVariable(lothar, "HitPoints") < 1) end, ActionDefeat)
    end
+   SetUnitVariable(unit, "HitPoints", 5)
+   
    local fired = false
    AddTrigger(
       function() return (not fired) and GetUnitVariable(unit, "HitPoints") > 20 end,
       function()
 	    fired = true
-		hp = GetUnitVariable(unit, "HitPoints")
-		posx = GetUnitVariable(unit, "PosX")
-		posy = GetUnitVariable(unit, "PosY")
-		player = GetUnitVariable(unit, "Player")
-		ident = GetUnitVariable(unit, "Ident")
+		local ident = GetUnitVariable(unit, "Ident")
 		if ident == "unit-wounded-lothar" then
-		   lothar = ReplaceUnit(unit, "unit-lothar", {posx, posy}, player, hp)
-		   AddTrigger(function() return (GetUnitVariable(lothar, "HitPoints") < 1) end, ActionDefeat)
+		   TransformUnit(unit, "unit-lothar")
 		else
-		   ReplaceUnit(unit, "unit-footman", {posx, posy}, player, hp)
+		   SetPlayerData(0, "Resources", "gold", 400) -- Hack: we need the money to "upgrade"
+		   TransformUnit(unit, "unit-footman")
 		end
 		return true
       end)
