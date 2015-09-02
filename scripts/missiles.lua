@@ -79,6 +79,10 @@ DefineMissileType("missile-hit",
   { Size = {15, 15}, DrawLevel = 150,
   Class = "missile-class-hit", Sleep = 1, Speed = 1, Range = 16 } )
 
+DefineMissileType("missile-building-collapse",
+  { File = "missiles/building_collapse.png", Size = {96, 128}, Frames = 18, NumDirections = 1,
+  DrawLevel = 50, Class = "missile-class-stay", Sleep = 2, Speed = 1, Range = 1 } )
+
 DefineBurningBuilding(
   {"percent", 0, "missile", "missile-big-fire"},
   {"percent", 50, "missile", "missile-small-fire"},
