@@ -255,6 +255,7 @@ function CreateAiCampaign(level)
       function() AiDebug(false) return false end,
       function() return AiSleep(AiGetSleepCycles()) end,
       function() return AiNeed(AiCityCenter()) end,
+	  function() return AiNeed(AiWorker()) end,
       function() return AiSet(AiWorker(), 1) end,
       function() return AiWait(AiCityCenter()) end,
       function() return AiWait(AiWorker()) end, -- start hangs if nothing available
