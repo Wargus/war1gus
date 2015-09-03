@@ -242,7 +242,8 @@ DefineAnimations(
 	  "frame 90", "wait 1",
       },
       attacksound = "fist attack",
-      attackspeed = 2,
+      attackspeed = 15,
+	  coolofftime = 5,
       speed = 8})
 )
 
