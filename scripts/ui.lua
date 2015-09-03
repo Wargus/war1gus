@@ -45,7 +45,7 @@ DefinePanelContents(
 -- Default presentation. ------------------------
   {
   Ident = "panel-general-contents",
-  Pos = {info_panel_x, info_panel_y}, DefaultFont = "game",
+  Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
   Contents = {
      { Pos = {70, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
        More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 55}}
@@ -78,7 +78,7 @@ DefinePanelContents(
 -- Supply Building constructed.----------------
   {
   Ident = "panel-building-contents",
-  Pos = {info_panel_x, info_panel_y}, DefaultFont = "game",
+  Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
   Condition = {ShowOpponent = false, HideNeutral = true, Build = "false", Supply = "only", Training = "false", UpgradeTo = "false"},
 -- FIXME more condition. not town hall.
   Contents = {
@@ -95,7 +95,7 @@ DefinePanelContents(
   {
   Ident = "panel-all-unit-contents",
   Pos = {info_panel_x, info_panel_y},
-  DefaultFont = "game",
+  DefaultFont = "small",
   Condition = {ShowOpponent = false, HideNeutral = true, Build = "false"},
   Contents = {
      { Pos = {9, 82}, Condition = {AttackRange = "only"},
@@ -139,7 +139,7 @@ DefinePanelContents(
   {
   Ident = "panel-attack-unit-contents",
   Pos = {info_panel_x, info_panel_y},
-  DefaultFont = "game",
+  DefaultFont = "small",
   Condition = {ShowOpponent = true, HideNeutral = true, Building = "false", Build = "false"},
   Contents = {
 -- Unit caracteristics
