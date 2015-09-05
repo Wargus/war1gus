@@ -281,6 +281,7 @@ function AddMenuHelpers(menu)
     dd:setFont(Fonts["game"])
     dd:setList(list)
     dd:setActionCallback(function(s) callback(dd, s) end)
+	dd.callback = callback
     dd:setBaseColor(dark)
     dd:setForegroundColor(clear)
     dd:setBackgroundColor(dark)

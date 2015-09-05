@@ -88,70 +88,15 @@ SetFullGameName(war1gus.Name)
 --SetDefaultMap("campaigns/human/01.cm")
 
 
-SetSelectionStyle("corners")
+SetSelectionStyle("rectangle")
 Preference.ShowSightRange = false
 Preference.ShowAttackRange = false
 Preference.ShowReactionRange = false
 
 Preference.ShowOrders = 2
 
---  Enable/disable the short display of the orders after command.
---  FIXME: planned
---(set-order-feedback! #t)
---(set-order-feedback! #f)
-
---              file              hotx hoty width height
---ManaSprite("ui/mana.png", -7, -7, 7, 7)
---DefineSprites({Name = "sprite-mana", File = "ui/mana2.png", Offset = {0, -1}, Size = {31, 4}})
---HealthSprite("ui/health.png", 1, -7, 7, 7)
---DefineSprites({Name = "sprite-health", File = "ui/health.png", Offset = {0, -4}, Size = {31, 4}})
-
---ShowHealthBar()
---ShowHealthVertical()
---ShowHealthHorizontal()
---DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, OffsetPercent = {50, 100}, Method = {"sprite", {"sprite-health"}}})
-
---ShowManaBar()
---ShowManaVertical()
---ShowManaHorizontal()
---DefineDecorations({Index = "HitPoints", HideNeutral = true, CenterX = true, OffsetPercent = {50, 100}, Method = {"sprite", {"sprite-mana"}}})
-
---ShowNoFull() this
---ShowFull()
-
-
---  Uncomment next, to show energy bars and dots only for selected units
---(show-energy-selected-only)
-
---  Uncomment next, to show bars and dots always on top.
---  FIXME: planned feature
---DecorationOnTop() this
-
---  Define shadow-sprite.
---
---  (shadow-sprite file hotx hoty width height)
---
---ShadowSprite("missiles/unit_shadow.png", 3, 42, 32, 32)
---DefineSprites({Name = "sprite-spell", File = "ui/bloodlust,haste,slow,invisible,shield.png", Offset = {1, 1}, Size = {16, 16}})
-
---  Uncomment next, to enable fancy building (random mirroring buildings)
---SetFancyBuildings(true) this
---SetFancyBuildings(false)
-
---  Edit this to enable/disable show tips at the start of a level
---SetShowTips(true) this
-
 -------------------------------------------------------------------------------
 --  Game modification
-
---  Edit this to enable/disable extended features.
---    Currently enables some additional buttons.
-extensions = true
---extensions = false
-
---  Edit this to enable/disable the training queues.
-SetTrainingQueue(true)
---SetTrainingQueue(false)
 
 --  Edit this to enable/disable building capture.
 --SetBuildingCapture(true)
@@ -184,11 +129,10 @@ RightButtonMoves()
 --  Set the name of the missile to use when displaying damage
 SetDamageMissile("missile-hit")
 
+SetLeaveStops(true)
+
 --  Edit this to enable/disable grabbing the mouse.
 SetGrabMouse(false)
-
---  Edit this to enable/disable stopping scrolling on mouse leave.
-SetLeaveStops(true)
 
 --  Edit this to enable/disable mouse scrolling.
 SetMouseScroll(true)
@@ -313,9 +257,6 @@ AStar("fixed-unit-cost", 1000, "moving-unit-cost", 20, "know-unseen-terrain", "u
 
 -------------------------------------------------------------------------------
 
---  Maximum number of selectable units
-SetMaxSelectable(4)
-
 --  All player food unit limit
 SetAllPlayersUnitLimit(200)
 --  All player building limit
@@ -366,7 +307,11 @@ if (preferences == nil) then
     MaxOpenGLTexture = 0,
     CampaignOrc = 1,
     CampaignHuman = 1,
-    PlayIntro = true
+    PlayIntro = true,
+	MaxSelection = 4,
+	TrainingQueue = false,
+	AllowMultipleTownHalls = false,
+	AllowTownHallUpgrade = false
   }
 end
 
@@ -385,6 +330,8 @@ SetMusicEnabled(preferences.MusicEnabled)
 SetMusicVolume(preferences.MusicVolume)
 SetTranslationsFiles(preferences.StratagusTranslation, preferences.GameTranslation)
 SetGrabMouse(preferences.GrabMouse)
+SetMaxSelectable(preferences.MaxSelection or 4)
+SetTrainingQueue(not not preferences.TrainingQueue)
 
 
 if file_exists("videos", "INTRO.ogv") and preferences.PlayIntro then

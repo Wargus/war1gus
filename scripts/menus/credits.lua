@@ -13,6 +13,7 @@ function RunShowCreditsMenu()
 	"  Joris Dauphin",
 	"  Russell Smith",
 	"  Pali Rohar",
+	"  Tim Felgentreff",
 	"Patches",
 	"  Martin Renold",
 	"  Carlos Perello Marin",

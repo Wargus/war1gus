@@ -224,11 +224,19 @@ DefineButton( { Pos = 3, Level = 1, Icon = "icon-orc-barracks",
   Key = "b", Hint = "BUILD ~!BARRACKS",
   ForUnit = {"unit-peon"} } )
 
-DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-town-hall",
-  Action = "build", Value = "unit-orc-town-hall",
-  Allowed = "check-units-not", AllowArg = {"unit-orc-town-hall"},
-  Key = "t", Hint = "BUILD ~!TOWN HALL",
-  ForUnit = {"unit-peon"} } )
+Load("preferences.lua")
+if (preferences.AllowMultipleTownHalls) then
+  DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-town-hall",
+    Action = "build", Value = "unit-orc-town-hall",
+    Key = "t", Hint = "BUILD ~!TOWN HALL",
+    ForUnit = {"unit-peon"} } )
+else
+  DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-town-hall",
+    Action = "build", Value = "unit-orc-town-hall",
+    Allowed = "check-units-not", AllowArg = {"unit-orc-town-hall"},
+    Key = "t", Hint = "BUILD ~!TOWN HALL",
+    ForUnit = {"unit-peon"} } )
+end
 
 DefineButton( { Pos = 6, Level = 1, Icon = "icon-cancel",
   Action = "button", Value = 0,

@@ -150,33 +150,30 @@ function BuildOptionsMenu()
   local offy = (Video.Height - 352) / 2
   local checkTexture
   local b
+  local resolution
+  local maxselection
+  local top = 140 * Video.Height / 400
 
-  menu:addLabel("Global Options", offx + 176, offy + 1)
-  menu:addLabel("Video Resolution", offx + 16, offy + 34, Fonts["game"], false)
-  group = "resolution"
-  b = menu:addRadioButton("640 x 400", group, offx + 16, offy + 55 + 26*1,
-    function() SetVideoSize(640, 400) menu:stop(1) end)
-  if (Video.Width == 640) then b:setMarked(true) end
-  b = menu:addRadioButton("800 x 480", group, offx + 16, offy + 55 + 26*1.8, function() SetVideoSize(800, 480) menu:stop(1) end)
-  if (Video.Width == 800 and Video.Height == 480) then b:setMarked(true) end
-  b = menu:addRadioButton("800 x 600", group, offx + 16, offy + 55 + 26*2.6, function() SetVideoSize(800, 600) menu:stop(1) end)
-  if (Video.Width == 800 and Video.Height == 600) then b:setMarked(true) end
-  b = menu:addRadioButton("1024 x 768", group, offx + 16, offy + 55 + 26*3.2, function() SetVideoSize(1024, 768) menu:stop(1) end)
-  if (Video.Width == 1024) then b:setMarked(true) end
-  b = menu:addRadioButton("1280 x 800", group, offx + 16, offy + 55 + 26*4, function() SetVideoSize(1280, 800) menu:stop(1) end)
-  if (Video.Height == 800) then b:setMarked(true) end
-  b = menu:addRadioButton("1280 x 960", group, offx + 16, offy + 55 + 26*4.8, function() SetVideoSize(1280, 960) menu:stop(1) end)
-  if (Video.Height == 960) then b:setMarked(true) end
-  b = menu:addRadioButton("1280 x 1024", group, offx + 16, offy + 55 + 26*5.6, function() SetVideoSize(1280, 1024) menu:stop(1) end)
-  if (Video.Height == 1024) then b:setMarked(true) end
-  b = menu:addRadioButton("1400 x 900", group, offx + 16, offy + 55 + 26*6.4, function() SetVideoSize(1400, 900) menu:stop(1) end)
-  if (Video.Width == 1400) then b:setMarked(true) end
-  b = menu:addRadioButton("1600 x 1200", group, offx + 16, offy + 55 + 26*7.2, function() SetVideoSize(1600, 1200) menu:stop(1) end)
-  if (Video.Width == 1600) then b:setMarked(true) end
-  b = menu:addRadioButton("1680 x 1050", group, offx + 16, offy + 55 + 26*8, function() SetVideoSize(1680, 1050) menu:stop(1) end)
-  if (Video.Width == 1680) then b:setMarked(true) end
+  menu:addLabel("Video Resolution", offx + 16, offy + top, Fonts["game"], false)
+  local resolutions = {"640x400", "800x480", "1024x640", "1280x800", "1440x900", "1680x1050"}
+  resolution = menu:addDropDown(resolutions, offx + 16 + 250, offy + top,
+    function(dd, idx)
+	  local selected = resolutions[idx + 1]
+	  local x = tonumber(string.gmatch(selected, "%d+")())
+	  local y = tonumber(string.gmatch(selected, "%d+$")())
+	  SetVideoSize(x, y)
+	end)
+  for idx,str in ipairs(resolutions) do
+    local x = tonumber(string.gmatch(str, "%d+")())
+	local y = tonumber(string.gmatch(str, "%d+$")())
+	print(x) print(y) print(Video.Width) print(Video.Height)
+	if Video.Width == x and Video.Height == y then
+	  resolution:setSelected(idx - 1)
+	  break
+	end
+  end
 
-  b = menu:addCheckBox("Full Screen", offx + 16, offy + 55 + 26*9,
+  b = menu:addCheckBox("Full Screen", offx + 16, offy + top + 15,
     function()
       ToggleFullScreen()
       preferences.VideoFullScreen = Video.FullScreen
@@ -185,7 +182,7 @@ function BuildOptionsMenu()
     end)
   b:setMarked(Video.FullScreen)
 
-  checkTexture = menu:addCheckBox("Set Maximum OpenGL Texture to 256", offx + 16, offy + 55 + 26*9.8,
+  checkTexture = menu:addCheckBox("Set Maximum OpenGL Texture to 256", offx + 16, offy + top + 15 * 2,
     function()
       if (checkTexture:isMarked()) then
         preferences.MaxOpenGLTexture = 256
@@ -197,7 +194,7 @@ function BuildOptionsMenu()
     end)
   if (preferences.MaxOpenGLTexture == 128) then checkTexture:setMarked(true) end
 
-  checkOpenGL = menu:addCheckBox("OpenGL / OpenGL ES 1.1 (restart required)", offx + 16, offy + 55 + 26*10.6,
+  checkOpenGL = menu:addCheckBox("OpenGL / OpenGL ES 1.1 (restart required)", offx + 16, offy + top + 15 * 3,
     function()
 --TODO: Add function for immediately change state of OpenGL
       preferences.UseOpenGL = checkOpenGL:isMarked()
@@ -206,7 +203,50 @@ function BuildOptionsMenu()
     end)
   checkOpenGL:setMarked(preferences.UseOpenGL)
 
-  menu:addHalfButton("~!OK", "o", offx + 123, offy + 46 + 26*11.2, function() menu:stop() end)
+  b = menu:addCheckBox("Allow Training Queue", offx + 16, offy + top + 15 * 4,
+    function()
+	  preferences.TrainingQueue = not preferences.TrainingQueue
+	  SetTrainingQueue(not not preferences.TrainingQueue)
+      SavePreferences()
+    end)
+  b:setMarked(preferences.TrainingQueue)
+
+  menu:addLabel("Max Unit Selection", offx + 16, offy + top + 15 * 5, Fonts["game"], false)
+  local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
+  maxselection = menu:addDropDown(maxselections, offx + 16 + 250, offy + top + 15 * 5,
+    function(dd, idx)
+	  local selected = maxselections[idx + 1]
+	  local count = tonumber(string.gmatch(selected, "%d+")())
+	  preferences.MaxSelection = count
+	  SavePreferences()
+	  SetMaxSelectable(count)
+	end)
+  for idx,str in ipairs(maxselections) do
+    local count = tonumber(string.gmatch(str, "%d+")())
+	if preferences.MaxSelection == count then
+	  maxselection:setSelected(idx - 1)
+	  break
+	end
+  end
+  
+  b = menu:addCheckBox("Allow multiple Town Halls", offx + 16, offy + top + 15 * 6,
+    function()
+      preferences.AllowMultipleTownHalls = not preferences.AllowMultipleTownHalls
+      SavePreferences()
+      menu:stop(1)
+    end)
+  b:setMarked(preferences.AllowMultipleTownHalls)
+
+  menu:addHalfButton("~!Apply", "a", offx + 73, offy + top + 15 * 8,
+    function()
+	  resolution.callback(nil, resolution:getSelected())
+	  maxselection.callback(nil, maxselection:getSelected())
+	  menu:stop(1)
+	end)
+  menu:addHalfButton("~!Back", "b", offx + 223, offy + top + 15 * 8,
+    function()
+	  menu:stop()
+	end)
   return menu:run()
 end
 

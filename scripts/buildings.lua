@@ -34,6 +34,21 @@ if (war1gus.tileset == nil) then
   war1gus.tileset = "forest"
 end
 
+Load("preferences.lua")
+local townHallBuildingRules = nil
+if (preferences.AllowMultipleTownHalls) then
+  townHallBuildingRules = {
+	  { "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } } }
+else
+  townHallBuildingRules = {
+	  { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
+	    "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
+		"has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
+		"has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
+	    "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } } }
+end
+
+
 local buildings = {
    {Names = {orc = "Farm", human = "Farm"},
     Costs = {"time", 100, "gold", 500, "wood", 300},
@@ -47,20 +62,8 @@ local buildings = {
     CanStore = {"wood", "gold"},
     Supply = 5,
     RepairRange = 1000, -- basically infinite
-    BuildingRules = {
-	  { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
-	    "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
-		"has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
-		"has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
-	    "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } }
-	},
-	AiBuildingRules = {
-	  { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
-	    "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
-		"has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
-		"has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
-	    "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } }
-	},
+    BuildingRules = townHallBuildingRules,
+	AiBuildingRules = townHallBuildingRules,
     Size = {128, 128}},
 
    {Names = {orc = "Barracks", human = "Barracks"},
@@ -112,7 +115,8 @@ local buildings = {
     Supply = 5,
     RepairRange = 1000, -- basically infinite
     NotConstructable = true,
-    Corpse = "unit-destroyed-3x3-place"}}
+    Corpse = "unit-destroyed-3x3-place"}
+}
 
 for idx,building in ipairs(buildings) do
    DefineBuildingFromSpec(building)
