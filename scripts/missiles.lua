@@ -56,6 +56,11 @@ DefineMissileType("missile-normal-spell",
   { File = "missiles/healing.png", Size = {64, 64}, Frames = 6, NumDirections = 1,
     DrawLevel = 50, Class = "missile-class-stay", Sleep = 5, Speed = 0, Range = 1 } )
 
+DefineMissileType("missile-magic-fireball",
+  { File = "missiles/fireball.png", Size = {64, 64}, Frames = 5, NumDirections = 5,
+    DrawLevel = 200, ImpactSound = "fireball attack",
+    Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
+
 DefineMissileType("missile-fireball",
   { File = "missiles/fireball_2.png", Size = {64, 64}, Frames = 2, NumDirections = 5,
     DrawLevel = 50, ImpactSound = "bow hit",
