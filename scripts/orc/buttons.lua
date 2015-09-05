@@ -142,16 +142,16 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-raise-dead",
   Key = "r", Hint = "~!RAISE-DEAD",
   ForUnit = {"unit-necrolyte"} } )
 
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-unholy-armor",
-  Action = "cast-spell", Value = "spell-unholy-armor",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-unholy-armor"},
-  Key = "u", Hint = "~!UNHOLY-ARMOR",
-  ForUnit = {"unit-necrolyte"} } )
-
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-dark-vision",
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-dark-vision",
   Action = "cast-spell", Value = "spell-dark-vision",
   Allowed = "check-upgrade", AllowArg = {"upgrade-dark-vision"},
   Key = "v", Hint = "DARK ~!VISION",
+  ForUnit = {"unit-necrolyte"} } )
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-unholy-armor",
+  Action = "cast-spell", Value = "spell-unholy-armor",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-unholy-armor"},
+  Key = "u", Hint = "~!UNHOLY-ARMOR",
   ForUnit = {"unit-necrolyte"} } )
 
 -- warlock specific actions ------------------------------------------------------
@@ -167,16 +167,16 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-spider",
   Key = "u", Hint = "S~!UMMON SPIDERS",
   ForUnit = {"unit-warlock"} } )
 
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-daemon",
-  Action = "cast-spell", Value = "spell-summon-daemon",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-daemon"},
-  Key = "d", Hint = "SUMMON D~!AEMON",
-  ForUnit = {"unit-warlock"} } )
-
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-poison-cloud",
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-poison-cloud",
   Action = "cast-spell", Value = "spell-poison-cloud",
   Allowed = "check-upgrade", AllowArg = {"upgrade-poison-cloud"},
   Key = "p", Hint = "~!POISON CLOUD",
+  ForUnit = {"unit-warlock"} } )
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-daemon",
+  Action = "cast-spell", Value = "spell-summon-daemon",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-daemon"},
+  Key = "d", Hint = "SUMMON D~!AEMON",
   ForUnit = {"unit-warlock"} } )
 
 -- peon specific actions ---------------------------------------------------

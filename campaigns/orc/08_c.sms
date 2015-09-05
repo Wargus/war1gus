@@ -23,6 +23,9 @@ AddTrigger(
 LoadTileModels("scripts/tilesets/dungeon.lua")
 Load("campaigns/orc/08.sms")
 
+DefineAllow("upgrade-raise-dead", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-dark-vision", "RRRRRRRRRRRRRRRR")
+
 unit = CreateUnit("unit-start-location", 0, {33, 61})
 SetStartView(0, 32, 60)
 SetPlayerData(0, "Resources", "gold", 0)

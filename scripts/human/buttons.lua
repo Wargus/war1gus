@@ -142,16 +142,16 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-healing",
   Key = "h", Hint = "~!HEALING (per 1 HP)",
   ForUnit = {"unit-cleric"} } )
 
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-invisibility",
-  Action = "cast-spell", Value = "spell-invisibility",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-invisibility"},
-  Key = "i", Hint = "~!INVISIBILITY",
-  ForUnit = {"unit-cleric"} } )
-
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-far-seeing",
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-far-seeing",
   Action = "cast-spell", Value = "spell-far-seeing",
   Allowed = "check-upgrade", AllowArg = {"upgrade-far-seeing"},
   Key = "s", Hint = "FAR ~!SEEING",
+  ForUnit = {"unit-cleric"} } )
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-invisibility",
+  Action = "cast-spell", Value = "spell-invisibility",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-invisibility"},
+  Key = "i", Hint = "~!INVISIBILITY",
   ForUnit = {"unit-cleric"} } )
 
 -- conjurer specific actions ------------------------------------------------------
@@ -167,16 +167,16 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-scorpion",
   Key = "u", Hint = "S~!UMMON SCORPIONS",
   ForUnit = {"unit-conjurer"} } )
 
-DefineButton( { Pos = 5, Level = 0, Icon = "icon-water-elemental",
-  Action = "cast-spell", Value = "spell-summon-elemental",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-water-elemental"},
-  Key = "e", Hint = "SUMMON E~!LEMENTAL",
-  ForUnit = {"unit-conjurer"} } )
-
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-rain-of-fire",
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-rain-of-fire",
   Action = "cast-spell", Value = "spell-rain-of-fire",
   Allowed = "check-upgrade", AllowArg = {"upgrade-rain-of-fire"},
   Key = "r", Hint = "~!RAIN OF FIRE",
+  ForUnit = {"unit-conjurer"} } )
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-water-elemental",
+  Action = "cast-spell", Value = "spell-summon-elemental",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-water-elemental"},
+  Key = "e", Hint = "SUMMON E~!LEMENTAL",
   ForUnit = {"unit-conjurer"} } )
 
 -- peasant specific actions ---------------------------------------------------
