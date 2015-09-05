@@ -34,7 +34,7 @@ function CreateAiCampaign(level)
 
    local PureAiSleep = AiSleep
    local AiSleep = function(cycles)
-      return PureAiSleep(cycles * sleep_factor * 3)
+      return PureAiSleep(cycles * sleep_factor)
    end
 
    -- This simulates a timeout around WaitForce. If, for some reason,
@@ -266,7 +266,7 @@ function CreateAiCampaign(level)
       function() return AiForce(0, {AiSoldier(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1}) end,
       function() return AiWaitForce(1) end,
-	  function() return AiSleep(500) end,
+	  function() return AiSleep(100) end,
 	  function() return AiAttackWithForce(1) end,
       function() return AiSleep(1) end,      
 
