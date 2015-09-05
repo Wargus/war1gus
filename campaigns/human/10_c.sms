@@ -57,6 +57,9 @@ DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
 DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
 DefineAllow("upgrade-scorpion", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-far-seeing", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-rain-of-fire", "RRRRRRRRRRRRRRRR")
+
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/human/10.sms")
