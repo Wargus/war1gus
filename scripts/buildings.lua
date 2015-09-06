@@ -60,7 +60,7 @@ local buildings = {
     HitPoints = 2500,
     CanStore = {"wood", "gold"},
     Supply = 5,
-    RepairRange = 1000, -- basically infinite
+    RepairRange = InfiniteRepairRange,
     BuildingRules = townHallBuildingRules,
 	AiBuildingRules = townHallBuildingRules,
     Size = {128, 128}},
@@ -190,11 +190,7 @@ DefineUnitType(
 	    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}},
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}}},
-	 AiBuildingRules = {
-	    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}},
-        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
-        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}}},
-     BuilderOutside = true,
+	 BuilderOutside = true,
      Priority = 0,
      HitPoints = 1,
      Icon = "icon-road",

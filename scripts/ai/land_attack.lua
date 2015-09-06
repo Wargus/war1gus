@@ -83,6 +83,8 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiWait(AiCityCenter()) end,
       function() return AiWait(AiWorker()) end, -- start hangs if nothing available
 
+	  function() return AiSet("unit-road", 8) end,
+
       function() return AiSet(AiWorker(), 4) end,
       function() return AiNeed(AiLumberMill()) end,
       function() return AiNeed(AiBarracks()) end,
@@ -123,6 +125,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
 
+	  function() return AiSet("unit-road", 16) end,
       function() return AiSleep(500) end,
 
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
