@@ -82,7 +82,7 @@ local units = {
     PiercingDamage = 3,
     BasicDamage = 0,
     organic = false},
-   {Names = {neutral = "Skeleton"},
+   {Names = {neutral = "Skeleton"}, -- "Dungeon Skeleton"
     HitPoints = 30,
     Armor = 2,
     PiercingDamage = 1,
@@ -100,7 +100,7 @@ local units = {
     PiercingDamage = 1,
     BasicDamage = 3,
     organic = false},
-   {Names = {neutral = "The dead"},
+   {Names = {neutral = "The dead"}, -- "Orc conjured skeleton"
     HitPoints = 40,
     Armor = 1,
     PiercingDamage = 1,
