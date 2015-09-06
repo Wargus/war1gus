@@ -156,7 +156,6 @@ local units = {
     Speed = 5,
     organic = false,
     Missile = "missile-catapult-rock",
-    MaxAttackRange = 4,
     Dependencies = {orc = {"blacksmith", "lumber-mill"},
 		    human = {"blacksmith", "lumber-mill"}}},
    {Names = {orc = "Warlock", human = "Conjurer"},
