@@ -41,7 +41,7 @@ war1gus.Copyright = "Copyright (c) 1998-2010 by The Stratagus Project"
 function file_exists(path, name)
    for i,f in ipairs(ListFilesInDirectory(path)) do
       if f == name then
-	 return true
+         return true
       end
    end
    return false
@@ -97,6 +97,8 @@ Preference.ShowOrders = 2
 
 -------------------------------------------------------------------------------
 --  Game modification
+
+SetMaxSelectable(4)
 
 --  Edit this to enable/disable building capture.
 --SetBuildingCapture(true)
@@ -283,7 +285,11 @@ end
 -------------------------------------------------------------------------------
 
 Load("preferences.lua")
-
+if (preferences == nil and wc1.preferences ~= nil) then
+  preferences = wc1.preferences
+elseif (wc1.preferences == nil) then
+  wc1.preferences = preferences
+end
 if (preferences == nil) then
   preferences = {
     VideoWidth = 640,
@@ -308,13 +314,13 @@ if (preferences == nil) then
     CampaignOrc = 1,
     CampaignHuman = 1,
     PlayIntro = true,
-	MaxSelection = 4,
-	TrainingQueue = false,
-	AllowMultipleTownHalls = false,
-	AllowTownHallUpgrade = false
+    MaxSelection = 4,
+    TrainingQueue = false,
+    AllowMultipleTownHalls = false,
+    AllowTownHallUpgrade = false
   }
 end
-
+wc1.preferences = preferences
 SetUseOpenGL(preferences.UseOpenGL)
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
 SetVideoFullScreen(preferences.VideoFullScreen)
@@ -330,7 +336,7 @@ SetMusicEnabled(preferences.MusicEnabled)
 SetMusicVolume(preferences.MusicVolume)
 SetTranslationsFiles(preferences.StratagusTranslation, preferences.GameTranslation)
 SetGrabMouse(preferences.GrabMouse)
-SetMaxSelectable(preferences.MaxSelection or 4)
+SetMaxSelectable(preferences.MaxSelection)
 SetTrainingQueue(not not preferences.TrainingQueue)
 
 

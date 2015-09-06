@@ -34,7 +34,6 @@ if (war1gus.tileset == nil) then
   war1gus.tileset = "forest"
 end
 
-Load("preferences.lua")
 local townHallBuildingRules = nil
 if (preferences.AllowMultipleTownHalls) then
   townHallBuildingRules = {

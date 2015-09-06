@@ -224,7 +224,6 @@ DefineButton( { Pos = 3, Level = 1, Icon = "icon-human-barracks",
   Key = "b", Hint = "BUILD ~!BARRACKS",
   ForUnit = {"unit-peasant"} } )
 
-Load("preferences.lua")
 if (preferences.AllowMultipleTownHalls) then
   DefineButton( { Pos = 4, Level = 1, Icon = "icon-human-town-hall",
     Action = "build", Value = "unit-human-town-hall",

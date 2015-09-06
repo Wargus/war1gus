@@ -107,9 +107,6 @@ function Briefing(title, objs, bg, text, voices)
 end
 
 function GetCampaignState(race)
-  -- Loaded saved game could have other old state
-  -- Make sure that we use saved state from config file
-  Load("preferences.lua")
   if (race == "orc") then
     return preferences.CampaignOrc
   elseif (race == "human") then
@@ -121,7 +118,6 @@ end
 function IncreaseCampaignState(race, state)
   -- Loaded saved game could have other old state
   -- Make sure that we use saved state from config file
-  Load("preferences.lua")
   if (race == "orc") then
     if (state ~= preferences.CampaignOrc) then return end
     preferences.CampaignOrc = preferences.CampaignOrc + 1
