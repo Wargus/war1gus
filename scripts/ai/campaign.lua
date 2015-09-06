@@ -85,7 +85,7 @@ function CreateAiCampaign(level)
       function() return AiSleep(500) end,
       function() return AiSet(AiWorker(), 25) end,
 
-	  function() print("Looping at lvl 10!") return false end,
+	  function() print("done with AI at lvl 10!") return false end,
 	  function() return AiForce(0, {AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 3, AiSummoner(), 3}) end,
 	  function() return AiForce(1, {AiShooter(), 4, AiCavalry(), 4, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
 	  function() return AiWaitForce(1) end,
@@ -95,7 +95,7 @@ function CreateAiCampaign(level)
 
       -- Everything researched...
       function()
-	    stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+	    stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
 		return false
 	  end
    }
@@ -116,7 +116,7 @@ function CreateAiCampaign(level)
       function() return AiAttackWithForce(1) end,
       function() return AiSleep(500) end,
 
-	  function() print("Looping at lvl 9!") return false end,
+	  function() print("done with AI at lvl 9!") return false end,
 	  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
 	  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
 	  function() return AiWaitForce(1) end,
@@ -128,7 +128,7 @@ function CreateAiCampaign(level)
 		if level > 9 then
 		  return AiLoop(campaign_funcs10, stratagus.gameData.AIState.loop_index)
 		else
-		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
 		  return false
 		end
       end
@@ -144,7 +144,7 @@ function CreateAiCampaign(level)
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-	  function() print("Looping at lvl 7!") return false end,
+	  function() print("done with AI at lvl 7!") return false end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
@@ -156,7 +156,7 @@ function CreateAiCampaign(level)
 		if level > 7 then
 		  return AiLoop(campaign_funcs9, stratagus.gameData.AIState.loop_index)
 		else
-		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
 		  return false
 		end
       end
@@ -194,7 +194,7 @@ function CreateAiCampaign(level)
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-	  function() print("Looping at lvl 6!") return false end,
+	  function() print("done with AI at lvl 6!") return false end,
 	  function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 4, AiMage(), 1, AiCatapult(), 1}) end,
 	  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiMage(), 1, AiCatapult(), 1}) end,
 	  function() return AiWaitForce(1) end,
@@ -206,7 +206,7 @@ function CreateAiCampaign(level)
 		if level > 6 then
 		  return AiLoop(campaign_funcs7, stratagus.gameData.AIState.loop_index)
 		else
-		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
 		  return false
 		end
       end
@@ -233,7 +233,7 @@ function CreateAiCampaign(level)
       function() return AiSleep(600) end,
       function() return AiAttackWithForce(1) end,
 
-	  function() print("looping at lvl 5 !") return false end,
+	  function() print("done with AI at lvl 5 !") return false end,
 	  function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2, AiCavalry(), 2}) end,
 	  function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCavalry(), 2}) end,
 	  function() return AiWaitForce(1) end,
@@ -245,7 +245,7 @@ function CreateAiCampaign(level)
 	    if level > 5 then
 		  return AiLoop(campaign_funcs6, stratagus.gameData.AIState.loop_index)
 		else
-		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
 		  return false
 		end
       end
@@ -275,7 +275,7 @@ function CreateAiCampaign(level)
 	  function() return AiNeed(AiTemple()) end,
       function() return AiResearch(AiMageSpell2()) end,
 
-	  function() print("looping at lvl 3 !") return false end,
+	  function() print("done with AI at lvl 3 !") return false end,
 	  function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1, AiMage(), 1}) end,
 	  function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiMage(), 1}) end,
 	  function() return AiWaitForce(1) end,
@@ -286,7 +286,7 @@ function CreateAiCampaign(level)
 	    if level > 3 then
 		  return AiLoop(campaign_funcs5, stratagus.gameData.AIState.loop_index)
 		else
-		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 8
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
 		  return false
         end
       end
