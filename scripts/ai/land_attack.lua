@@ -32,35 +32,6 @@
 -- a sleep statements, to scale down difficulty
 -- smaller sleep_factors mean faster AI
 function CreateAiLandAttack(sleep_factor, max_force)
-   local PureAiSleep = AiSleep
-   local AiSleep = function(cycles)
-      return PureAiSleep(cycles * sleep_factor)
-   end
-
-   -- This simulates a timeout around WaitForce. If, for some reason,
-   -- we cannot build within 240 rounds (~4 min), we just attack,
-   -- anyway
-   local waitForceRounds = 0
-   local PureAiWaitForce = AiWaitForce
-   local AiWaitForce = function(num)
-      if (not AiCheckForce(num)) and waitForceRounds < 240 then
-   	 -- redo this step
-   	 local loopidx = stratagus.gameData.AIState.loop_index[1 + AiPlayer()]
-   	 local idx = stratagus.gameData.AIState.index[1 + AiPlayer()]
-   	 if loopidx > 1 then
-   	     stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = loopidx - 1
-   	 else
-   	    stratagus.gameData.AIState.index[1 + AiPlayer()] = idx - 1
-   	 end
-
-   	 waitForceRounds = waitForceRounds + 1
-   	 return AiSleep(AiGetSleepCycles() * 2)
-      else
-   	 waitForceRounds = 0
-   	 return false
-      end
-   end
-
    local end_loop_funcs = {
       function() print("Looping !") return false end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 4, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 4}) end,
@@ -82,12 +53,17 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSet(AiWorker(), 1) end,
       function() return AiWait(AiCityCenter()) end,
       function() return AiWait(AiWorker()) end, -- start hangs if nothing available
-
-	  function() return AiSet("unit-road", 8) end,
-
       function() return AiSet(AiWorker(), 4) end,
-      function() return AiNeed(AiLumberMill()) end,
+	  function() return AiWait(AiWorker()) end,
+
+	  function() return AiSet("unit-road", 12) end,
+	  function() return AiWait("unit-road") end,
+
       function() return AiNeed(AiBarracks()) end,
+	  function() return AiSet(AiWorker(), 4) end,
+	  function() return AiNeed(AiLumberMill()) end,
+	  function() return AiWait(AiBarracks()) end,
+	  function() return AiWait(AiLumberMill()) end,
       function() return AiForce(0, {AiSoldier(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1}) end,
       function() return AiWaitForce(1) end,
@@ -97,6 +73,8 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSet(AiWorker(), 9) end,
       function() return AiSleep(500) end,
       function() return AiNeed(AiBlacksmith()) end,
+	  function() return AiWait(AiBlacksmith()) end,
+	  function() return AiWait(AiWorker()) end,
       function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiWaitForce(1) end,
@@ -110,6 +88,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiResearch(AiUpgradeArmor2()) end,
       function() return AiResearch(AiUpgradeMissile2()) end,
       function() return AiNeed(AiBarracks()) end,
+	  function() return AiWait(AiBarracks()) end,
 
       function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1}) end,
@@ -125,7 +104,8 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
 
-	  function() return AiSet("unit-road", 16) end,
+	  function() return AiSet("unit-road", 24) end,
+	  function() return AiWait("unit-road") end,
       function() return AiSleep(500) end,
 
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
@@ -149,6 +129,8 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
+	  function() return AiSet("unit-road", 32) end,
+	  function() return AiWait("unit-road") end,
       function() return AiNeed(AiTemple()) end,
       function() return AiResearch(AiMageSpell2()) end,
       function() return AiResearch(AiMageSpell3()) end,

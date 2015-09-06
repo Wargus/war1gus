@@ -107,7 +107,7 @@ function DefineBuildingFromSpec(building)
 	 BuildingRules = { -- all buildings except the town hall
 	    {"distance", { Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}}},
 	 AiBuildingRules = { -- all buildings except the town hall
-	    {"distance", { Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}}},
+	    { "distance", { Distance = 3, DistanceType = ">=", Type = "unit-gold-mine" } } },
 	 Sounds = {
 	    "ready", race .. " work complete",
 	    "selected", fullname .. "-selected",

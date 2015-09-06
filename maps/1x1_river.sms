@@ -4125,9 +4125,9 @@ SetTile(109, 63, 63, 0)
 -- place units
 if (MapUnitsInit ~= nil) then MapUnitsInit() end
 unit = CreateUnit("unit-gold-mine", 15, {59, 50})
-SetResourcesHeld(unit, 11000)
+SetResourcesHeld(unit, 45000)
 unit = CreateUnit("unit-gold-mine", 15, {44, 27})
-SetResourcesHeld(unit, 11000)
+SetResourcesHeld(unit, 45000)
 unit = CreateUnit("unit-gold-mine", 15, {24, 16})
 SetResourcesHeld(unit, 100000)
 unit = CreateUnit("unit-peon", 1, {56, 47})
