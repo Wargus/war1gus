@@ -2763,7 +2763,7 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 	fprintf(sms_c2, "\"}\n");
 }
 
-static void SmsSetCurrentRace(FILE* sms_c2, unsigned char* race, int state)
+static void SmsSetCurrentRace(FILE* sms_c2, char* race, int state)
 {
 	fprintf(sms_c2, "currentRace = \"%s\" -- Fix for restoring the correct race on load\n", race);
 	fprintf(sms_c2, "currentState = %d -- Fix for restoring the correct campaign pos on load\n", state);
