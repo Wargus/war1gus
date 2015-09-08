@@ -157,16 +157,17 @@ function BuildOptionsMenu()
   menu:addLabel("Video Resolution", offx + 16, offy + top, Fonts["game"], false)
   local resolutions = {"640x400", "800x480", "1024x640", "1280x800", "1440x900", "1680x1050"}
   resolution = menu:addDropDown(resolutions, offx + 16 + 250, offy + top,
-    function(dd, idx)
-	  local selected = resolutions[idx + 1]
+    function(dd)
+	  local selected = resolutions[resolution:getSelected() + 1]
 	  local x = tonumber(string.gmatch(selected, "%d+")())
 	  local y = tonumber(string.gmatch(selected, "%d+$")())
 	  SetVideoSize(x, y)
+	  menu:stop()
+	  RunOptionsMenu()
 	end)
   for idx,str in ipairs(resolutions) do
     local x = tonumber(string.gmatch(str, "%d+")())
 	local y = tonumber(string.gmatch(str, "%d+$")())
-	print(x) print(y) print(Video.Width) print(Video.Height)
 	if Video.Width == x and Video.Height == y then
 	  resolution:setSelected(idx - 1)
 	  break
@@ -214,12 +215,14 @@ function BuildOptionsMenu()
   menu:addLabel("Max Unit Selection", offx + 16, offy + top + 15 * 5, Fonts["game"], false)
   local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
   maxselection = menu:addDropDown(maxselections, offx + 16 + 250, offy + top + 15 * 5,
-    function(dd, idx)
-	  local selected = maxselections[idx + 1]
+    function(dd)
+	  local selected = maxselections[maxselection:getSelected() + 1]
 	  local count = tonumber(string.gmatch(selected, "%d+")())
 	  preferences.MaxSelection = count
 	  SavePreferences()
 	  SetMaxSelectable(count)
+	  menu:stop()
+	  RunOptionsMenu()
 	end)
   for idx,str in ipairs(maxselections) do
     local count = tonumber(string.gmatch(str, "%d+")())
@@ -237,13 +240,7 @@ function BuildOptionsMenu()
     end)
   b:setMarked(preferences.AllowMultipleTownHalls)
 
-  menu:addHalfButton("~!Apply", "a", offx + 73, offy + top + 15 * 8,
-    function()
-	  resolution.callback(nil, resolution:getSelected())
-	  maxselection.callback(nil, maxselection:getSelected())
-	  menu:stop(1)
-	end)
-  menu:addHalfButton("~!Back", "b", offx + 223, offy + top + 15 * 8,
+  menu:addHalfButton("~!OK", "o", offx + 123, offy + top + 15 * 8,
     function()
 	  menu:stop()
 	end)
