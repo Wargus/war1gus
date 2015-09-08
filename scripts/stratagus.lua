@@ -285,9 +285,10 @@ end
 -------------------------------------------------------------------------------
 
 Load("preferences.lua")
-if (preferences == nil and wc1.preferences ~= nil) then
+if (wc1 ~= nil and preferences == nil and wc1.preferences ~= nil) then
   preferences = wc1.preferences
-elseif (wc1.preferences == nil) then
+elseif (wc1 == nil or wc1.preferences == nil) then
+  if wc1 == nil then wc1 = {} end
   wc1.preferences = preferences
 end
 if (preferences == nil) then
