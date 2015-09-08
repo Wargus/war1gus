@@ -180,6 +180,7 @@ local units = {
     Costs = {"time", 80, "gold", 700},
     HitPoints = 40,
     Armor = 0,
+    Coward = true,
     Mana = {Enable = true},
     CanCastSpell = {
        human = {
