@@ -29,7 +29,7 @@
 --      $Id$
 
 --=============================================================================
---	Define unit-types.
+--      Define unit-types.
 --
 
 local units = {
@@ -120,16 +120,16 @@ local units = {
     RepairRange = 1,
     CanGatherResources = {
        {"resource-id", "gold",
-	"resource-capacity", 100,
-	"wait-at-resource", 150,
-	"wait-at-depot", 150},
+        "resource-capacity", 100,
+        "wait-at-resource", 150,
+        "wait-at-depot", 150},
        {"resource-id", "wood",
-	"resource-capacity", 100,
-	"resource-step", 2,
-	"wait-at-resource", 24,
-	"wait-at-depot", 150,
-	"lose-resources",
-	"terrain-harvester"}}},
+        "resource-capacity", 100,
+        "resource-step", 2,
+        "wait-at-resource", 24,
+        "wait-at-depot", 150,
+        "lose-resources",
+        "terrain-harvester"}}},
    {Names = {orc = "Grunt", human = "Footman"},
     Costs = {"time", 60, "gold", 400},
     HitPoints = 60,
@@ -157,7 +157,7 @@ local units = {
     organic = false,
     Missile = "missile-catapult-rock",
     Dependencies = {orc = {"blacksmith", "lumber-mill"},
-		    human = {"blacksmith", "lumber-mill"}}},
+                    human = {"blacksmith", "lumber-mill"}}},
    {Names = {orc = "Warlock", human = "Conjurer"},
     Costs = {"time", 90, "gold", 900},
     HitPoints = 40,
@@ -165,13 +165,13 @@ local units = {
     Mana = {Enable = true},
     CanCastSpell = {
        human = {
-   	  "spell-summon-scorpions",
-   	  "spell-summon-elemental",
-   	  "spell-rain-of-fire"},
+          "spell-summon-scorpions",
+          "spell-summon-elemental",
+          "spell-rain-of-fire"},
        orc = {
-   	  "spell-summon-spiders",
-   	  "spell-summon-daemon",
-   	  "spell-poison-cloud" } },
+          "spell-summon-spiders",
+          "spell-summon-daemon",
+          "spell-poison-cloud" } },
     Missile = "missile-fireball",
     PiercingDamage = 6,
     BasicDamage = 0,
@@ -183,15 +183,15 @@ local units = {
     Mana = {Enable = true},
     CanCastSpell = {
        human = {
-   	  "spell-healing",
-   	  "spell-far-seeing",
-   	  "spell-invisibility"},
+          "spell-healing",
+          "spell-far-seeing",
+          "spell-invisibility"},
        orc = {
-   	  "spell-raise-dead",
-   	  "spell-dark-vision",
-   	  "spell-unholy-armor" } },
+          "spell-raise-dead",
+          "spell-dark-vision",
+          "spell-unholy-armor" } },
     PiercingDamage = 6,
-	Missile = "missile-magic-fireball",
+        Missile = "missile-magic-fireball",
     BasicDamage = 0,
     MaxAttackRange = {orc = 2, human = 1}},
 
@@ -223,7 +223,7 @@ local units = {
     Mana = {Enable = true},
     CanCastSpell = {
        human = {"spell-summon-spiders",
-   		"spell-summon-daemon"}}}
+                "spell-summon-daemon"}}}
 }
 
 -- build units from specs
@@ -235,7 +235,7 @@ local knight_raider_spec = {
    Names = {orc = "Raider", human = "Knight"},
    Name = {orc = "Raider", human = "Knight"},
    Image = {orc = {"file", "orc/units/raider.png", "size", {96, 96}},
-	    human = {"file", "human/units/knight.png", "size", {64, 64}}},
+            human = {"file", "human/units/knight.png", "size", {64, 64}}},
    Costs = {"time", 80, "gold", 850},
    HitPoints = 90,
    Armor = 5,
@@ -244,7 +244,7 @@ local knight_raider_spec = {
    BasicDamage = 13,
    MaxAttackRange = 1,
    Dependencies = {orc = {"blacksmith", "kennel"},
-		   human = {"blacksmith", "stable"}}}
+                   human = {"blacksmith", "stable"}}}
 DefineUnitFromSpec(knight_raider_spec)
 knight_raider_spec.Names = {orc = "Raider1", human = "Knight1"}
 DefineUnitFromSpec(knight_raider_spec)
