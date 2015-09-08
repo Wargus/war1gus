@@ -240,7 +240,7 @@ function BuildOptionsMenu()
     end)
   b:setMarked(preferences.AllowMultipleTownHalls)
 
-  menu:addHalfButton("~!OK", "o", offx + 123, offy + top + 15 * 8,
+  menu:addHalfButton("~!OK", "o", offx + 123, offy + top + 15 * 9,
     function()
 	  menu:stop()
 	end)

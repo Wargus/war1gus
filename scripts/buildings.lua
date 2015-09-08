@@ -186,6 +186,9 @@ DefineUnitType(
      Costs = {"time", 1, "gold", 50},
      Animations = "animations-building",
      Construction = "construction-none",
+	 -- OnInit = function(unit)
+	 --   SetUnitVariable(unit, "Player", 15);
+	 -- end,
      BuildingRules = {
 	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self", Diagonal = true}},
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
@@ -239,6 +242,14 @@ DefineUnitType(
      NonSolid = true,
      Wall = true,
      NoRandomPlacing = false,
+	 -- as good as neutral
+	 ComputerReactionRange = 0,
+	 PersonReactionRange = 0,
+	 AnnoyComputerFactor = -100,
+	 AiAdjacentRange = 0,
+	 Revealer = false,
+	 Decoration = true,
+	 -- 
      Type = "land", Building = true,
      VisibleUnderFog = true })
 
