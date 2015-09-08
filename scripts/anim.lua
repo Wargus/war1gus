@@ -187,13 +187,17 @@ local function BuildAnimations(frames, ...)
    attackspeed = options.attackspeed or 5
    coolofftime = options.coolofftime or 1
    attacksound = options.attacksound or "sword attack"
-   return {
+   local returnvalue = {
       Still = options.Still or DefaultStillAnimation(),
       Move = options.Move or BuildMoveAnimation(frames[1], speed),
       Attack = options.Attack or BuildAttackAnimation(frames[2], attackspeed, coolofftime, attacksound),
       Death = options.Death or BuildDeathAnimation(frames[3]),
       Harvest_wood = options.Harvest_wood
    }
+   if options.RepairAsAttack then
+     returnvalue.Repair = returnvalue.Attack
+   end
+   return returnvalue
 end
 
 --
@@ -260,7 +264,8 @@ DefineAnimations("animations-grunt", BuildAnimations(frameNumbers_5_5_5_3))
 
 local worker_anim = BuildAnimations(
    frameNumbers_5_5_5_3,
-   {Harvest_wood = BuildAttackHarvest(frameNumbers_5_5_5_3[2], 5, "tree chopping")}
+   {Harvest_wood = BuildAttackHarvest(frameNumbers_5_5_5_3[2], 5, "tree chopping"),
+    RepairAsAttack = true}
 )
 DefineAnimations("animations-peasant", worker_anim)
 DefineAnimations("animations-peon", worker_anim)
