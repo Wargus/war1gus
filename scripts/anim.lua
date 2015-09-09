@@ -332,12 +332,11 @@ DefineAnimations("animations-lothar", BuildAnimations(frameNumbers_5_5_5_3))
 DefineAnimations(
    "animations-building",
    {Still = {"frame 0", "wait 5"},
-    Death = {"unbreakable begin",
-	     "frame 10", "wait 3",
-	     "frame 25", "wait 3",
-	     "frame 40", "wait 100",
-	     "frame 40", "wait 1",
-	     "unbreakable end", "wait 1"}})
+    Death = {"frame 0", "wait 1"}})
+
+DefineAnimations(
+   "animations-ruins",
+   {Death = {"unbreakable begin", "frame 0", "wait 600", "unbreakable end", "wait 1"}})
 
 DefineAnimations(
    "animations-orc-dead-body",

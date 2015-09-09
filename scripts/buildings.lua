@@ -56,7 +56,7 @@ for i=4,2,-1 do
 	DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place", {
 	  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place",
 	  Image = {"size", {i * 32, i * 32}},
-	  Animations = "animations-building",
+	  Animations = "animations-ruins",
 	  Icon = "icon-peasant",
 	  Speed = 0,
 	  HitPoints = 255,
