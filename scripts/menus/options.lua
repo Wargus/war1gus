@@ -96,7 +96,11 @@ function RunPreferencesMenu()
 
   local fog = {}
   fog = menu:addCheckBox("Fog of War", 16, 40 + 36 * 0,
-    function() SetFogOfWar(fog:isMarked()) end)
+    function()
+	  SetFogOfWar(fog:isMarked())
+	  preferences.FogOfWar = fog:isMarked()
+	  SavePreferences()
+	end)
   fog:setMarked(GetFogOfWar())
   if (IsReplayGame() or IsNetworkGame()) then
     fog:setEnabled(false)
