@@ -48,7 +48,7 @@ else
 end
 
 
-for i=4,2,-1 do
+for i=1,4,1 do
 	UnitTypeFiles["unit-destroyed-" .. i .. "x" .. i .. "-place"] = {
 	  forest = "tilesets/forest/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
 	  swamp = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
@@ -68,9 +68,35 @@ for i=4,2,-1 do
 	  Type = "land",
 	  Building = true,
 	  VisibleUnderFog = true,
+	  Corpse = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (i - 1),
+	  Vanishes = (i == 1),
 	  Sounds = {} } )
+	local j = i
+	for j=i,1,-1 do
+	  UnitTypeFiles["unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j] = {
+		  forest = "tilesets/forest/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
+		  swamp = "tilesets/swamp/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
+		  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png"}
+	  DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j, {
+		  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j,
+		  Image = {"size", {j * 32, j * 32}},
+		  Animations = "animations-ruins",
+		  Icon = "icon-peasant",
+		  Speed = 0,
+		  HitPoints = 255,
+		  DrawLevel = 10,
+		  TileSize = {i, i}, BoxSize = {i * 32 - 1, i * 32 - 1},
+		  SightRange = 0,
+		  BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+		  Priority = 0,
+		  Type = "land",
+		  Building = true,
+		  VisibleUnderFog = true,
+		  Corpse = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (j - 1),
+		  Vanishes = (j == 1),
+		  Sounds = {} } )
+	end
 end
-
 
 local buildings = {
    {Names = {orc = "Farm", human = "Farm"},

@@ -262,6 +262,7 @@ UnitDirections TilesetUnitDirections[] = {
 #define MaxRuinDimensions 4
 #define _7  ,0,0,0,0,0,0,0
 #define _12  ,0,0,0,0,0,0,0,0,0,0,0,0
+#define _15  ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 typedef struct _ruin_parts_ {
 	const char* name; // just for readability
 	int parts[MaxRuinDimensions*MaxRuinDimensions];
@@ -276,7 +277,10 @@ RuinParts TilesetRuinParts[] = {
 	{ "dungeon-ruins3x3",{ 83, 83, 83, 83, 83, 83, 83, 83, 83 _7 } },
 	{ "forest-ruins2x2",{ 41, 43, 47, 49 _12 } },
 	{ "swamp-ruins2x2",{ 42, 44, 48, 50 _12 } },
-	{ "dungeon-ruins2x2",{ 83, 83, 83, 83 _12 } }
+	{ "dungeon-ruins2x2",{ 83, 83, 83, 83 _12 } },
+	{ "forest-ruins1x1",{ 55 _15 } },
+	{ "swamp-ruins1x1",{ 54 _15 } },
+	{ "dungeon-ruins1x1",{ 83 _15 } }
 };
 
 char* ArchiveDir;
@@ -605,6 +609,9 @@ Control Todo[] = {
 {RP,0,"forest/neutral/buildings/ruins",190,6,2 _1 },
 {RP,0,"swamp/neutral/buildings/ruins",193,7,2 _1 },
 {RP,0,"dungeon/neutral/buildings/ruins",196,8,2 _1 },
+{RP,0,"forest/neutral/buildings/ruins",190,9,1 _1 },
+{RP,0,"swamp/neutral/buildings/ruins",193,10,1 _1 },
+{RP,0,"dungeon/neutral/buildings/ruins",196,11,1 _1 },
 
 // Missiles
 {U,0,"missiles/fireball",									 217, 347 _2},
