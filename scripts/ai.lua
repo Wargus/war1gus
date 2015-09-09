@@ -376,7 +376,7 @@ function AiLoop(loop_funcs, indexes)
       local func = loop_funcs[indexes[playerIndex]]
 	  local ret = false
 	  if (func == nil) then
-		AddMessage("BUG: Please file a bug 'AI loop broken' with the level and this number " .. playerIndex)
+		AddMessage("BUG: Please file a bug 'AI loop broken' with the level and this number: " .. indexes[playerIndex])
 		indexes[playerIndex] = 0
 	  else
 	    ret = func()

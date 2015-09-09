@@ -126,6 +126,7 @@ function CreateAiCampaign(level)
 
 	  function()
 		if level > 9 then
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
 		  return AiLoop(campaign_funcs10, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
@@ -154,6 +155,7 @@ function CreateAiCampaign(level)
 
 	  function()
 		if level > 7 then
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
 		  return AiLoop(campaign_funcs9, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
@@ -204,6 +206,7 @@ function CreateAiCampaign(level)
 
 	  function()
 		if level > 6 then
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
 		  return AiLoop(campaign_funcs7, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
@@ -243,6 +246,7 @@ function CreateAiCampaign(level)
 
 	  function()
 	    if level > 5 then
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
 		  return AiLoop(campaign_funcs6, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
@@ -284,6 +288,7 @@ function CreateAiCampaign(level)
 
 	  function()
 	    if level > 3 then
+		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
 		  return AiLoop(campaign_funcs5, stratagus.gameData.AIState.loop_index)
 		else
 		  stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
