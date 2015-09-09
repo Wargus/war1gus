@@ -635,4 +635,14 @@ Load("scripts/menus/results.lua")
 --[[
 --]]
 
-RunProgramStartMenu()
+if false then -- Debugging
+  Load("scripts/campaigns.lua")
+  race = "human"
+  campaign = CreateCampaign(race)
+  currentRace = race
+  SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
+  currentState = 3
+  RunCampaign(campaign)
+else
+  RunProgramStartMenu()
+end

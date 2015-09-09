@@ -2265,6 +2265,20 @@ int ConvertGfu(char* file, int pale, int gfue)
 	sprintf(buf, "%s/%s/%s.png", Dir, UNIT_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
+
+	// force orc palette override. Forces Orc red to Human blue,
+	// and then we can use that palette for changing the faction color
+	if (strstr(file, "orc/", 3) != NULL) {
+		unsigned char* p = image;
+		unsigned char* end = image + (2 * w * 2 * h);
+		while (p < end) {
+			if (*p >= 176 && *p <= 183) {
+				*p = *p + 24;
+			}
+			++p;
+		}
+	}
+
 	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
 
 	free(image);

@@ -30,7 +30,7 @@ function Briefing(title, objs, bg, text, voices)
     femaleg:Load()
 	femaleg:Resize(560 / 5 * Video.Width / 640, 134 * Video.Height / 400)
     maleg:Load()
-	femaleg:Resize(690 / 5 * Video.Width / 640, 116 * Video.Height / 400)
+	maleg:Resize(690 / 5 * Video.Width / 640, 116 * Video.Height / 400)
     
     femalew = ImageWidget(femaleg)
     malew = ImageWidget(maleg)
