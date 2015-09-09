@@ -135,7 +135,7 @@ local units = {
     HitPoints = 60,
     Armor = 2,
     PiercingDamage = 1,
-    BasicDamage = 900,
+    BasicDamage = 9,
     Size = {human = {96, 96}},
     MaxAttackRange = 1},
    {Names = {orc = "Spearman", human = "Archer"},
