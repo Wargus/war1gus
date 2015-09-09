@@ -48,12 +48,37 @@ else
 end
 
 
+for i=4,2,-1 do
+	UnitTypeFiles["unit-destroyed-" .. i .. "x" .. i .. "-place"] = {
+	  forest = "tilesets/forest/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
+	  swamp = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
+	  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png"}
+	DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place", {
+	  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place",
+	  Image = {"size", {i * 32, i * 32}},
+	  Animations = "animations-building",
+	  Icon = "icon-peasant",
+	  Speed = 0,
+	  HitPoints = 255,
+	  DrawLevel = 10,
+	  TileSize = {i, i}, BoxSize = {i * 32 - 1, i * 32 - 1},
+	  SightRange = 0,
+	  BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+	  Priority = 0,
+	  Type = "land",
+	  Building = true,
+	  VisibleUnderFog = true,
+	  Sounds = {} } )
+end
+
+
 local buildings = {
    {Names = {orc = "Farm", human = "Farm"},
     Costs = {"time", 100, "gold", 500, "wood", 300},
     HitPoints = 400,
     Supply = 5,
-    Size = {96, 96}},
+    Size = {96, 96},
+    Corpse = "unit-destroyed-2x2-place"},
 
    {Names = {orc = "Town hall", human = "Town hall"},
     Costs = {"time", 100, "gold", 400, "wood", 400},
@@ -92,7 +117,8 @@ local buildings = {
     Costs = {"time", 150, "gold", 900, "wood", 400},
     HitPoints = 800,
     Size = {96, 96},
-    Dependency = {orc = "lumber-mill", human = "lumber-mill"}},
+    Dependency = {orc = "lumber-mill", human = "lumber-mill"},
+    Corpse = "unit-destroyed-2x2-place"},
 
    {Names = {human = "Church", orc = "Temple"},
     Costs = {"time", 200, "gold", 800, "wood", 500},
@@ -104,7 +130,8 @@ local buildings = {
     Costs = {"time", 200, "gold", 1400, "wood", 300},
     HitPoints = 900,
     Size = {96, 96},
-    Dependency = {orc = "blacksmith", human = "blacksmith"}},
+    Dependency = {orc = "blacksmith", human = "blacksmith"},
+    Corpse = "unit-destroyed-2x2-place"},
 
    {Names = {human = "Stormwind keep", orc = "Blackrock spire"},
     Costs = {"time", 100, "gold", 500, "wood", 250},
@@ -114,7 +141,7 @@ local buildings = {
     Supply = 5,
     RepairRange = 1000, -- basically infinite
     NotConstructable = true,
-    Corpse = "unit-destroyed-3x3-place"}
+    Corpse = "unit-destroyed-4x4-place"}
 }
 
 for idx,building in ipairs(buildings) do

@@ -42,11 +42,11 @@ DefineMissileType("missile-catapult-rock",
 
 DefineMissileType("missile-small-fire",
   { File = "missiles/small_fire.png", Size = {32, 64}, Frames = 4, NumDirections = 1,
-  DrawLevel = 45, Class = "missile-class-fire", Sleep = 8, Speed = 16, Range = 1 } )
+  DrawLevel = 245, Class = "missile-class-fire", Sleep = 8, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-big-fire",
   { File = "missiles/large_fire.png", Size = {32, 64}, Frames = 4, NumDirections = 1,
-  DrawLevel = 45, Class = "missile-class-fire", Sleep = 8, Speed = 16, Range = 1 } )
+  DrawLevel = 245, Class = "missile-class-fire", Sleep = 8, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-explosion",
   { File = "missiles/explosion.png", Size = {96, 96}, Frames = 6, NumDirections = 1,

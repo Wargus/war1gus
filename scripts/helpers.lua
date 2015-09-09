@@ -97,7 +97,7 @@ function DefineBuildingFromSpec(building)
 	 Points = 100,
 	 Supply = 0,
 	 CanStore = {},
-	 Corpse = "unit-destroyed-2x2-place",
+	 Corpse = "unit-destroyed-3x3-place",
 	 ExplodeWhenKilled = "missile-building-collapse",
 	 Type = "land",
 	 Building = true,

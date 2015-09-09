@@ -230,6 +230,7 @@ enum _archive_type_ {
 	T,						// Tileset						(name,idx)
 	U,						// Uncompressed Graphics		(name,pal,gfu)
 	TU, // Tileset unit (for walls and roads)
+	RP, // Tileset ruin parts (for destroyed buildings)
 	I,						// Image						(name,pal,img)
 	W,						// Wav							(name,wav)
 	M,						// XMI Midi Sound					(name,xmi)
@@ -255,7 +256,27 @@ UnitDirections TilesetUnitDirections[] = {
 
     {"forest-road", {64, 59, 58, 62, 57, 61, 70, 65, 56, 60, 68, 64, 67, 63, 69, 66}},
     {"swamp-road", {65, 60, 59, 63, 58, 62, 71, 66, 57, 61, 69, 65, 68, 64, 70, 67}},
-    {"dungeon-road", {81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81}},
+    {"dungeon-road", {81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81}}
+};
+
+#define MaxRuinDimensions 4
+#define _7  ,0,0,0,0,0,0,0
+#define _12  ,0,0,0,0,0,0,0,0,0,0,0,0
+typedef struct _ruin_parts_ {
+	const char* name; // just for readability
+	int parts[MaxRuinDimensions*MaxRuinDimensions];
+} RuinParts;
+
+RuinParts TilesetRuinParts[] = {
+	{ "forest-ruins4x4",{ 41, 42, 42, 43, 44, 45, 45, 46, 44, 45, 45, 46, 47, 48, 48, 49 } },
+	{ "swamp-ruins4x4",{ 42, 43, 43, 44, 45, 46, 46, 47, 45, 46, 46, 47, 48, 49, 49, 50 } },
+	{ "dungeon-ruins4x4",{ 83, 83, 83, 83, 83, 83, 83, 83, 83, 83, 83, 83, 83, 83, 83, 83 } },
+	{ "forest-ruins3x3",{ 41, 42, 43, 44, 45, 46, 47, 48, 49 _7 } },
+	{ "swamp-ruins3x3",{ 42, 43, 44, 45, 46, 47, 48, 49, 50 _7 } },
+	{ "dungeon-ruins3x3",{ 83, 83, 83, 83, 83, 83, 83, 83, 83 _7 } },
+	{ "forest-ruins2x2",{ 41, 43, 47, 49 _12 } },
+	{ "swamp-ruins2x2",{ 42, 44, 48, 50 _12 } },
+	{ "dungeon-ruins2x2",{ 83, 83, 83, 83 _12 } }
 };
 
 char* ArchiveDir;
@@ -574,6 +595,16 @@ Control Todo[] = {
 {TU,0,"forest/neutral/buildings/road",190,3 _2},
 {TU,0,"swamp/neutral/buildings/road",193,4 _2},
 {TU,0,"dungeon/neutral/buildings/road",196,5 _2},
+
+{RP,0,"forest/neutral/buildings/ruins",190,0,4 _1},
+{RP,0,"swamp/neutral/buildings/ruins",193,1,4 _1},
+{RP,0,"dungeon/neutral/buildings/ruins",196,2,4 _1},
+{RP,0,"forest/neutral/buildings/ruins",190,3,3 _1 },
+{RP,0,"swamp/neutral/buildings/ruins",193,4,3 _1 },
+{RP,0,"dungeon/neutral/buildings/ruins",196,5,3 _1 },
+{RP,0,"forest/neutral/buildings/ruins",190,6,2 _1 },
+{RP,0,"swamp/neutral/buildings/ruins",193,7,2 _1 },
+{RP,0,"dungeon/neutral/buildings/ruins",196,8,2 _1 },
 
 // Missiles
 {U,0,"missiles/fireball",									 217, 347 _2},
@@ -2112,6 +2143,94 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 }
 
 
+/**
+**  Convert one ore more tileset mini image to a separate unit png
+*/
+int ConvertRuin(char* file, int index, int partsidx, int dimensions)
+{
+	unsigned char* palp;
+	unsigned char* mini;
+	unsigned char* mega;
+	unsigned char* image;
+	const unsigned short* mp;
+	int msize;
+	int height;
+	int width;
+	int x, y, part;
+	int offset;
+	int len;
+	char buf[1024];
+	int pale;
+
+	pale = index + 1;
+	palp = ExtractEntry(ArchiveOffsets[pale], &len);
+	if (!palp) {
+		return 0;
+	}
+	if (len < 768) {
+		palp = realloc(palp, 768);
+		memset(palp + len, 0, 768 - len);
+	}
+	if (pale == 191 || pale == 194 || pale == 197) {
+		unsigned char* gpalp;
+		int i;
+		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+		for (i = 0; i < 128; ++i) {
+			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
+				palp[i * 3 + 2] == 63) {
+				palp[i * 3 + 0] = gpalp[i * 3 + 0];
+				palp[i * 3 + 1] = gpalp[i * 3 + 1];
+				palp[i * 3 + 2] = gpalp[i * 3 + 2];
+			}
+		}
+		for (i = 128; i < 256; ++i) {
+			if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
+				gpalp[i * 3 + 2] == 63)) {
+				palp[i * 3 + 0] = gpalp[i * 3 + 0];
+				palp[i * 3 + 1] = gpalp[i * 3 + 1];
+				palp[i * 3 + 2] = gpalp[i * 3 + 2];
+			}
+		}
+		free(gpalp);
+	}
+	mini = ExtractEntry(ArchiveOffsets[index], NULL);
+	if (!mini) {
+		free(palp);
+		return 0;
+	}
+	mega = ExtractEntry(ArchiveOffsets[index - 1], &msize);
+	if (!mega) {
+		free(palp);
+		free(mini);
+		return 0;
+	}
+
+	width = 16 * dimensions;
+	height = 16 * dimensions;
+	image = malloc(height * width);
+	memset(image, 0, height * width);
+	for (part = 0; part < dimensions*dimensions; part++) {
+		mp = (const unsigned short*)(mega + TilesetRuinParts[partsidx].parts[part] * 8);
+		for (y = 0; y < 2; ++y) {
+			for (x = 0; x < 2; ++x) {
+				offset = ConvertLE16(mp[x + y * 2]);
+				DecodeMiniTile(image, (part % dimensions) * 2 + x, y + (part / dimensions) * 2, width, mini, (offset & 0xFFFC) << 1, 0, 0);
+			}
+		}
+	}
+	ConvertPalette(palp);
+	sprintf(buf, "%s/%s/%s_%dx%d.png", Dir, TILESET_PATH, file, dimensions, dimensions);
+	CheckPath(buf);
+	ResizeImage(&image, width, height, 2 * width, 2 * height);
+	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
+
+	free(palp);
+	free(mini);
+	free(mega);
+
+	return 0;
+}
+
 //----------------------------------------------------------------------------
 //  Graphics
 //----------------------------------------------------------------------------
@@ -3288,7 +3407,10 @@ int main(int argc, char** argv)
 				ConvertTileset(Todo[u].File, Todo[u].Arg1);
 				break;
 			case TU:
-			        ConvertTilesetUnit(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
+				ConvertTilesetUnit(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
+				break;
+			case RP:
+				ConvertRuin(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
 				break;
 			case U:
 				ConvertGfu(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
