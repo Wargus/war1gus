@@ -2268,7 +2268,7 @@ int ConvertGfu(char* file, int pale, int gfue)
 
 	// force orc palette override. Forces Orc red to Human blue,
 	// and then we can use that palette for changing the faction color
-	if (strstr(file, "orc/", 3) != NULL) {
+	if (strstr(file, "orc/") != NULL) {
 		unsigned char* p = image;
 		unsigned char* end = image + (2 * w * 2 * h);
 		while (p < end) {
