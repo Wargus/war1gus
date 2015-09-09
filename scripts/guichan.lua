@@ -359,12 +359,8 @@ function InitGameSettings()
 end
 InitGameSettings()
 
-function RunMap(map, objective, fow, revealmap)
-  if objective == nil then
-    Objectives = DefaultObjectives
-  else
-    Objectives = objective
-  end
+function RunMap(map, fow, revealmap)
+  Objectives = DefaultObjectives
   local loop = true
   while (loop) do
     InitGameVariables()
@@ -526,7 +522,7 @@ function RunSinglePlayerGameMenu()
       GameSettings.Opponents = opponents:getSelected()
       GameSettings.NumUnits = numunits:getSelected()
       GameSettings.GameType = gametype:getSelected() - 1
-      RunMap(mapname)
+      RunMap(mapname, preferences.FogOfWar)
       menu:stop()
     end)
   menu:addFullButton("~!Cancel Game", "c", offx + 640 - 239 - 16, offy + 360 + 36*1, function() RunSinglePlayerSubMenu(); menu:stop() end)

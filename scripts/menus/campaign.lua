@@ -148,7 +148,7 @@ end
 function CreateMapStep(map)
   return function()
     Load(map)
-    RunMap(map)
+    RunMap(map, preferences.FogOfWar)
     if (GameResult == GameVictory) then
       IncreaseCampaignState(currentRace, currentState)
     end

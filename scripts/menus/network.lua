@@ -174,7 +174,7 @@ function RunJoiningMapMenu(s)
           RevealMap()
         end
         NetworkGamePrepareGameSettings()
-        RunMap(NetworkMapName)
+        RunMap(NetworkMapName, fow:isMarked())
         PresentMap = OldPresentMap
         menu:stop()
       end
@@ -347,7 +347,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
       end
       NetworkServerStartGame() 
       NetworkGamePrepareGameSettings()
-      RunMap(map)
+      RunMap(map, fow:isMarked())
       menu:stop()
     end
   )
