@@ -34,6 +34,7 @@ local allowedHumanUnits = {"unit-human-farm",
         "upgrade-scorpion", "upgrade-rain-of-fire", "upgrade-water-elemental"}
 local allowedOrcUnits = {"unit-orc-farm",
 	"unit-orc-town-hall", "unit-peon",
+	"unit-orc-blackrock-spire",
 	"unit-orc-barracks", "unit-grunt",
 	"unit-orc-lumber-mill", "unit-spearman",
 	"upgrade-spear1", "upgrade-spear2",
@@ -57,6 +58,8 @@ DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
 DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
 DefineAllow("upgrade-water-elemental", "RRRRRRRRRRRRRRRR")
+
+CreateUnit("unit-peon", 3, {16, 7})
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/human/12.sms")

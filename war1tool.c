@@ -2928,7 +2928,7 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
              \"type\", \"person\",\n\
              \"race\", \"%s\",\n\
              \"color\", { 224, 224, 224 })\n", race);
-	for (i = 1; i < 4; ++i) {
+	for (i = 1; i < 5; ++i) {
 		gzprintf(smp, "\"computer\", ");
 		gzprintf(sms,
 			"Player(%d,\n\
@@ -2938,7 +2938,7 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
             \"color\", { 255, 0, 0 },\n\
             \"resources\", {\"gold\", 2000, \"wood\", 2000})\n", i, computerrace, mapnum);
 	}
-	for (i = 4; i < 4; ++i) {
+	for (i = 5; i < 15; ++i) {
 		gzprintf(smp, "\"nobody\", ");
 		gzprintf(sms, "Player(%d, \"type\",\"nobody\")\n", i);
 	}
