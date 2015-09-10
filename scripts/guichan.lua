@@ -370,6 +370,7 @@ function RunMap(map, fow, revealmap)
     if revealmap == true then
        RevealMap()
     end
+    SetColorScheme()
     StartMap(map)
     if GameResult ~= GameRestart then
       loop = false

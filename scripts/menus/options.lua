@@ -244,6 +244,14 @@ function BuildOptionsMenu()
     end)
   b:setMarked(preferences.AllowMultipleTownHalls)
 
+  b = menu:addCheckBox("Use simplified color scheme", offx + 16, offy + top + 15 * 7,
+    function()
+	  preferences.MultiColoredCampaigns = not preferences.MultiColoredCampaigns
+	  SetColorScheme()
+	  SavePreferences()
+	end)
+  b:setMarked(not preferences.MultiColoredCampaigns)
+
   menu:addHalfButton("~!OK", "o", offx + 123, offy + top + 15 * 9,
     function()
 	  menu:stop()
