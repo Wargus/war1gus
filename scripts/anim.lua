@@ -225,12 +225,23 @@ DefineAnimations("animations-spider",
 DefineAnimations("animations-water-elemental",
 		 BuildAnimations(frameNumbers_5_3_5_3,
 				 {speed = 4,
-				  attacksound = "fireball attack"}))
+				  attacksound = "fireball attack",
+				  Still = {
+				      "frame 1", "wait 8",
+					  "frame 5", "wait 8",
+					  "frame 15", "wait 8",
+					  "frame 30", "wait 8"}}))
 
 DefineAnimations("animations-fire-elemental",
-		 BuildAnimations(frameNumbers_5_5_4_3,
+		 BuildAnimations(GetFrameNumbers(5, {5, 5, 0}),
 				 {speed = 5,
-				  attacksound = "fireball attack"}))
+				  attacksound = "fireball attack",
+				  Still = {
+					  "frame 5", "wait 8",
+					  "frame 15", "wait 8",
+					  "frame 25", "wait 8",
+					  "frame 35", "wait 8",
+					  "frame 50", "wait 1"}}))
 
 DefineAnimations(
    "animations-slime",
