@@ -114,6 +114,7 @@ DefineSpell("spell-healing",
 	},
 	"sound-when-cast", "healing",
 	"depend-upgrade", "upgrade-healing",
+	"ai-cast", {"range", 8, "condition", {"alliance", "only", "HitPoints", {MaxValuePercent = 90}}},
 	"autocast", {"range", 6, "condition", {"alliance", "only", "HitPoints", {MaxValuePercent = 90}}}
 )
 
@@ -127,7 +128,8 @@ DefineSpell("spell-raise-dead",
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"sound-when-cast", "raise dead",
-	"depend-upgrade", "upgrade-raise-dead"
+	"depend-upgrade", "upgrade-raise-dead",
+	"ai-cast", {"range", 8, "corpse", "only", "combat", "only", "priority", {"Distance", false}}
 --	"autocast", {"range", 6}
 )
 
@@ -176,7 +178,8 @@ DefineSpell("spell-summon-scorpions",
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
-	"depend-upgrade", "upgrade-scorpion"
+	"depend-upgrade", "upgrade-scorpion",
+	"ai-cast", {"range", 8, "combat", "only", "priority", {"Distance", false}}
 --	"autocast", {"range", 6}
 )
 
@@ -190,7 +193,8 @@ DefineSpell("spell-summon-elemental",
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
-	"depend-upgrade", "upgrade-water-elemental"
+	"depend-upgrade", "upgrade-water-elemental",
+	"ai-cast", {"range", 8, "combat", "only", "priority", {"Distance", false}}
 --	"autocast", {"range", 6}
 )
 
@@ -220,7 +224,8 @@ DefineSpell("spell-summon-spiders",
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
-	"depend-upgrade", "upgrade-spider"
+	"depend-upgrade", "upgrade-spider",
+	"ai-cast", {"range", 8, "combat", "only", "priority", {"Distance", false}}
 --	"autocast", {"range", 6}
 )
 
@@ -234,7 +239,8 @@ DefineSpell("spell-summon-daemon",
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
-	"depend-upgrade", "upgrade-daemon"
+	"depend-upgrade", "upgrade-daemon",
+	"ai-cast", {"range", 8, "combat", "only", "priority", {"Distance", false}}
 --	"autocast", {"range", 6}
 )
 
