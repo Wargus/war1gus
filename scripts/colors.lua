@@ -34,6 +34,7 @@
 -- war1tool.c force-moves all references in orc units to human color index
 DefinePlayerColorIndex(200, 8)
 
+function ResetColorSchemes()
 wc1.HumanMultiColors = {
      "blue", {{0,8,36}, {0,16,64}, {0,28,96}, {0,40,128}, {0,52,156}, {8,64,188}, {12,80,220}, {20,96,252}},
 	 "red", {{84,0,0}, {108,0,0}, {132,0,0}, {156,0,0}, {180,0,0}, {204,0,0}, {228,0,0}, {252,0,0}},
@@ -82,6 +83,9 @@ for i=3,28,1 do
 end
 wc1.OrcCampaignColors[29] = wc1.OrcMultiColors[29]
 wc1.OrcCampaignColors[30] = wc1.OrcMultiColors[30]
+end
+
+ResetColorSchemes()
 
 function SetColorScheme()
   if preferences.MultiColoredCampaigns and currentRace == "orc" then

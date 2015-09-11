@@ -362,6 +362,7 @@ InitGameSettings()
 function RunMap(map, fow, revealmap)
   Objectives = DefaultObjectives
   local loop = true
+  SetColorScheme()
   while (loop) do
     InitGameVariables()
     if fow ~= nil then
@@ -370,13 +371,12 @@ function RunMap(map, fow, revealmap)
     if revealmap == true then
        RevealMap()
     end
-    SetColorScheme()
     StartMap(map)
     if GameResult ~= GameRestart then
       loop = false
     end
   end
-
+  ResetColorSchemes()
   RunResultsMenu(s)
   InitGameSettings()
   SetPlayerData(GetThisPlayer(), "RaceName", "orc")
