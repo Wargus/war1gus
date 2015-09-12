@@ -214,6 +214,7 @@ local frameNumbers_5_5_3_2 = GetFrameNumbers(5, {5, 3, 2})
 local frameNumbers_5_5_2_3 = GetFrameNumbers(5, {5, 2, 3})
 local frameNumbers_5_3_5_3 = GetFrameNumbers(5, {3, 5, 3})
 local frameNumbers_5_2_5_3 = GetFrameNumbers(5, {2, 5, 3})
+local frameNumbers_5_4_3_3 = GetFrameNumbers(5, {4, 3, 3})
 
 
 DefineAnimations("animations-brigand", BuildAnimations(frameNumbers_5_5_3_2))
@@ -275,7 +276,7 @@ DefineAnimations("animations-grunt", BuildAnimations(frameNumbers_5_5_5_3))
 
 local worker_anim = BuildAnimations(
    frameNumbers_5_5_5_3,
-   {Harvest_wood = BuildAttackHarvest(frameNumbers_5_5_5_3[2], 5, "tree chopping"),
+   {Harvest_wood = BuildAttackHarvest(frameNumbers_5_5_4_3[2], 5, "tree chopping"),
     RepairAsAttack = true}
 )
 DefineAnimations("animations-peasant", worker_anim)
@@ -330,10 +331,23 @@ DefineAnimations("animations-necrolyte",
 
 DefineAnimations("animations-conjurer",
 		 BuildAnimations(frameNumbers_5_5_4_4,
-				 {attacksound = "fireball attack", speed = 7}))
+				 {attacksound = "fireball attack", speed = 7,
+				  SpellCast = {
+				  "frame 5", "wait 8",
+				  "frame 20", "wait 8",
+				  "frame 35", "wait 8",
+				  "frame 50", "wait 8"
+				  }}))
 DefineAnimations("animations-warlock",
-		 BuildAnimations(frameNumbers_5_5_4_4,
-				 {attacksound = "fireball attack", speed = 7}))
+		 BuildAnimations(frameNumbers_5_5_5_3,
+				 {attacksound = "fireball attack", speed = 7,
+				  SpellCast = {
+				  "frame 5", "wait 8",
+				  "frame 20", "wait 8",
+				  "frame 35", "wait 8",
+				  "frame 50", "wait 8",
+				  "frame 60", "wait 8"
+				  }}))
 
 DefineAnimations("animations-medivh",
 		 BuildAnimations(frameNumbers_5_5_5_3,
