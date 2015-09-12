@@ -3097,9 +3097,13 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 			value = 0;
 		}
 
-		gzprintf(f, "  unit = CreateUnit(\"%s\", %d, {%d, %d})\n", UnitTypes[type], player, x, y);
 		if (value) {
+			assert(!strcmp("unit-gold-mine", UnitTypes[type]));
+			// player 15 is rescue-passive, so just make gold mines neutral
+			gzprintf(f, "  unit = CreateUnit(\"%s\", 14, {%d, %d})\n", UnitTypes[type], player, x, y);
 			gzprintf(f, "  SetResourcesHeld(unit, %d)\n", value);
+		} else {
+			gzprintf(f, "  unit = CreateUnit(\"%s\", %d, {%d, %d})\n", UnitTypes[type], player, x, y);
 		}
 		++i;
 	}
