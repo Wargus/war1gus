@@ -32,6 +32,7 @@
 print("Stratagus default config file loading ...\n")
 
 war1gus = {}
+wc1 = war1gus
 war1gus.Name = "War1gus"
 war1gus.Version = "2.2.5.4"
 war1gus.Homepage = "https://launchpad.net/war1gus"
@@ -110,8 +111,7 @@ SetForestRegeneration(0)
 --SetForestRegeneration(5)
 
 --  Edit this to enable/disable the reveal of the attacker.
---SetRevealAttacker(true)
-SetRevealAttacker(false)
+SetRevealAttacker(true)
 
 -------------------------------------------------------------------------------
 
@@ -238,11 +238,11 @@ AStar("fixed-unit-cost", 1000, "moving-unit-cost", 20, "know-unseen-terrain", "u
 -------------------------------------------------------------------------------
 
 --  All player food unit limit
-SetAllPlayersUnitLimit(200)
+SetAllPlayersUnitLimit(400)
 --  All player building limit
-SetAllPlayersBuildingLimit(200)
+SetAllPlayersBuildingLimit(400)
 --  All player total unit limit
-SetAllPlayersTotalUnitLimit(400)
+SetAllPlayersTotalUnitLimit(1000)
 
 -------------------------------------------------------------------------------
 --  Default triggers for single player
