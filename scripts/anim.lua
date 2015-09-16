@@ -227,6 +227,7 @@ DefineAnimations("animations-water-elemental",
 		 BuildAnimations(frameNumbers_5_3_5_3,
 				 {speed = 4,
 				  attacksound = "fireball attack",
+				  coolofftime = 24,
 				  Still = {
 				      "frame 1", "wait 8",
 					  "frame 5", "wait 8",
@@ -237,6 +238,7 @@ DefineAnimations("animations-fire-elemental",
 		 BuildAnimations(GetFrameNumbers(5, {5, 5, 0}),
 				 {speed = 5,
 				  attacksound = "fireball attack",
+				  coolofftime = 24,
 				  Still = {
 					  "frame 5", "wait 8",
 					  "frame 15", "wait 8",
@@ -302,7 +304,7 @@ local anim_rider2 = BuildAnimations(frameNumbers_5_5_5_5, {speed = 1})
 DefineAnimations("animations-knight2", anim_rider2)
 DefineAnimations("animations-raider2", anim_rider2)
 
-DefineAnimations("animations-daemon", BuildAnimations(frameNumbers_5_5_5_5))
+DefineAnimations("animations-daemon", BuildAnimations(frameNumbers_5_5_5_5, {coolofftime = 24}))
 DefineAnimations("animations-ogre",
 		 BuildAnimations(frameNumbers_5_5_5_5,
 				 {attacksound = "fist attack"}))
