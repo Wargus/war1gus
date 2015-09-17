@@ -115,6 +115,7 @@ local units = {
     HitPoints = 40,
     CanAttack = false,
     Coward = true,
+	AnnoyComputerFactor = 100,
     Armor = 0,
     RightMouseAction = "harvest",
     RepairRange = 1,
@@ -134,6 +135,7 @@ local units = {
     Costs = {"time", 60, "gold", 400},
     HitPoints = 60,
     Armor = 2,
+	AnnoyComputerFactor = 80,
     PiercingDamage = 1,
     BasicDamage = 9,
     Size = {human = {96, 96}},
@@ -142,6 +144,7 @@ local units = {
     Costs = {"time", 70, "gold", 450, "wood", 50},
     HitPoints = 60,
     Armor = 1,
+	AnnoyComputerFactor = 140,
     PiercingDamage = {orc = 5, human = 4},
     BasicDamage = 0,
     Missile = "missile-arrow",
@@ -151,6 +154,7 @@ local units = {
     Costs = {"time", 100, "gold", 900, "wood", 200},
     HitPoints = 120,
     BasicDamage = 255,
+	AnnoyComputerFactor = 160,
     MaxAttackRange = 8,
     Armor = 0,
     Speed = 5,
@@ -163,6 +167,7 @@ local units = {
     HitPoints = 40,
     Armor = 0,
     Mana = {Enable = true},
+	AnnoyComputerFactor = 200,
     CanCastSpell = {
        human = {
           "spell-summon-scorpions",
@@ -182,6 +187,7 @@ local units = {
     Armor = 0,
     Coward = true,
     Mana = {Enable = true},
+	AnnoyComputerFactor = 180,
     CanCastSpell = {
        human = {
           "spell-healing",
@@ -241,6 +247,7 @@ local knight_raider_spec = {
    HitPoints = 90,
    Armor = 5,
    Speed = 13,
+   AnnoyComputerFactor = 120,
    PiercingDamage = 1,
    BasicDamage = 13,
    MaxAttackRange = 1,

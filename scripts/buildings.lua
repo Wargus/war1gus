@@ -119,6 +119,7 @@ local buildings = {
    {Names = {orc = "Barracks", human = "Barracks"},
     Costs = {"time", 150, "gold", 600, "wood", 500},
     HitPoints = 800,
+	AnnoyComputerFactor = 50,
     Size = {128, 128}},
 
    {Names = {orc = "Lumber mill", human = "Lumber mill"},
@@ -149,12 +150,14 @@ local buildings = {
    {Names = {human = "Church", orc = "Temple"},
     Costs = {"time", 200, "gold", 800, "wood", 500},
     HitPoints = 700,
+	AnnoyComputerFactor = 60,
     Size = {128, 128},
     Dependency = {orc = "lumber-mill", human = "lumber-mill"}},
 
    {Names = {orc = "Tower", human = "Tower"},
     Costs = {"time", 200, "gold", 1400, "wood", 300},
     HitPoints = 900,
+	AnnoyComputerFactor = 60,
     Size = {96, 96},
     Dependency = {orc = "blacksmith", human = "blacksmith"},
     Corpse = "unit-destroyed-2x2-place"},
