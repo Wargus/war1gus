@@ -44,10 +44,8 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-road",
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-wall",
   Action = "build", Value = "unit-wall",
-  Allowed = "check-network",
   Key = "w", Hint = "BUILD ~!WALL",
   ForUnit = {"unit-orc-town-hall", "unit-human-town-hall", "unit-orc-blackrock-spire", "unit-human-stormwind-keep"} } )
-
 
 ------------------------------------------------------------------------------
 --  Define unit-button.

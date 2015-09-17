@@ -18,7 +18,7 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 --Units
-local allowedHumanUnits = {"unit-human-farm",
+local allowedHumanUnits = {"unit-human-farm", "unit-wall",
 	"unit-human-town-hall", "unit-peasant",
 	"unit-human-barracks", "unit-footman",
 	"unit-human-lumber-mill", "unit-archer",
@@ -32,7 +32,7 @@ local allowedHumanUnits = {"unit-human-farm",
         "upgrade-horse1", "upgrade-horse2",
         "unit-human-tower", "unit-conjurer",
         "upgrade-scorpion", "upgrade-rain-of-fire", "upgrade-water-elemental"}
-local allowedOrcUnits = {"unit-orc-farm",
+local allowedOrcUnits = {"unit-orc-farm", "unit-wall",
 	"unit-orc-town-hall", "unit-peon",
 	"unit-orc-barracks", "unit-grunt",
 	"unit-orc-lumber-mill", "unit-spearman",
@@ -55,6 +55,18 @@ DefineAllowHumanUnits("FFFFFFFFFFFFFFFF")
 DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
 DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
 DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
+
+DefineAllow("upgrade-far-seeing", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-invisibility", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-dark-vision", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-raise-dead", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-unholy-armor", "RRRRRRRRRRRRRRRR")
+
+DefineAllow("upgrade-spider", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-poison-cloud", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-scorpion", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-rain-of-fire", "RRRRRRRRRRRRRRRR")
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/human/11.sms")

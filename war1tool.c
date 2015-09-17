@@ -280,7 +280,10 @@ RuinParts TilesetRuinParts[] = {
 	{ "dungeon-ruins2x2",{ 83, 83, 83, 83 _12 } },
 	{ "forest-ruins1x1",{ 55 _15 } },
 	{ "swamp-ruins1x1",{ 54 _15 } },
-	{ "dungeon-ruins1x1",{ 83 _15 } }
+	{ "dungeon-ruins1x1",{ 83 _15 } },
+	{ "forest-wall-construction",{ 34 _15 } },
+	{ "swamp-wall-construction",{ 34 _15 } },
+	{ "dungeon-wall-construction",{ 22 _15 } }
 };
 
 char* ArchiveDir;
@@ -612,6 +615,9 @@ Control Todo[] = {
 {RP,0,"forest/neutral/buildings/ruins",190,9,1 _1 },
 {RP,0,"swamp/neutral/buildings/ruins",193,10,1 _1 },
 {RP,0,"dungeon/neutral/buildings/ruins",196,11,1 _1 },
+{RP,0,"forest/neutral/buildings/wall",190,12,1 _1 },
+{RP,0,"swamp/neutral/buildings/wall",193,13,1 _1 },
+{RP,0,"dungeon/neutral/buildings/wall",196,14,1 _1 },
 
 // Missiles
 {U,0,"missiles/fireball",									 217, 347 _2},

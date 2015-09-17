@@ -18,7 +18,7 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 --Units
-local allowedHumanUnits = {"unit-human-farm",
+local allowedHumanUnits = {"unit-human-farm", "unit-wall",
 	"unit-human-town-hall", "unit-human-stormwind-keep",
 	"unit-peasant",
 	"unit-human-barracks", "unit-footman",
@@ -33,7 +33,7 @@ local allowedHumanUnits = {"unit-human-farm",
         "upgrade-horse1", "upgrade-horse2",
         "unit-human-tower", "unit-conjurer",
         "upgrade-scorpion", "upgrade-rain-of-fire", "upgrade-water-elemental"}
-local allowedOrcUnits = {"unit-orc-farm",
+local allowedOrcUnits = {"unit-orc-farm", "unit-wall",
 	"unit-orc-town-hall", "unit-peon",
 	"unit-orc-barracks", "unit-grunt",
 	"unit-orc-lumber-mill", "unit-spearman",
@@ -70,9 +70,6 @@ DefineAllow("upgrade-daemon", "RRRRRRRRRRRRRRRR")
 DefineAllow("upgrade-scorpion", "RRRRRRRRRRRRRRRR")
 DefineAllow("upgrade-rain-of-fire", "RRRRRRRRRRRRRRRR")
 DefineAllow("upgrade-water-elemental", "RRRRRRRRRRRRRRRR")
-
-
--- CreateUnit("unit-peasant", 3, {45, 37})
 
 LoadTileModels("scripts/tilesets/forest.lua")
 Load("campaigns/orc/12.sms")

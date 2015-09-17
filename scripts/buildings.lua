@@ -312,6 +312,13 @@ UnitTypeFiles["unit-wall"] = {
   swamp = "tilesets/swamp/neutral/buildings/wall.png",
   dungeon = "tilesets/dungeon/neutral/buildings/wall.png"
 }
+local wallconstructionfiles = {
+	 forest = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
+	 swamp = ("tilesets/forest/neutral/buildings/wall_1x1.png") }
+DefineConstruction(
+   "construction-wall",
+   {Files = { File = wallconstructionfiles[war1gus.tileset], Size = {32, 32} },
+              Constructions = {{Percent = 0, File = "construction", Frame = 0}} })
 DefineUnitType(
    "unit-wall",
    { Name = "Wall",
@@ -321,7 +328,7 @@ DefineUnitType(
         {"distance", {Distance = 3, DistanceType = "<=", Owner = "allied"}}},
      BuilderOutside = true,
      Animations = "animations-building",
-     Construction = "construction-none",
+     Construction = "construction-wall",
      Priority = 0,
      HitPoints = 60,
      Icon = "icon-wall",
@@ -333,3 +340,5 @@ DefineUnitType(
      NoRandomPlacing = false,
      Type = "land", Building = true,
      VisibleUnderFog = true })
+table.insert(wc1_buildings["orc"], "unit-wall")
+table.insert(wc1_buildings["human"], "unit-wall")
