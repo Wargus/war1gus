@@ -57,7 +57,20 @@ DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
 DefineAllowTable(allowedHumanUnits, "AAAAAAAAAAAAAAAA")
 DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
+DefineAllow("upgrade-far-seeing", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-invisibility", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-dark-vision", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-raise-dead", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-unholy-armor", "RRRRRRRRRRRRRRRR")
+
+DefineAllow("upgrade-spider", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-poison-cloud", "RRRRRRRRRRRRRRRR")
 DefineAllow("upgrade-daemon", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-scorpion", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-rain-of-fire", "RRRRRRRRRRRRRRRR")
+DefineAllow("upgrade-water-elemental", "RRRRRRRRRRRRRRRR")
+
 
 -- CreateUnit("unit-peasant", 3, {45, 37})
 
