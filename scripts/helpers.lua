@@ -105,7 +105,8 @@ function DefineBuildingFromSpec(building)
 	 RepairRange = 0,
 	 VisibleUnderFog = true,
 	 BuildingRules = { -- all buildings except the town hall
-	    {"distance", { Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"}}},
+	    {"distance", { Distance = 1, DistanceType = "=", Type = "unit-road"},
+	     "distance", { Distance = 3, DistanceType = "<", Owner = "self"}}},
 	 AiBuildingRules = { -- all buildings except the town hall
 	    { "distance", { Distance = 3, DistanceType = ">=", Type = "unit-gold-mine" } } },
 	 Sounds = {
@@ -306,7 +307,7 @@ function CreateRoads(positions)
       end
       if not occupied_positions[pos.x][pos.y] then
 	 occupied_positions[pos.x][pos.y] = true
-	 CreateUnit("unit-road", pos.player,{pos.x, pos.y})
+	 CreateUnit("unit-road", pos.player, {pos.x, pos.y})
       end
    end
 end
