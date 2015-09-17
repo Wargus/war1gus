@@ -59,7 +59,7 @@ DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
 DefineAllow("upgrade-water-elemental", "RRRRRRRRRRRRRRRR")
 
-CreateUnit("unit-peon", 3, {16, 7})
+-- CreateUnit("unit-peon", 3, {16, 7})
 
 LoadTileModels("scripts/tilesets/swamp.lua")
 Load("campaigns/human/12.sms")

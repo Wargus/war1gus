@@ -59,7 +59,7 @@ DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
 
 DefineAllow("upgrade-daemon", "RRRRRRRRRRRRRRRR")
 
-CreateUnit("unit-peasant", 3, {45, 37})
+-- CreateUnit("unit-peasant", 3, {45, 37})
 
 LoadTileModels("scripts/tilesets/forest.lua")
 Load("campaigns/orc/12.sms")
