@@ -2943,13 +2943,13 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
 		gzprintf(sms, "Player(%d, \"type\",\"nobody\")\n", i);
 	}
 	gzprintf(smp, "\"neutral\", ");
-	gzprintf(sms, "Player(14)\n");
+	gzprintf(sms, "Player(14, \"race\", \"neutral\", \"color\", { 100, 100, 100 })\n");
 	gzprintf(smp, "\"neutral\")\n");
 	gzprintf(sms, "Player(15,\n\
              \"type\", \"rescue-passive\",\n\
              \"race\", \"neutral\",\n\
              \"ai-name\", \"rescue-passive\",\n\
-             \"color\", { 255, 255, 0 },\n\
+             \"color\", { 200, 200, 200 },\n\
              \"allied\", \"+\")\n");
 }
 
