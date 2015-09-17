@@ -58,7 +58,13 @@ function CreateCampaign(race)
       CreateVideoStep("videos/" .. prefix .. "MAP12.ogv"),
       CreateMapStep("campaigns/" .. race .. "/12.smp"),
       CreateVideoStep("videos/" .. prefix .. "FINALE.ogv"),
+      CreateEndingStep("graphics/ui/" .. race .. "/victory_1.png",
+                       "campaigns/" .. race .. "/ending_1.txt",
+                       "campaigns/" .. race .. "/ending_1.wav"),
+      CreateEndingStep("graphics/ui/" .. race .. "/victory_1.png",
+						"campaigns/" .. race .. "/ending_2.txt",
+						"campaigns/" .. race .. "/ending_2.wav.gz")
    }
-   local campaign_menu = { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23 }
+   local campaign_menu = { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25 }
    return {menu = campaign_menu, steps = campaign_steps}
 end

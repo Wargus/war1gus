@@ -129,6 +129,40 @@ function IncreaseCampaignState(race, state)
   SavePreferences()
 end
 
+function CreateEndingStep(bg, text, voice)
+  return function()
+      print ("Ending in " .. bg .. " with " .. text .. " and " .. voice)
+	  local menu = WarMenu(nil, bg, true)
+	  StopMusic()
+	  local t = LoadBuffer(text)
+	  t = "\n\n\n\n\n\n\n\n\n\n" .. t .. "\n\n\n\n\n\n\n\n\n\n\n\n\n"
+	  local sw = ScrollingWidget(320, 170 * Video.Height / 480)
+	  sw:setBackgroundColor(Color(0,0,0,0))
+	  sw:setSpeed(0.28)
+	  local l = MultiLineLabel(t)
+	  l:setFont(Fonts["large"])
+	  l:setAlignment(MultiLineLabel.LEFT)
+	  l:setVerticalAlignment(MultiLineLabel.TOP)
+	  l:setLineWidth(320)
+	  l:adjustSize()
+	  sw:add(l, 0, 0)
+	  menu:add(sw, 70 * Video.Width / 640, 80 * Video.Height / 480)
+	  local voice = 0
+	  local channel = -1
+	  menu:addHalfButton("~!Continue", "c", 455 * Video.Width / 640, 440 * Video.Height / 480,
+		function()
+		  if (channel ~= -1) then
+			StopChannel(channel)
+		  end
+		  menu:stop()
+		  StopMusic()
+		end)
+      channel = PlaySoundFile(voice, function() end);
+	  menu:run()
+	  GameResult = GameVictory
+  end
+end
+
 function CreatePictureStep(bg, sound, title, text)
   return function()
     SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
@@ -173,7 +207,7 @@ end
 
 function CampaignButtonTitle(race, i)
   Load("campaigns/" .. race .. "/campaign_titles.lua")
-  title = campaign_titles[i]
+  title = campaign_titles[i] or "xxx"
 
   if ( string.len(title) > 20 ) then
 	  title = string.sub(title, 1, 19) .. "..."
@@ -217,7 +251,6 @@ function RunCampaignSubmenu(race)
 
   menu:addFullButton("~!Previous Menu", "p", offx + 193, offy + 212 + (36 * 5),
     function() menu:stop(); currentCampaign = nil; currentRace = nil; currentState = nil; RunCampaignGameMenu() end)
-
   menu:run()
 
 end

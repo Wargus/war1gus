@@ -10,4 +10,5 @@ campaign_titles = {
    "IX. (unknown)",
    "X. Elwynn Forest",
    "XI. Goldshire & Moonbrook",
-   "XII. Stormwind Keep"}
+   "XII. Stormwind Keep",
+   "Ending"}
