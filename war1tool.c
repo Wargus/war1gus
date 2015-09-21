@@ -2958,7 +2958,7 @@ static void SmsSaveResources(FILE* sms_c2, unsigned char* txtp)
 	// 0x0070 - 0x0083: 5xDWord: Gold for each player. 
 	fprintf(sms_c2, "\n-- Resources\n");
 	for (int p = 0; p < 5; p++) {
-		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"lumber\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
+		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"wood\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
 		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"gold\", %d)\n", p, AccessLE32(txtp + 0x70 + (4 * p)));
 	}
 	fprintf(sms_c2, "\n");
