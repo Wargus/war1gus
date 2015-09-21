@@ -2555,6 +2555,19 @@ int ConvertImage(char* file, int pale, int imge)
 	sprintf(buf, "%s/%s/%s.png", Dir, GRAPHIC_PATH, file);
 	CheckPath(buf);
 
+	// force orc palette override for menu button on left panel.
+	// switches the ugly pink (idx 215) to a dark blue (idx 154)
+	if (strstr(file, "ui/orc/left_panel") != NULL) {
+		unsigned char* p = image;
+		unsigned char* end = image + (2 * w * 2 * h);
+		while (p < end) {
+			if (*p == 215) {
+				*p = 154;
+			}
+			++p;
+		}
+	}
+
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
 	SavePNG(buf, image, 2 * w, 2 * h, palp, -1);
 
