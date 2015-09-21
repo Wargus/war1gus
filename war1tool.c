@@ -2951,6 +2951,19 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 	fprintf(sms_c2, "\"}\n");
 }
 
+static void SmsSaveResources(FILE* sms_c2, unsigned char* txtp)
+{
+
+	// 0x005C - 0x0069: 5xDWord: Lumber for each player.
+	// 0x0070 - 0x0083: 5xDWord: Gold for each player. 
+	fprintf(sms_c2, "\n-- Resources\n");
+	for (int p = 0; p < 5; p++) {
+		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"lumber\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
+		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"gold\", %d)\n", p, AccessLE32(txtp + 0x70 + (4 * p)));
+	}
+	fprintf(sms_c2, "\n");
+}
+
 static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
 {
 	int allowid = AccessLE32(txtp);
@@ -2965,6 +2978,7 @@ static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
 			}
 		}
 	}
+	fprintf(sms_c2, "\n");
 }
 
 static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
@@ -3042,7 +3056,7 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 			fprintf(sms_c2, "DefineAllow(\"%s\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed);
 		}
 	}
-	fprintf(sms_c2, "\n\n");
+	fprintf(sms_c2, "\n");
 }
 
 static void SmsSetCurrentRace(FILE* sms_c2, char* race, int state)
@@ -3440,6 +3454,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	SmsSaveObjectives(sms_c2, txtp);
 	SmsSaveAllowed(sms_c2, txtp);
 	SmsSaveUpgrades(sms_c2, txtp);
+	SmsSaveResources(sms_c2, txtp);
 	SmsSetCurrentRace(sms_c2, race, atoi(mapnum));
 	SmsSavePlayers(race, mapnum, sms, smp);
 	SmsSaveMap(sms, smp, mtxme, file);
