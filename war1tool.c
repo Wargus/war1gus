@@ -811,6 +811,47 @@ Control Todo[] = {
 #undef _2
 };
 
+
+
+// This which can be allowed/disallowed in maps.
+// A bitmask of 1 << these things can be found in MapFlags.
+typedef struct _allowed_features_ {
+	const char* thing[2];
+};
+struct _allowed_features_ AllowedFeatures[] = {
+	// Units. 0 - 6
+	{"unit-footman", "unit-grunt"},
+	{"unit-peasant", "unit-peon"},
+	{"unit-human-catapult", "unit-orc-catapult"},
+	{"unit-knight", "unit-raider"},
+	{"unit-archer", "unit-spearman"},
+	{"unit-conjurer", "unit-warlock"},
+	{"unit-cleric", "unit-necrolyte"},
+	// Constructing buildings. 7 - 14
+	{"unit-human-farm", "unit-orc-farm"},
+	{"unit-human-barracks", "unit-orc-barracks"},
+	{"unit-human-church", "unit-orc-temple"},
+	{"unit-human-tower", "unit-orc-tower"},
+	{"unit-human-town-hall", "unit-orc-town-hall"},
+	{"unit-human-lumber-mill", "unit-orc-lumber-mill"},
+	{"unit-human-stables", "unit-human-kennel"},
+	{"unit-human-smith", "unit-orc-smith"},
+	// Cleric/Necrolyte spells. 15 - 17
+	{"upgrade-healing", "upgrade-raise-dead"},
+	{"upgrade-holy-vision", "upgrade-dark-vision"},
+	{"upgrade-invisibility", "upgrade-unholy-armor"},
+	// Conjurer/Warlock spells. 18 - 20
+	{"upgrade-scorpion", "upgrade-spider"},
+	{"upgrade-rain-of-fire", "upgrade-poison-cloud"},
+	{"upgrade-water-elemental", "upgrade-daemon"},
+	// Roads and walls. 21 - 22
+	{"unit-road", "unit-road"},
+	{"unit-wall", "unit-wall"}
+};
+int MaxAllowedFeature = 22;
+#define SkipFeature(f) (f >= 15 && f <= 21)
+#define IsAllowedFeature(id, feature) ((id & (1 << (int)feature)) != 0)
+
 //----------------------------------------------------------------------------
 //  TOOLS
 //----------------------------------------------------------------------------
@@ -2910,10 +2951,27 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 	fprintf(sms_c2, "\"}\n");
 }
 
+static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
+{
+	int allowid = AccessLE32(txtp);
+
+	fprintf(sms_c2, "\n-- Allowed units\n"\
+					"DefineAllowHumanUnits(\"FFFFFFFFFFFFFFFF\")\n"\
+					"DefineAllowOrcUnits(\"FFFFFFFFFFFFFFFF\")\n");	
+	for (int race = 0; race < 2; race++) {
+		for (int f = 0; f <= MaxAllowedFeature; f++) {
+			if (IsAllowedFeature(allowid, f) && !SkipFeature(f)) {
+				fprintf(sms_c2, "DefineAllow(\"%s\", \"AAAAAAAAAAAAAAAA\")\n", AllowedFeatures[f].thing[race]);
+			}
+		}
+	}
+}
+
 static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 {
+	int allowid = AccessLE32(txtp);
 	short offset;
-	fprintf(sms_c2, "\n-- Allowed upgrades and spells\n");
+	fprintf(sms_c2, "\n-- Researched upgrades and spells\n");
 	// 0x0004 - 0x0008: 5xByte: Upgrade: Ranged Weapons, arrows / spears.
 	// 0x0009 - 0x000D: 5xByte: Upgrade: Melee Weapons, swords / axes.
 	// 0x000E - 0x0012: 5xByte: Upgrade: Rider speed, horses / wolves.
@@ -2967,10 +3025,19 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 	// spells
 	for (int upgrade = 0x13; upgrade <= 0x30; upgrade += 5) {
 		for (int race = 0; race < 2; race++) {
-			char* allowed = "AAAAAAAAAAAAAAAA";
-			for (int player = 0; player < 5; player++) {
-				offset = AccessByte(txtp + player + upgrade);
-				allowed[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
+			char* allowed;
+			// spells may not be allowed. offset of spells in allowed features is 15
+			// usefully, they are not in the same order in the allowid as they
+			// are in the list of researched stuff
+			int offsetInAllowedFeatures = (((upgrade - 0x13) / 5) + 3) % 6 + 15;
+			if (!(IsAllowedFeature(allowid, offsetInAllowedFeatures))) {
+				allowed = "FFFFFFFFFFFFFFFF";
+			} else {
+				allowed = "AAAAAAAAAAAAAAAA";
+				for (int player = 0; player < 5; player++) {
+					offset = AccessByte(txtp + player + upgrade);
+					allowed[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
+				}
 			}
 			fprintf(sms_c2, "DefineAllow(\"%s\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed);
 		}
@@ -3371,6 +3438,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	mapnum[1] = file[strlen(file) - 1];
 
 	SmsSaveObjectives(sms_c2, txtp);
+	SmsSaveAllowed(sms_c2, txtp);
 	SmsSaveUpgrades(sms_c2, txtp);
 	SmsSetCurrentRace(sms_c2, race, atoi(mapnum));
 	SmsSavePlayers(race, mapnum, sms, smp);
