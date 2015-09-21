@@ -129,6 +129,7 @@ static inline unsigned int Swap32(unsigned int D) {
 #endif
 
 #define SkipByte(p) ++p
+#define AccessByte(p) (*((unsigned char*)(p)))
 #define FetchByte(p) (*((unsigned char*)(p))); SkipByte(p)
 
 //----------------------------------------------------------------------------
@@ -2909,6 +2910,74 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 	fprintf(sms_c2, "\"}\n");
 }
 
+static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
+{
+	short offset;
+	fprintf(sms_c2, "\n-- Allowed upgrades and spells\n");
+	// 0x0004 - 0x0008: 5xByte: Upgrade: Ranged Weapons, arrows / spears.
+	// 0x0009 - 0x000D: 5xByte: Upgrade: Melee Weapons, swords / axes.
+	// 0x000E - 0x0012: 5xByte: Upgrade: Rider speed, horses / wolves.
+	// 0x0013 - 0x0017: 5xByte: Spell: summon scorpions / summon spiders.
+	// 0x0018 - 0x001C: 5xByte: Spell: rain of fire / cloud of poison.
+	// 0x001D - 0x0021: 5xByte: Spell: summon water elemental / summon daemon.
+	// 0x0022 - 0x0026: 5xByte: Spell: healing / raise dead.
+	// 0x0027 - 0x002B: 5xByte: Spell: far seeing / dark vision.
+	// 0x002C - 0x0030: 5xByte: Spell: invisibility / unholy armor.
+	// 0x0031 - 0x0035: 5xByte: Upgrade: Shields.
+	assert(AccessLE32(txtp + 0x36) == 0xFFFFFFFF);
+	const char* upgradeNames[20] = {
+		"upgrade-spear", "upgrade-arrow",
+		"upgrade-axe", "upgrade-sword",
+		"upgrade-wolves", "upgrade-horse",
+		"upgrade-spider", "upgrade-scorpion",
+		"upgrade-poison-cloud", "upgrade-rain-of-fire",
+		"upgrade-daemon", "upgrade-water-elemental",
+		"upgrade-raise-dead", "upgrade-healing",
+		"upgrade-dark-vision", "upgrade-far-seeing",
+		"upgrade-unholy-armor", "upgrade-invisibility",
+		"upgrade-orc-shield", "upgrade-human-shield"
+	};
+	// basic upgrades
+	for (int upgrade = 0x4; upgrade <= 0x12; upgrade += 5) {
+		for (int race = 0; race < 2; race++) {
+			char* allowed1 = "AAAAAAAAAAAAAAAA";
+			char* allowed2 = "AAAAAAAAAAAAAAAA";
+			for (int player = 0; player < 5; player++) {
+				offset = AccessByte(txtp + player + upgrade);
+				allowed1[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
+				allowed2[player == 4 ? 15 : player] = offset >= 2 ? 'R' : 'A';
+			}
+			fprintf(sms_c2, "DefineAllow(\"%s1\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed1);
+			fprintf(sms_c2, "DefineAllow(\"%s2\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed2);
+		}
+	}
+	// shields
+	for (int race = 0; race < 2; race++) {
+		int upgrade = 0x31;
+		char* allowed1 = "AAAAAAAAAAAAAAAA";
+		char* allowed2 = "AAAAAAAAAAAAAAAA";
+		for (int player = 0; player < 5; player++) {
+			offset = AccessByte(txtp + player + upgrade);
+			allowed1[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
+			allowed2[player == 4 ? 15 : player] = offset >= 2 ? 'R' : 'A';
+		}
+		fprintf(sms_c2, "DefineAllow(\"%s1\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed1);
+		fprintf(sms_c2, "DefineAllow(\"%s2\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed2);
+	}
+	// spells
+	for (int upgrade = 0x13; upgrade <= 0x30; upgrade += 5) {
+		for (int race = 0; race < 2; race++) {
+			char* allowed = "AAAAAAAAAAAAAAAA";
+			for (int player = 0; player < 5; player++) {
+				offset = AccessByte(txtp + player + upgrade);
+				allowed[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
+			}
+			fprintf(sms_c2, "DefineAllow(\"%s\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed);
+		}
+	}
+	fprintf(sms_c2, "\n\n");
+}
+
 static void SmsSetCurrentRace(FILE* sms_c2, char* race, int state)
 {
 	fprintf(sms_c2, "currentRace = \"%s\" -- Fix for restoring the correct race on load\n", race);
@@ -2961,6 +3030,94 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
 
 /**
 **  Save the map
+// Info taken from Alpha.WC1
+// -- Here is a long and incomplete description of the data --
+// FIXME: The map information chunk is not completely decoded. This is from
+// my observations and war1gus code. There are offsets in the file, probably
+// a lot of the mistery data is pointed to by those offsets.
+// Offset ranges are inclusive (0x0000 - 0x0003 means 4 bytes).
+// An intereseting observation is that WC1 has 5 players (4 + neutral).
+//
+// 0x0000 - 0x0003: DWord: Allowed units/upgrades, see AllowId
+//
+//     Here we have some per-player data, upgrades and spells (spells are
+//     actually upgrades too, so...
+//     The data is 5 bytes per player (but player 5 is neutral).
+//     Upgrade values are from 0 to 2, spells are 0 and 1
+//     Orc and Human spells/upgrades overlap, so the first upgrade
+//     is either arrows or spears, etc.
+//
+// 0x0004 - 0x0008: 5xByte: Upgrade: Ranged Weapons, arrows / spears.
+// 0x0009 - 0x000D: 5xByte: Upgrade: Melee Weapons, swords / axes.
+// 0x000E - 0x0012: 5xByte: Upgrade: Rider speed, horses / wolves.
+// 0x0013 - 0x0017: 5xByte: Spell: summon scorpions / summon spiders.
+// 0x0018 - 0x001C: 5xByte: Spell: rain of fire / cloud of poison.
+// 0x001D - 0x0021: 5xByte: Spell: summon water elemental / summon daemon.
+// 0x0022 - 0x0026: 5xByte: Spell: healing / raise dead.
+// 0x0027 - 0x002B: 5xByte: Spell: far seeing / dark vision.
+// 0x002C - 0x0030: 5xByte: Spell: invisibility / unholy armor.
+// 0x0031 - 0x0035: 5xByte: Upgrade: Shields.
+//
+// 0x0036 - 0x0039: 0xFFFFFFFF: This is a constant marker.
+//
+// 0x005C - 0x0069: 5xDWord: Lumber for each player.
+// 0x0070 - 0x0083: 5xDWord: Gold for each player.
+//
+// 0x0088 - 0x008C: 5xByte: Mistery data, per player. human/orc/neutral? human/ai/neutral?
+//
+// 0x0094 - 0x0095: Word: Offset to a null-terminated string with a short briefing.
+//
+//     Here are some chunk numbers, please see Terrain Data.
+//     Chunk number seem to be off (+2). Probably array base trouble.
+// 0x00D0 - 0x00D1: Word: Chunk number with terrain tile data.
+// 0x00D2 - 0x00D3: Word: Chunk number with terrain flags information.
+// 0x00D4 - 0x00D6: Word: Chunk number of tileset palette.
+// 0x00D6 - 0x00D7: Word: Chunk number of tileset info.
+// 0x00D8 - 0x00D9: Word: Chunk number of tileset image data.
+//
+//     This header stuff continues until another FF FF FF FF, but it's
+//     not predictable where. After that you see another int16 offset, into unit data.
+//
+//
+// * Unit Data:
+// Unit data consist of multiple records like this:
+// byte X: X position on the map.
+// byte Y: Y position on the map.
+// byte Type: Type of the unit.
+// byte player: Player that owns the unit (0 - 4). Gold mines have 4, neutral.
+//
+// If Type is 0x32 then there are also some values for gold. There are two bytes.
+// The first seems to be constant 0xFE, the second is aprox gold value/250. I'm
+// not sure how to read gold the right way. The current way sort of works, but it
+// has small differences.
+//
+// Unit data is finished by a "fake" unit with x = y = 0xFF. This is obviousely out
+// of the map.
+//
+// Then we have roads, as 5 bytes: x1, y1, x2, y2, type
+// This means a road from x1 x1 to x2 y2. They do cross. Type seems to be the race.
+// This is also ended by x1 = FF x2 = FF
+//
+// After that we have walls, written exactly the same way as roads.
+//
+//
+// * Terrain Data
+//
+// Decoding the terrain chunk is easy, it's just a 64*64 array of Int16
+// that reference tiles in the Tileset array.
+//
+// There's also a second terrain chunk, with flags.
+// It's also a 64 * 64 array of Int16. It's not completely decoded,
+// but the here are some flags:
+//
+// 0x0000: Normal ground
+// 0x000C: Door(dungeon only)
+// 0x0020: Dungeon entrance? no idea.
+// 0x0040: Forest
+// 0x0080: Water
+// 0x0010: Bridge
+//
+// I use the above for map passability information.
 **
 **  @param f      File handle
 **  @param mtxme  Entry number of map.
@@ -3214,6 +3371,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	mapnum[1] = file[strlen(file) - 1];
 
 	SmsSaveObjectives(sms_c2, txtp);
+	SmsSaveUpgrades(sms_c2, txtp);
 	SmsSetCurrentRace(sms_c2, race, atoi(mapnum));
 	SmsSavePlayers(race, mapnum, sms, smp);
 	SmsSaveMap(sms, smp, mtxme, file);
