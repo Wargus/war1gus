@@ -1,3 +1,5 @@
+LoadTileModels("scripts/tilesets/dungeon.lua")
+Load("campaigns/human/04.sms")
 Load("campaigns/human/04_c2.sms")
 Load("campaigns/human/campaign_titles.lua")
 title = campaign_titles[4]
@@ -15,11 +17,7 @@ AddTrigger(
 		     IfRescuedNearUnit("this", ">=", 1, "unit-lothar", "unit-start-location")) end, ActionVictory)
 AddTrigger(function() return GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0 end, ActionDefeat)
 
-LoadTileModels("scripts/tilesets/dungeon.lua")
-
-Load("campaigns/human/04.sms")
 unit = CreateUnit("unit-start-location", 0, {54, 2})
-DefineAllow("upgrade-healing", "RRRRRRRRRRRRRRRR")
 
 -- wounded units should here become soldiers if healed
 -- lothar should look wounded first, then become himself
@@ -51,5 +49,3 @@ for i,unit in ipairs(GetUnits(15)) do
 end
 
 SetStartView(0, 60, 0)
-SetPlayerData(0, "Resources", "gold", 0)
-SetPlayerData(0, "Resources", "wood", 0)

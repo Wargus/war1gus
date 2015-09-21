@@ -1,3 +1,5 @@
+LoadTileModels("scripts/tilesets/swamp.lua")
+Load("campaigns/orc/02.sms")
 Load("campaigns/orc/02_c2.sms")
 Load("campaigns/orc/campaign_titles.lua")
 title = campaign_titles[2]
@@ -17,21 +19,4 @@ AddTrigger(
   function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
   function() return ActionDefeat() end)
 
---Units
-local allowedOrcUnits = {"unit-orc-farm",
-	"unit-orc-town-hall", "unit-peon",
-	"unit-orc-barracks", "unit-grunt",
-	"unit-orc-lumber-mill", "unit-spearman"}
-local function DefineAllowTable(table, flags)
-	for i, unitName in ipairs(table) do
-		DefineAllow(unitName, flags)
-	end
-end
-DefineAllowOrcUnits("FFFFFFFFFFFFFFFF")
-DefineAllowTable(allowedOrcUnits, "AAAAAAAAAAAAAAAA")
-
-LoadTileModels("scripts/tilesets/swamp.lua")
-Load("campaigns/orc/02.sms")
 SetStartView(0, 34, 18)
-SetPlayerData(0, "Resources", "gold", 700)
-SetPlayerData(0, "Resources", "wood", 700)

@@ -3011,14 +3011,14 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 	};
 	// basic upgrades
 	for (int upgrade = 0x4; upgrade <= 0x12; upgrade += 5) {
-		for (int race = 0; race < 2; race++) {
-			char* allowed1 = "AAAAAAAAAAAAAAAA";
-			char* allowed2 = "AAAAAAAAAAAAAAAA";
-			for (int player = 0; player < 5; player++) {
-				offset = AccessByte(txtp + player + upgrade);
-				allowed1[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
-				allowed2[player == 4 ? 15 : player] = offset >= 2 ? 'R' : 'A';
-			}
+		char* allowed1 = "AAAAAAAAAAAAAAAA";
+		char* allowed2 = "AAAAAAAAAAAAAAAA";
+		for (int player = 0; player < 5; player++) {
+			offset = AccessByte(txtp + player + upgrade);
+			allowed1[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
+			allowed2[player == 4 ? 15 : player] = offset >= 2 ? 'R' : 'A';
+		}
+		for (int race = 0; race < 2; race++) {	
 			fprintf(sms_c2, "DefineAllow(\"%s1\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed1);
 			fprintf(sms_c2, "DefineAllow(\"%s2\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed2);
 		}
@@ -3038,21 +3038,21 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 	}
 	// spells
 	for (int upgrade = 0x13; upgrade <= 0x30; upgrade += 5) {
-		for (int race = 0; race < 2; race++) {
-			char* allowed;
-			// spells may not be allowed. offset of spells in allowed features is 15
-			// usefully, they are not in the same order in the allowid as they
-			// are in the list of researched stuff
-			int offsetInAllowedFeatures = (((upgrade - 0x13) / 5) + 3) % 6 + 15;
-			if (!(IsAllowedFeature(allowid, offsetInAllowedFeatures))) {
-				allowed = "FFFFFFFFFFFFFFFF";
-			} else {
-				allowed = "AAAAAAAAAAAAAAAA";
-				for (int player = 0; player < 5; player++) {
-					offset = AccessByte(txtp + player + upgrade);
-					allowed[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
-				}
+		char* allowed;
+		// spells may not be allowed. offset of spells in allowed features is 15
+		// usefully, they are not in the same order in the allowid as they
+		// are in the list of researched stuff
+		int offsetInAllowedFeatures = (((upgrade - 0x13) / 5) + 3) % 6 + 15;
+		if (!(IsAllowedFeature(allowid, offsetInAllowedFeatures)) && allowid != 0) {
+			allowed = "FFFFFFFFFFFFFFFF";
+		} else {
+			allowed = "AAAAAAAAAAAAAAAA";
+			for (int player = 0; player < 5; player++) {
+				offset = AccessByte(txtp + player + upgrade);
+				allowed[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
 			}
+		}
+		for (int race = 0; race < 2; race++) {
 			fprintf(sms_c2, "DefineAllow(\"%s\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed);
 		}
 	}
