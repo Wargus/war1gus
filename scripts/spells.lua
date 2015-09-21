@@ -319,8 +319,8 @@ DefineSpell("spell-rain-of-fire",
 		 "shards", 10,
 		 "damage", 10,
 		 --  128=4*32=4 tiles
-		 "start-offset-x", -128,
-		 "start-offset-y", -128}},
+		 "start-offset-x", 0,
+		 "start-offset-y", -32}},
 	"sound-when-cast", "blizzard",
 	"autocast", {"range", 12, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard},
 	"ai-cast", {"range", 12, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard}
