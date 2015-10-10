@@ -163,7 +163,7 @@ function DefineUnitFromSpec(unit)
 	 SightRange = 3,
 	 Speed = 9,
 	 organic = true,
-	 ComputerReactionRange = 8,
+	 ComputerReactionRange = 4,
 	 PersonReactionRange = 6,
 	 Armor =  3,
 	 BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",

@@ -49,6 +49,7 @@ local units = {
     HitPoints = 200,
     Armor = 0,
     BasicDamage = 40,
+    Missile = "missile-catapult-rock",
     organic = false},
    {Names = {neutral = "Water elemental"},
     Size = {neutral = {96, 96}},
