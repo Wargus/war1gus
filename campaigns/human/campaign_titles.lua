@@ -1,5 +1,5 @@
 campaign_titles = {
-   "I. Intro",
+   "I. Regent",
    "II. Grand Hamlet",
    "III. Kyross",
    "IV. Dead Mines",

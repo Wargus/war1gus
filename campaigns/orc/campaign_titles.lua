@@ -1,5 +1,5 @@
 campaign_titles = {
-   "I. Intro",
+   "I. Swamps of Sorrow",
    "II. Kyross",
    "III. Grand Hamlet",
    "IV. Dead Mines",
@@ -7,7 +7,7 @@ campaign_titles = {
    "VI. Sunnyglade",
    "VII. Black Morass",
    "VIII. Northshire Abbey",
-   "IX. (unknown)",
+   "IX. Center of the Human Lands",
    "X. Elwynn Forest",
    "XI. Goldshire & Moonbrook",
    "XII. Stormwind Keep",
