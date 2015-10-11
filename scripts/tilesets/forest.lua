@@ -189,7 +189,23 @@ DefineTileset("name", "Forest",
 	"solid", {"unused", {}}, -- 4D0
 	"solid", {"unused", {}}, -- 4E0
 	"solid", {"unused", {}}, -- 4F0
-	"solid", {"unused", {}}, -- 400
+	"mixed", { "rocks", "light-coast", "land", "rock", "unpassable",
+    { 0 },							-- 400
+    { 0 },							-- 410
+    { 0 },							-- 420
+    { 0 },							-- 430
+    { 0 },	-- 440
+    { 0 },							-- 450
+    { 0 },								-- 460
+    { 0 },							-- 470
+    { 0 },							-- 480
+    { 0 },							-- 490
+    { 0 },								-- 4A0
+    { 0 },							-- 4B0
+    { 0 },								-- 4C0
+    { 0 },								-- 4D0
+    {},									-- 4E0
+    {}},								-- 4F0
 	"solid", {"unused", {}}, -- 510
 	"solid", {"unused", {}}, -- 520
 	"solid", {"unused", {}}, -- 530
@@ -221,23 +237,23 @@ DefineTileset("name", "Forest",
 	"solid", {"unused", {}}, -- 6D0
 	"solid", {"unused", {}}, -- 6E0
 	"solid", {"unused", {}}, -- 6F0
-	"mixed", { "forest", "land", "forest", "unpassable",
-          { 71, 79},	-- bottom left, right		        -- 700
-	  { 71, 93},	-- bottom left, bottom middle		-- 710
-	  { 93, 76},	-- bottom middle, top right		-- 720
-	  { 76, 80},	-- top right, centerpiece		-- 730
-	  { 75, 81},	-- top middle, centerpiece2             -- 740
-	  { 82, 83},	-- centerpiece3, centerpiece4		-- 750
-	  { 94, 94},	-- centerpiece5, centerpiece5		-- 760
-	  { 73, 77},	-- top left, centerpiece-top-open	-- 770
-	  { 81, 82},	-- center-bottom, center-bottom		-- 780
-	  { 72, 73},	-- left, top left			-- 790
-	  { 94, 94},	-- centerpiece5, centerpiece5		-- 7A0
-	  { 93, 72},	-- top right, left			-- 7B0
-	  { 94, 94},	-- center-bottom, center-bottom		-- 7C0
-	  { 74, 74},	-- center-top, center-top		-- 7D0
-	  {},							-- 7E0
-	  {}},							-- 7F0
+	  "mixed", { "forest", "light-grass", "land", "forest", "unpassable",
+    { 79 },							-- 700
+    { 71 },							-- 710
+    { 93 },							-- 720
+    { 76 },							-- 730
+    { 78 },							-- 740
+    { 83 },							-- 750
+    { 80 },							-- 760
+    { 73 },							-- 770
+    { 82 },							-- 780
+    { 72 },							-- 790
+    { 81 },							-- 7A0
+    { 75 },							-- 7B0
+    { 77 },							-- 7C0
+    { 74 },							-- 7D0
+    {},									-- 7E0
+    {}},								-- 7F0
 	"mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
           {  21,   0,  23,   0,  34},						-- 800
 	  {  10,   0,  22,   0,  36},						-- 810
