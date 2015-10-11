@@ -253,23 +253,23 @@ DefineTileset(--"tileset-swamp", "class", "swamp",
 	"solid", {"unused", {}}, -- 6D0
 	"solid", {"unused", {}}, -- 6E0
 	"solid", {"unused", {}}, -- 6F0
-	"mixed", { "forest", "land", "forest", "unpassable",
-          { 94, 80},	-- bottom left, right		        -- 700
-	  { 72, 94},	-- bottom left, bottom middle		-- 710
-	  { 94, 77},	-- bottom middle, top right		-- 720
-	  { 77, 81},	-- top right, centerpiece		-- 730
-	  { 76, 82},	-- top middle, centerpiece2             -- 740
-	  { 83, 84},	-- centerpiece3, centerpiece4		-- 750
-	  { 95, 95},	-- centerpiece5, centerpiece5		-- 760
-	  { 83, 78},	-- top left, centerpiece-top-open	-- 770
-	  { 82, 94},	-- center-bottom, center-bottom		-- 780
-	  { 73, 83},	-- left, top left			-- 790
-	  { 95, 95},	-- centerpiece5, centerpiece5		-- 7A0
-	  { 94, 73},	-- top right, left			-- 7B0
-	  { 95, 95},	-- center-bottom, center-bottom		-- 7C0
-	  { 75, 75},	-- center-top, center-top		-- 7D0
-	  {},							-- 7E0
-	  {}},							-- 7F0
+	  "mixed", { "forest", "light-grass", "land", "forest", "unpassable",
+    { 80 },							-- 700
+    { 72 },							-- 710
+    { 94 },							-- 720
+    { 77 },							-- 730
+    { 79 },							-- 740
+    { 84 },							-- 750
+    { 81 },							-- 760
+    { 74 },							-- 770
+    { 83 },							-- 780
+    { 73 },							-- 790
+    { 82 },							-- 7A0
+    { 76 },							-- 7B0
+    { 78 },							-- 7C0
+    { 75 },							-- 7D0
+    {},									-- 7E0
+    {}},								-- 7F0
 	"mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
           {  21,   0,  23,   0,  34},						-- 800
 	  {  10,   0,  22,   0,  36},						-- 810
