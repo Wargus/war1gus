@@ -204,23 +204,24 @@ DefineTileset(--"tileset-swamp", "class", "swamp",
 	"solid", {"unused", {}}, -- 3D0
 	"solid", {"unused", {}}, -- 3E0
 	"solid", {"unused", {}}, -- 3F0
-	"solid", {"unused", {}}, -- 400
-	"solid", {"unused", {}}, -- 410
-	"solid", {"unused", {}}, -- 420
-	"solid", {"unused", {}}, -- 430
-	"solid", {"unused", {}}, -- 440
-	"solid", {"unused", {}}, -- 450
-	"solid", {"unused", {}}, -- 460
-	"solid", {"unused", {}}, -- 470
-	"solid", {"unused", {}}, -- 480
-	"solid", {"unused", {}}, -- 490
-	"solid", {"unused", {}}, -- 4A0
-	"solid", {"unused", {}}, -- 4B0
-	"solid", {"unused", {}}, -- 4C0
-	"solid", {"unused", {}}, -- 4D0
-	"solid", {"unused", {}}, -- 4E0
-	"solid", {"unused", {}}, -- 4F0
-	"solid", {"unused", {}}, -- 400
+	"mixed", { "rocks", "light-coast", "land", "rock", "unpassable",
+    { 0 },							-- 400
+    { 0 },							-- 410
+    { 0 },							-- 420
+    { 0 },							-- 430
+    { 0 },	-- 440
+    { 0 },							-- 450
+    { 0 },								-- 460
+    { 0 },							-- 470
+    { 0 },							-- 480
+    { 0 },							-- 490
+    { 0 },								-- 4A0
+    { 0 },							-- 4B0
+    { 0 },								-- 4C0
+    { 0 },								-- 4D0
+    {},									-- 4E0
+    {}},								-- 4F0
+	"solid", {"unused", {}}, -- 500
 	"solid", {"unused", {}}, -- 510
 	"solid", {"unused", {}}, -- 520
 	"solid", {"unused", {}}, -- 530
