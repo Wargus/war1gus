@@ -2559,7 +2559,7 @@ int ConvertImage(char* file, int pale, int imge)
 	// switches the ugly pink (idx 215) to a dark blue (idx 154)
 	if (strstr(file, "ui/orc/left_panel") != NULL) {
 		unsigned char* p = image;
-		unsigned char* end = image + (2 * w * 2 * h);
+		unsigned char* end = image + (w * h);
 		while (p < end) {
 			if (*p == 215) {
 				*p = 154;
