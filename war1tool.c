@@ -59,6 +59,7 @@
 #include <zlib.h>
 
 #include "xmi2mid.h"
+#include "scale2x.h"
 
 #if defined(_MSC_VER) || defined(__MINGW32__) || defined(USE_BEOS)
 typedef unsigned long u_int32_t;
@@ -905,24 +906,28 @@ void CheckPath(const char* path)
 */
 void ResizeImage(unsigned char** image, int ow, int oh, int nw, int nh)
 {
-	int i;
-	int j;
-	unsigned char* data;
-	int x;
-
 	if (ow == nw && nh == oh) {
 		return;
 	}
-
-	data = (unsigned char*)malloc(nw * nh);
-	x = 0;
-	for (i = 0; i < nh; ++i) {
-		for (j = 0; j < nw; ++j) {
-			data[x] = ((unsigned char*)*image)[
-				i * oh / nh * ow + j * ow / nw];
-			++x;
-		}
+	if (!(ow * 2 == nw && oh * 2 == nh)) {
+		fprintf(stderr, "Can only scale by factors of two!");
+		exit(-1);
 	}
+	unsigned char* data;
+	data = (unsigned char*)malloc(nw * nh);
+
+	//int i;
+	//int j;
+	//int x;
+	//x = 0;
+	//for (i = 0; i < nh; ++i) {
+	//	for (j = 0; j < nw; ++j) {
+	//		data[x] = ((unsigned char*)*image)[
+	//			i * oh / nh * ow + j * ow / nw];
+	//		++x;
+	//	}
+	//}
+	scale2x(data, *image, ow, oh);
 
 	free(*image);
 	*image = data;

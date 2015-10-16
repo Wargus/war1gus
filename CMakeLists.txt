@@ -25,10 +25,11 @@ file(GLOB war1gus_SRCS
 	"maps/*.sms"
 	"war1tool.c"
 	"xmi2mid.cpp"
+	"scale2x.c"
 	"README"
 )
 
-set(war1gus_HDRS xmi2mid.h)
+set(war1gus_HDRS xmi2mid.h scale2x.h)
 
 find_package(PNG REQUIRED)
 find_package(ZLIB REQUIRED)
