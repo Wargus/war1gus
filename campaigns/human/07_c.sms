@@ -13,7 +13,7 @@ Briefing(
 )
 
 AddTrigger(
-  function() return (GetPlayerData(15, "UnitTypesCount", "unit-peasant") == 0 and GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return (GetPlayerData(4, "UnitTypesCount", "unit-peasant") == 0 and GetNumOpponents(GetThisPlayer()) == 0) end,
   function() return ActionVictory() end)
 AddTrigger(
   function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
