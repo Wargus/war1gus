@@ -45,6 +45,10 @@ function DefineBuildingFromSpec(building)
 	 forest = ("tilesets/forest/" .. race ..
 		      "/buildings/" .. filename .. "_construction.png"),
 	 swamp = ("tilesets/swamp/" .. race ..
+		     "/buildings/" .. filename .. "_construction.png"),
+	 forest_campaign = ("tilesets/forest/" .. race ..
+		      "/buildings/" .. filename .. "_construction.png"),
+	 swamp_campaign = ("tilesets/swamp/" .. race ..
 		     "/buildings/" .. filename .. "_construction.png") }
 
       if not building.NotConstructable then
@@ -69,6 +73,10 @@ function DefineBuildingFromSpec(building)
 	 forest = ("tilesets/forest/" .. race ..
 		      "/buildings/" .. filename .. ".png"),
 	 swamp = ("tilesets/swamp/" .. race ..
+		     "/buildings/" .. filename .. ".png"),
+	 forest_campaign = ("tilesets/forest/" .. race ..
+		      "/buildings/" .. filename .. ".png"),
+	 swamp_campaign = ("tilesets/swamp/" .. race ..
 		     "/buildings/" .. filename .. ".png") }
 
       local unitType = {

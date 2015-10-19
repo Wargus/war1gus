@@ -4,7 +4,7 @@ local function RunEditorNewMapMenu()
   local menu = WarMenu()
   local offx = (Video.Width - 640) / 2
   local offy = (Video.Height - 480) / 2
-  local tilesets = { "forest_editor", "swamp", "dungeon" }
+  local tilesets = { "forest", "swamp", "dungeon" }
   local mapSizes = {"32", "64", "96", "128", "256"}
   LoadUI("orc", Video.Width, Video.Height)
 

@@ -33,7 +33,7 @@ table.foreach(UnitTypeFiles,
 	function(k, v) DefineUnitType(k, {Image = {"file", v[war1gus.tileset]}}) end)
 
 -- XXX: make sure walls and roads have their directions
-if war1gus.tileset == "forest" or war1gus.tileset == "swamp" then
+if war1gus.tileset == "forest" or war1gus.tileset == "swamp" or war1gus.tileset == "forest_campaign" or war1gus.tileset == "swamp_campaign" then
    DefineUnitType("unit-wall", {NumDirections = 16, Flip = false})
    DefineUnitType("unit-road", {NumDirections = 16, Flip = false})
 end

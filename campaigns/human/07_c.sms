@@ -1,4 +1,4 @@
-LoadTileModels("scripts/tilesets/forest.lua")
+LoadTileModels("scripts/tilesets/forest_campaign.lua")
 Load("campaigns/human/07.sms")
 Load("campaigns/human/07_c2.sms")
 Load("campaigns/human/campaign_titles.lua")

@@ -1,4 +1,4 @@
-LoadTileModels("scripts/tilesets/swamp.lua")
+LoadTileModels("scripts/tilesets/swamp_campaign.lua")
 Load("campaigns/orc/02.sms")
 Load("campaigns/orc/02_c2.sms")
 Load("campaigns/orc/campaign_titles.lua")

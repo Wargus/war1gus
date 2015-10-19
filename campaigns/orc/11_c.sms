@@ -1,4 +1,4 @@
-LoadTileModels("scripts/tilesets/forest.lua")
+LoadTileModels("scripts/tilesets/forest_campaign.lua")
 Load("campaigns/orc/11.sms")
 Load("campaigns/orc/11_c2.sms")
 Load("campaigns/orc/campaign_titles.lua")
