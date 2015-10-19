@@ -13,12 +13,12 @@ Briefing(
 )
 
 AddTrigger(
-  function() return (GetPlayerData(15, "UnitTypesCount", "unit-garona") == 0 and
+  function() return (GetPlayerData(4, "UnitTypesCount", "unit-garona") == 0 and
 		     IfRescuedNearUnit("this", ">=", 1, "unit-garona", "unit-start-location")) end,
   function() return ActionVictory() end)
 AddTrigger(
   function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0 or 
-		     (GetPlayerData(15, "UnitTypesCount", "unit-garona") == 0 and 
+		     (GetPlayerData(4, "UnitTypesCount", "unit-garona") == 0 and 
 		      GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-garona") == 0)) end,
   function() return ActionDefeat() end)
 

@@ -3102,7 +3102,7 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
              \"type\", \"person\",\n\
              \"race\", \"%s\",\n\
              \"color\", { 224, 224, 224 })\n", race);
-	for (i = 1; i < 5; ++i) {
+	for (i = 1; i < 4; ++i) {
 		gzprintf(smp, "\"computer\", ");
 		gzprintf(sms,
 			"Player(%d,\n\
@@ -3112,19 +3112,21 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
             \"color\", { 255, 0, 0 },\n\
             \"resources\", {\"gold\", 2000, \"wood\", 2000})\n", i, computerrace, mapnum);
 	}
-	for (i = 5; i < 14; ++i) {
-		gzprintf(smp, "\"nobody\", ");
-		gzprintf(sms, "Player(%d, \"type\",\"nobody\")\n", i);
-	}
 	gzprintf(smp, "\"neutral\", ");
-	gzprintf(sms, "Player(14, \"race\", \"neutral\", \"color\", { 100, 100, 100 })\n");
-	gzprintf(smp, "\"neutral\")\n");
-	gzprintf(sms, "Player(15,\n\
+	gzprintf(sms, "Player(4,\n\
              \"type\", \"rescue-passive\",\n\
              \"race\", \"neutral\",\n\
              \"ai-name\", \"rescue-passive\",\n\
              \"color\", { 200, 200, 200 },\n\
              \"allied\", \"+\")\n");
+	for (i = 5; i < 14; ++i) {
+		gzprintf(smp, "\"nobody\", ");
+		gzprintf(sms, "Player(%d, \"type\",\"nobody\")\n", i);
+	}
+	gzprintf(smp, "\"neutral\")\n");
+	gzprintf(sms, "Player(15,\n\
+             \"race\", \"neutral\",\n\
+             \"color\", { 100, 100, 100 })\n");
 }
 
 /**
@@ -3351,9 +3353,6 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 		y /= 2;
 		type = FetchByte(p);
 		player = FetchByte(p);
-		if (player == 4) {
-		    player = 15; // neutral
-		}
 		if (type == 0x32) {
 			// gold mine
 		        value = FetchLE16(p);
@@ -3361,14 +3360,12 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 			value = 0;
 		}
 
+		if (!strcmp("unit-gold-mine", UnitTypes[type])) {
+			player = 15;
+		}
+		gzprintf(f, "  unit = CreateUnit(\"%s\", %d, {%d, %d})\n", UnitTypes[type], player, x, y);
 		if (value) {
-			assert(!strcmp("unit-gold-mine", UnitTypes[type]));
-			assert(player == 15);
-			// player 15 is rescue-passive, so just make gold mines neutral
-			gzprintf(f, "  unit = CreateUnit(\"%s\", 14, {%d, %d})\n", UnitTypes[type], x, y);
 			gzprintf(f, "  SetResourcesHeld(unit, %d)\n", value);
-		} else {
-			gzprintf(f, "  unit = CreateUnit(\"%s\", %d, {%d, %d})\n", UnitTypes[type], player, x, y);
 		}
 		++i;
 	}
