@@ -41,6 +41,10 @@ add_executable(war1tool ${war1gus_SRCS} ${war1gus_HDRS})
 target_link_libraries(war1tool ${war1gus_LIBS})
 install(TARGETS war1tool DESTINATION "bin")
 
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+endif()
+
 if (WIN32 AND MSVC)
 	if(MSVC_VERSION GREATER 1800)       # if > VC13 
 		message("The project must be compiled with VS2013 or older.") 
