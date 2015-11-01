@@ -47,7 +47,7 @@ DefineTileset("name", "Dungeon",
 	   26, 27, 28, 29, 30, 31}}, -- water                    -- 010
 	"solid", {"land",
           {32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
-	   42, 43, 44, 45, 46, 47, {"rock", "unpassable"}},                                       -- 020
+	   42, 43, 44, 45, 46, 47, {"rock", "unpassable"}}},                                       -- 020
 	"solid", {"land",
           {48, 49,
 	   50, {"rock", "unpassable"},
