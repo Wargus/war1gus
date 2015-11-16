@@ -3002,6 +3002,9 @@ static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
 static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 {
 	int allowid = AccessLE32(txtp);
+	char *allowed1, *allowed2;
+	allowed1 = (char*)calloc(sizeof(char), 17);
+	allowed2 = (char*)calloc(sizeof(char), 17);
 	short offset;
 	fprintf(sms_c2, "\n-- Researched upgrades and spells\n");
 	// 0x0004 - 0x0008: 5xByte: Upgrade: Ranged Weapons, arrows / spears.
@@ -3029,8 +3032,8 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 	};
 	// basic upgrades
 	for (int upgrade = 0x4; upgrade <= 0x12; upgrade += 5) {
-		char* allowed1 = "AAAAAAAAAAAAAAAA";
-		char* allowed2 = "AAAAAAAAAAAAAAAA";
+		memset(allowed1, 'A', 16);
+		memset(allowed2, 'A', 16);
 		for (int player = 0; player < 5; player++) {
 			offset = AccessByte(txtp + player + upgrade);
 			allowed1[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
@@ -3044,8 +3047,8 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 	// shields
 	for (int race = 0; race < 2; race++) {
 		int upgrade = 0x31;
-		char* allowed1 = "AAAAAAAAAAAAAAAA";
-		char* allowed2 = "AAAAAAAAAAAAAAAA";
+		memset(allowed1, 'A', 16);
+		memset(allowed2, 'A', 16);
 		for (int player = 0; player < 5; player++) {
 			offset = AccessByte(txtp + player + upgrade);
 			allowed1[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
@@ -3056,15 +3059,15 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 	}
 	// spells
 	for (int upgrade = 0x13; upgrade <= 0x30; upgrade += 5) {
-		char* allowed;
+		char* allowed = allowed1;
 		// spells may not be allowed. offset of spells in allowed features is 15
 		// usefully, they are not in the same order in the allowid as they
 		// are in the list of researched stuff
 		int offsetInAllowedFeatures = (((upgrade - 0x13) / 5) + 3) % 6 + 15;
 		if (!(IsAllowedFeature(allowid, offsetInAllowedFeatures)) && allowid != 0) {
-			allowed = "FFFFFFFFFFFFFFFF";
+			memset(allowed, 'F', 16);
 		} else {
-			allowed = "AAAAAAAAAAAAAAAA";
+			memset(allowed, 'A', 16);
 			for (int player = 0; player < 5; player++) {
 				offset = AccessByte(txtp + player + upgrade);
 				allowed[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
