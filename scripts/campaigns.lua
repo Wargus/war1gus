@@ -31,7 +31,7 @@
 --=============================================================================
 
 function CreateCampaign(race)
-   local prefix = string.sub(race, 1, 1)
+   local prefix = string.upper(string.sub(race, 1, 1))
    local campaign_steps = {
       CreateVideoStep("videos/" .. prefix .. "MAP01.ogv"),
       CreateMapStep("campaigns/" .. race .. "/01.smp"),

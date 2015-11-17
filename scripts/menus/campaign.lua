@@ -147,7 +147,6 @@ function CreateEndingStep(bg, text, voice)
 	  l:adjustSize()
 	  sw:add(l, 0, 0)
 	  menu:add(sw, 70 * Video.Width / 640, 80 * Video.Height / 480)
-	  local voice = 0
 	  local channel = -1
 	  menu:addHalfButton("~!Continue", "c", 455 * Video.Width / 640, 440 * Video.Height / 480,
 		function()
