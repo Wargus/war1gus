@@ -835,8 +835,8 @@ struct _allowed_features_ AllowedFeatures[] = {
 	{"unit-human-tower", "unit-orc-tower"},
 	{"unit-human-town-hall", "unit-orc-town-hall"},
 	{"unit-human-lumber-mill", "unit-orc-lumber-mill"},
-	{"unit-human-stables", "unit-human-kennel"},
-	{"unit-human-smith", "unit-orc-smith"},
+	{"unit-human-stable", "unit-orc-kennel"},
+	{"unit-human-blacksmith", "unit-orc-blacksmith"},
 	// Cleric/Necrolyte spells. 15 - 17
 	{"upgrade-healing", "upgrade-raise-dead"},
 	{"upgrade-holy-vision", "upgrade-dark-vision"},
@@ -2989,6 +2989,11 @@ static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
 	fprintf(sms_c2, "\n-- Allowed units\n"\
 					"DefineAllowHumanUnits(\"FFFFFFFFFFFFFFFF\")\n"\
 					"DefineAllowOrcUnits(\"FFFFFFFFFFFFFFFF\")\n");	
+	fprintf(sms_c2, "\n-- Allowed upgraded units. These are just enabled if the corresponding update is researched, anyway\n"\
+					"DefineAllow(\"unit-knight1\", \"AAAAAAAAAAAAAAAA\")\n"\
+					"DefineAllow(\"unit-knight2\", \"AAAAAAAAAAAAAAAA\")\n"\
+					"DefineAllow(\"unit-raider1\", \"AAAAAAAAAAAAAAAA\")\n"\
+					"DefineAllow(\"unit-raider2\", \"AAAAAAAAAAAAAAAA\")\n");
 	for (int race = 0; race < 2; race++) {
 		for (int f = 0; f <= MaxAllowedFeature; f++) {
 			if (IsAllowedFeature(allowid, f) && !SkipFeature(f)) {
