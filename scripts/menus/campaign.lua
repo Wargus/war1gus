@@ -85,6 +85,7 @@ function Briefing(title, objs, bg, text, voices)
       end
       menu:stop()
       StopMusic()
+      MusicStopped()
     end)
 
 
