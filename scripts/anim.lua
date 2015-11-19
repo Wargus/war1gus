@@ -126,7 +126,7 @@ end
 
 local function BuildAttackHarvest(frames, waittime, sound)
    -- Attack / Harvest with some modification
-   local res = {"unbreakable begin"}
+   local res = {"unbreakable begin", "sound tree chopping", "wait 5"}
    for i = 1, #frames do
       res[1 + #res] = "frame " .. frames[i]
       if (i == (1 + #frames) / 2) then

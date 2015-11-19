@@ -104,8 +104,8 @@ DefinePlaySections("race", "orc", "type", "stats-defeat",
 
 MakeSound("missing", "ui/cancel.wav")
 
-MakeSound("building construction", "misc/building.wav")
-
+building_construction = MakeSound("building construction", "misc/building.wav")
+MakeSound("build road", "misc/build_road.wav")
 MakeSound("blacksmith", "blacksmith.wav")
 MakeSound("burning", "misc/fire_crackling.wav")
 MakeSound("explosion", "misc/explosion.wav")
@@ -148,6 +148,9 @@ DefineGameSounds(
   "placement-success", { "orc", MakeSound("placement success", "ui/click.wav")},
 
   "click", MakeSound("click", "ui/click.wav"),
+
+  "building-construction", {"human", building_construction},
+  "building-construction", {"orc", building_construction},
 
   "work-complete", {"human", MakeSound("human work complete", "human/work_complete.wav")},
   "work-complete", {"orc", MakeSound("orc work complete", "orc/work_complete.wav")}
