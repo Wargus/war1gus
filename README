@@ -1,3 +1,0 @@
-This tool is to extract the data from the DOS version of "Warcraft: Orcs & Humans".
-To extract music, sounds, and videos, "ffmpeg", "ffmpeg2theora", and "timidity" must
-be set up and in the PATH. When running the tool.
