@@ -34,10 +34,10 @@ print("Stratagus default config file loading ...\n")
 war1gus = {}
 wc1 = war1gus
 war1gus.Name = "War1gus"
-war1gus.Version = "2.2.5.4"
-war1gus.Homepage = "https://launchpad.net/war1gus"
+war1gus.Version = "2.4"
+war1gus.Homepage = "https://github.com/Wargus/war1gus"
 war1gus.Licence = "GPL v2"
-war1gus.Copyright = "Copyright (c) 1998-2010 by The Stratagus Project"
+war1gus.Copyright = "Copyright (c) 1998-2015 by The Stratagus Project"
 
 function file_exists(path, name)
    for i,f in ipairs(ListFilesInDirectory(path)) do
