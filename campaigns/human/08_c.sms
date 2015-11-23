@@ -1,4 +1,4 @@
-LoadTileModels("scripts/tilesets/dungeon.lua")
+LoadTileModels("scripts/tilesets/dungeon_campaign.lua")
 Load("campaigns/human/08.sms")
 Load("campaigns/human/08_c2.sms")
 Load("campaigns/human/campaign_titles.lua")

@@ -33,7 +33,7 @@
 --
 --	(define-tileset ident class name image palette slots animations)
 --
-DefineTileset("name", "dungeon",
+DefineTileset("name", "dungeon_campaign",
   "image", "tilesets/dungeon/terrain.png",
   "size", {32, 32},
   -- Slots descriptions
@@ -199,5 +199,6 @@ DefineTileset("name", "dungeon",
 	}
   )
 
-
-war1gus.tileset = "dungeon"
+BuildTilesetTables()
+war1gus.tileset = "dungeon_campaign"
+Load("scripts/scripts.lua")
