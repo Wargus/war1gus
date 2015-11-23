@@ -187,7 +187,9 @@ UnitTypeFiles["unit-gold-mine"] = {
   forest = "tilesets/forest/neutral/buildings/gold_mine.png",
   swamp = "tilesets/swamp/neutral/buildings/gold_mine.png",
   forest_campaign = "tilesets/forest/neutral/buildings/gold_mine.png",
-  swamp_campaign = "tilesets/swamp/neutral/buildings/gold_mine.png"
+  swamp_campaign = "tilesets/swamp/neutral/buildings/gold_mine.png",
+  dungeon = "tilesets/swamp/neutral/buildings/gold_mine.png",
+  dungeon_campaign = "tilesets/swamp/neutral/buildings/gold_mine.png"
 }
 
 DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
@@ -333,7 +335,9 @@ local wallconstructionfiles = {
 	 forest = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
 	 swamp = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
 	 forest_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
-	 swamp_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png") }
+	 swamp_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
+     dungeon = "tilesets/dungeon/neutral/buildings/wall_1x1.png",
+     dungeon_campaign = "tilesets/dungeon/neutral/buildings/wall_1x1.png" }
 DefineConstruction(
    "construction-wall",
    {Files = { File = wallconstructionfiles[war1gus.tileset], Size = {32, 32} },

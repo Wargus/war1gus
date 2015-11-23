@@ -199,6 +199,6 @@ DefineTileset("name", "dungeon_campaign",
 	}
   )
 
-BuildTilesetTables()
+-- BuildTilesetTables() -- needs proper wall definitions
 war1gus.tileset = "dungeon_campaign"
 Load("scripts/scripts.lua")
