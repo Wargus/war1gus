@@ -35,33 +35,33 @@
 --  DefineTileset(ident class name image palette slots animations)
 --
 DefineTileset("name", "Swamp",
-  "image", "tilesets/forest/terrain.png",
+  "image", "tilesets/swamp/terrain.png",
   "size", {32, 32},
   -- Slots descriptions
   "slots",
 	{ "special", {		-- Can't be in pud
-    "top-one-tree", 90, "mid-one-tree", 91, "bot-one-tree", 92,
-    "removed-tree", 95 },
+    "top-one-tree", 0x5b, "mid-one-tree", 0x5c, "bot-one-tree", 0x5d,
+    "removed-tree", 0x60 },
   "solid", { "unused",
     {}},								-- 000
   "solid", { "unused",
     {}},								-- 010
   "solid", { "water", "water",
-    { 164 }},						-- 020
+    { 0xd5 }},						-- 020
   "solid", { "unused",
     {}},	-- 030
-  "solid", { "light-grass", "land",
-    { 122 }},	-- 040
-  "solid", { "medium-grass", "land",
-    { 119, 173, 241, 242, 246, 247, 248, 249, 250, 251 }},	-- 050
-  "solid", { "dark-grass", "land",
-    { 168 }},	-- 060
+  "solid", { "light-swamp", "land",
+    { 0xde }},	-- 040
+  "solid", { "medium-swamp", "land",
+    { 0x66, 0x78, 0x89, 0x87  }},	-- 050
+  "solid", { "dark-swamp", "land",
+    { 0x10a }},	-- 060
   "solid", { "forest", "land", "forest", "unpassable",
-    { 94 }},							-- 070
+    { 0x5f }},							-- 070
   "solid", { "bridge-horizontal", "land", "no-building",
-    { 288, 287, 286, 285, 284, 278, 277 }},						-- 080
+    { 0xae,0xaf,0xb0 }},						-- 080
   "solid", { "bridge-vertical", "land", "no-building",
-    { 291, 300, 282, 273 }},					-- 090
+    { 0x6e,0x73,0x7b }},					-- 090
   "solid", { "unused",
     {}},					-- 0A0
   "solid", { "unused",
@@ -74,89 +74,89 @@ DefineTileset("name", "Swamp",
     {}},								-- 0E0
   "solid", { "unused",
     {}},								-- 0F0
-  "mixed", { "water", "medium-grass", "land", "no-building",
-    { 166 },							-- 100
-    { 165 },							-- 110
-    { 107 },							-- 120
-    { 111 },							-- 130
-    { 124 },							-- 140
-    { 143 },							-- 150
-    { 106 },							-- 160
-    { 110 },							-- 170
-    { 143 },							-- 180
-    { 125 },							-- 190
-    { 108 },							-- 1A0
-    { 96 },							-- 1B0
-    { 115 },							-- 1C0
-    { 113 },							-- 1D0
+  "mixed", { "water", "medium-swamp", "land", "no-building",
+    { 0xf1 },							-- 100
+    { 0xe0 },							-- 110
+    { 0xf0, 0xfb },							-- 120
+    { 0xbd },							-- 130
+    { 0x106, 0x108 },							-- 140
+    { 0xe2 },							-- 150
+    { 0xfa },							-- 160
+    { 0xc6 },							-- 170
+    { 0xe2 },							-- 180
+    { 0x107, 0xd3 },							-- 190
+    { 0xfc },							-- 1A0
+    { 0x111, 0xbc },							-- 1B0
+    { 0x110 },							-- 1C0
+    { 0x112 },							-- 1D0
     {},									-- 1E0
     {}},								-- 1F0
-  "mixed", { "medium-grass", "light-grass", "land",
-    { 183 },							-- 200
-    { 181 },							-- 210
-    { 104 },							-- 220
-    { 163 },							-- 230
-    { 121 },							-- 240
-    { 162 },							-- 250 -- what?
-    { 103 },							-- 260
-    { 161 },							-- 270
-    { 182 },							-- 280 -- what?
-    { 123 },							-- 290
-    { 105 },							-- 2A0
-    { 141 },							-- 2B0
-    { 140 },							-- 2C0
-    { 142 },							-- 2D0
+  "mixed", { "medium-swamp", "light-swamp", "land",
+    { 0xdc },							-- 200
+    { 0xc5 },							-- 210
+    { 0xc4 },							-- 220
+    { 0xeb },							-- 230
+    { 0xcf },							-- 240
+    { 0xd9 },							-- 250 -- what?
+    { 0x6b },							-- 260
+    { 0xee },							-- 270
+    { 0xcc },							-- 280 -- what?
+    { 0xdf },							-- 290
+    { 0x70 },							-- 2A0
+    { 0xdd },							-- 2B0
+    { 0xc3 },							-- 2C0
+    { 0xd2 },							-- 2D0
     {},									-- 2E0
     {}},								-- 2F0
-  "mixed", { "medium-grass", "dark-grass", "land",
-    { 136 },							-- 300
-    { 134 },							-- 310
-    { 156 },							-- 320
-    { 99 },							-- 330
-    { 167 },							-- 340
-    { 98 },							-- 350
-    { 155 },							-- 360
-    { 97 },							-- 370
-    { 135 },							-- 380
-    { 169 },							-- 390
-    { 157 },							-- 3A0
-    { 176 },							-- 3B0
-    { 175 },							-- 3C0
-    { 177 },							-- 3D0
+  "mixed", { "medium-swamp", "dark-swamp", "land",
+    { 0xf2 },							-- 300
+    { 0x102 },							-- 310
+    { 0xf3 },							-- 320
+    { 0x113 },							-- 330
+    { 0x109 },							-- 340
+    { 0x10e },							-- 350
+    { 0x71 },							-- 360
+    { 0x114 },							-- 370
+    { 0x105 },							-- 380
+    { 0x10b },							-- 390
+    { 0xf5 },							-- 3A0
+    { 0x101 },							-- 3B0
+    { 0x6c },							-- 3C0
+    { 0x116 },							-- 3D0
     {},									-- 3E0
     {}},								-- 3F0
   "mixed", { "water", "bridge-horizontal", "land", "no-building",
-    { 256 },							-- 400
-    { 261 },							-- 410
-    { 258 },							-- 420
-    { 293 },							-- 430
-    { 276 },	-- 440
-    { 275 },							-- 450
-    { 257 },								-- 460
-    { 298 },							-- 470
-    { 280 },							-- 480
-    { 279 },							-- 490
-    { 260 },								-- 4A0
-    { 295 },							-- 4B0
-    { 294 },								-- 4C0
-    { 297 },								-- 4D0
+    { 0x9f },							-- 400
+    { 0xa3 },							-- 410
+    { 0xa0 },							-- 420
+    { 0xb5 },							-- 430
+    { 0xad },	-- 440
+    { 0xe5 },							-- 450
+    { 0xa1 },								-- 460
+    { 0xb9 },							-- 470
+    { 0xe6 },							-- 480
+    { 0xb1 },							-- 490
+    { 0xa2 },								-- 4A0
+    { 0xb8 },							-- 4B0
+    { 0xb6 },								-- 4C0
+    { 0xb7 },								-- 4D0
     {},									-- 4E0
     {}},								-- 4F0
   "mixed", { "water", "bridge-vertical", "land", "no-building",
-    { 252 },							-- 500
-    { 255 },							-- 510
-    { 263 },							-- 520
-    { 208 },							-- 530
-    { 272 },							-- 540
-    { 304 },							-- 550
-    { 262 },							-- 560
-    { 306 },							-- 570
-    { 305 },							-- 580
-    { 274 },							-- 590
-    { 264 },							-- 5A0
-    { 301 },							-- 5B0
-    { 299 },							-- 5C0
-    { 302 },							-- 5D0
+    { 0x68 },							-- 500
+    { 0x6a },							-- 510
+    { 0x69 },							-- 520
+    { 0x8a },							-- 530
+    { 0x7a },							-- 540
+    { 143 },							-- 550
+    { 0x72 },							-- 560
+    { 0x8c },							-- 570
+    { 143 },							-- 580
+    { 0x6f },							-- 590
+    { 0x74 },							-- 5A0
+    { 0x8b },							-- 5B0
+    { 0x6d },							-- 5C0
+    { 0x7c },							-- 5D0
     {},									-- 5E0
     {}},								-- 5F0
   "mixed", {"rocks", "light-coast", "land", "rock", "unpassable",
@@ -177,24 +177,24 @@ DefineTileset("name", "Swamp",
     { 0 },							-- 6D0
     {},									-- 6E0
     {}},								-- 6F0
-  "mixed", { "forest", "light-grass", "land", "forest", "unpassable",
-    { 80 },							-- 700
-    { 72 },							-- 710
-    { 94 },							-- 720
-    { 77 },							-- 730
-    { 79 },							-- 740
-    { 84 },							-- 750
-    { 81 },							-- 760
-    { 74 },							-- 770
-    { 83 },							-- 780
-    { 73 },							-- 790
-    { 82 },							-- 7A0
-    { 76 },							-- 7B0
-    { 78 },							-- 7C0
-    { 75 },							-- 7D0
+  "mixed", { "forest", "light-swamp", "land", "forest", "unpassable",
+    { 0x50 },							-- 700
+    { 0x48 },							-- 710
+    { 0x5d },							-- 720
+    { 0x4d },							-- 730
+    { 0x4f },							-- 740
+    { 0x47 },							-- 750
+    { 0x52 },							-- 760
+    { 0x4a },							-- 770
+    { 0x47 },							-- 780
+    { 0x49 },							-- 790
+    { 0x54 },							-- 7A0
+    { 0x4c },							-- 7B0
+    { 0x53 },							-- 7C0
+    { 0x51 },							-- 7D0
     {},									-- 7E0
     {}},								-- 7F0
-  "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
+  "mixed", { "human-wall", "dark-swamp", "land", "human", "wall", "unpassable",
     {  21,   0,  23,   0,  34},						-- 800
 	  {  10,   0,  22,   0,  36},						-- 810
 	  {  17,   0,  29,   0,  33},						-- 820
@@ -211,245 +211,7 @@ DefineTileset("name", "Swamp",
 	  {  14,   0,  26,   0,  39},						-- 8D0
     {},									-- 8E0
     {}},								-- 8F0
-  "mixed", { "orc-wall", "dark-grass", "land", "wall", "unpassable",
-    {  21,   0,  23,   0,  34},						-- 900
-	  {  10,   0,  22,   0,  36},						-- 910
-	  {  17,   0,  29,   0,  33},						-- 920
-	  {  11,   0,  40,   0,  34},						-- 930
-	  {  21,  21,   0,  23,  23,   0,  34,  34},				-- 940
-	  {  10,   0,  22,   0,  36},						-- 950
-	  {  13,   0,  25,   0,  36},						-- 960
-	  {  12,   0,  24,   0,  38},						-- 970
-	  {  20,   0,  32,   0,  35},						-- 980
-	  {  18,  18,   0,  30,  30,   0,  37,  37},				-- 990
-	  {  19,   0,  31,   0,  37},						-- 9A0
-	  {  12,   0,  24,   0,  38},						-- 9B0
-	  {  15,   0,  27,   0,  33},						-- 9C0
-	  {  14,   0,  26,   0,  39},						-- 9D0
-	  {},									-- 9E0
-    {}},								-- 9F0
-  })
-
-BuildTilesetTables()
-AddColorCyclingRange(114, 118) -- water coast boundry
-
-war1gus.tileset = "swamp"
-Load("scripts/scripts.lua")
-
---       _________ __                 __                               
---      /   _____//  |_____________ _/  |______     ____  __ __  ______
---      \_____  \\   __\_  __ \__  \\   __\__  \   / ___\|  |  \/  ___/
---      /        \|  |  |  | \// __ \|  |  / __ \_/ /_/  >  |  /\___ \ 
---     /_______  /|__|  |__|  (____  /__| (____  /\___  /|____//____  >
---             \/                  \/          \//_____/            \/ 
---  ______________________                           ______________________
---                        T H E   W A R   B E G I N S
---         Stratagus - A free fantasy real time strategy game engine
---
---      forest.ccl - Define the orc swamp tileset.
---
---      (c) Copyright 2000-2004 by Lutz Sammer and Jimmy Salmon
---
---      This program is free software-- you can redistribute it and/or modify
---      it under the terms of the GNU General Public License as published by
---      the Free Software Foundation-- either version 2 of the License, or
---      (at your option) any later version.
---  
---      This program is distributed in the hope that it will be useful,
---      but WITHOUT ANY WARRANTY-- without even the implied warranty of
---      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
---      GNU General Public License for more details.
---  
---      You should have received a copy of the GNU General Public License
---      along with this program-- if not, write to the Free Software
---      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
---
---      $Id$
-
---=============================================================================
---  Define a tileset
---
-
---  DefineTileset(ident class name image palette slots animations)
---
-DefineTileset("name", "Swamp",
-  "image", "tilesets/forest/terrain.png",
-  "size", {32, 32},
-  -- Slots descriptions
-  "slots",
-	{ "special", {		-- Can't be in pud
-    "top-one-tree", 90, "mid-one-tree", 91, "bot-one-tree", 92,
-    "removed-tree", 95 },
-  "solid", { "unused",
-    {}},								-- 000
-  "solid", { "unused",
-    {}},								-- 010
-  "solid", { "water", "water",
-    { 164 }},						-- 020
-  "solid", { "unused",
-    {}},	-- 030
-  "solid", { "light-grass", "land",
-    { 122 }},	-- 040
-  "solid", { "medium-grass", "land",
-    { 119, 173, 241, 242, 246, 247, 248, 249, 250, 251 }},	-- 050
-  "solid", { "dark-grass", "land",
-    { 168 }},	-- 060
-  "solid", { "forest", "land", "forest", "unpassable",
-    { 94 }},							-- 070
-  "solid", { "bridge-horizontal", "land", "no-building",
-    { 288, 287, 286, 285, 284, 278, 277 }},						-- 080
-  "solid", { "bridge-vertical", "land", "no-building",
-    { 291, 300, 282, 273 }},					-- 090
-  "solid", { "unused",
-    {}},					-- 0A0
-  "solid", { "unused",
-    {}},					-- 0B0
-  "solid", { "unused",
-    {}},					-- 0C0
-  "solid", { "unused",
-    {}},								-- 0D0
-  "solid", { "unused",
-    {}},								-- 0E0
-  "solid", { "unused",
-    {}},								-- 0F0
-  "mixed", { "water", "medium-grass", "land", "no-building",
-    { 166 },							-- 100
-    { 165 },							-- 110
-    { 107 },							-- 120
-    { 111 },							-- 130
-    { 124 },							-- 140
-    { 143 },							-- 150
-    { 106 },							-- 160
-    { 110 },							-- 170
-    { 143 },							-- 180
-    { 125 },							-- 190
-    { 108 },							-- 1A0
-    { 96 },							-- 1B0
-    { 115 },							-- 1C0
-    { 113 },							-- 1D0
-    {},									-- 1E0
-    {}},								-- 1F0
-  "mixed", { "medium-grass", "light-grass", "land",
-    { 183 },							-- 200
-    { 181 },							-- 210
-    { 104 },							-- 220
-    { 163 },							-- 230
-    { 121 },							-- 240
-    { 162 },							-- 250 -- what?
-    { 103 },							-- 260
-    { 161 },							-- 270
-    { 182 },							-- 280 -- what?
-    { 123 },							-- 290
-    { 105 },							-- 2A0
-    { 141 },							-- 2B0
-    { 140 },							-- 2C0
-    { 142 },							-- 2D0
-    {},									-- 2E0
-    {}},								-- 2F0
-  "mixed", { "medium-grass", "dark-grass", "land",
-    { 136 },							-- 300
-    { 134 },							-- 310
-    { 156 },							-- 320
-    { 99 },							-- 330
-    { 167 },							-- 340
-    { 98 },							-- 350
-    { 155 },							-- 360
-    { 97 },							-- 370
-    { 135 },							-- 380
-    { 169 },							-- 390
-    { 157 },							-- 3A0
-    { 176 },							-- 3B0
-    { 175 },							-- 3C0
-    { 177 },							-- 3D0
-    {},									-- 3E0
-    {}},								-- 3F0
-  "mixed", { "water", "bridge-horizontal", "land", "no-building",
-    { 256 },							-- 400
-    { 261 },							-- 410
-    { 258 },							-- 420
-    { 293 },							-- 430
-    { 276 },	-- 440
-    { 275 },							-- 450
-    { 257 },								-- 460
-    { 298 },							-- 470
-    { 280 },							-- 480
-    { 279 },							-- 490
-    { 260 },								-- 4A0
-    { 295 },							-- 4B0
-    { 294 },								-- 4C0
-    { 297 },								-- 4D0
-    {},									-- 4E0
-    {}},								-- 4F0
-  "mixed", { "water", "bridge-vertical", "land", "no-building",
-    { 252 },							-- 500
-    { 255 },							-- 510
-    { 263 },							-- 520
-    { 208 },							-- 530
-    { 272 },							-- 540
-    { 304 },							-- 550
-    { 262 },							-- 560
-    { 306 },							-- 570
-    { 305 },							-- 580
-    { 274 },							-- 590
-    { 264 },							-- 5A0
-    { 301 },							-- 5B0
-    { 299 },							-- 5C0
-    { 302 },							-- 5D0
-    {},									-- 5E0
-    {}},								-- 5F0
-  "mixed", {"rocks", "light-coast", "land", "rock", "unpassable",
-    --- required due to bug in the engine
-    { 0 },							-- 600
-    { 0 },							-- 610
-    { 0 },							-- 620
-    { 0 },							-- 630
-    { 0 },							-- 640
-    { 0 },							-- 650
-    { 0 },							-- 660
-    { 0 },							-- 670
-    { 0 },							-- 680
-    { 0 },							-- 690
-    { 0 },							-- 6A0
-    { 0 },							-- 6B0
-    { 0 },							-- 6C0
-    { 0 },							-- 6D0
-    {},									-- 6E0
-    {}},								-- 6F0
-  "mixed", { "forest", "light-grass", "land", "forest", "unpassable",
-    { 80 },							-- 700
-    { 72 },							-- 710
-    { 94 },							-- 720
-    { 77 },							-- 730
-    { 79 },							-- 740
-    { 84 },							-- 750
-    { 81 },							-- 760
-    { 74 },							-- 770
-    { 83 },							-- 780
-    { 73 },							-- 790
-    { 82 },							-- 7A0
-    { 76 },							-- 7B0
-    { 78 },							-- 7C0
-    { 75 },							-- 7D0
-    {},									-- 7E0
-    {}},								-- 7F0
-  "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
-    {  21,   0,  23,   0,  34},						-- 800
-	  {  10,   0,  22,   0,  36},						-- 810
-	  {  17,   0,  29,   0,  33},						-- 820
-	  {  11,   0,  40,   0,  34},						-- 830
-	  {  21,  21,   0,  23,  23,   0,  34,  34},				-- 840
-	  {  10,   0,  22,   0,  36},						-- 850
-	  {  13,   0,  25,   0,  36},						-- 860
-	  {  12,   0,  24,   0,  38},						-- 870
-	  {  20,   0,  32,   0,  35},						-- 880
-	  {  18,  18,   0,  30,  30,   0,  37,  37},				-- 890
-	  {  19,   0,  31,   0,  37},						-- 8A0
-	  {  12,   0,  24,   0,  38},						-- 8B0
-	  {  15,   0,  27,   0,  33},						-- 8C0
-	  {  14,   0,  26,   0,  39},						-- 8D0
-    {},									-- 8E0
-    {}},								-- 8F0
-  "mixed", { "orc-wall", "dark-grass", "land", "wall", "unpassable",
+  "mixed", { "orc-wall", "dark-swamp", "land", "wall", "unpassable",
     {  21,   0,  23,   0,  34},						-- 900
 	  {  10,   0,  22,   0,  36},						-- 910
 	  {  17,   0,  29,   0,  33},						-- 920

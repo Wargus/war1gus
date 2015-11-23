@@ -33,171 +33,203 @@
 --
 --	(define-tileset ident class name image palette slots animations)
 --
-DefineTileset("name", "Dungeon",
+DefineTileset("name", "dungeon",
   "image", "tilesets/dungeon/terrain.png",
   "size", {32, 32},
   -- Slots descriptions
   "slots",
-	{
-	"solid", {"land", -- "wall"
-          {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-	   10, 11, 12, 13, 14, 15}},   -- 000
-	"solid", {"land", -- "wall"
-          {16, 17, 18, 19, 20, 31, 22, 23, 24, 25,
-	   26, 27, 28, 29, 30, 31}}, -- water                    -- 010
-	"solid", {"land",
-          {32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
-	   42, 43, 44, 45, 46, 47, {"rock", "unpassable"}}},                                       -- 020
-	"solid", {"land",
-          {48, 49,
-	   50, {"rock", "unpassable"},
-	   51, {"rock", "unpassable"},
-	   52, {"rock", "unpassable"},
-	   53, {"rock", "unpassable"}, 
-	   54, {"rock", "unpassable"}, 
-	   55, {"rock", "unpassable"}, 
-	   56, {"rock", "unpassable"}, 
-	   57, 58, 59, 60, 61, 62, 63}},                                       -- 030
-	"solid", {"rock", "unpassable",
-	  {64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74,
-	   75, {"land"},
-	   76, {"land"},
-	   77, {"land"},
-	   78, {"land"},
-	   79, {"land"}}},                                   -- 040
-	"solid", {"land",
-	  {80, 81, 82, 83, 84, 85, 86, 87,
-	   88, {"rock", "unpassable"},
-	   89, {"rock", "unpassable"},
-	   90, {"rock", "unpassable"},
-	   91, {"rock", "unpassable"},
-	   92, {"rock", "unpassable"},
-	   93, {"rock", "unpassable"},
-	   94, {"rock", "unpassable"},
-	   95, {"rock", "unpassable"}}},                                -- 050
-	"solid", {"land",
-	 {96, {"rock", "unpassable"},
-	  97, {"rock", "unpassable"},
-	  98, {"rock", "unpassable"},
-	  99, {"rock", "unpassable"},
-	  100, {"rock", "unpassable"},
-	  101, {"rock", "unpassable"},
-	  102, 103, 104, 105, 106, 107, 108, 109, 110,
-	  111, {"rock", "unpassable"}}},                     -- 060
-	"solid", {"land",
-          {112,
-	   113, {"rock", "unpassable"},
-	   114, {"rock", "unpassable"},
-	   115,
-	   116, {"rock", "unpassable"},
-	   117, {"rock", "unpassable"},
-	   118, 119,
-	   120, {"rock", "unpassable"},
-	   121, 122, 123, 124, 125, 126, 127}},                                  -- 070
-	"solid", {"land",
-          {128, 129, 130, 131, 132, 133, 134, 135,
-	   136, {"rock", "unpassable"},
-	   137, {"rock", "unpassable"},
-	   138, {"rock", "unpassable"},
-	   139, 140, 141, 142, 143}},                                  -- 080
-	"solid", {"land",
-          {144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158,
-	   159, {"rock", "unpassable"}}},                             -- 090
-	"solid", {"land",
-          {160, {"rock", "unpassable"},
-	   161, 162, 163, 164, 165, 166, 
-	   167, 168, 169, 170, 171, 172, 173, 174, 175}},              -- 0A0
-	"solid", {"land",
-          {176,
-	   177, {"rock", "unpassable"},
-	   178, {"rock", "unpassable"},
-	   179,
-	   180, {"rock", "unpassable"},
-	   181, {"rock", "unpassable"},
-	   182, {"rock", "unpassable"},
-	   183, 184, 185, 186, 187, 188, 189, 190, 191}},                             -- 0B0
-	"solid", {"land",
-          {192, 193, 194, 195, 196, 197, 198,
-	   199, {"rock", "unpassable"},
-	   200, 201, 201, 203,
-	   204, {"rock", "unpassable"},
-	   205, {"rock", "unpassable"},
-	   206, {"rock", "unpassable"},
-	   207, {"rock", "unpassable"}}},                             -- 0C0
-	"solid", {"land",
-          {208, 209, 210, 211, 212, 213, 214, 215, 216,
-	   217, {"rock", "unpassable"},
-	   218, 219, 220, 221,
-	   222, {"rock", "unpassable"},
-	   223, {"rock", "unpassable"}}},                             -- 0D0
-	"solid", {"land",
-          {224, 225, 226,
-	   227, {"rock", "unpassable"},
-	   228, {"rock", "unpassable"},
-	   229, 230, 231, 232, 233, 234,
-	   235, {"rock", "unpassable"},
-	   236, {"rock", "unpassable"},
-	   237, {"rock", "unpassable"},
-	   238, {"rock", "unpassable"},
-	   239}},                             -- 0E0
-	"solid", {"land",
-          {240, 241, 242, 243, 244, 245, 246, 247, 248, 249,
-	   250, 251, 252, 253,
-	   254, {"rock", "unpassable"},
-	   255, {"rock", "unpassable"}}},                             -- 0F0
-	"solid", {"land",  -- bridge
-	  {256, {"rock", "unpassable"},
-	   257, {"rock", "unpassable"},
-	   258, {"rock", "unpassable"},
-	   259, {"rock", "unpassable"},
-	   260, {"rock", "unpassable"},
-	   261, {"rock", "unpassable"},
-	   262, 263, 264, 265, 266, 267, 268, 269, 270, 271}},                             -- 100
-	"solid", {"land",   -- bridge
-	  {272, 273, 274, 275,
-	   276, {"rock", "unpassable"},
-	   277, {"rock", "unpassable"},
-	   278, 279,
-	   280, {"rock", "unpassable"},
-	   281, {"rock", "unpassable"},
-	   282, {"rock", "unpassable"},
-	   283, {"rock", "unpassable"},
-	   284, {"rock", "unpassable"},
-	   285, {"rock", "unpassable"},
-	   286, {"rock", "unpassable"},
-	   287, {"rock", "unpassable"}}},                             -- 110
-	"solid", {"land" ,  -- bridge
-	  {288, 289,
-	   290, {"land", "unpassable"},
-	   291, {"land", "unpassable"},
-	   292, {"land", "unpassable"},
-	   293, {"land", "unpassable"},
-	   294, {"land", "unpassable"},
-	   295, 296, 297,
-	   298, {"land", "unpassable"},
-	   299,
-	   300, {"rock", "unpassable"},
-	   301, {"rock", "unpassable"},
-	   302, 303}},                             -- 120
-	"solid", {"rock", "unpassable",
-	  {304, 305, 306, 307, 308, 309, 310, 311,
-	   312, {"land"},
-	   313, {"land"},
-	   314, {"land"},
-	   315, {"land"},
-	   316, {"land"},
-	   317, 318, 319}},                        -- 130,
-	"solid", {"rock", "unpassable",  -- bridge
-	  {320,
-	   321, {"land"},
-	   322, {"land"},
-	   323, {"land"},
-	   324, {"land"}, 
-	   325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335}},                        -- 140,
-	"solid", {"rock", "unpassable",  -- bridge
-	  {336, 337}},                        -- 150,
-	}
-  )
+	{ "special", {		-- Can't be in pud
+    "top-one-tree", 0x5d, "mid-one-tree", 0x5a, "bot-one-tree", 0x5a,
+    "removed-tree", 0x22 },
+  "solid", { "unused",
+    {}},								-- 000
+  "solid", { "unused",
+    {}},								-- 010
+  "solid", { "darkness", "water",
+    { 0x34 }},						-- 020
+  "solid", { "unused",
+    {}},	-- 030
+  "solid", { "medium-earth", "land",
+    { 0xac, 0x85 }},	-- 040
+  "solid", { "dark-earth", "land",
+    { 0xaf, 0x70, 0xb3, 0x86, 0x87, 0x9d }},	-- 050
+  "solid", { "light-earth", "land",
+    { 0xe9, 0x9b }},	-- 060
+  "solid", { "forest", "land", "forest", "unpassable",
+    { 0x5c }},							-- 070
+  "solid", { "rug", "land",
+    { 0x90 }},						-- 080
+  "solid", { "stone-floor", "land", "no-building",
+    { 0x4b }},					-- 090
+  "solid", { "unused",
+    {}},					-- 0A0
+  "solid", { "unused",
+    {}},					-- 0B0
+  "solid", { "unused",
+    {}},					-- 0C0
+  "solid", { "unused",
+    {}},								-- 0D0
+  "solid", { "unused",
+    {}},								-- 0E0
+  "solid", { "unused",
+    {}},								-- 0F0
+  "mixed", { "darkness", "dark-earth", "land", "unpassable", "no-building",
+    { 0x60 },							-- 100
+    { 0x61 },							-- 110
+    { 0x45 },							-- 120
+    { 0x8a },							-- 130
+    { 0x88, 0x9f },							-- 140
+    { 0 },							-- 150
+    { 0x44 },							-- 160
+    { 0xb5 },							-- 170
+    { 1 },							-- 180
+    { 0x89, 0xa0 },							-- 190
+    { 0x38 },							-- 1A0
+    { 0xcd, 0xce },							-- 1B0
+    { 0xb4 },							-- 1C0
+    { 0xb6 },							-- 1D0
+    {},									-- 1E0
+    {}},								-- 1F0
+  "mixed", { "dark-earth", "medium-earth", "land",
+    { 0xc6 },							-- 200
+    { 0xc4 },							-- 210
+    { 0xc5 },							-- 220
+    { 0x9a },							-- 230
+    { 0xb0 },							-- 240
+    { 2 },							-- 250 -- what?
+    { 0x95 },							-- 260
+    { 0xc3 },							-- 270
+    { 3 },							-- 280 -- what?
+    { 0xa3 },							-- 290
+    { 0x97 },							-- 2A0
+    { 0xc2 },							-- 2B0
+    { 0x99 },							-- 2C0
+    { 0xad },							-- 2D0
+    {},									-- 2E0
+    {}},								-- 2F0
+  "mixed", { "medium-earth", "light-earth", "land",
+    { 0xd5 },							-- 300
+    { 0xd7 },							-- 310
+    { 0xd6 },							-- 320
+    { 0xfe },							-- 330
+    { 0xed },							-- 340
+    { 4 },							-- 350
+    { 0x84 },							-- 360
+    { 0xd9 },							-- 370
+    { 5 },							-- 380
+    { 0xda },							-- 390
+    { 0x101 },							-- 3A0
+    { 0xeb },							-- 3B0
+    { 0x9c },							-- 3C0
+    { 0x100 },							-- 3D0
+    {},									-- 3E0
+    {}},								-- 3F0
+  "mixed", { "dark-earth", "stone-floor", "land", "no-building",
+    { 0x7d },							-- 400
+    { 0x7b },							-- 410
+    { 0x7c },							-- 420
+    { 0x50 },							-- 430
+    { 0x66 },	-- 440
+    { 0x51 },							-- 450
+    { 0x92 },								-- 460
+    { 0x4e },							-- 470
+    { 0x9e },							-- 480
+    { 0x67 },							-- 490
+    { 0x95 },								-- 4A0
+    { 0x94 },							-- 4B0
+    { 0x4f },								-- 4C0
+    { 0xc0 },								-- 4D0
+    {},									-- 4E0
+    {}},								-- 4F0
+  "mixed", { "rug", "stone-floor", "land", "no-building",
+    { 0xa7 },							-- 500
+    { 0xa5 },							-- 510
+    { 0xa6 },							-- 520
+    { 0x7a },							-- 530
+    { 0xd0 },							-- 540
+    { 0xd2 },							-- 550
+    { 0xbb },							-- 560
+    { 0x78 },							-- 570
+    { 0xfa },							-- 580
+    { 0xd1 },							-- 590
+    { 0xfd },							-- 5A0
+    { 0x79 },							-- 5B0
+    { 0xe2 },							-- 5C0
+    { 0xe4 },							-- 5D0
+    {},									-- 5E0
+    {}},								-- 5F0
+  "mixed", {"rocks", "light-coast", "land", "rock", "unpassable",
+    --- required due to bug in the engine
+    { 0 },							-- 600
+    { 0 },							-- 610
+    { 0 },							-- 620
+    { 0 },							-- 630
+    { 0 },							-- 640
+    { 0 },							-- 650
+    { 0 },							-- 660
+    { 0 },							-- 670
+    { 0 },							-- 680
+    { 0 },							-- 690
+    { 0 },							-- 6A0
+    { 0 },							-- 6B0
+    { 0 },							-- 6C0
+    { 0 },							-- 6D0
+    {},									-- 6E0
+    {}},								-- 6F0
+  "mixed", { "forest", "stone-floor", "land", "forest", "unpassable",
+    { 0xd3 },							-- 700
+    { 0xee },							-- 710
+    { 0xef },							-- 720
+    { 0xd4 },							-- 730
+    { 0x112 },							-- 740
+    { 0x113 },							-- 750
+    { 0x114 },							-- 760
+    { 0x115 },							-- 770
+    { 0x116 },							-- 780
+    { 0x120 },							-- 790
+    { 0x11c },							-- 7A0
+    { 0x11d },							-- 7B0
+    { 0xb2 },							-- 7C0
+    { 0x121 },							-- 7D0
+    {},									-- 7E0
+    {}},								-- 7F0
+  "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
+    {  21,   0,  23,   0,  0},						-- 800
+	  {  10,   0,  22,   0,  36},						-- 810
+	  {  17,   0,  29,   0,  33},						-- 820
+	  {  11,   0,  40,   0,  0},						-- 830
+	  {  21,  21,   0,  23,  23,   0,  0,  0},				-- 840
+	  {  10,   0,  22,   0,  36},						-- 850
+	  {  13,   0,  25,   0,  36},						-- 860
+	  {  12,   0,  24,   0,  38},						-- 870
+	  {  20,   0,  32,   0,  35},						-- 880
+	  {  18,  18,   0,  30,  30,   0,  37,  37},				-- 890
+	  {  19,   0,  31,   0,  37},						-- 8A0
+	  {  12,   0,  24,   0,  38},						-- 8B0
+	  {  15,   0,  27,   0,  33},						-- 8C0
+	  {  14,   0,  26,   0,  39},						-- 8D0
+    {},									-- 8E0
+    {}},								-- 8F0
+  "mixed", { "orc-wall", "dark-grass", "land", "wall", "unpassable",
+    {  21,   0,  23,   0,  0},						-- 900
+	  {  10,   0,  22,   0,  36},						-- 910
+	  {  17,   0,  29,   0,  33},						-- 920
+	  {  11,   0,  40,   0,  0},						-- 930
+	  {  21,  21,   0,  23,  23,   0,  0,  0},				-- 940
+	  {  10,   0,  22,   0,  36},						-- 950
+	  {  13,   0,  25,   0,  36},						-- 960
+	  {  12,   0,  24,   0,  38},						-- 970
+	  {  20,   0,  32,   0,  35},						-- 980
+	  {  18,  18,   0,  30,  30,   0,  37,  37},				-- 990
+	  {  19,   0,  31,   0,  37},						-- 9A0
+	  {  12,   0,  24,   0,  38},						-- 9B0
+	  {  15,   0,  27,   0,  33},						-- 9C0
+	  {  14,   0,  26,   0,  39},						-- 9D0
+	  {},									-- 9E0
+    {}},								-- 9F0
+  })
 
+BuildTilesetTables()
 
 war1gus.tileset = "dungeon"
+Load("scripts/scripts.lua")

@@ -54,7 +54,8 @@ for i=1,4,1 do
 	  swamp = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
 	  forest_campaign = "tilesets/forest/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
 	  swamp_campaign = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
-	  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png"}
+	  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
+	  dungeon_campaign = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png"}
 	DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place", {
 	  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place",
 	  Image = {"size", {i * 32, i * 32}},
@@ -80,7 +81,8 @@ for i=1,4,1 do
 		  swamp = "tilesets/swamp/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
 		  forest_campaign = "tilesets/forest/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
 		  swamp_campaign = "tilesets/swamp/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
-		  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png"}
+		  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
+		  dungeon_campaign = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png"}
 	  DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j, {
 		  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j,
 		  Image = {"size", {j * 32, j * 32}},
@@ -185,7 +187,9 @@ UnitTypeFiles["unit-gold-mine"] = {
   forest = "tilesets/forest/neutral/buildings/gold_mine.png",
   swamp = "tilesets/swamp/neutral/buildings/gold_mine.png",
   forest_campaign = "tilesets/forest/neutral/buildings/gold_mine.png",
-  swamp_campaign = "tilesets/swamp/neutral/buildings/gold_mine.png"
+  swamp_campaign = "tilesets/swamp/neutral/buildings/gold_mine.png",
+  dungeon = "tilesets/swamp/neutral/buildings/gold_mine.png",
+  dungeon_campaign = "tilesets/swamp/neutral/buildings/gold_mine.png"
 }
 
 DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
@@ -237,6 +241,7 @@ UnitTypeFiles["unit-road"] = {
   forest = "tilesets/forest/neutral/buildings/road.png",
   swamp = "tilesets/swamp/neutral/buildings/road.png",
   dungeon = "tilesets/dungeon/neutral/buildings/road.png",
+  dungeon_campaign = "tilesets/dungeon/neutral/buildings/road.png",
   forest_campaign = "tilesets/forest/neutral/buildings/road.png",
   swamp_campaign = "tilesets/swamp/neutral/buildings/road.png"
 }
@@ -323,13 +328,16 @@ UnitTypeFiles["unit-wall"] = {
   swamp = "tilesets/swamp/neutral/buildings/wall.png",
   forest_campaign = "tilesets/forest/neutral/buildings/wall.png",
   swamp_campaign = "tilesets/swamp/neutral/buildings/wall.png",
-  dungeon = "tilesets/dungeon/neutral/buildings/wall.png"
+  dungeon = "tilesets/dungeon/neutral/buildings/wall.png",
+  dungeon_campaign = "tilesets/dungeon/neutral/buildings/wall.png"
 }
 local wallconstructionfiles = {
 	 forest = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
 	 swamp = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
 	 forest_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
-	 swamp_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png") }
+	 swamp_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
+     dungeon = "tilesets/dungeon/neutral/buildings/wall_1x1.png",
+     dungeon_campaign = "tilesets/dungeon/neutral/buildings/wall_1x1.png" }
 DefineConstruction(
    "construction-wall",
    {Files = { File = wallconstructionfiles[war1gus.tileset], Size = {32, 32} },

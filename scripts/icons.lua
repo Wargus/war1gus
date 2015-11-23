@@ -175,6 +175,13 @@ for i = 1,table.getn(icons) do
     Size = {54, 38},
     File = "tilesets/dungeon/portrait_icons.png",
     Frame = icons[i][2],})
+
+  DefineIcon({
+    Name = icons[i][1],
+    Tileset = "tileset-dungeon_campaign",
+    Size = {54, 38},
+    File = "tilesets/dungeon/portrait_icons.png",
+    Frame = icons[i][2],})
 end
 ]]
 for i = 1,table.getn(icons) do

@@ -3442,7 +3442,7 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 /**
 **  Convert a map to Stratagus map format.
 */
-int ConvertSkirmishMap(const char* file, int mtxme)
+void ConvertSkirmishMap(const char* file, int mtxme)
 {
     gzFile smp, sms;
     unsigned char buf[1024];
@@ -3454,11 +3454,11 @@ int ConvertSkirmishMap(const char* file, int mtxme)
     int numPlayers;
 
     if (strstr(file, "forest")) {
-	tileset = "forest_campaign";
+		tileset = "forest_campaign";
     } else if (strstr(file, "swamp")) {
         tileset = "swamp_campaign";
     } else {
-	tileset = "dungeon";
+		tileset = "dungeon_campaign";
     }
     
     for (numPlayers = 2; numPlayers <= 4; numPlayers++) {
@@ -3479,7 +3479,7 @@ int ConvertSkirmishMap(const char* file, int mtxme)
 
 	mtxm = ExtractEntry(ArchiveOffsets[mtxme], NULL);
 	if (!mtxm) {
-	    return 0;
+	    return;
 	}
 	p = mtxm;
 
