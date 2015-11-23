@@ -1,0 +1,18 @@
+language: cpp
+compiler:
+  - gcc
+  - clang
+os:
+  - linux
+  - osx
+addons:
+  apt:
+    packages:
+      - libpng12-dev
+before_install:
+  - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install libpng cmake && brew link --force libpng cmake; fi
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+script: cd build && make
