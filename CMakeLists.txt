@@ -100,13 +100,13 @@ if(STRATAGUS_FOUND)
     if(ENABLE_NSIS AND MAKENSIS_FOUND)
       file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/COPYING DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
       file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/war1gus.ico DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-      add_custom_command(OUTPUT War1gus-${MAKENSIS_SUFFIX}
+      add_custom_command(OUTPUT War1gus${MAKENSIS_SUFFIX}
         COMMAND ${MAKENSIS}
         ARGS ${MAKENSIS_FLAGS} -DCMAKE_CURRENT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}" -DCMAKE_CURRENT_BINARY_DIR="${CMAKE_CURRENT_BINARY_DIR}" ${CMAKE_CURRENT_SOURCE_DIR}/war1gus.nsi
         DEPENDS war1gus.nsi war1gus war1tool COPYING war1gus.ico
         COMMENT "Generating War1gus Windows NSIS Installer" VERBATIM
         )
-      add_custom_target(nsis ALL DEPENDS Wargus-${WARGUS_VERSION}${MAKENSIS_SUFFIX})
+      add_custom_target(nsis ALL DEPENDS War1gus${MAKENSIS_SUFFIX})
     endif()
     add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
   endif()

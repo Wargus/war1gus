@@ -58,6 +58,10 @@
 !define ICON "war1gus.ico"
 !define EXE "war1gus.exe"
 !define WARTOOL "war1tool.exe"
+; Must copy files from possible subdirs (Debug, Release), because VS puts them there
+!system "powershell -Command $\"& {cp **\${WARTOOL} ${WARTOOL}}$\""
+!system "powershell -Command $\"& {cp **\${EXE} ${EXE}}$\""
+
 !define UNINSTALL "uninstall.exe"
 !define INSTALLER "${NAME}-${VERSION}.exe"
 !define INSTALLDIR "$PROGRAMFILES\${NAME}\"
@@ -78,6 +82,8 @@ ${redefine} STRATAGUS_NAME "Stratagus (64 bit)"
 
 ; Download and extract nessesary 3rd party programs
 !ifndef NO_DOWNLOAD
+; TODO: download ffmpeg and timidity (or find alternatives) and extract the data
+; !system 'powershell -Command "& {wget http://v2v.cc/~j/ffmpeg2theora/ffmpeg2theora-0.28.exe -O ffmpeg2theora.exe}"'
 !endif
 
 !addplugindir .
@@ -88,8 +94,6 @@ Var STARTMENUDIR
 Var DATADIR
 Var EXTRACTNEEDED
 
-Var OptDataset
-Var OptMusic
 Var DataDirectory
 
 !define MUI_ICON "${ICON}"
@@ -154,34 +158,34 @@ LangString DESC_REMOVEEXE ${LANG_RUSSIAN} "Удаляются исполняемые файлы ${NAME}"
 LangString DESC_REMOVECONF ${LANG_ENGLISH} "Remove all other configuration and extracted data files and directories in ${NAME} install directory created by user or ${NAME}"
 LangString DESC_REMOVECONF ${LANG_RUSSIAN} "Удалить все прочие файлы и директории в установочной папке ${NAME}, созданные пользователем ${NAME}"
 
-LangString EXTRACTDATA_FILES ${LANG_ENGLISH} "Extracting Warcraft II data files..."
-LangString EXTRACTDATA_FILES ${LANG_RUSSIAN} "Извлекаются файлы Warcraft II..."
-LangString EXTRACTDATA_RIP_AUDIO ${LANG_ENGLISH} "Ripping Warcraft II audio tracks..."
-LangString EXTRACTDATA_RIP_AUDIO ${LANG_RUSSIAN} "Копируется CD-музыка Warcraft II..."
-LangString EXTRACTDATA_COPY_AUDIO ${LANG_ENGLISH} "Coping Warcraft II audio tracks..."
-LangString EXTRACTDATA_COPY_AUDIO ${LANG_RUSSIAN} "Копируется музыка Warcraft II..."
-LangString EXTRACTDATA_CONVERT_AUDIO ${LANG_ENGLISH} "Converting Warcraft II audio tracks..."
-LangString EXTRACTDATA_CONVERT_AUDIO ${LANG_RUSSIAN} "Конвертируется музыка Warcraft II..."
+LangString EXTRACTDATA_FILES ${LANG_ENGLISH} "Extracting Warcraft data files..."
+LangString EXTRACTDATA_FILES ${LANG_RUSSIAN} "Извлекаются файлы Warcraft..."
+LangString EXTRACTDATA_RIP_AUDIO ${LANG_ENGLISH} "Ripping Warcraft audio tracks..."
+LangString EXTRACTDATA_RIP_AUDIO ${LANG_RUSSIAN} "Копируется CD-музыка Warcraft..."
+LangString EXTRACTDATA_COPY_AUDIO ${LANG_ENGLISH} "Coping Warcraft audio tracks..."
+LangString EXTRACTDATA_COPY_AUDIO ${LANG_RUSSIAN} "Копируется музыка Warcraft..."
+LangString EXTRACTDATA_CONVERT_AUDIO ${LANG_ENGLISH} "Converting Warcraft audio tracks..."
+LangString EXTRACTDATA_CONVERT_AUDIO ${LANG_RUSSIAN} "Конвертируется музыка Warcraft..."
 
-LangString EXTRACTDATA_FILES_FAILED ${LANG_ENGLISH} "Extracting Warcraft II data files failed."
-LangString EXTRACTDATA_FILES_FAILED ${LANG_RUSSIAN} "Не удалось извлечь файлы Warcraft II."
-LangString EXTRACTDATA_RIP_AUDIO_FAILED ${LANG_ENGLISH} "Ripping Warcraft II audio tracks failed."
-LangString EXTRACTDATA_RIP_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось скопировать CD-музыку Warcraft II."
-LangString EXTRACTDATA_COPY_AUDIO_FAILED ${LANG_ENGLISH} "Coping Warcraft II audio tracks failed."
-LangString EXTRACTDATA_COPY_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось скопировать музыку Warcraft II."
-LangString EXTRACTDATA_CONVERT_AUDIO_FAILED ${LANG_ENGLISH} "Converting Warcraft II audio tracks failed."
-LangString EXTRACTDATA_CONVERT_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось сконвертировать музыку Warcraft II."
+LangString EXTRACTDATA_FILES_FAILED ${LANG_ENGLISH} "Extracting Warcraft data files failed."
+LangString EXTRACTDATA_FILES_FAILED ${LANG_RUSSIAN} "Не удалось извлечь файлы Warcraft."
+LangString EXTRACTDATA_RIP_AUDIO_FAILED ${LANG_ENGLISH} "Ripping Warcraft audio tracks failed."
+LangString EXTRACTDATA_RIP_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось скопировать CD-музыку Warcraft."
+LangString EXTRACTDATA_COPY_AUDIO_FAILED ${LANG_ENGLISH} "Coping Warcraft audio tracks failed."
+LangString EXTRACTDATA_COPY_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось скопировать музыку Warcraft."
+LangString EXTRACTDATA_CONVERT_AUDIO_FAILED ${LANG_ENGLISH} "Converting Warcraft audio tracks failed."
+LangString EXTRACTDATA_CONVERT_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось сконвертировать музыку Warcraft."
 
-LangString EXTRACTDATA_PAGE_HEADER_TEXT ${LANG_ENGLISH} "Choose Warcraft II Location"
-LangString EXTRACTDATA_PAGE_HEADER_TEXT ${LANG_RUSSIAN} "Укажите местоположение Warcraft II"
-LangString EXTRACTDATA_PAGE_HEADER_SUBTEXT ${LANG_ENGLISH} "Choose the folder in which are Warcraft II data files."
-LangString EXTRACTDATA_PAGE_HEADER_SUBTEXT ${LANG_RUSSIAN} "Укажите папку, в которой содержатся файлы Warcraft II."
-LangString EXTRACTDATA_PAGE_TEXT_TOP ${LANG_ENGLISH} "Setup will extract Warcraft II data files from the following folder. You can specify location of CD or install location of Warcraft II data files (doesn't work for Battle.net edition)."
-LangString EXTRACTDATA_PAGE_TEXT_TOP ${LANG_RUSSIAN} "Программа установки извлечет файлы Warcraft II из указанной папки. Вы можете указать либо CD-диск с игрой, либо указать папку с установленным Warcraft II (не подходит для версии Battle.net)."
+LangString EXTRACTDATA_PAGE_HEADER_TEXT ${LANG_ENGLISH} "Choose Warcraft Location"
+LangString EXTRACTDATA_PAGE_HEADER_TEXT ${LANG_RUSSIAN} "Укажите местоположение Warcraft"
+LangString EXTRACTDATA_PAGE_HEADER_SUBTEXT ${LANG_ENGLISH} "Choose the folder in which are Warcraft data files."
+LangString EXTRACTDATA_PAGE_HEADER_SUBTEXT ${LANG_RUSSIAN} "Укажите папку, в которой содержатся файлы Warcraft."
+LangString EXTRACTDATA_PAGE_TEXT_TOP ${LANG_ENGLISH} "Setup will extract Warcraft data files from the following folder. You can specify location of CD or install location of Warcraft data files (doesn't work for Battle.net edition)."
+LangString EXTRACTDATA_PAGE_TEXT_TOP ${LANG_RUSSIAN} "Программа установки извлечет файлы Warcraft из указанной папки. Вы можете указать либо CD-диск с игрой, либо указать папку с установленным Warcraft (не подходит для версии Battle.net)."
 LangString EXTRACTDATA_PAGE_TEXT_DESTINATION ${LANG_ENGLISH} "Source Folder"
-LangString EXTRACTDATA_PAGE_TEXT_DESTINATION ${LANG_RUSSIAN} "Папка с файлами Warcraft II"
-LangString EXTRACTDATA_PAGE_NOT_VALID ${LANG_ENGLISH} "This is not valid Warcraft II data directory."
-LangString EXTRACTDATA_PAGE_NOT_VALID ${LANG_RUSSIAN} "Программа установки не обнаружила Warcraft II в указанной папке."
+LangString EXTRACTDATA_PAGE_TEXT_DESTINATION ${LANG_RUSSIAN} "Папка с файлами Warcraft"
+LangString EXTRACTDATA_PAGE_NOT_VALID ${LANG_ENGLISH} "This is not valid Warcraft data directory."
+LangString EXTRACTDATA_PAGE_NOT_VALID ${LANG_RUSSIAN} "Программа установки не обнаружила Warcraft в указанной папке."
 
 LangString STR_VERSION ${LANG_ENGLISH} "version"
 LangString STR_VERSION ${LANG_RUSSIAN} "версия"
@@ -224,22 +228,6 @@ Section "${NAME}"
 	SectionIn RO
 SectionEnd
 
-SectionGroup "Data set" dataset
-	Section "Warcraft 2" opt1Warcraft
-	SectionEnd
-
-	Section /o "Aleona Tales" opt1AT
-	SectionEnd
-SectionGroupEnd
-
-SectionGroup "Music" music
-	Section  "MIDI music" opt2MIDI
-	SectionEnd
-
-	Section /o "CD Music" opt2CD
-	SectionEnd
-SectionGroupEnd
-
 Section "-${NAME}" UninstallPrevious
 
 	SectionIn RO
@@ -267,39 +255,12 @@ Section "-${NAME}"
 	ClearErrors
 
 	!cd ${CMAKE_CURRENT_SOURCE_DIR}
-
-	SetOutPath "$INSTDIR\maps"
-	File /r /x *.pud* "maps\"
+	SetOutPath "$INSTDIR\contrib"
+	File /r "contrib\"
 	SetOutPath "$INSTDIR\scripts"
 	File /r "scripts\"
 	SetOutPath "$INSTDIR\campaigns"
 	File /r "campaigns\"
-	StrCmp $OptDataset  ${opt1Warcraft} optwar2
-	SetOutPath "$INSTDIR\graphics"
-	File /r "graphics\"
-	SetOutPath "$INSTDIR\music"
-	File /r "music\"
-	SetOutPath "$INSTDIR\sounds"
-	File /r "sounds\"
-optwar2:
-	SetOutPath "$INSTDIR"
-
-	CreateDirectory "$INSTDIR\music"
-	CreateDirectory "$INSTDIR\graphics"
-	CreateDirectory "$INSTDIR\graphics\ui"
-	CreateDirectory "$INSTDIR\graphics\ui\cursors"
-	CreateDirectory "$INSTDIR\graphics\missiles"
-	
-	File "/oname=music\${SF2BANK}" "${SF2BANK}"
-	File "/oname=graphics\ui\cursors\cross.png" "contrib\cross.png"
-	File "/oname=graphics\missiles\red_cross.png" "contrib\red_cross.png"
-	File "/oname=graphics\ui\mana.png" "contrib\mana.png"
-	File "/oname=graphics\ui\mana2.png" "contrib\mana2.png"
-	File "/oname=graphics\ui\health.png" "contrib\health.png"
-	File "/oname=graphics\ui\health2.png" "contrib\health2.png"
-	File "/oname=graphics\ui\food.png" "contrib\food.png"
-	File "/oname=graphics\ui\score.png" "contrib\score.png"
-	File "/oname=graphics\ui\ore,stone,coal.png" "contrib\ore,stone,coal.png"
 
 	!cd ${CMAKE_CURRENT_BINARY_DIR}
 
@@ -332,37 +293,6 @@ SectionEnd
 
 Function PageExtractDataPre
 
-    ; Checks if War1gus has been already extracted and skips the extraction stage
-	StrCmp $OptDataset  ${opt1AT} noextract
-	File "/oname=$TEMP\${WARTOOL}" "${WARTOOL}"
-
-	ClearErrors
-	FileOpen $0 "$INSTDIR\extracted" "r"
-	IfErrors extract
-
-	FileRead $0 $1
-	FileClose $0
-
-	ExecDos::exec /TOSTACK "$\"$TEMP\${WARTOOL}$\" -V"
-	Pop $0
-	Pop $2
-	Delete "$TEMP\${WARTOOL}"
-
-	IntCmp $0 0 0 0 extract
-
-	StrCmp $1 $2 noextract
-
-	StrCpy $2 "$2$\r$\n"
-	StrCmp $1 $2 0 extract
-
-
-noextract:
-
-	StrCpy $EXTRACTNEEDED "no"
-	Abort
-
-extract:
-
 	StrCpy $EXTRACTNEEDED "yes"
 
 FunctionEnd
@@ -379,8 +309,7 @@ FunctionEnd
 
 Function PageExtractDataLeave
 
-	IfFileExists "$DATADIR\data\rezdat.war" +4
-	IfFileExists "$DATADIR\SUPPORT\TOMES\TOME.1" +3
+	IfFileExists "$DATADIR\data\data.war" +3
 
 	MessageBox MB_OK|MB_ICONSTOP "$(EXTRACTDATA_PAGE_NOT_VALID)"
 	Abort
@@ -397,13 +326,10 @@ Section "-${NAME}" ExtractData
 	DetailPrint ""
 	DetailPrint "$(EXTRACTDATA_FILES)"
 	StrCpy $DataDirectory "$DATADIR"
-	IfFileExists "$DATADIR\SUPPORT\TOMES\TOME.1" +2
-	StrCpy $DataDirectory "$\"$DATADIR\data$\""
 	
 	DetailPrint "$DataDirectory"
-	StrCmp $OptMusic "${opt2CD}" 0 +2
-	StrCpy $KeyStr "$KeyStr -r"
-	ExecDos::exec /DETAILED "$\"$INSTDIR\${WARTOOL}$\" $KeyStr -v $\"$DataDirectory$\" $\"$INSTDIR$\""
+	DetailPrint "$\"$INSTDIR\${WARTOOL}$\" $\"$DataDirectory$\" $\"$INSTDIR$\""
+	ExecWait "$\"$INSTDIR\${WARTOOL}$\" $\"$DataDirectory$\" $\"$INSTDIR$\""
 	Pop $0
 	IntCmp $0 0 +3
 
@@ -424,23 +350,12 @@ Section "un.${NAME}" Executable
 	Delete "$INSTDIR\${WARTOOL}"
 	Delete "$INSTDIR\${UNINSTALL}"
 
-	IfFileExists "$INSTDIR\scripts\wc2-config.lua" 0 +2
-	Rename "$INSTDIR\scripts\wc2-config.lua" "$INSTDIR\wc2-config.lua"
-
 	RMDir /r "$INSTDIR\scripts"
-
-	IfFileExists "$INSTDIR\wc2-config.lua" 0 +3
-	CreateDirectory "$INSTDIR\scripts"
-	Rename "$INSTDIR\wc2-config.lua" "$INSTDIR\scripts\wc2-config.lua"
 
 	Delete "$INSTDIR\campaigns\human\level*h_c.sms"
 	Delete "$INSTDIR\campaigns\orc\level*o_c.sms"
-	Delete "$INSTDIR\campaigns\human-exp\levelx*h_c.sms"
-	Delete "$INSTDIR\campaigns\orc-exp\levelx*o_c.sms"
 	RMDir "$INSTDIR\campaigns\human"
 	RMDir "$INSTDIR\campaigns\orc"
-	RMDir "$INSTDIR\campaigns\human-exp"
-	RMDir "$INSTDIR\campaigns\orc-exp"
 	RMDir "$INSTDIR\campaigns"
 	RMDir "$INSTDIR"
 
@@ -476,10 +391,6 @@ SectionEnd
 ;--------------------------------
 
 Function .onInit
-	; Set default components options
-	StrCpy $OptDataset ${opt1Warcraft}
-	StrCpy $OptMusic ${opt2MIDI}
-
 	; Check if War1gus installer is already running
 	System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${NAME}") i .r1 ?e'
 	Pop $0
@@ -504,20 +415,6 @@ Function .onInit
 
 	StrCpy $DATADIR "D:"
 	!insertmacro MUI_LANGDLL_DISPLAY
-FunctionEnd
-
-Function .onSelChange
-
-  !insertmacro StartRadioButtons $OptDataset
-    !insertmacro RadioButton ${opt1Warcraft}
-    !insertmacro RadioButton ${opt1AT}
-  !insertmacro EndRadioButtons
-	
-  !insertmacro StartRadioButtons $OptMusic
-    !insertmacro RadioButton ${opt2CD}
-    !insertmacro RadioButton ${opt2MIDI}
-  !insertmacro EndRadioButtons
-	
 FunctionEnd
 
 ;--------------------------------
