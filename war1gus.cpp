@@ -31,5 +31,6 @@
 #define GAME_NAME "War1gus"
 #define GAME_CD "Warcraft I CD or Floppy"
 #define GAME "war1gus"
+#define TITLE_PNG "%s\\graphics\\ui\\title_screen.png"
 
 #include <stratagus-game-launcher.h>
