@@ -8,12 +8,8 @@ addons:
   apt:
     packages:
       - libpng12-dev
-      - libgtk2.0-dev
 before_script:
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install imagemagick; fi
   - mkdir build
   - cd build
-  - curl -L https://github.com/Wargus/stratagus/archive/master.zip -O master.zip || true
-  - unzip master.zip
-  - cmake -DSTRATAGUS=stratagus -DSTRATAGUS_INCLUDE_DIR="$PWD/stratagus-master/gameheaders" ..
+  - cmake ..
 script: make
