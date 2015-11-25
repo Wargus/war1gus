@@ -1,0 +1,31 @@
+Template: war1gus/extractdata
+Type: boolean
+Default: true
+Description: (from the CD, Floppy version, or a local install).
+ You must now extract the Warcraft data files
+
+Template: war1gus/cdpath
+Type: string
+Default: /media/cdrom
+Description: Warcraft: Orcs & Humans CD mount point:
+ Enter path to your Warcraft: Orcs & Humans CD mount point
+
+Template: war1gus/extractvideo
+Type: boolean
+Default: true
+Description: Extract and convert videos?
+ Only the Warcraft CD version contains videos. Extracting and
+ converting may take a couple of minutes.
+
+Template: war1gus/convertmusic
+Type: boolean
+Default: true
+Description: Convert MIDI music to ogg?
+ Warcraft music is in MIDI format. Converting will take a
+ few minutes.
+
+Template: war1gus/nodata
+Type: error
+Description: Data files not found
+ Warcraft was not found in the specified path. Specify another
+ path which contains correct Warcraft data files.

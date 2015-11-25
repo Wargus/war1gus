@@ -16,44 +16,120 @@
 
 project(war1gus)
 cmake_minimum_required(VERSION 2.6)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
-file(GLOB war1gus_SRCS
-	"scripts/*.lua"
-	"scripts/**/*.lua"
-	"campaigns/**/*.sms"
-	"campaigns/**/*.lua"
-	"maps/*.sms"
-	"war1tool.c"
-	"xmi2mid.cpp"
-	"scale2x.c"
-	"README"
-)
+file(GLOB war1tool_SRCS
+  "scripts/*.lua"
+  "scripts/**/*.lua"
+  "campaigns/**/*.sms"
+  "campaigns/**/*.lua"
+  "maps/*.sms"
+  "war1tool.c"
+  "xmi2mid.cpp"
+  "scale2x.c"
+  "README"
+  )
 
-set(war1gus_HDRS xmi2mid.h scale2x.h)
+set(war1tool_HDRS xmi2mid.h scale2x.h)
 
 find_package(PNG REQUIRED)
 find_package(ZLIB REQUIRED)
 
 include_directories(${PNG_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS})
-set(war1gus_LIBS ${PNG_LIBRARIES} ${ZLIB_LIBRARIES})
+set(war1tool_LIBS ${PNG_LIBRARIES} ${ZLIB_LIBRARIES})
 
-add_executable(war1tool ${war1gus_SRCS} ${war1gus_HDRS})
-target_link_libraries(war1tool ${war1gus_LIBS})
+add_executable(war1tool ${war1tool_SRCS} ${war1tool_HDRS})
+target_link_libraries(war1tool ${war1tool_LIBS})
 install(TARGETS war1tool DESTINATION "bin")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 endif()
 
 if (WIN32 AND MSVC)
-	if(MSVC_VERSION GREATER 1800)       # if > VC13 
-		message("The project must be compiled with VS2013 or older.") 
-		set(CMAKE_GENERATOR_TOOLSET "v120" CACHE STRING "Platform Toolset" FORCE) 
-	endif()
+  if(MSVC_VERSION GREATER 1800)       # if > VC13
+    message("The project must be compiled with VS2013 or older.")
+    set(CMAKE_GENERATOR_TOOLSET "v120" CACHE STRING "Platform Toolset" FORCE)
+  endif()
 
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
-	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
-	set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
-	set_target_properties(war1tool PROPERTIES LINK_FLAGS "${LINK_FLAGS} /NODEFAULTLIB:MSVCRT")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
+  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
+  set_target_properties(war1tool PROPERTIES LINK_FLAGS "${LINK_FLAGS} /NODEFAULTLIB:MSVCRT")
+endif()
+
+# Launcher
+
+find_package(Stratagus)
+if(STRATAGUS_FOUND)
+  set(BINDIR "bin" CACHE PATH "Where to install user binaries")
+  set(GAMEDIR "games" CACHE PATH "Where to install games binaries")
+  set(SHAREDIR "share/games/stratagus/war1gus" CACHE PATH "Where to install data files")
+  set(DATAROOTDIR "${CMAKE_INSTALL_PREFIX}/share" CACHE PATH "Sets the root of data directories to a non-default location")
+  set(ICONDIR "${DATAROOTDIR}/pixmaps" CACHE PATH "Sets the icon directory for desktop entry to a non-default location.")
+  set(DESKTOPDIR "${DATAROOTDIR}/applications" CACHE PATH "Sets the desktop file directory for desktop entry to a non-default location.")
+  if(NOT IS_ABSOLUTE "${GAMEDIR}")
+    set(GAMEDIRABS "${CMAKE_INSTALL_PREFIX}/${GAMEDIR}")
+  else()
+    set(GAMEDIRABS "${GAMEDIR}")
+  endif()
+  if(NOT IS_ABSOLUTE "${SHAREDIR}")
+    set(DATA_PATH "${CMAKE_INSTALL_PREFIX}/${SHAREDIR}")
+  else()
+    set(DATA_PATH "${SHAREDIR}")
+  endif()
+
+  include_directories(${X11_INCLUDE_DIR} ${STRATAGUS_INCLUDE_DIR})
+  if (NOT WIN32)
+    find_package(GTK2 REQUIRED gtk)
+    if (NOT GTK2_FOUND)
+      add_definitions("-DNOGTK")
+    else()
+      include_directories(${GTK2_INCLUDE_DIRS})
+      set(war1gus_LIBS ${war1gus_LIBS} ${GTK2_LIBRARIES})
+    endif()
+    find_package(X11 REQUIRED)
+    set(war1gus_LIBS ${war1gus_LIBS} ${X11_X11_LIB})
+    add_definitions(-DDATA_PATH="${DATA_PATH}")
+    add_definitions(-DSCRIPTS_PATH="${DATA_PATH}")
+    add_definitions(-DSTRATAGUS_BIN="${STRATAGUS}")
+    configure_file (
+      "${PROJECT_SOURCE_DIR}/war1gus.desktop.in"
+      "${PROJECT_BINARY_DIR}/war1gus.desktop"
+    )
+    add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.png"
+      COMMAND convert
+      ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" "${PROJECT_BINARY_DIR}/war1gus.png"
+      DEPENDS war1gus.ico
+      COMMENT "Generating war1gus.png" VERBATIM
+    )
+    add_custom_target(icon ALL DEPENDS war1gus.png)
+    install(FILES "${PROJECT_BINARY_DIR}/war1gus.png" DESTINATION ${ICONDIR})
+    install(FILES "${PROJECT_BINARY_DIR}/war1gus.desktop" DESTINATION ${DESKTOPDIR})
+    install(DIRECTORY campaigns contrib scripts DESTINATION ${SHAREDIR})
+  elseif (WIN32)
+    set(war1gus_SRCS ${war1gus_SRCS} war1gus.rc)
+    find_package(MakeNSIS)
+    enable_language(RC)
+    include(CMakeDetermineRCCompiler)
+    option(ENABLE_NSIS "Create Stratagus Window NSIS Installer" OFF)
+    if(ENABLE_NSIS AND MAKENSIS_FOUND)
+      file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/COPYING DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+      file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/war1gus.ico DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+      add_custom_command(OUTPUT War1gus${MAKENSIS_SUFFIX}
+        COMMAND ${MAKENSIS}
+        ARGS ${MAKENSIS_FLAGS} -DCMAKE_CURRENT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}" -DCMAKE_CURRENT_BINARY_DIR="${CMAKE_CURRENT_BINARY_DIR}" ${CMAKE_CURRENT_SOURCE_DIR}/war1gus.nsi
+        DEPENDS war1gus.nsi war1gus war1tool COPYING war1gus.ico
+        COMMENT "Generating War1gus Windows NSIS Installer" VERBATIM
+        )
+      add_custom_target(nsis ALL DEPENDS War1gus${MAKENSIS_SUFFIX})
+    endif()
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
+  endif()
+  set(war1gus_SRCS war1gus.cpp)
+  add_executable(war1gus WIN32 ${war1gus_SRCS} ${war1gus_HDRS})
+  target_link_libraries(war1gus ${war1gus_LIBS})
+  set(GAMEDIR "games" CACHE PATH "Where to install games binaries")
+  install(TARGETS war1gus DESTINATION ${GAMEDIR})
 endif()
