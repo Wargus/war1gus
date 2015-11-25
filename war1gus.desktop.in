@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=War1gus - Warcraft: Orcs & Humans
+Comment=Warcraft: Orcs & Humans data game set for the Stratagus engine
+Exec=@GAMEDIRABS@/war1gus
+Icon=war1gus
+Terminal=false
+Type=Application
+Categories=Game;StrategyGame;
+StartupNotify=false
