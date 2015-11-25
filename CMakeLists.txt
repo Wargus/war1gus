@@ -65,7 +65,7 @@ find_package(Stratagus)
 if(STRATAGUS_FOUND)
   set(BINDIR "bin" CACHE PATH "Where to install user binaries")
   set(GAMEDIR "games" CACHE PATH "Where to install games binaries")
-  set(SHAREDIR "share/games/stratagus/wargus" CACHE PATH "Where to install data files")
+  set(SHAREDIR "share/games/stratagus/war1gus" CACHE PATH "Where to install data files")
   set(DATAROOTDIR "${CMAKE_INSTALL_PREFIX}/share" CACHE PATH "Sets the root of data directories to a non-default location")
   set(ICONDIR "${DATAROOTDIR}/pixmaps" CACHE PATH "Sets the icon directory for desktop entry to a non-default location.")
   set(DESKTOPDIR "${DATAROOTDIR}/applications" CACHE PATH "Sets the desktop file directory for desktop entry to a non-default location.")
@@ -91,6 +91,20 @@ if(STRATAGUS_FOUND)
     add_definitions(-DDATA_PATH="${DATA_PATH}")
     add_definitions(-DSCRIPTS_PATH="${DATA_PATH}")
     add_definitions(-DSTRATAGUS_BIN="${STRATAGUS}")
+    configure_file (
+      "${PROJECT_SOURCE_DIR}/war1gus.desktop.in"
+      "${PROJECT_BINARY_DIR}/war1gus.desktop"
+    )
+    add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.png"
+      COMMAND convert
+      ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" "${PROJECT_BINARY_DIR}/war1gus.png"
+      DEPENDS war1gus.ico
+      COMMENT "Generating war1gus.png" VERBATIM
+    )
+    add_custom_target(icon ALL DEPENDS war1gus.png)
+    install(FILES "${PROJECT_BINARY_DIR}/war1gus.png" DESTINATION ${ICONDIR})
+    install(FILES "${PROJECT_BINARY_DIR}/war1gus.desktop" DESTINATION ${DESKTOPDIR})
+    install(DIRECTORY campaigns contrib scripts DESTINATION ${SHAREDIR})
   elseif (WIN32)
     set(war1gus_SRCS ${war1gus_SRCS} war1gus.rc)
     find_package(MakeNSIS)

@@ -1,0 +1,45 @@
+#!/usr/bin/make -f
+#       _________ __                 __
+#      /   _____//  |_____________ _/  |______     ____  __ __  ______
+#      \_____  \\   __\_  __ \__  \\   __\__  \   / ___\|  |  \/  ___/
+#      /        \|  |  |  | \// __ \|  |  / __ \_/ /_/  >  |  /\___ |
+#     /_______  /|__|  |__|  (____  /__| (____  /\___  /|____//____  >
+#             \/                  \/          \//_____/            \/
+#  ______________________                           ______________________
+#                        T H E   W A R   B E G I N S
+#         Stratagus - A free fantasy real time strategy game engine
+#
+#    debian/rules
+#    Copyright (C) 2010-2011  Pali Rohár <pali.rohar@gmail.com>
+#    Copyright (C) 2015  Tim Felgentreff <tim.felgentreff@gmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+
+VERSION := $(shell dpkg-parsechangelog | sed -ne "s/^Version: \(.*\)/\1/p" | sed "s/-[^-]*$$//" )
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	dh_auto_configure -- -DCMAKE_INCLUDE_PATH="/usr/lib/$(shell dpkg-architecture -qDEB_BUILD_MULTIARCH)/"
+
+override_dh_install:
+	dh_install
+	convert war1gus.ico -resize 32x32 debian/war1gus/usr/share/pixmaps/war1gus.xpm
+
+override_dh_shlibdeps:
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+	echo "stratagus:Depends=stratagus (>= $(VERSION))" >> debian/war1gus.substvars

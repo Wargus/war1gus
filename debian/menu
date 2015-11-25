@@ -1,0 +1,1 @@
+?package(war1gus):needs="x11" section="Games/Strategy" title="War1gus - Warcraft II" command="/usr/games/war1gus" icon="/usr/share/pixmaps/war1gus.xpm"

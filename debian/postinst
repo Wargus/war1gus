@@ -1,0 +1,49 @@
+#!/bin/sh
+
+set -e
+
+. /usr/share/debconf/confmodule
+
+extract() {
+
+	db_get war1gus/extractdata || true
+	if [ "$RET" != "true" ]; then
+		db_stop || true
+		return 0
+	fi
+
+	db_get war1gus/cdpath || true
+	if ! [ -d "$RET" ]; then
+		db_stop || true
+		echo "${RET} doesn't exist - can't extract Warcraft data" >&2
+		return 1
+	fi
+
+	CDPATH="$RET"
+	ARGS=
+
+	db_get war1gus/extractvideo || true
+	if [ "$RET" = "true" ]; then
+		ARGS="$ARGS -v"
+	fi
+
+	db_get war1gus/convertmusic || true
+	if [ "$RET" = "true" ]; then
+		ARGS="$ARGS -m"
+	fi
+
+	db_stop || true
+        echo $ARGS
+        echo "$CDPATH"
+	war1tool $ARGS "$CDPATH" /usr/share/games/stratagus/war1gus 2>/dev/null
+	return $?
+
+}
+
+if [ "$1" = "configure" ]; then
+	extract || exit $?
+fi
+
+#DEBHELPER#
+
+exit 0
