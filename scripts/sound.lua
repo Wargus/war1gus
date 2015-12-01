@@ -40,21 +40,23 @@
 --		This is a random music player demo
 --
 
-war1gus.playlist = {"music/00.ogg"}
+-- for midi music
+
+war1gus.playlist = {"music/00" .. war1gus.music_extension}
 
 for i=1,44 do
    if i < 10 then
-      table.insert(war1gus.playlist, "music/0" .. i .. ".ogg")
+      table.insert(war1gus.playlist, "music/0" .. i .. war1gus.music_extension)
    else
-      table.insert(war1gus.playlist, "music/" .. i .. ".ogg")
+      table.insert(war1gus.playlist, "music/" .. i .. war1gus.music_extension)
    end
 end
 
-TitleScreenMusic = "music/00.ogg"
-HumanBriefingMusic = "music/07.ogg"
-OrcBriefingMusic = "music/14.ogg"
-VictoryMusic = "music/08.ogg"
-DefeatMusic = "music/06.ogg"
+TitleScreenMusic = "music/00" .. war1gus.music_extension
+HumanBriefingMusic = "music/07" .. war1gus.music_extension
+OrcBriefingMusic = "music/14" .. war1gus.music_extension
+VictoryMusic = "music/08" .. war1gus.music_extension
+DefeatMusic = "music/06" .. war1gus.music_extension
 
 function MusicStopped()
   if (table.getn(war1gus.playlist) ~= 0) then

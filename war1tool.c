@@ -831,7 +831,7 @@ Control Todo[] = {
 
 // This which can be allowed/disallowed in maps.
 // A bitmask of 1 << these things can be found in MapFlags.
-typedef struct _allowed_features_ {
+struct _allowed_features_ {
 	const char* thing[2];
 };
 struct _allowed_features_ AllowedFeatures[] = {
@@ -2700,41 +2700,41 @@ int ConvertWav(char* file, int wave)
 **  Convert XMI Midi sound to Midi
 */
 
-int ConvertXmi(char* file, int xmi)
+void ConvertXmi(char* file, int xmi, short midiToOgg)
 {
-        unsigned char* xmip;
+	unsigned char* xmip;
 	unsigned char* midp;
 	unsigned char* oggp;
 	char buf[1024];
 	char* cmd;
-        gzFile gf;
+	gzFile gf;
 	FILE* f;
-        size_t xmil;
-        size_t midl;
+	size_t xmil;
+	size_t midl;
 	size_t oggl;
 	int ret;
 
-        xmip = ExtractEntry(ArchiveOffsets[xmi], (int*)&xmil);
-        midp = TranscodeXmiToMid(xmip, xmil, &midl);
+	xmip = ExtractEntry(ArchiveOffsets[xmi], (int*)&xmil);
+	midp = TranscodeXmiToMid(xmip, xmil, &midl);
 
-        free(xmip);
+	free(xmip);
 
-        sprintf(buf, "%s/%s/%s.mid", Dir, MUSIC_PATH, file);
-        CheckPath(buf);
-        f = fopen(buf, "wb");
-        if (!f) {
-                perror("");
-                printf("Can't open %s\n", buf);
-                exit(-1);
-        }
-        if (midl != (size_t)fwrite(midp, 1, midl, f)) {
-                printf("Can't write %d bytes\n", (int)midl);
+	sprintf(buf, "%s/%s/%s.mid", Dir, MUSIC_PATH, file);
+	CheckPath(buf);
+	f = fopen(buf, "wb");
+	if (!f) {
+		perror("");
+		printf("Can't open %s\n", buf);
+		exit(-1);
+	}
+	if (midl != (size_t)fwrite(midp, 1, midl, f)) {
+		printf("Can't write %d bytes\n", (int)midl);
 		fflush(stdout);
-        }
-        free(midp);
-        fclose(f);
-
-	cmd = (char*) calloc(strlen("timidity -Ow \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
+	}
+	free(midp);
+	fclose(f);
+	if (!midiToOgg) return;
+	cmd = (char*)calloc(strlen("timidity -Ow \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
 	if (!cmd) {
 		fprintf(stderr, "Memory error\n");
 		exit(-1);
@@ -2750,13 +2750,13 @@ int ConvertXmi(char* file, int xmi)
 	if (ret != 0) {
 		printf("Can't convert midi sound %s to wav format. Is timidity installed in PATH?\n", file);
 		fflush(stdout);
-		return ret;
+		return;
 	}
 
 	sprintf(buf, "%s/%s/%s.wav", Dir, MUSIC_PATH, file);
 	CheckPath(buf);
 
-	cmd = (char*) calloc(strlen("ffmpeg2theora --optimize \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
+	cmd = (char*)calloc(strlen("ffmpeg2theora --optimize \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
 	if (!cmd) {
 		fprintf(stderr, "Memory error\n");
 		exit(-1);
@@ -2772,7 +2772,7 @@ int ConvertXmi(char* file, int xmi)
 	if (ret != 0) {
 		printf("Can't convert wav sound %s to ogv format. Is ffmpeg2theora installed in PATH?\n", file);
 		fflush(stdout);
-		return ret;
+		return;
 	}
 
 	sprintf(buf, "%s/%s/%s.ogg", Dir, MUSIC_PATH, file);
@@ -2788,7 +2788,7 @@ int ConvertXmi(char* file, int xmi)
 	oggl = ftell(f);
 	rewind(f);
 
-	oggp = (unsigned char*) malloc(oggl);
+	oggp = (unsigned char*)malloc(oggl);
 	if (!oggp) {
 		fprintf(stderr, "Memory error\n");
 		exit(-1);
@@ -2819,7 +2819,7 @@ int ConvertXmi(char* file, int xmi)
 	gzclose(gf);
 	free(oggp);
 
-        return 0;
+	return;
 }
 
 /**
@@ -3638,6 +3638,16 @@ void CopyDirectories(char** directories) {
 	}
 }
 
+void CreateConfig(char* outputdir, int video, int miditoogg) {
+	CheckPath(Dir);
+	char cfile[2048];
+	FILE *config;
+	sprintf(cfile, "%s/%s", outputdir, "scripts/wc1-config.lua");
+	config = fopen(cfile, "w");
+	fprintf(config, "war1gus.music_extension = \"%s\"\n", miditoogg ? ".ogg" : ".midi");
+	fclose(config);
+}
+
 //----------------------------------------------------------------------------
 //  Main loop
 //----------------------------------------------------------------------------
@@ -3768,6 +3778,8 @@ int main(int argc, char** argv)
 	dirs[2] = "campaigns";
 	CopyDirectories(dirs);
 
+	CreateConfig(Dir, video, midi);
+
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		// Should only be on the expansion cd
 #ifdef DEBUG
@@ -3834,7 +3846,9 @@ int main(int argc, char** argv)
 				break;
 			case M:
 				if (midi) {
-					ConvertXmi(Todo[u].File, Todo[u].Arg1);
+					ConvertXmi(Todo[u].File, Todo[u].Arg1, 1);
+				} else {
+					ConvertXmi(Todo[u].File, Todo[u].Arg1, 0);
 				}
 				break;
 			case VOC:
