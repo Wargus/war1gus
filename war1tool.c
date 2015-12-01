@@ -3616,7 +3616,7 @@ void CreateConfig(char* outputdir, int video, int miditoogg) {
 	FILE *config;
 	sprintf(cfile, "%s/%s", outputdir, "scripts/wc1-config.lua");
 	config = fopen(cfile, "w");
-	fprintf(config, "war1gus.music_extension = \"%s\"\n", miditoogg ? ".ogg" : ".midi");
+	fprintf(config, "war1gus.music_extension = \"%s\"\n", miditoogg ? ".ogg" : ".mid");
 	fclose(config);
 }
 
