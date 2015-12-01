@@ -1803,53 +1803,32 @@ void MuxIntroVideos(void) {
 			 1, 2, 1,
 			 1};
 
-	int i, j, streamNum, ret;
+	int i, j, ret;
 	size_t readM;
 	gzFile wavGz;
 	FILE *wavFile;
-	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputVideo, *inputWavGz, *concatFilter, *outputIntro, *buf;
+	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputWavGz, *outputIntro, *buf;
 	unsigned char *wavBuffer;
-	char *cmdprefix = "ffmpeg -y ";
-	char *encoderIntroOpts = " -q:v 10 -shortest -vb 4000k -acodec libvorbis -vcodec libtheora ";
-	char *encoderVideoOpts = " -map '[v]' -shortest -vb 4000k -acodec libvorbis ";
-	char *encoderAudioOpts = " -map '[a]' -shortest -vb 4000k -acodec libvorbis ";
-	char *concatFilterPrefix = " -filter_complex '";
-	char *concatFilterVideoSuffix = ":v=1:a=0:unsafe=1 [v]' ";
-	char *concatFilterAudioSuffix = ":v=0:a=1:unsafe=1 [a]' ";
+	char *cmdprefix = "ffmpeg -y -f concat -i ";
+	char *cmdsuffixVideo = " -c copy ";
+	char *cmdsuffixAudio = " -acodec libvorbis";
+	char *encoderIntroOpts = " -shortest -c copy ";
+	FILE* mylist;
+	char listfile[2048] = { '\0' };
+	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
 
 	// VIDEO
-	concatFilter = (char*)calloc(sizeof(char), strlen(concatFilterPrefix) + 1);
-	strcpy(concatFilter, concatFilterPrefix);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1);
-	strcpy(cmd, cmdprefix);
-	streamNum = 0;
+	mylist = fopen(listfile, "w");
 	for (i = 0; i < 9; i++) {
-		inputVideo = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 2 + strlen(videos[i]) + 2);
-		sprintf(inputVideo, "\"%s/%s/%s\"", Dir, VIDEO_PATH, videos[i]);
 		for (j = 0; j < repeats[i]; j++) {
-			printf("%s\n\n", cmd);
-			fflush(stdout);
-			printf("%s\n\n", concatFilter);
-			fflush(stdout);
-		
-			cmd = (char*)realloc(cmd, sizeof(char) * (strlen(cmd) + strlen(" -i ") + strlen(inputVideo) + 1));
-			strcat(cmd, " -i ");
-			strcat(cmd, inputVideo);
-
-			concatFilter = (char*)realloc(concatFilter, sizeof(char) * (strlen(concatFilter) + 1 + 2 + 4 + 1));
-			strcat(concatFilter, "[");
-			sprintf(concatFilter + strlen(concatFilter), "%d", streamNum);
-			strcat(concatFilter, ":0] ");
-			streamNum++;
+			fprintf(mylist, "file '%s'\n", videos[i]);
 		}
-		free(inputVideo);
 	}
 	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
-	concatFilter = (char*)realloc(concatFilter, sizeof(char) * strlen(concatFilter) + strlen("concat=n=XX") + strlen(concatFilterVideoSuffix) + 1);
-	sprintf(concatFilter, "%sconcat=n=%02d%s", concatFilter, streamNum, concatFilterVideoSuffix);
-	cmd = (char*)realloc(cmd, sizeof(char) * strlen(cmd) + strlen(concatFilter) + strlen(encoderVideoOpts) + 1 + strlen(outputVideo) + 1);
-	sprintf(cmd, "%s%s%s %s", cmd, concatFilter, encoderVideoOpts, outputVideo);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + strlen(listfile) + strlen(cmdsuffixVideo) + strlen(outputVideo));
+	sprintf(cmd, "%s %s %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
+	fclose(mylist);
 	printf("%s\n\n", cmd);
 	fflush(stdout);
 	ret = system(cmd);
@@ -1858,15 +1837,12 @@ void MuxIntroVideos(void) {
 		fflush(stdout);
 		exit(-1);
 	}
-	free(concatFilter);
 	free(cmd);
+	unlink(listfile);
 
 	// AUDIO
-	concatFilter = (char*)calloc(sizeof(char), strlen(concatFilterPrefix) + 1);
-	strcpy(concatFilter, concatFilterPrefix);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1);
-	strcpy(cmd, cmdprefix);
-	streamNum = 0;
+	sprintf(listfile, "%s/%s/mylist.txt", Dir, SOUND_PATH);
+	mylist = fopen(listfile, "w");
 	for (i = 0; i < 6; i++) {
 		inputWavGz = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
 	 	sprintf(inputWavGz, "%s/%s/%s.gz", Dir, SOUND_PATH, audios[i]);
@@ -1880,7 +1856,7 @@ void MuxIntroVideos(void) {
 	 
 	 	inputAudio = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
 	 	sprintf(inputAudio, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
-	 	wavFile = fopen(inputAudio, "wb");
+		wavFile = fopen(inputAudio, "wb");
 	 	if (!wavGz) {
 	 		printf("Can't open %s for muxing\n", inputAudio);
 	 		fflush(stdout);
@@ -1890,9 +1866,11 @@ void MuxIntroVideos(void) {
 	 		continue;
 	 	}
 	 
-	 	wavBuffer = (unsigned char*)calloc(sizeof(char*), 1024 * 128);
-	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char*))) > 0) {
-	 		fwrite(wavBuffer, sizeof(char*), readM,  wavFile);
+	 	wavBuffer = (unsigned char*)calloc(sizeof(char), 1024 * 128);
+	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char))) > 0) {
+			printf("writing %d to %s from %s\n", readM, inputAudio, inputWavGz);
+	 		fwrite(wavBuffer, sizeof(char), readM,  wavFile);
+			fflush(wavFile);
 	 	}
 	 	free(wavBuffer);
 	 	unlink(inputWavGz);
@@ -1900,23 +1878,16 @@ void MuxIntroVideos(void) {
 	 	gzclose(wavGz);
 	 	fclose(wavFile);
 
-		cmd = (char*)realloc(cmd, sizeof(char) * (strlen(cmd) + strlen(" -i ") + strlen(inputAudio) + 1));
-		strcat(cmd, " -i ");
-		strcat(cmd, inputAudio);
+		fprintf(mylist, "file '%s'\n", audios[i]);
 		free(inputAudio);
-
-		concatFilter = (char*)realloc(concatFilter, sizeof(char) * (strlen(concatFilter) + 1 + 2 + 4 + 1));
-		strcat(concatFilter, "[");
-		sprintf(concatFilter + strlen(concatFilter), "%d", streamNum);
-		strcat(concatFilter, ":0] ");
-		streamNum++;
 	}
 	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
-	concatFilter = (char*)realloc(concatFilter, sizeof(char) * strlen(concatFilter) + strlen("concat=n=XX") + strlen(concatFilterAudioSuffix) + 1);
-	sprintf(concatFilter, "%sconcat=n=%02d%s", concatFilter, streamNum, concatFilterAudioSuffix);
-	cmd = (char*)realloc(cmd, sizeof(char) * strlen(cmd) + strlen(concatFilter) + strlen(encoderAudioOpts) + 1 + strlen(outputAudio) + 1);
-	sprintf(cmd, "%s%s%s %s", cmd, concatFilter, encoderAudioOpts, outputAudio);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + strlen(listfile) + strlen(cmdsuffixAudio) + strlen(outputAudio));
+	sprintf(cmd, "%s %s %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
+	fclose(mylist);
+	printf("%s\n\n", cmd);
+	fflush(stdout);
 	ret = system(cmd);
 	if (ret != 0) {
 		printf("Can't concat intro videos. Is ffmpeg installed in PATH?\n");
@@ -1924,9 +1895,10 @@ void MuxIntroVideos(void) {
 		exit(-1);
 	}
 	free(cmd);
-	free(concatFilter);
+	unlink(listfile);
 
 	// Mux
+	cmdprefix = "ffmpeg -y ";
 	outputIntro = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogv") + 2);
 	sprintf(outputIntro, "\"%s/%s/INTRO.ogv\"", Dir, VIDEO_PATH);
 	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1 +
@@ -1935,6 +1907,7 @@ void MuxIntroVideos(void) {
 			    1 + strlen(encoderIntroOpts) + 1 +
 			    1 + strlen(outputIntro) + 2);
 	sprintf(cmd, "%s -i %s -i %s %s %s", cmdprefix, outputVideo, outputAudio, encoderIntroOpts, outputIntro);
+	printf("%s\n", cmd);
  	ret = system(cmd);
  	if (ret != 0) {
 		printf("Can't mux intro video and audio. Is ffmpeg installed in PATH?\n");
@@ -1942,7 +1915,6 @@ void MuxIntroVideos(void) {
 	}
 	free(outputIntro);
 	free(cmd);
-
 	
 	// remove unneeded files
 	for (i = 0; i < 9; i++) {
@@ -3777,7 +3749,7 @@ int main(int argc, char** argv)
 	dirs[1] = "contrib";
 	dirs[2] = "campaigns";
 	CopyDirectories(dirs);
-
+	
 	CreateConfig(Dir, video, midi);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
