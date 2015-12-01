@@ -64,7 +64,7 @@
 
 !define FFMPEG2THEORA "ffmpeg2theora.exe"
 !define FFMPEG "ffmpeg.exe"
-!define SF2BANK = "TimGM6mb.sf2"
+!define SF2BANK "TimGM6mb.sf2"
 
 !define UNINSTALL "uninstall.exe"
 !define INSTALLER "${NAME}-${VERSION}.exe"
@@ -324,7 +324,6 @@ Function PageExtractDataLeave
 
 FunctionEnd
 
-Var KeyStr
 Section "-${NAME}" ExtractData
 	
 	StrCmp "$EXTRACTNEEDED" "no" end
@@ -337,7 +336,8 @@ Section "-${NAME}" ExtractData
 	
 	DetailPrint "$DataDirectory"
 	DetailPrint "$\"$INSTDIR\${WARTOOL}$\" $\"$DataDirectory$\" $\"$INSTDIR$\""
-	ExecWait "$\"$INSTDIR\${WARTOOL}$\" $\"$DataDirectory$\" $\"$INSTDIR$\""
+	SetOutPath "$INSTDIR"
+	ExecWait "$\"$INSTDIR\${WARTOOL}$\" -v $\"$DataDirectory$\" $\"$INSTDIR$\""
 	Pop $0
 	IntCmp $0 0 +3
 
@@ -365,7 +365,7 @@ Section "un.${NAME}" Executable
 	RMDir "$INSTDIR\campaigns\human"
 	RMDir "$INSTDIR\campaigns\orc"
 	RMDir "$INSTDIR\campaigns"
-	RMDir "$INSTDIR"
+	RMDir /r "$INSTDIR"
 
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $STARTMENUDIR
 	Delete "$SMPROGRAMS\$STARTMENUDIR\${NAME}.lnk"
