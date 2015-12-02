@@ -831,7 +831,7 @@ Control Todo[] = {
 
 // This which can be allowed/disallowed in maps.
 // A bitmask of 1 << these things can be found in MapFlags.
-typedef struct _allowed_features_ {
+struct _allowed_features_ {
 	const char* thing[2];
 };
 struct _allowed_features_ AllowedFeatures[] = {
@@ -1803,53 +1803,32 @@ void MuxIntroVideos(void) {
 			 1, 2, 1,
 			 1};
 
-	int i, j, streamNum, ret;
+	int i, j, ret;
 	size_t readM;
 	gzFile wavGz;
 	FILE *wavFile;
-	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputVideo, *inputWavGz, *concatFilter, *outputIntro, *buf;
+	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputWavGz, *outputIntro, *buf;
 	unsigned char *wavBuffer;
-	char *cmdprefix = "ffmpeg -y ";
-	char *encoderIntroOpts = " -q:v 10 -shortest -vb 4000k -acodec libvorbis -vcodec libtheora ";
-	char *encoderVideoOpts = " -map '[v]' -shortest -vb 4000k -acodec libvorbis ";
-	char *encoderAudioOpts = " -map '[a]' -shortest -vb 4000k -acodec libvorbis ";
-	char *concatFilterPrefix = " -filter_complex '";
-	char *concatFilterVideoSuffix = ":v=1:a=0:unsafe=1 [v]' ";
-	char *concatFilterAudioSuffix = ":v=0:a=1:unsafe=1 [a]' ";
+	char *cmdprefix = "ffmpeg -y -f concat -i ";
+	char *cmdsuffixVideo = " -c copy ";
+	char *cmdsuffixAudio = " -acodec libvorbis";
+	char *encoderIntroOpts = " -shortest -c copy ";
+	FILE* mylist;
+	char listfile[2048] = { '\0' };
+	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
 
 	// VIDEO
-	concatFilter = (char*)calloc(sizeof(char), strlen(concatFilterPrefix) + 1);
-	strcpy(concatFilter, concatFilterPrefix);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1);
-	strcpy(cmd, cmdprefix);
-	streamNum = 0;
+	mylist = fopen(listfile, "w");
 	for (i = 0; i < 9; i++) {
-		inputVideo = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 2 + strlen(videos[i]) + 2);
-		sprintf(inputVideo, "\"%s/%s/%s\"", Dir, VIDEO_PATH, videos[i]);
 		for (j = 0; j < repeats[i]; j++) {
-			printf("%s\n\n", cmd);
-			fflush(stdout);
-			printf("%s\n\n", concatFilter);
-			fflush(stdout);
-		
-			cmd = (char*)realloc(cmd, sizeof(char) * (strlen(cmd) + strlen(" -i ") + strlen(inputVideo) + 1));
-			strcat(cmd, " -i ");
-			strcat(cmd, inputVideo);
-
-			concatFilter = (char*)realloc(concatFilter, sizeof(char) * (strlen(concatFilter) + 1 + 2 + 4 + 1));
-			strcat(concatFilter, "[");
-			sprintf(concatFilter + strlen(concatFilter), "%d", streamNum);
-			strcat(concatFilter, ":0] ");
-			streamNum++;
+			fprintf(mylist, "file '%s'\n", videos[i]);
 		}
-		free(inputVideo);
 	}
 	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
-	concatFilter = (char*)realloc(concatFilter, sizeof(char) * strlen(concatFilter) + strlen("concat=n=XX") + strlen(concatFilterVideoSuffix) + 1);
-	sprintf(concatFilter, "%sconcat=n=%02d%s", concatFilter, streamNum, concatFilterVideoSuffix);
-	cmd = (char*)realloc(cmd, sizeof(char) * strlen(cmd) + strlen(concatFilter) + strlen(encoderVideoOpts) + 1 + strlen(outputVideo) + 1);
-	sprintf(cmd, "%s%s%s %s", cmd, concatFilter, encoderVideoOpts, outputVideo);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + strlen(listfile) + strlen(cmdsuffixVideo) + strlen(outputVideo));
+	sprintf(cmd, "%s %s %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
+	fclose(mylist);
 	printf("%s\n\n", cmd);
 	fflush(stdout);
 	ret = system(cmd);
@@ -1858,15 +1837,12 @@ void MuxIntroVideos(void) {
 		fflush(stdout);
 		exit(-1);
 	}
-	free(concatFilter);
 	free(cmd);
+	unlink(listfile);
 
 	// AUDIO
-	concatFilter = (char*)calloc(sizeof(char), strlen(concatFilterPrefix) + 1);
-	strcpy(concatFilter, concatFilterPrefix);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1);
-	strcpy(cmd, cmdprefix);
-	streamNum = 0;
+	sprintf(listfile, "%s/%s/mylist.txt", Dir, SOUND_PATH);
+	mylist = fopen(listfile, "w");
 	for (i = 0; i < 6; i++) {
 		inputWavGz = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
 	 	sprintf(inputWavGz, "%s/%s/%s.gz", Dir, SOUND_PATH, audios[i]);
@@ -1880,7 +1856,7 @@ void MuxIntroVideos(void) {
 	 
 	 	inputAudio = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
 	 	sprintf(inputAudio, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
-	 	wavFile = fopen(inputAudio, "wb");
+		wavFile = fopen(inputAudio, "wb");
 	 	if (!wavGz) {
 	 		printf("Can't open %s for muxing\n", inputAudio);
 	 		fflush(stdout);
@@ -1890,9 +1866,11 @@ void MuxIntroVideos(void) {
 	 		continue;
 	 	}
 	 
-	 	wavBuffer = (unsigned char*)calloc(sizeof(char*), 1024 * 128);
-	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char*))) > 0) {
-	 		fwrite(wavBuffer, sizeof(char*), readM,  wavFile);
+	 	wavBuffer = (unsigned char*)calloc(sizeof(char), 1024 * 128);
+	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char))) > 0) {
+			printf("writing %d to %s from %s\n", readM, inputAudio, inputWavGz);
+	 		fwrite(wavBuffer, sizeof(char), readM,  wavFile);
+			fflush(wavFile);
 	 	}
 	 	free(wavBuffer);
 	 	unlink(inputWavGz);
@@ -1900,23 +1878,16 @@ void MuxIntroVideos(void) {
 	 	gzclose(wavGz);
 	 	fclose(wavFile);
 
-		cmd = (char*)realloc(cmd, sizeof(char) * (strlen(cmd) + strlen(" -i ") + strlen(inputAudio) + 1));
-		strcat(cmd, " -i ");
-		strcat(cmd, inputAudio);
+		fprintf(mylist, "file '%s'\n", audios[i]);
 		free(inputAudio);
-
-		concatFilter = (char*)realloc(concatFilter, sizeof(char) * (strlen(concatFilter) + 1 + 2 + 4 + 1));
-		strcat(concatFilter, "[");
-		sprintf(concatFilter + strlen(concatFilter), "%d", streamNum);
-		strcat(concatFilter, ":0] ");
-		streamNum++;
 	}
 	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
-	concatFilter = (char*)realloc(concatFilter, sizeof(char) * strlen(concatFilter) + strlen("concat=n=XX") + strlen(concatFilterAudioSuffix) + 1);
-	sprintf(concatFilter, "%sconcat=n=%02d%s", concatFilter, streamNum, concatFilterAudioSuffix);
-	cmd = (char*)realloc(cmd, sizeof(char) * strlen(cmd) + strlen(concatFilter) + strlen(encoderAudioOpts) + 1 + strlen(outputAudio) + 1);
-	sprintf(cmd, "%s%s%s %s", cmd, concatFilter, encoderAudioOpts, outputAudio);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + strlen(listfile) + strlen(cmdsuffixAudio) + strlen(outputAudio));
+	sprintf(cmd, "%s %s %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
+	fclose(mylist);
+	printf("%s\n\n", cmd);
+	fflush(stdout);
 	ret = system(cmd);
 	if (ret != 0) {
 		printf("Can't concat intro videos. Is ffmpeg installed in PATH?\n");
@@ -1924,9 +1895,10 @@ void MuxIntroVideos(void) {
 		exit(-1);
 	}
 	free(cmd);
-	free(concatFilter);
+	unlink(listfile);
 
 	// Mux
+	cmdprefix = "ffmpeg -y ";
 	outputIntro = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogv") + 2);
 	sprintf(outputIntro, "\"%s/%s/INTRO.ogv\"", Dir, VIDEO_PATH);
 	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1 +
@@ -1935,6 +1907,7 @@ void MuxIntroVideos(void) {
 			    1 + strlen(encoderIntroOpts) + 1 +
 			    1 + strlen(outputIntro) + 2);
 	sprintf(cmd, "%s -i %s -i %s %s %s", cmdprefix, outputVideo, outputAudio, encoderIntroOpts, outputIntro);
+	printf("%s\n", cmd);
  	ret = system(cmd);
  	if (ret != 0) {
 		printf("Can't mux intro video and audio. Is ffmpeg installed in PATH?\n");
@@ -1942,7 +1915,6 @@ void MuxIntroVideos(void) {
 	}
 	free(outputIntro);
 	free(cmd);
-
 	
 	// remove unneeded files
 	for (i = 0; i < 9; i++) {
@@ -2700,41 +2672,41 @@ int ConvertWav(char* file, int wave)
 **  Convert XMI Midi sound to Midi
 */
 
-int ConvertXmi(char* file, int xmi)
+void ConvertXmi(char* file, int xmi, short midiToOgg)
 {
-        unsigned char* xmip;
+	unsigned char* xmip;
 	unsigned char* midp;
 	unsigned char* oggp;
 	char buf[1024];
 	char* cmd;
-        gzFile gf;
+	gzFile gf;
 	FILE* f;
-        size_t xmil;
-        size_t midl;
+	size_t xmil;
+	size_t midl;
 	size_t oggl;
 	int ret;
 
-        xmip = ExtractEntry(ArchiveOffsets[xmi], (int*)&xmil);
-        midp = TranscodeXmiToMid(xmip, xmil, &midl);
+	xmip = ExtractEntry(ArchiveOffsets[xmi], (int*)&xmil);
+	midp = TranscodeXmiToMid(xmip, xmil, &midl);
 
-        free(xmip);
+	free(xmip);
 
-        sprintf(buf, "%s/%s/%s.mid", Dir, MUSIC_PATH, file);
-        CheckPath(buf);
-        f = fopen(buf, "wb");
-        if (!f) {
-                perror("");
-                printf("Can't open %s\n", buf);
-                exit(-1);
-        }
-        if (midl != (size_t)fwrite(midp, 1, midl, f)) {
-                printf("Can't write %d bytes\n", (int)midl);
+	sprintf(buf, "%s/%s/%s.mid", Dir, MUSIC_PATH, file);
+	CheckPath(buf);
+	f = fopen(buf, "wb");
+	if (!f) {
+		perror("");
+		printf("Can't open %s\n", buf);
+		exit(-1);
+	}
+	if (midl != (size_t)fwrite(midp, 1, midl, f)) {
+		printf("Can't write %d bytes\n", (int)midl);
 		fflush(stdout);
-        }
-        free(midp);
-        fclose(f);
-
-	cmd = (char*) calloc(strlen("timidity -Ow \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
+	}
+	free(midp);
+	fclose(f);
+	if (!midiToOgg) return;
+	cmd = (char*)calloc(strlen("timidity -Ow \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
 	if (!cmd) {
 		fprintf(stderr, "Memory error\n");
 		exit(-1);
@@ -2750,13 +2722,13 @@ int ConvertXmi(char* file, int xmi)
 	if (ret != 0) {
 		printf("Can't convert midi sound %s to wav format. Is timidity installed in PATH?\n", file);
 		fflush(stdout);
-		return ret;
+		return;
 	}
 
 	sprintf(buf, "%s/%s/%s.wav", Dir, MUSIC_PATH, file);
 	CheckPath(buf);
 
-	cmd = (char*) calloc(strlen("ffmpeg2theora --optimize \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
+	cmd = (char*)calloc(strlen("ffmpeg2theora --optimize \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
 	if (!cmd) {
 		fprintf(stderr, "Memory error\n");
 		exit(-1);
@@ -2772,7 +2744,7 @@ int ConvertXmi(char* file, int xmi)
 	if (ret != 0) {
 		printf("Can't convert wav sound %s to ogv format. Is ffmpeg2theora installed in PATH?\n", file);
 		fflush(stdout);
-		return ret;
+		return;
 	}
 
 	sprintf(buf, "%s/%s/%s.ogg", Dir, MUSIC_PATH, file);
@@ -2788,7 +2760,7 @@ int ConvertXmi(char* file, int xmi)
 	oggl = ftell(f);
 	rewind(f);
 
-	oggp = (unsigned char*) malloc(oggl);
+	oggp = (unsigned char*)malloc(oggl);
 	if (!oggp) {
 		fprintf(stderr, "Memory error\n");
 		exit(-1);
@@ -2819,7 +2791,7 @@ int ConvertXmi(char* file, int xmi)
 	gzclose(gf);
 	free(oggp);
 
-        return 0;
+	return;
 }
 
 /**
@@ -3638,6 +3610,16 @@ void CopyDirectories(char** directories) {
 	}
 }
 
+void CreateConfig(char* outputdir, int video, int miditoogg) {
+	CheckPath(Dir);
+	char cfile[2048];
+	FILE *config;
+	sprintf(cfile, "%s/%s", outputdir, "scripts/wc1-config.lua");
+	config = fopen(cfile, "w");
+	fprintf(config, "war1gus.music_extension = \"%s\"\n", miditoogg ? ".ogg" : ".mid");
+	fclose(config);
+}
+
 //----------------------------------------------------------------------------
 //  Main loop
 //----------------------------------------------------------------------------
@@ -3767,6 +3749,8 @@ int main(int argc, char** argv)
 	dirs[1] = "contrib";
 	dirs[2] = "campaigns";
 	CopyDirectories(dirs);
+	
+	CreateConfig(Dir, video, midi);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		// Should only be on the expansion cd
@@ -3834,7 +3818,9 @@ int main(int argc, char** argv)
 				break;
 			case M:
 				if (midi) {
-					ConvertXmi(Todo[u].File, Todo[u].Arg1);
+					ConvertXmi(Todo[u].File, Todo[u].Arg1, 1);
+				} else {
+					ConvertXmi(Todo[u].File, Todo[u].Arg1, 0);
 				}
 				break;
 			case VOC:

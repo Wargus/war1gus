@@ -314,7 +314,7 @@ SetTranslationsFiles(preferences.StratagusTranslation, preferences.GameTranslati
 SetGrabMouse(preferences.GrabMouse)
 SetMaxSelectable(preferences.MaxSelection)
 SetTrainingQueue(not not preferences.TrainingQueue)
-
+Preference.SF2Soundfont = "music/TimGM6mb.sf2"
 
 if file_exists("videos", "INTRO.ogv") and preferences.PlayIntro then
    SetTitleScreens(
@@ -336,7 +336,7 @@ end
 
 --- Uses Stratagus Library path!
 Load("scripts/wc1.lua")
-
+Load("scripts/wc1-config.lua")
 Load("scripts/helpers.lua")
 
 Load("scripts/icons.lua")

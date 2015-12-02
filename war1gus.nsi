@@ -62,6 +62,10 @@
 !system "powershell -Command $\"& {cp **\${WARTOOL} ${WARTOOL}}$\""
 !system "powershell -Command $\"& {cp **\${EXE} ${EXE}}$\""
 
+!define FFMPEG2THEORA "ffmpeg2theora.exe"
+!define FFMPEG "ffmpeg.exe"
+!define SF2BANK "TimGM6mb.sf2"
+
 !define UNINSTALL "uninstall.exe"
 !define INSTALLER "${NAME}-${VERSION}.exe"
 !define INSTALLDIR "$PROGRAMFILES\${NAME}\"
@@ -82,8 +86,9 @@ ${redefine} STRATAGUS_NAME "Stratagus (64 bit)"
 
 ; Download and extract nessesary 3rd party programs
 !ifndef NO_DOWNLOAD
-; TODO: download ffmpeg and timidity (or find alternatives) and extract the data
-; !system 'powershell -Command "& {wget http://v2v.cc/~j/ffmpeg2theora/ffmpeg2theora-0.28.exe -O ffmpeg2theora.exe}"'
+!system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${FFMPEG2THEORA} -OutFile ${FFMPEG2THEORA}}$\""
+!system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${FFMPEG} -OutFile ${FFMPEG}}$\""
+!system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${SF2BANK} -OutFile ${SF2BANK}}$\""
 !endif
 
 !addplugindir .
@@ -251,6 +256,9 @@ Section "-${NAME}"
 	SetOutPath "$INSTDIR"
 	File "${EXE}"
 	File "${WARTOOL}"
+	File "${FFMPEG}"
+	File "${FFMPEG2THEORA}"
+	File "/oname=music\${SF2BANK}" "${SF2BANK}"
 
 	ClearErrors
 
@@ -316,7 +324,6 @@ Function PageExtractDataLeave
 
 FunctionEnd
 
-Var KeyStr
 Section "-${NAME}" ExtractData
 	
 	StrCmp "$EXTRACTNEEDED" "no" end
@@ -329,7 +336,8 @@ Section "-${NAME}" ExtractData
 	
 	DetailPrint "$DataDirectory"
 	DetailPrint "$\"$INSTDIR\${WARTOOL}$\" $\"$DataDirectory$\" $\"$INSTDIR$\""
-	ExecWait "$\"$INSTDIR\${WARTOOL}$\" $\"$DataDirectory$\" $\"$INSTDIR$\""
+	SetOutPath "$INSTDIR"
+	ExecWait "$\"$INSTDIR\${WARTOOL}$\" -v $\"$DataDirectory$\" $\"$INSTDIR$\""
 	Pop $0
 	IntCmp $0 0 +3
 
@@ -357,7 +365,7 @@ Section "un.${NAME}" Executable
 	RMDir "$INSTDIR\campaigns\human"
 	RMDir "$INSTDIR\campaigns\orc"
 	RMDir "$INSTDIR\campaigns"
-	RMDir "$INSTDIR"
+	RMDir /r "$INSTDIR"
 
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $STARTMENUDIR
 	Delete "$SMPROGRAMS\$STARTMENUDIR\${NAME}.lnk"

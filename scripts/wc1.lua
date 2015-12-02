@@ -43,3 +43,4 @@ DefineRaceNames(
 
 -- XXX: Hack for loading savegames that are not campaigns
 currentRace = "human"
+war1gus.music_extension = ".ogg" -- overridden by generated wc1-config.lua
