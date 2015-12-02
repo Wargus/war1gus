@@ -41,6 +41,9 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef _MSC_VER
+#define __USE_XOPEN_EXTENDED 1 // to get strdup
+#endif
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
