@@ -3,18 +3,19 @@ Section: games
 Priority: optional
 Maintainer: Tim Felgentreff <timfelgentreff@gmail.com>
 Build-Depends: debhelper (>= 7), cmake (>= 2.6), zlib1g-dev, libx11-dev,
- libpng12-dev (>= 1.2.5), imagemagick
+ libpng12-dev (>= 1.2.5), imagemagick, stratagus-dev
 Standards-Version: 3.9.2
 Homepage: https://github.com/Wargus/war1gus
 
 Package: war1gus
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ffmpeg, ffmpeg2theora, timidity
+Depends: ${stratagus:Depends}, ${misc:Depends}, ${shlibs:Depends}
+Pre-Depends: ffmpeg, ffmpeg2theora, timidity | libfluidsynth1
 Recommends: musescore-soundfont-gm
+Provides: stratagus-data
 Description: Warcraft: Orc & Humans data game set for the Stratagus engine
  War1gus can be used to play Warcraft: Orcs & Humans from Blizzard Entertainment.
  .
  You need the original Warcraft CD or Floppy version to extract the game data files.
  .
- War1gus is developed together for Windows, Linux, and Mac OS X.
+ War1gus is developed together for Windows, Linux and Mac OS X.
