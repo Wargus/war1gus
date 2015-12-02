@@ -103,6 +103,14 @@ if(STRATAGUS_FOUND)
     )
     add_custom_target(icon ALL DEPENDS war1gus.png)
     install(FILES "${PROJECT_BINARY_DIR}/war1gus.png" DESTINATION ${ICONDIR})
+    add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.xpm"
+      COMMAND convert
+      ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" -resize 32x32 "${PROJECT_BINARY_DIR}/war1gus.xpm"
+      DEPENDS war1gus.ico
+      COMMENT "Generating war1gus.xmp" VERBATIM
+    )
+    add_custom_target(xpmicon ALL DEPENDS war1gus.xpm)
+    install(FILES "${PROJECT_BINARY_DIR}/war1gus.xpm" DESTINATION ${ICONDIR})
     install(FILES "${PROJECT_BINARY_DIR}/war1gus.desktop" DESTINATION ${DESKTOPDIR})
     install(DIRECTORY campaigns contrib scripts DESTINATION ${SHAREDIR})
   elseif (WIN32)

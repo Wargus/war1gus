@@ -36,10 +36,6 @@ VERSION := $(shell dpkg-parsechangelog | sed -ne "s/^Version: \(.*\)/\1/p" | sed
 override_dh_auto_configure:
 	dh_auto_configure -- -DCMAKE_INCLUDE_PATH="/usr/lib/$(shell dpkg-architecture -qDEB_BUILD_MULTIARCH)/"
 
-override_dh_install:
-	dh_install
-	convert war1gus.ico -resize 32x32 debian/war1gus/usr/share/pixmaps/war1gus.xpm
-
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
 	echo "stratagus:Depends=stratagus (>= $(VERSION))" >> debian/war1gus.substvars
