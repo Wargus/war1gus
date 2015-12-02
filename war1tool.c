@@ -425,18 +425,18 @@ Control Todo[] = {
 {CM,0,"campaigns/orc/12", 140, 59 _2},
 
 // custom maps
-{CS,0,"maps/forest1", 51 __},
-{CS,0,"maps/forest2", 61 __},
-{CS,0,"maps/swamp1", 89 __},
-{CS,0,"maps/swamp2", 91 __},
-{CS,0,"maps/dungeon1", 101 __},
-{CS,0,"maps/dungeon2", 103 __},
-{CS,0,"maps/dungeon3", 105 __},
-{CS,0,"maps/dungeon4", 107 __},
-{CS,0,"maps/dungeon5", 109 __},
-{CS,0,"maps/dungeon6", 111 __},
-{CS,0,"maps/dungeon7", 113 __},
-{CS,0,"maps/dungeon8", 115 __},
+{CS,0,"forest1", 51 __},
+{CS,0,"forest2", 61 __},
+{CS,0,"swamp1", 89 __},
+{CS,0,"swamp2", 91 __},
+{CS,0,"dungeon1", 101 __},
+{CS,0,"dungeon2", 103 __},
+{CS,0,"dungeon3", 105 __},
+{CS,0,"dungeon4", 107 __},
+{CS,0,"dungeon5", 109 __},
+{CS,0,"dungeon6", 111 __},
+{CS,0,"dungeon7", 113 __},
+{CS,0,"dungeon8", 115 __},
 
 // Tilesets
 {T,0,"forest/terrain",										 190 __},
@@ -3424,101 +3424,109 @@ void ConvertSkirmishMap(const char* file, int mtxme)
     unsigned char *mtxm, *p;
     unsigned short s;
     int i, j;
-    unsigned char* tileset;
-    unsigned char* extraPlayers;
-    int numPlayers;
+    char* tileset;
+    char* extraPlayers;
 
     if (strstr(file, "forest")) {
-		tileset = "forest_campaign";
+	tileset = "forest_campaign";
     } else if (strstr(file, "swamp")) {
         tileset = "swamp_campaign";
     } else {
-		tileset = "dungeon_campaign";
+	tileset = "dungeon_campaign";
     }
-    
-    for (numPlayers = 2; numPlayers <= 4; numPlayers++) {
-	if (numPlayers == 2) {
-	    extraPlayers = "";
-	} else if (numPlayers == 3) {
-	    extraPlayers = ",\"computer\"";
-	} else {
-	    extraPlayers = ",\"computer\",\"computer\"";
-	}
 
-	sprintf((char*)buf, "%s/%s/%s_%d_players.smp.gz", Dir, CM_PATH, file, numPlayers);
-	CheckPath((char*)buf);
-	smp = gzopen((char*)buf, "wb9");
-	sprintf((char*)buf, "%s/%s/%s_%d_players.sms.gz", Dir, CM_PATH, file, numPlayers);
-	CheckPath((char*)buf);
-	sms = gzopen((char*)buf, "wb9");
-
-	mtxm = ExtractEntry(ArchiveOffsets[mtxme], NULL);
-	if (!mtxm) {
-	    return;
-	}
-	p = mtxm;
-
-	
-	
-	gzprintf(smp,
-		 "-- Stratagus Map Presentation\n"\
-		 "-- File generated automatically from pudconvert.\n"\
-		 "DefinePlayerTypes(\"person\",\"computer\"%s)\n"\
-		 "PresentMap(\"(unnamed)\", %d, 64, 64, 1)\n", extraPlayers, numPlayers);
-	gzprintf(sms,
-		 "LoadTileModels(\"scripts/tilesets/%s.lua\")\n"\
-		 "SetStartView(0, 16, 16)\n"\
-		 "SetPlayerData(0, \"Resources\", \"gold\", 10000)\n"\
-		 "SetPlayerData(0, \"Resources\", \"wood\", 3000)\n"\
-		 "SetPlayerData(0, \"RaceName\", \"human\")\n"\
-		 "SetStartView(1, 48, 48)\n"\
-		 "SetPlayerData(1, \"Resources\", \"gold\", 10000)\n"\
-		 "SetPlayerData(1, \"Resources\", \"wood\", 3000)\n"\
-		 "SetPlayerData(1, \"RaceName\", \"orc\")\n"\
-		 "SetPlayerData(15, \"RaceName\", \"neutral\")\n\n", tileset);
-	if (numPlayers > 2) {
-	    gzprintf(sms,
-		     "SetStartView(2, 16, 48)\n"\
-		     "SetPlayerData(2, \"Resources\", \"gold\", 10000)\n"\
-		     "SetPlayerData(2, \"Resources\", \"wood\", 3000)\n"\
-		     "SetPlayerData(2, \"RaceName\", \"human\")\n");
-	}
-	if (numPlayers > 3) {
-	    gzprintf(sms,
-		     "SetStartView(3, 48, 16)\n"\
-		     "SetPlayerData(3, \"Resources\", \"gold\", 10000)\n"\
-		     "SetPlayerData(3, \"Resources\", \"wood\", 3000)\n"\
-		     "SetPlayerData(3, \"RaceName\", \"orc\")\n");
-	}
-	for (i = 0; i < 64; ++i) {
-	    gzprintf(sms, "  -- %d\n",i);
-	    for (j = 0; j < 64; ++j) {
-		s = FetchLE16(p);
-		gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, j, i);
+    for (int numPlayers = 2; numPlayers <= 4; numPlayers++) {
+	for (int isMulti = 0; isMulti <= 1; isMulti++) {
+	    char* path = isMulti ? "multi" : "single";
+	    if (numPlayers == 2 && !isMulti) {
+		extraPlayers = ",\"computer\"";
+	    } else if (numPlayers == 3 && !isMulti) {
+		extraPlayers = ",\"computer\",\"computer\"";
+	    } else if (numPlayers == 4 && !isMulti) {
+		extraPlayers = ",\"computer\",\"computer\",\"computer\"";
+	    } else if (numPlayers == 2 && isMulti) {
+		extraPlayers = ",\"person\"";
+	    } else if (numPlayers == 3 && isMulti) {
+		extraPlayers = ",\"person\",\"person\"";
+	    } else if (numPlayers == 4 && isMulti) {
+		extraPlayers = ",\"person\",\"person\",\"person\"";
 	    }
-	}
 
-	gzprintf(sms,
-		 "\n\nif (MapUnitsInit ~= nil) then MapUnitsInit() end\n"\
-		 "unit = CreateUnit(\"unit-gold-mine\", 15, {16, 16})\n"\
-		 "SetResourcesHeld(unit, 45000)\n"\
-		 "unit = CreateUnit(\"unit-gold-mine\", 15, {16, 48})\n"\
-		 "SetResourcesHeld(unit, 45000)\n"\
-		 "unit = CreateUnit(\"unit-gold-mine\", 15, {48, 16})\n"\
-		 "SetResourcesHeld(unit, 45000)\n"\
-		 "unit = CreateUnit(\"unit-gold-mine\", 15, {48, 48})\n"\
-		 "SetResourcesHeld(unit, 45000)\n"\
-		 "unit = CreateUnit(\"unit-peasant\", 0, {16, 16})\n"\
-		 "unit = CreateUnit(\"unit-peon\", 1, {48, 48})\n");
-	if (numPlayers > 2) {
-	    gzprintf(sms, "unit = CreateUnit(\"unit-peasant\", 1, {16, 48})\n");
+	    sprintf((char*)buf, "%s/%s/maps/%s/%s_%d_players.smp.gz", Dir, CM_PATH, path, file, numPlayers);
+	    CheckPath((char*)buf);
+	    smp = gzopen((char*)buf, "wb9");
+	    sprintf((char*)buf, "%s/%s/maps/%s/%s_%d_players.sms.gz", Dir, CM_PATH, path, file, numPlayers);
+	    CheckPath((char*)buf);
+	    sms = gzopen((char*)buf, "wb9");
+
+	    mtxm = ExtractEntry(ArchiveOffsets[mtxme], NULL);
+	    if (!mtxm) {
+		return;
+	    }
+	    p = mtxm;
+
+	
+	
+	    gzprintf(smp,
+		     "-- Stratagus Map Presentation\n"\
+		     "-- File generated automatically from pudconvert.\n"\
+		     "DefinePlayerTypes(\"person\"%s)\n"\
+		     "PresentMap(\"(unnamed)\", %d, 64, 64, 1)\n", extraPlayers, numPlayers);
+	    gzprintf(sms,
+		     "LoadTileModels(\"scripts/tilesets/%s.lua\")\n"\
+		     "SetStartView(0, 16, 16)\n"\
+		     "SetPlayerData(0, \"Resources\", \"gold\", 10000)\n"\
+		     "SetPlayerData(0, \"Resources\", \"wood\", 3000)\n"\
+		     "SetPlayerData(0, \"RaceName\", \"human\")\n"\
+		     "SetStartView(1, 48, 48)\n"\
+		     "SetPlayerData(1, \"Resources\", \"gold\", 10000)\n"\
+		     "SetPlayerData(1, \"Resources\", \"wood\", 3000)\n"\
+		     "SetPlayerData(1, \"RaceName\", \"orc\")\n"\
+		     "SetPlayerData(15, \"RaceName\", \"neutral\")\n\n", tileset);
+	    if (numPlayers > 2) {
+		gzprintf(sms,
+			 "SetStartView(2, 16, 48)\n"\
+			 "SetPlayerData(2, \"Resources\", \"gold\", 10000)\n"\
+			 "SetPlayerData(2, \"Resources\", \"wood\", 3000)\n"\
+			 "SetPlayerData(2, \"RaceName\", \"human\")\n");
+	    }
+	    if (numPlayers > 3) {
+		gzprintf(sms,
+			 "SetStartView(3, 48, 16)\n"\
+			 "SetPlayerData(3, \"Resources\", \"gold\", 10000)\n"\
+			 "SetPlayerData(3, \"Resources\", \"wood\", 3000)\n"\
+			 "SetPlayerData(3, \"RaceName\", \"orc\")\n");
+	    }
+	    for (i = 0; i < 64; ++i) {
+		gzprintf(sms, "  -- %d\n",i);
+		for (j = 0; j < 64; ++j) {
+		    s = FetchLE16(p);
+		    gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, j, i);
+		}
+	    }
+
+	    gzprintf(sms,
+		     "\n\nif (MapUnitsInit ~= nil) then MapUnitsInit() end\n"\
+		     "unit = CreateUnit(\"unit-gold-mine\", 15, {16, 16})\n"\
+		     "SetResourcesHeld(unit, 45000)\n"\
+		     "unit = CreateUnit(\"unit-gold-mine\", 15, {16, 48})\n"\
+		     "SetResourcesHeld(unit, 45000)\n"\
+		     "unit = CreateUnit(\"unit-gold-mine\", 15, {48, 16})\n"\
+		     "SetResourcesHeld(unit, 45000)\n"\
+		     "unit = CreateUnit(\"unit-gold-mine\", 15, {48, 48})\n"\
+		     "SetResourcesHeld(unit, 45000)\n"\
+		     "unit = CreateUnit(\"unit-peasant\", 0, {16, 16})\n"\
+		     "unit = CreateUnit(\"unit-peon\", 1, {48, 48})\n");
+	    if (numPlayers > 2) {
+		gzprintf(sms, "unit = CreateUnit(\"unit-peasant\", 1, {16, 48})\n");
+	    }
+	    if (numPlayers > 3) {
+		gzprintf(sms, "unit = CreateUnit(\"unit-peon\", 1, {48, 16})\n");
+	    }
+	    gzprintf(smp, "\n");
+	    gzclose(sms);
+	    gzclose(smp);
 	}
-	if (numPlayers > 3) {
-	    gzprintf(sms, "unit = CreateUnit(\"unit-peon\", 1, {48, 16})\n");
-	}
-	gzprintf(smp, "\n");
-	gzclose(sms);
-	gzclose(smp);
     }
     free(mtxm);
 }
