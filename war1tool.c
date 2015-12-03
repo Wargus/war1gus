@@ -1871,7 +1871,6 @@ void MuxIntroVideos(void) {
 	 
 	 	wavBuffer = (unsigned char*)calloc(sizeof(char), 1024 * 128);
 	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char))) > 0) {
-			printf("writing %d to %s from %s\n", readM, inputAudio, inputWavGz);
 	 		fwrite(wavBuffer, sizeof(char), readM,  wavFile);
 			fflush(wavFile);
 	 	}
