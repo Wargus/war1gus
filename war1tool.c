@@ -3641,7 +3641,7 @@ void Usage(const char* name)
 {
 	printf("wartool V%s for Stratagus, (c) %s.\n\
 \tWritten by %s\n\
-\thttps://launchpad.net/war1gus\n\n\
+\thttps://github.com/Wargus/war1gus\n\n\
 Usage: %s [-m] [-v] [-V] [-h] archive-directory [destination-directory]\n\
 \t-m\tExtract and convert midi sound files (may take some time)\n\
 \t-v\tExtract and convert videos\n\
