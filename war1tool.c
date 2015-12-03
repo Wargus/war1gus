@@ -34,9 +34,9 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "2.2.7" // Version of extractor wartool
+#define VERSION "2.4.0.2015-12-3" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
-#define COPYRIGHT "1998-2013 by The Stratagus Project"
+#define COPYRIGHT "1998-2015 by The Stratagus Project"
 
 #include <assert.h>
 #include <stdio.h>
