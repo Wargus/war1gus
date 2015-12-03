@@ -3855,8 +3855,15 @@ int main(int argc, char** argv)
 	    MuxIntroVideos();
 	}
 
+	char *versionfilepath = (char*)calloc(sizeof(char),
+					      strlen(Dir) + 1 + strlen("extracted") + 1);
+	sprintf(versionfilepath, "%s/extracted", Dir);
+	FILE *versionfile = fopen(versionfilepath, "w");
+	fprintf(versionfile, "%s", VERSION);
+	fclose(versionfile);
+
 	printf("War1gus data setup is now complete\n");
-	printf("Note: you do not need to run this again\n");
+	printf("Note: you do not need to run this again, unless the extractor version changes\n");
 	fflush(stdout);
 
 	return 0;
