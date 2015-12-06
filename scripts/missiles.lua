@@ -30,7 +30,7 @@
 --      $Id$
 
 DefineMissileType("missile-arrow",
-  { File = "missiles/arrow.png", Size = {64, 64}, Frames = 9, NumDirections = 5,
+  { File = "missiles/arrow.png", Size = {64, 64}, Frames = 5, NumDirections = 5,
   DrawLevel = 50, ImpactSound = "bow hit",
   Class = "missile-class-point-to-point", Sleep = 1, Speed = 32, Range = 0 } )
 
