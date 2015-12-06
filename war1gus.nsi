@@ -258,7 +258,11 @@ Section "-${NAME}"
 	File "${WARTOOL}"
 	File "${FFMPEG}"
 	File "${FFMPEG2THEORA}"
-	File "/oname=music\${SF2BANK}" "${SF2BANK}"
+
+	ClearErrors
+
+	SetOutPath "$INSTDIR\music"
+	File "${SF2BANK}"
 
 	ClearErrors
 
