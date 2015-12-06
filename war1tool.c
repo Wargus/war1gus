@@ -1,3 +1,4 @@
+#define DEBUG
 //       _________ __                 __
 //      /   _____//  |_____________ _/  |______     ____  __ __  ______
 //      \_____  \\   __\_  __ \__  \\   __\__  \   / ___\|  |  \/  ___/
@@ -60,6 +61,7 @@
 #include <ctype.h>
 #include <png.h>
 #include <zlib.h>
+#include <setjmp.h>
 
 #include "xmi2mid.h"
 #include "scale2x.h"
@@ -84,6 +86,9 @@ typedef unsigned long u_int32_t;
 #define O_BINARY 0
 #endif
 
+#define Swap32(D) ((D << 24) | ((D & 0x0000ff) << 8) | ((D & 0x00ff) >> 8) | (D >> 24))
+#define Swap2(T, c1, c2) { T tmp = c1; c1 = c2; c2 = tmp; }
+
 // From SDL_byteorder.h
 #if  defined(__i386__) || defined(__ia64__) || defined(WIN32) || \
     (defined(__alpha__) || defined(__alpha)) || \
@@ -92,49 +97,28 @@ typedef unsigned long u_int32_t;
      defined(__SYMBIAN32__) || \
      defined(__x86_64__) || \
      defined(__LITTLE_ENDIAN__)
-#ifdef __cplusplus
-static inline void SkipLE16(unsigned char*& p) {
-	p += 2;
-}
-static inline unsigned short FetchLE16(unsigned char*& p) {
-	unsigned short s = *(unsigned short*)p;
-	SkipLE16(p);
-	return s;
-}
-static inline void SkipLE32(unsigned char*& p) {
-	p += 4;
-}
-static inline unsigned int FetchLE32(unsigned char*& p) {
-	unsigned int s = *(unsigned int*)p;
-	SkipLE32(p);
-	return s;
-}
+#define LITTLE_ENDIAN
+#define FixByteOrder16(p) { if(Todo == TodoMac) { Swap2(char, (p)[0], (p)[1]); } }
+#define FixByteOrder32(p) { if(Todo == TodoMac) { Swap2(char, (p)[0], (p)[3]); Swap2(char, (p)[1], (p)[2]) } }
 #else
-#define SkipLE16(p) p += 2
-#define FetchLE16(p) (*((unsigned short*)(p))); SkipLE16(p)
-#define SkipLE32(p) p += 4
-#define FetchLE32(p) (*((unsigned int*)(p))); SkipLE32(p)
-#endif
-#define AccessLE16(p) (*((unsigned short*)(p)))
-#define AccessLE32(p) (*((unsigned int*)(p)))
-#define ConvertLE16(v) (v)
-#else
-static inline unsigned short Swap16(unsigned short D) {
-	return ((D << 8) | (D >> 8));
-}
-static inline unsigned int Swap32(unsigned int D) {
-	return ((D << 24) | ((D << 8) & 0x00FF0000) | ((D >> 8) & 0x0000FF00) | (D >> 24));
-}
-#define FetchLE16(p) Swap16(*((unsigned short*)(p))); p += 2
-#define FetchLE32(p) Swap32(*((unsigned int*)(p))) p += 4
-#define AccessLE16(p) Swap16((*((unsigned short*)(p))))
-#define AccessLE32(p) Swap32(*((unsigned int*)(p)))
-#define ConvertLE16(v) Swap16(v)
+#define BIG_ENDIAN
+#define FixByteOrder16(p) { if(Todo == TodoDos) { Swap2(char, (p)[0], (p)[1]); } }
+#define FixByteOrder32(p) { if(Todo == TodoDos) { Swap2(char, (p)[0], (p)[3]); Swap2(char, (p)[1], (p)[2]) } }
 #endif
 
+#define Skip16(p) p += 2
+#define Access16(p) (*((unsigned short*)(p)))
+#define Fetch16(p) Access16(p); Skip16(p)
+#define Skip32(p) p += 4
+#define Fetch32(p) Access32(p); Skip32(p)
+#define Access32(p) (*((unsigned int*)(p)))
 #define SkipByte(p) ++p
 #define AccessByte(p) (*((unsigned char*)(p)))
-#define FetchByte(p) (*((unsigned char*)(p))); SkipByte(p)
+#define FetchByte(p) AccessByte(p); SkipByte(p)
+
+#ifdef DEBUG
+jmp_buf ex_buf;
+#endif
 
 //----------------------------------------------------------------------------
 //  Config
@@ -197,6 +181,11 @@ char* Dir;
 */
 #define TILE_PER_ROW  16
 
+// Standard High Palette
+#define HighPalDos 217
+#define HighPalMac 210
+int HighPal = HighPalDos;
+
 //----------------------------------------------------------------------------
 
 /**
@@ -221,6 +210,8 @@ unsigned char* ArchiveBuffer;
 **  Offsets for each entry into original archive buffer.
 */
 unsigned char** ArchiveOffsets;
+int* ArchiveSizes;
+unsigned int ArchiveEntries;
 
 /**
 **  Archive length
@@ -244,7 +235,7 @@ enum _archive_type_ {
 	C,						// Cursor						(name,cursor)
 	FLC,					// FLC
 	VOC,					// VOC
-	CM,						// Cm
+	CM,						// Campaign maps
 	CS,						// skirmish maps
 };
 
@@ -297,7 +288,7 @@ char* ArchiveDir;
 /**
 **  What, where, how to extract.
 */
-Control Todo[] = {
+Control TodoDos[] = {
 #define __  ,0,0,0
 #define _2  ,0,0,
 #define _1  ,0
@@ -399,44 +390,43 @@ Control Todo[] = {
 {M,0,"43", 43 __},
 {M,0,"44", 44 __},
 
-{CM,0,"campaigns/human/01", 117, 63 _2},
-{CM,0,"campaigns/human/02", 119, 55 _2},
-{CM,0,"campaigns/human/03", 121, 69 _2},
-{CM,0,"campaigns/human/04", 123, 97 _2},
-{CM,0,"campaigns/human/05", 125, 57 _2},
+{CM,0,"campaigns/orc/11",   138, 45 _2},
 {CM,0,"campaigns/human/06", 127, 47 _2},
+{CM,0,"campaigns/orc/03",   122, 49 _2},
+{CS,0,"forest1",                 51 __}, //custom map
+{CM,0,"campaigns/orc/10",   136, 53 _2},
+{CM,0,"campaigns/human/02", 119, 55 _2},
+{CM,0,"campaigns/human/05", 125, 57 _2},
+{CM,0,"campaigns/orc/12",   140, 59 _2},
+{CS,0,"forest2",                 61 __}, //custom map
+{CM,0,"campaigns/human/01", 117, 63 _2},
+{CM,0,"campaigns/orc/06",   128, 65 _2},
 {CM,0,"campaigns/human/07", 129, 67 _2},
-{CM,0,"campaigns/human/08", 131, 95 _2},
+{CM,0,"campaigns/human/03", 121, 69 _2},
 {CM,0,"campaigns/human/09", 133, 71 _2},
 {CM,0,"campaigns/human/10", 135, 73 _2},
 {CM,0,"campaigns/human/11", 137, 75 _2},
 {CM,0,"campaigns/human/12", 139, 77 _2},
-{CM,0,"campaigns/orc/01", 118, 79 _2},
-{CM,0,"campaigns/orc/02", 120, 81 _2},
-{CM,0,"campaigns/orc/03", 122, 49 _2},
-{CM,0,"campaigns/orc/04", 124, 93 _2},
-{CM,0,"campaigns/orc/05", 126, 83 _2},
-{CM,0,"campaigns/orc/06", 128, 65 _2},
-{CM,0,"campaigns/orc/07", 130, 85 _2},
-{CM,0,"campaigns/orc/08", 132, 99 _2},
-{CM,0,"campaigns/orc/09", 134, 87 _2},
-{CM,0,"campaigns/orc/10", 136, 53 _2},
-{CM,0,"campaigns/orc/11", 138, 45 _2},
-{CM,0,"campaigns/orc/12", 140, 59 _2},
-
+{CM,0,"campaigns/orc/01",   118, 79 _2},
+{CM,0,"campaigns/orc/02",   120, 81 _2},
+{CM,0,"campaigns/orc/05",   126, 83 _2},
+{CM,0,"campaigns/orc/07",   130, 85 _2},
+{CM,0,"campaigns/orc/09",   134, 87 _2},
+{CS,0,"swamp1",                  89 __}, //custom map
+{CS,0,"swamp2",                  91 __}, //custom map
+{CM,0,"campaigns/orc/04",   124, 93 _2},
+{CM,0,"campaigns/human/08", 131, 95 _2},
+{CM,0,"campaigns/human/04", 123, 97 _2},
+{CM,0,"campaigns/orc/08",   132, 99 _2},
 // custom maps
-{CS,0,"forest1", 51 __},
-{CS,0,"forest2", 61 __},
-{CS,0,"swamp1", 89 __},
-{CS,0,"swamp2", 91 __},
-{CS,0,"dungeon1", 101 __},
-{CS,0,"dungeon2", 103 __},
-{CS,0,"dungeon3", 105 __},
-{CS,0,"dungeon4", 107 __},
-{CS,0,"dungeon5", 109 __},
-{CS,0,"dungeon6", 111 __},
-{CS,0,"dungeon7", 113 __},
-{CS,0,"dungeon8", 115 __},
+{CS,0,"dungeon1",               101 __},
+{CS,0,"dungeon2",               103 __},
+{CS,0,"dungeon3",               105 __},
+{CS,0,"dungeon4",               107 __},
+{CS,0,"dungeon5",               109 __},
+{CS,0,"dungeon6",               111 __},
+{CS,0,"dungeon7",               113 __},
+{CS,0,"dungeon8",               115 __},
 
 // Tilesets
 {T,0,"forest/terrain",										 190 __},
@@ -579,6 +569,7 @@ Control Todo[] = {
 {U,0,"tilesets/forest/orc/buildings/kennel_construction",		 191, 344 _2},
 {U,0,"tilesets/forest/human/buildings/blacksmith_construction",	 191, 345 _2},
 {U,0,"tilesets/forest/orc/buildings/blacksmith_construction",	 191, 346 _2},
+
 {U,0,"tilesets/swamp/human/buildings/farm",						 194, 307 _2},
 {U,0,"tilesets/swamp/orc/buildings/farm",						 194, 308 _2},
 {U,0,"tilesets/swamp/human/buildings/barracks",					 194, 309 _2},
@@ -598,6 +589,7 @@ Control Todo[] = {
 {U,0,"tilesets/swamp/human/buildings/stormwind_keep",			 194, 323 _2},
 {U,0,"tilesets/swamp/orc/buildings/blackrock_spire",			 194, 324 _2},
 {U,0,"tilesets/swamp/neutral/buildings/gold_mine",				 194, 325 _2},
+// here come dead bodies, and workers with resources
 {U,0,"tilesets/swamp/human/buildings/farm_construction",		 194, 331 _2},
 {U,0,"tilesets/swamp/orc/buildings/farm_construction",			 194, 332 _2},
 {U,0,"tilesets/swamp/human/buildings/barracks_construction",	 194, 333 _2},
@@ -615,14 +607,15 @@ Control Todo[] = {
 {U,0,"tilesets/swamp/human/buildings/blacksmith_construction",	 194, 345 _2},
 {U,0,"tilesets/swamp/orc/buildings/blacksmith_construction",	 194, 346 _2},
 
+// custom extraction for walls and roads
 {TU,0,"forest/neutral/buildings/wall",190,0 _2},
 {TU,0,"swamp/neutral/buildings/wall",193,1 _2},
 {TU,0,"dungeon/neutral/buildings/wall",196,2 _2},
-
 {TU,0,"forest/neutral/buildings/road",190,3 _2},
 {TU,0,"swamp/neutral/buildings/road",193,4 _2},
 {TU,0,"dungeon/neutral/buildings/road",196,5 _2},
 
+// custom extraction for ruins
 {RP,0,"forest/neutral/buildings/ruins",190,0,4 _1},
 {RP,0,"swamp/neutral/buildings/ruins",193,1,4 _1},
 {RP,0,"dungeon/neutral/buildings/ruins",196,2,4 _1},
@@ -659,8 +652,6 @@ Control Todo[] = {
 {U,0,"tilesets/dungeon/portrait_icons",						 197, 361 _2},
 
 // UI
-{U,0,"ui/orc/icon_selection_boxes",							 191, 359 _2},
-{U,0,"ui/human/icon_selection_boxes",						 191, 360 _2},
 {I,0,"ui/logo",												 217, 216 _2},
 {I,0,"ui/human/top_resource_bar",							 255, 218 _2},
 {I,0,"ui/orc/top_resource_bar",								 191, 219 _2},
@@ -691,6 +682,8 @@ Control Todo[] = {
 {I,0,"ui/orc/ok_box",										 255, 257 _2},
 {I,0,"ui/top_of_title_screen",								 260, 258 _2},
 {I,0,"ui/title_screen",										 260, 261 _2},
+{U,0,"ui/orc/icon_selection_boxes",							 191, 359 _2},
+{U,0,"ui/human/icon_selection_boxes",						 191, 360 _2},
 {I,0,"ui/menu_button_1",									 217, 362 _2},
 {I,0,"ui/menu_button_2",									 217, 363 _2},
 {I,0,"ui/human/icon_border",								 255, 364 _2},
@@ -830,7 +823,554 @@ Control Todo[] = {
 #undef _2
 };
 
+Control TodoMac[] = {
+#define __  ,0,0,0
+#define _2  ,0,0,
+#define _1  ,0
+{FLC,0,"cave1.war",											 0 __},
+{FLC,0,"cave2.war",											 0 __},
+{FLC,0,"cave3.war",											 0 __},
+{FLC,0,"hfinale.war",										 0 __},
+{FLC,0,"hintro1.war",										 0 __},
+{FLC,0,"hintro2.war",										 0 __},
+{FLC,0,"hmap01.war",										 0 __},
+{FLC,0,"hmap02.war",										 0 __},
+{FLC,0,"hmap03.war",										 0 __},
+{FLC,0,"hmap04.war",										 0 __},
+{FLC,0,"hmap05.war",										 0 __},
+{FLC,0,"hmap06.war",										 0 __},
+{FLC,0,"hmap07.war",										 0 __},
+{FLC,0,"hmap08.war",										 0 __},
+{FLC,0,"hmap09.war",										 0 __},
+{FLC,0,"hmap10.war",										 0 __},
+{FLC,0,"hmap11.war",										 0 __},
+{FLC,0,"hmap12.war",										 0 __},
+{FLC,0,"lose1.war",											 0 __},
+{FLC,0,"lose2.war",											 0 __},
+{FLC,0,"ofinale.war",										 0 __},
+{FLC,0,"ointro1.war",										 0 __},
+{FLC,0,"ointro2.war",										 0 __},
+{FLC,0,"ointro3.war",										 0 __},
+{FLC,0,"omap01.war",										 0 __},
+{FLC,0,"omap02.war",										 0 __},
+{FLC,0,"omap03.war",										 0 __},
+{FLC,0,"omap04.war",										 0 __},
+{FLC,0,"omap05.war",										 0 __},
+{FLC,0,"omap06.war",										 0 __},
+{FLC,0,"omap07.war",										 0 __},
+{FLC,0,"omap08.war",										 0 __},
+{FLC,0,"omap09.war",										 0 __},
+{FLC,0,"omap10.war",										 0 __},
+{FLC,0,"omap11.war",										 0 __},
+{FLC,0,"omap12.war",										 0 __},
+{FLC,0,"title.war",											 0 __},
+{FLC,0,"win1.war",											 0 __},
+{FLC,0,"win2.war",											 0 __},
 
+///////////////////////////////////////////////////////////////////////////////
+//  MOST THINGS
+///////////////////////////////////////////////////////////////////////////////
+
+#ifdef USE_BEOS
+{F,0,"DATA.WAR",											 0 __},
+#else
+{F,0,"data.war",											 0 __},
+#endif
+
+// Midi music
+// TODO: Use better file names
+/* 
+ * {M,0,"00",  0 __},
+ * {M,0,"01",  1 __},
+ * {M,0,"02",  2 __},
+ * {M,0,"03",  3 __},
+ * {M,0,"04",  4 __},
+ * {M,0,"05",  5 __},
+ */
+{M,0,"06",  6 __},
+{M,0,"07",  7 __},
+{M,0,"08",  8 __},
+{M,0,"09",  9 __},
+{M,0,"10", 10 __},
+{M,0,"11", 11 __},
+{M,0,"12", 12 __},
+{M,0,"13", 13 __},
+{M,0,"14", 14 __},
+/* 
+ * {M,0,"15", 15 __},
+ * {M,0,"16", 16 __},
+ * {M,0,"17", 17 __},
+ * {M,0,"18", 18 __},
+ * {M,0,"19", 19 __},
+ * {M,0,"20", 20 __},
+ * {M,0,"21", 21 __},
+ * {M,0,"22", 22 __},
+ * {M,0,"23", 23 __},
+ * {M,0,"24", 24 __},
+ * {M,0,"25", 25 __},
+ * {M,0,"26", 26 __},
+ * {M,0,"27", 27 __},
+ * {M,0,"28", 28 __},
+ * {M,0,"29", 29 __},
+ * {M,0,"30", 30 __},
+ * {M,0,"31", 31 __},
+ * {M,0,"32", 32 __},
+ * {M,0,"33", 33 __},
+ * {M,0,"34", 34 __},
+ * {M,0,"35", 35 __},
+ * {M,0,"36", 36 __},
+ * {M,0,"37", 37 __},
+ * {M,0,"38", 38 __},
+ * {M,0,"39", 39 __},
+ * {M,0,"40", 40 __},
+ * {M,0,"41", 41 __},
+ * {M,0,"42", 42 __},
+ * {M,0,"43", 43 __},
+ * {M,0,"44", 44 __},
+ */
+
+{CM,0,"campaigns/human/01", 117, 45 _2},
+{CM,0,"campaigns/human/02", 118, 47 _2},
+{CM,0,"campaigns/human/03", 119, 49 _2},
+{CM,0,"campaigns/human/04", 120, 51 _2},
+{CM,0,"campaigns/human/05", 121, 53 _2},
+{CM,0,"campaigns/human/06", 122, 55 _2},
+{CM,0,"campaigns/human/07", 123, 57 _2},
+{CM,0,"campaigns/human/08", 124, 59 _2},
+{CM,0,"campaigns/human/09", 125, 61 _2},
+{CM,0,"campaigns/human/10", 126, 63 _2},
+{CM,0,"campaigns/human/11", 127, 65 _2},
+{CM,0,"campaigns/human/12", 128, 67 _2},
+{CM,0,"campaigns/orc/01", 129, 69 _2},
+{CM,0,"campaigns/orc/02", 130, 71 _2},
+{CM,0,"campaigns/orc/03", 131, 73 _2},
+{CM,0,"campaigns/orc/04", 132, 75 _2},
+{CM,0,"campaigns/orc/05", 133, 77 _2},
+{CM,0,"campaigns/orc/06", 134, 79 _2},
+{CM,0,"campaigns/orc/07", 135, 81 _2},
+{CM,0,"campaigns/orc/08", 136, 83 _2},
+{CM,0,"campaigns/orc/09", 137, 85 _2},
+{CM,0,"campaigns/orc/10", 138, 87 _2},
+{CM,0,"campaigns/orc/11", 139, 89 _2},
+{CM,0,"campaigns/orc/12", 140, 91 _2},
+
+// custom maps
+{CS,0,"forest1", 93 __},
+{CS,0,"forest2", 95 __},
+{CS,0,"swamp1", 97 __},
+{CS,0,"swamp2", 99 __},
+{CS,0,"dungeon1", 101 __},
+{CS,0,"dungeon2", 103 __},
+{CS,0,"dungeon3", 105 __},
+{CS,0,"dungeon4", 107 __},
+{CS,0,"dungeon5", 109 __},
+{CS,0,"dungeon6", 111 __},
+{CS,0,"dungeon7", 113 __},
+{CS,0,"dungeon8", 115 __},
+
+// Tilesets
+{T,0,"forest/terrain",										 190 __},
+{T,0,"swamp/terrain",										 193 __},
+{T,0,"dungeon/terrain",										 196 __},
+
+// Some animations
+{U,0,"425",													 424, 425 _2},
+{U,0,"426",													 424, 426 _2},
+{U,0,"427",													 424, 427 _2},
+{U,0,"428",													 423, 428 _2},
+{U,0,"429",													 423, 429 _2},
+{U,0,"430",													 423, 430 _2},
+{U,0,"431",													 423, 431 _2},
+{U,0,"460",													 459, 460 _2},
+
+// Text
+{X,0,"orc/01_intro",										 432 __},
+{X,0,"orc/02_intro",										 433 __},
+{X,0,"orc/03_intro",										 434 __},
+{X,0,"orc/04_intro",										 435 __},
+{X,0,"orc/05_intro",										 436 __},
+{X,0,"orc/06_intro",										 437 __},
+{X,0,"orc/07_intro",										 438 __},
+{X,0,"orc/08_intro",										 439 __},
+{X,0,"orc/09_intro",										 440 __},
+{X,0,"orc/10_intro",										 441 __},
+{X,0,"orc/11_intro",										 442 __},
+{X,0,"orc/12_intro",										 443 __},
+{X,0,"human/01_intro",										 444 __},
+{X,0,"human/02_intro",										 445 __},
+{X,0,"human/03_intro",										 446 __},
+{X,0,"human/04_intro",										 447 __},
+{X,0,"human/05_intro",										 448 __},
+{X,0,"human/06_intro",										 449 __},
+{X,0,"human/07_intro",										 450 __},
+{X,0,"human/08_intro",										 451 __},
+{X,0,"human/09_intro",										 452 __},
+{X,0,"human/10_intro",										 453 __},
+{X,0,"human/11_intro",										 454 __},
+{X,0,"human/12_intro",										 455 __},
+{X,0,"human/ending_1",										 461 __},
+{X,0,"orc/ending_1",										 462 __},
+{X,0,"human/ending_2",										 463 __},
+{X,0,"orc/ending_2",										 464 __},
+{X,0,"credits",												 465 __},
+{X,0,"victory_dialog_1",									 466 __},
+{X,0,"victory_dialog_2",									 467 __},
+{X,0,"defeat_dialog_1",										 468 __},
+{X,0,"defeat_dialog_2",										 469 __},
+
+// Cursors
+/* 
+ * {C,0,"arrow",												 262, 263 _2},
+ * {C,0,"invalid_command",										 262, 264 _2},
+ * {C,0,"yellow_crosshair",									 262, 265 _2},
+ * {C,0,"red_crosshair",										 262, 266 _2},
+ * {C,0,"yellow_crosshair_2",									 262, 267 _2},
+ * {C,0,"magnifying_glass",									 262, 268 _2},
+ * {C,0,"small_green_crosshair",								 262, 269 _2},
+ * {C,0,"watch",												 262, 270 _2},
+ * {C,0,"up_arrow",											 262, 271 _2},
+ * {C,0,"upper_right_arrow",									 262, 272 _2},
+ * {C,0,"right_arrow",											 262, 273 _2},
+ * {C,0,"lower_right_arrow",									 262, 274 _2},
+ * {C,0,"down_arrow",											 262, 275 _2},
+ * {C,0,"lower_left_arrow",									 262, 276 _2},
+ * {C,0,"left_arrow",											 262, 277 _2},
+ * {C,0,"upper_left_arrow",									 262, 278 _2},
+ */
+
+// Unit graphics
+{U,0,"human/units/footman",									 191, 279 _2},
+{U,0,"orc/units/grunt",										 191, 280 _2},
+{U,0,"human/units/peasant",									 191, 281 _2},
+{U,0,"orc/units/peon",										 191, 282 _2},
+{U,0,"human/units/catapult",								 191, 283 _2},
+{U,0,"orc/units/catapult",									 191, 284 _2},
+{U,0,"human/units/knight",									 191, 285 _2},
+{U,0,"orc/units/raider",									 191, 286 _2},
+{U,0,"human/units/archer",									 191, 287 _2},
+{U,0,"orc/units/spearman",									 191, 288 _2},
+{U,0,"human/units/conjurer",								 191, 289 _2},
+{U,0,"orc/units/warlock",									 191, 290 _2},
+{U,0,"human/units/cleric",									 191, 291 _2},
+{U,0,"orc/units/necrolyte",									 191, 292 _2},
+{U,0,"human/units/medivh",									 191, 293 _2},
+{U,0,"human/units/lothar",									 191, 294 _2},
+{U,0,"neutral/units/wounded",								 191, 295 _2},
+{U,0,"neutral/units/grizelda,garona",						 191, 296 _2},
+{U,0,"neutral/units/ogre",									 191, 297 _2},
+{U,0,"neutral/units/spider",								 191, 298 _2},
+{U,0,"neutral/units/slime",									 191, 299 _2},
+{U,0,"neutral/units/fire_elemental",						 191, 300 _2},
+{U,0,"neutral/units/scorpion",								 191, 301 _2},
+{U,0,"neutral/units/brigand",								 191, 302 _2},
+{U,0,"neutral/units/the_dead",								 191, 303 _2},
+{U,0,"neutral/units/skeleton",								 191, 304 _2},
+{U,0,"neutral/units/daemon",								 191, 305 _2},
+{U,0,"neutral/units/water_elemental",						 191, 306 _2},
+// here come buildings
+{U,0,"neutral/units/dead_bodies",							 191, 326 _2},
+{U,0,"human/units/peasant_with_wood",						 191, 327 _2},
+{U,0,"orc/units/peon_with_wood",							 191, 328 _2},
+{U,0,"human/units/peasant_with_gold",						 191, 329 _2},
+{U,0,"orc/units/peon_with_gold",							 191, 330 _2}, 
+ // Buildings
+ {U,0,"tilesets/forest/human/buildings/farm",					 191, 307 _2},
+ {U,0,"tilesets/forest/orc/buildings/farm",						 191, 308 _2},
+{U,0,"tilesets/forest/human/buildings/barracks",				 191, 309 _2},
+{U,0,"tilesets/forest/orc/buildings/barracks",					 191, 310 _2},
+{U,0,"tilesets/forest/human/buildings/church",					 191, 311 _2},
+{U,0,"tilesets/forest/orc/buildings/temple",					 191, 312 _2},
+{U,0,"tilesets/forest/human/buildings/tower",					 191, 313 _2},
+{U,0,"tilesets/forest/orc/buildings/tower",						 191, 314 _2},
+{U,0,"tilesets/forest/human/buildings/town_hall",				 191, 315 _2},
+{U,0,"tilesets/forest/orc/buildings/town_hall",					 191, 316 _2},
+{U,0,"tilesets/forest/human/buildings/lumber_mill",				 191, 317 _2},
+{U,0,"tilesets/forest/orc/buildings/lumber_mill",				 191, 318 _2},
+{U,0,"tilesets/forest/human/buildings/stable",					 191, 319 _2},
+{U,0,"tilesets/forest/orc/buildings/kennel",					 191, 320 _2},
+{U,0,"tilesets/forest/human/buildings/blacksmith",				 191, 321 _2},
+{U,0,"tilesets/forest/orc/buildings/blacksmith",				 191, 322 _2},
+{U,0,"tilesets/forest/human/buildings/stormwind_keep",			 191, 323 _2},
+{U,0,"tilesets/forest/orc/buildings/blackrock_spire",			 191, 324 _2},
+{U,0,"tilesets/forest/neutral/buildings/gold_mine",				 191, 325 _2},
+// here come dead bodies, and workers with resources
+{U,0,"tilesets/forest/human/buildings/farm_construction",		 191, 331 _2},
+{U,0,"tilesets/forest/orc/buildings/farm_construction",			 191, 332 _2},
+{U,0,"tilesets/forest/human/buildings/barracks_construction",	 191, 333 _2},
+{U,0,"tilesets/forest/orc/buildings/barracks_construction",		 191, 334 _2},
+{U,0,"tilesets/forest/human/buildings/church_construction",		 191, 335 _2},
+{U,0,"tilesets/forest/orc/buildings/temple_construction",		 191, 336 _2},
+{U,0,"tilesets/forest/human/buildings/tower_construction",		 191, 337 _2},
+{U,0,"tilesets/forest/orc/buildings/tower_construction",		 191, 338 _2},
+{U,0,"tilesets/forest/human/buildings/town_hall_construction",	 191, 339 _2},
+{U,0,"tilesets/forest/orc/buildings/town_hall_construction",	 191, 340 _2},
+{U,0,"tilesets/forest/human/buildings/lumber_mill_construction", 191, 341 _2},
+{U,0,"tilesets/forest/orc/buildings/lumber_mill_construction",	 191, 342 _2},
+{U,0,"tilesets/forest/human/buildings/stable_construction",		 191, 343 _2},
+{U,0,"tilesets/forest/orc/buildings/kennel_construction",		 191, 344 _2},
+{U,0,"tilesets/forest/human/buildings/blacksmith_construction",	 191, 345 _2},
+{U,0,"tilesets/forest/orc/buildings/blacksmith_construction",	 191, 346 _2},
+{U,0,"tilesets/swamp/human/buildings/farm",						 194, 307 _2},
+{U,0,"tilesets/swamp/orc/buildings/farm",						 194, 308 _2},
+{U,0,"tilesets/swamp/human/buildings/barracks",					 194, 309 _2},
+{U,0,"tilesets/swamp/orc/buildings/barracks",					 194, 310 _2},
+{U,0,"tilesets/swamp/human/buildings/church",					 194, 311 _2},
+{U,0,"tilesets/swamp/orc/buildings/temple",						 194, 312 _2},
+{U,0,"tilesets/swamp/human/buildings/tower",					 194, 313 _2},
+{U,0,"tilesets/swamp/orc/buildings/tower",						 194, 314 _2},
+{U,0,"tilesets/swamp/human/buildings/town_hall",				 194, 315 _2},
+{U,0,"tilesets/swamp/orc/buildings/town_hall",					 194, 316 _2},
+{U,0,"tilesets/swamp/human/buildings/lumber_mill",				 194, 317 _2},
+{U,0,"tilesets/swamp/orc/buildings/lumber_mill",				 194, 318 _2},
+{U,0,"tilesets/swamp/human/buildings/stable",					 194, 319 _2},
+{U,0,"tilesets/swamp/orc/buildings/kennel",						 194, 320 _2},
+{U,0,"tilesets/swamp/human/buildings/blacksmith",				 194, 321 _2},
+{U,0,"tilesets/swamp/orc/buildings/blacksmith",					 194, 322 _2},
+{U,0,"tilesets/swamp/human/buildings/stormwind_keep",			 194, 323 _2},
+{U,0,"tilesets/swamp/orc/buildings/blackrock_spire",			 194, 324 _2},
+{U,0,"tilesets/swamp/neutral/buildings/gold_mine",				 194, 325 _2},
+{U,0,"tilesets/swamp/human/buildings/farm_construction",		 194, 331 _2},
+{U,0,"tilesets/swamp/orc/buildings/farm_construction",			 194, 332 _2},
+{U,0,"tilesets/swamp/human/buildings/barracks_construction",	 194, 333 _2},
+{U,0,"tilesets/swamp/orc/buildings/barracks_construction",		 194, 334 _2},
+{U,0,"tilesets/swamp/human/buildings/church_construction",		 194, 335 _2},
+{U,0,"tilesets/swamp/orc/buildings/temple_construction",		 194, 336 _2},
+{U,0,"tilesets/swamp/human/buildings/tower_construction",		 194, 337 _2},
+{U,0,"tilesets/swamp/orc/buildings/tower_construction",			 194, 338 _2},
+{U,0,"tilesets/swamp/human/buildings/town_hall_construction",	 194, 339 _2},
+{U,0,"tilesets/swamp/orc/buildings/town_hall_construction",		 194, 340 _2},
+{U,0,"tilesets/swamp/human/buildings/lumber_mill_construction",	 194, 341 _2},
+{U,0,"tilesets/swamp/orc/buildings/lumber_mill_construction",	 194, 342 _2},
+{U,0,"tilesets/swamp/human/buildings/stable_construction",		 194, 343 _2},
+{U,0,"tilesets/swamp/orc/buildings/kennel_construction",		 194, 344 _2},
+{U,0,"tilesets/swamp/human/buildings/blacksmith_construction",	 194, 345 _2},
+{U,0,"tilesets/swamp/orc/buildings/blacksmith_construction",	 194, 346 _2},
+
+{TU,0,"forest/neutral/buildings/wall",190,0 _2},
+{TU,0,"swamp/neutral/buildings/wall",193,1 _2},
+{TU,0,"dungeon/neutral/buildings/wall",196,2 _2},
+
+{TU,0,"forest/neutral/buildings/road",190,3 _2},
+{TU,0,"swamp/neutral/buildings/road",193,4 _2},
+{TU,0,"dungeon/neutral/buildings/road",196,5 _2},
+
+{RP,0,"forest/neutral/buildings/ruins",190,0,4 _1},
+{RP,0,"swamp/neutral/buildings/ruins",193,1,4 _1},
+{RP,0,"dungeon/neutral/buildings/ruins",196,2,4 _1},
+{RP,0,"forest/neutral/buildings/ruins",190,3,3 _1 },
+{RP,0,"swamp/neutral/buildings/ruins",193,4,3 _1 },
+{RP,0,"dungeon/neutral/buildings/ruins",196,5,3 _1 },
+{RP,0,"forest/neutral/buildings/ruins",190,6,2 _1 },
+{RP,0,"swamp/neutral/buildings/ruins",193,7,2 _1 },
+{RP,0,"dungeon/neutral/buildings/ruins",196,8,2 _1 },
+{RP,0,"forest/neutral/buildings/ruins",190,9,1 _1 },
+{RP,0,"swamp/neutral/buildings/ruins",193,10,1 _1 },
+{RP,0,"dungeon/neutral/buildings/ruins",196,11,1 _1 },
+{RP,0,"forest/neutral/buildings/wall",190,12,1 _1 },
+{RP,0,"swamp/neutral/buildings/wall",193,13,1 _1 },
+{RP,0,"dungeon/neutral/buildings/wall",196,14,1 _1 },
+
+// Missiles
+{U,0,"missiles/fireball",									 217, 347 _2},
+{U,0,"missiles/catapult_projectile",						 191, 348 _2},
+{U,0,"missiles/arrow",										 217, 349 _2},
+{U,0,"missiles/poison_cloud",								 191, 350 _2},
+{U,0,"missiles/rain_of_fire",								 191, 351 _2},
+{U,0,"missiles/small_fire",									 191, 352 _2},
+{U,0,"missiles/large_fire",									 191, 353 _2},
+{U,0,"missiles/explosion",									 191, 354 _2},
+{U,0,"missiles/healing",									 217, 355 _2},
+{U,0,"missiles/building_collapse",							 191, 356 _2},
+{U,0,"missiles/water_elemental_projectile",					 217, 357 _2},
+{U,0,"missiles/fireball_2",									 191, 358 _2},
+ // Icons
+{U,0,"tilesets/forest/portrait_icons",						 191, 361 _2},
+{U,0,"tilesets/swamp/portrait_icons",						 194, 361 _2},
+{U,0,"tilesets/dungeon/portrait_icons",						 197, 361 _2},
+
+// UI
+/* 
+ * {U,0,"ui/orc/icon_selection_boxes",							 191, 362 _2},
+ * 
+ * {U,0,"ui/orc/icon_selection_boxes",							 191, 359 _2},
+ * {U,0,"ui/human/icon_selection_boxes",						 191, 360 _2},
+ */
+{I,0,"ui/logo",												 217, 216 _2},
+/* {I,0,"ui/human/top_resource_bar",							 255, 218 _2}, */
+{I,0,"ui/orc/top_resource_bar",								 191, 219 _2},
+/* {I,0,"ui/human/right_panel",								 255, 220 _2}, */
+{I,0,"ui/orc/right_panel",									 217, 221 _2},
+/* {I,0,"ui/human/bottom_panel",								 255, 222 _2}, */
+{I,0,"ui/orc/bottom_panel",									 217, 223 _2},
+/* {I,0,"ui/human/minimap_2",									 255, 224 _2}, */
+{I,0,"ui/orc/minimap_2",									 217, 225 _2},
+/* {I,0,"ui/human/left_panel",									 255, 226 _2}, */
+{I,0,"ui/orc/left_panel",									 217, 227 _2},
+/* {I,0,"ui/human/minimap",									 255, 228 _2}, */
+{I,0,"ui/orc/minimap",										 217, 229 _2},
+/* {I,0,"ui/human/panel_1",									 255, 233 _2}, */
+/* {I,0,"ui/orc/panel_1",										 217, 234 _2}, */
+/* {I,0,"ui/human/panel_2",									 255, 235 _2}, */
+{I,0,"ui/orc/panel_2",										 217, 236 _2},
+{I,0,"ui/bottom_of_title_screen",							 197, 243 _2},
+/* 
+ * {I,0,"ui/human/left_arrow",									 255, 244 _2},
+ * {I,0,"ui/orc/left_arrow",									 255, 245 _2},
+ * {I,0,"ui/human/right_arrow",								 255, 246 _2},
+ * {I,0,"ui/orc/right_arrow",									 255, 247 _2},
+ * {I,0,"ui/box",												 255, 248 _2},
+ * {I,0,"ui/human/save_game",									 255, 249 _2},
+ */
+{I,0,"ui/orc/save_game",									 217, 250 _2},
+/* 
+ * {I,0,"ui/hot_keys",											 255, 254 _2},
+ * {I,0,"ui/human/ok_box",										 255, 256 _2},
+ * {I,0,"ui/orc/ok_box",										 255, 257 _2},
+ */
+/* 
+ * {I,0,"ui/top_of_title_screen",								 260, 258 _2},
+ * {I,0,"ui/title_screen",										 260, 261 _2},
+ */
+{I,0,"ui/menu_button_1",									 217, 362 _2},
+{I,0,"ui/menu_button_2",									 217, 363 _2},
+/* {I,0,"ui/human/icon_border",								 255, 364 _2}, */
+{I,0,"ui/orc/icon_border",									 217, 365 _2},
+{I,0,"ui/gold_icon_1",										 191, 406 _2},
+{I,0,"ui/lumber_icon_1",									 217, 407 _2},
+{I,0,"ui/gold_icon_2",										 191, 408 _2},
+{I,0,"ui/lumber_icon_2",									 217, 409 _2},
+{I,0,"ui/percent_complete",									 217, 410 _2},
+{I,0,"ui/human/outcome_windows",							 413, 411 _2},
+{I,0,"ui/orc/outcome_windows",								 414, 412 _2},
+{I,0,"ui/victory_scene",									 416, 415 _2},
+{I,0,"ui/defeat_scene",										 418, 417 _2},
+{I,0,"ui/victory_text",										 418, 419 _2},
+{I,0,"ui/defeat_text",										 418, 420 _2},
+{I,0,"ui/human/briefing",									 423, 421 _2},
+{I,0,"ui/orc/briefing",										 424, 422 _2},
+{I,0,"ui/human/victory_1",									 457, 456 _2},
+{I,0,"ui/orc/victory_1",									 459, 458 _2},
+/* {I,0,"ui/human/victory_2",									 457, 470 _2}, */
+/* {I,0,"ui/orc/victory_2",									 260, 471 _2}, */
+
+// Sounds
+{W,0,"logo",												 472 __},
+{W,0,"intro_door",											 473 __},
+{VOC,0,"misc/building",										 474 __},
+{VOC,0,"misc/explosion",									 475 __},
+{VOC,0,"missiles/catapult_rock_fired",						 476 __},
+{VOC,0,"misc/tree_chopping_1",								 477 __},
+{VOC,0,"misc/tree_chopping_2",								 478 __},
+{VOC,0,"misc/tree_chopping_3",								 479 __},
+{VOC,0,"misc/tree_chopping_4",								 480 __},
+{VOC,0,"misc/building_collapse_1",							 481 __},
+{VOC,0,"misc/building_collapse_2",							 482 __},
+{VOC,0,"misc/building_collapse_3",							 483 __},
+{VOC,0,"ui/chime",											 484 __},
+{W,0,"ui/click",											 485 __},
+{VOC,0,"ui/cancel",											 486 __},
+{VOC,0,"missiles/sword_attack_1",							 487 __},
+{VOC,0,"missiles/sword_attack_2",							 488 __},
+{VOC,0,"missiles/sword_attack_3",							 489 __},
+{VOC,0,"missiles/fist_attack",								 490 __},
+{VOC,0,"missiles/catapult_fire_explosion",					 491 __},
+{VOC,0,"missiles/fireball",									 492 __},
+{VOC,0,"missiles/arrow,spear",								 493 __},
+{VOC,0,"missiles/arrow,spear_hit",							 494 __},
+{VOC,0,"orc/help_1",										 495 __},
+{VOC,0,"orc/help_2",										 496 __},
+{W,0,"human/help_2",										 497 __},
+{W,0,"human/help_1",										 498 __},
+{VOC,0,"orc/dead",											 499 __},
+{VOC,0,"human/dead",										 500 __},
+{VOC,0,"orc/work_complete",									 501 __},
+{W,0,"human/work_complete",									 502 __},
+{VOC,0,"orc/help_3",										 503 __},
+{W,0,"orc/help_4",											 504 __},
+{W,0,"human/help_3",										 505 __},
+{W,0,"human/help_4",										 506 __},
+{VOC,0,"orc/ready",											 507 __},
+{W,0,"human/ready",											 508 __},
+{VOC,0,"orc/acknowledgement_1",								 509 __},
+{VOC,0,"orc/acknowledgement_2",								 510 __},
+{VOC,0,"orc/acknowledgement_3",								 511 __},
+{VOC,0,"orc/acknowledgement_4",								 512 __},
+{W,0,"human/acknowledgement_1",								 513 __},
+{W,0,"human/acknowledgement_2",								 514 __},
+{VOC,0,"orc/selected_1",									 515 __},
+{VOC,0,"orc/selected_2",									 516 __},
+{VOC,0,"orc/selected_3",									 517 __},
+{VOC,0,"orc/selected_4",									 518 __},
+{VOC,0,"orc/selected_5",									 519 __},
+{W,0,"human/selected_1",									 520 __},
+{W,0,"human/selected_2",									 521 __},
+{W,0,"human/selected_3",									 522 __},
+{W,0,"human/selected_4",									 523 __},
+{W,0,"human/selected_5",									 524 __},
+{VOC,0,"orc/annoyed_1",										 525 __},
+{VOC,0,"orc/annoyed_2",										 526 __},
+{W,0,"orc/annoyed_3",										 527 __},
+{W,0,"human/annoyed_1",										 528 __},
+{W,0,"human/annoyed_2",										 529 __},
+{W,0,"human/annoyed_3",										 530 __},
+{W,0,"dead_spider,scorpion",								 531 __},
+{W,0,"normal_spell",										 532 __},
+{W,0,"misc/build_road",										 533 __},
+{W,0,"orc/temple",											 534 __},
+{W,0,"human/church",										 535 __},
+{W,0,"orc/kennel",											 536 __},
+{W,0,"human/stable",										 537 __},
+{W,0,"blacksmith",											 538 __},
+{W,0,"misc/fire_crackling",									 539 __},
+{W,0,"cannon",												 540 __},
+{W,0,"cannon2",												 541 __},
+{W,0,"../campaigns/human/ending_1",							 542 __},
+{W,0,"../campaigns/human/ending_2",							 543 __},
+{W,0,"../campaigns/orc/ending_1",							 544 __},
+{W,0,"../campaigns/orc/ending_2",							 545 __},
+{W,0,"intro_1",												 546 __},
+{W,0,"intro_2",												 547 __},
+{W,0,"intro_3",												 548 __},
+{W,0,"intro_4",												 549 __},
+{W,0,"intro_5",												 550 __},
+{W,0,"../campaigns/human/01_intro",							 551 __},
+{W,0,"../campaigns/human/02_intro",							 552 __},
+{W,0,"../campaigns/human/03_intro",							 553 __},
+{W,0,"../campaigns/human/04_intro",							 554 __},
+{W,0,"../campaigns/human/05_intro",							 555 __},
+{W,0,"../campaigns/human/06_intro",							 556 __},
+{W,0,"../campaigns/human/07_intro",							 557 __},
+{W,0,"../campaigns/human/08_intro",							 558 __},
+{W,0,"../campaigns/human/09_intro",							 559 __},
+{W,0,"../campaigns/human/10_intro",							 560 __},
+{W,0,"../campaigns/human/11_intro",							 561 __},
+{W,0,"../campaigns/human/12_intro",							 562 __},
+{W,0,"../campaigns/orc/01_intro",							 563 __},
+{W,0,"../campaigns/orc/02_intro",							 564 __},
+{W,0,"../campaigns/orc/03_intro",							 565 __},
+{W,0,"../campaigns/orc/04_intro",							 566 __},
+{W,0,"../campaigns/orc/05_intro",							 567 __},
+{W,0,"../campaigns/orc/06_intro",							 568 __},
+{W,0,"../campaigns/orc/07_intro",							 569 __},
+{W,0,"../campaigns/orc/08_intro",							 570 __},
+{W,0,"../campaigns/orc/09_intro",							 571 __},
+{W,0,"../campaigns/orc/10_intro",							 572 __},
+{W,0,"../campaigns/orc/11_intro",							 573 __},
+{W,0,"../campaigns/orc/12_intro",							 574 __},
+{W,0,"human/defeat",										 575 __},
+{W,0,"orc/defeat",											 576 __},
+{W,0,"orc/victory_1",										 577 __},
+{W,0,"orc/victory_2",										 578 __},
+{W,0,"orc/victory_3",										 579 __},
+{W,0,"human/victory_1",										 580 __},
+{W,0,"human/victory_2",										 581 __},
+{W,0,"human/victory_3",										 582 __},
+
+#undef __
+#undef _2
+};
+
+Control *Todo = TodoDos;
 
 // This which can be allowed/disallowed in maps.
 // A bitmask of 1 << these things can be found in MapFlags.
@@ -947,7 +1487,7 @@ void ResizeImage(unsigned char** image, int ow, int oh, int nw, int nh)
 	//}
 	scale2x(data, *image, ow, oh);
 
-	free(*image);
+	//free(*image);
 	*image = data;
 }
 
@@ -1069,6 +1609,8 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 //  Archive
 //----------------------------------------------------------------------------
 
+unsigned char* ExtractEntry(unsigned char* cp, int* lenp);
+
 /**
 **  Open the archive file.
 **
@@ -1082,8 +1624,9 @@ int OpenArchive(const char* file, int type)
 	unsigned char* buf;
 	unsigned char* cp;
 	unsigned char** op;
+	int* sz;
 	int entries;
-	int i;
+	int i, i_be;
 
 	//
 	//  Open the archive file
@@ -1107,23 +1650,49 @@ int OpenArchive(const char* file, int type)
 		printf("Can't malloc %ld\n", (long)stat_buf.st_size);
 		exit(-1);
 	}
-	if (read(f, buf, stat_buf. st_size) != stat_buf.st_size) {
+	if (read(f, buf, stat_buf.st_size) != stat_buf.st_size) {
 		printf("Can't read %ld\n", (long)stat_buf.st_size);
 		exit(-1);
 	}
 	close(f);
 
 	cp = buf;
-	i = FetchLE32(cp);
-	if (i != 0x19 && i != 0x18) {
-		printf("Wrong magic %08x, expected %08x or %08x\n",
-			i, 0x00000019, 0x00000018);
-		exit(-1);
+	i = Fetch32(cp);
+	if (i == 0x18 || i == 0x19) {
+		switch (i) {
+		case 0x18: {
+			printf("DOS Retail version detected\n");
+			break;
+		}
+		case 0x19: {
+			printf("DOS Shareware version detected\n");
+			break;
+		}
+		}
+	} else {
+		i_be = Swap32(i);
+		switch (i_be) {
+		case 0x1a: {
+			printf("Mac Retail version detected\n");
+			break;
+		}
+		case 0x19: {
+			printf("Mac Shareware version detected\n");
+			break;
+		}
+		default: {
+			printf("Wrong magic: expected 0x18, 0x19, or 0x1a (either little-endian or big-endian), got %d le, %d be\n", i, i_be);
+			exit(-1);
+		}
+		}
+		Todo = TodoMac;
 	}
-	entries = FetchLE16(cp);
-	i = FetchLE16(cp);
+
+	FixByteOrder32(cp);		
+	entries = Fetch16(cp);
+	i = Fetch16(cp);
 	if (i != type) {
-		printf("Wrong type %08x, expected %08x\n", i, type);
+		printf("Wrong type %04x, expected %04x\n", i, type);
 		exit(-1);
 	}
 
@@ -1131,18 +1700,49 @@ int OpenArchive(const char* file, int type)
 	//  Read offsets.
 	//
 	op = malloc((entries + 1) * sizeof(unsigned char**));
+	sz = malloc((entries + 1) * sizeof(unsigned int));
 	if (!op) {
 		printf("Can't malloc %d entries\n", entries);
 		exit(-1);
 	}
 	for (i = 0; i < entries; ++i) {
-		op[i] = buf + FetchLE32(cp);
+		FixByteOrder32(cp);
+		int offset = Fetch32(cp);
+		if (TodoMac == Todo) {
+			op[i] = buf + offset;
+			FixByteOrder32(cp);
+			sz[i] = Fetch32(cp);
+		} else {
+			op[i] = buf + offset;
+			FixByteOrder32(op[i]);
+			sz[i] = Fetch32(op[i]);
+		}
 	}
 	op[i] = buf + stat_buf.st_size;
+	sz[i] = 0;
 
 	ArchiveOffsets = op;
+	ArchiveSizes = sz;
+	ArchiveEntries = entries;
 	ArchiveBuffer = buf;
 	ArchiveLength = stat_buf.st_size;
+
+	for (i = 0; i < entries; ++i) {
+		int size = ArchiveSizes[i];
+		unsigned char* entry = ExtractEntry(ArchiveOffsets[i], &size);
+		if (size != 0 && size != 0xffffffff) {
+			char fpath[20] = {'\0'};
+			sprintf(fpath, "%03d.xxx", i);
+			FILE *f = fopen(fpath, "w");
+			if (!(sz[i] & 0x20000000)) {
+				printf("unpacked size of %d at %d is %d (%d)\n", i, op[i] - buf, size);
+				fwrite(entry, size, sizeof(char), f);
+			}
+			fclose(f);
+		} else {
+			printf("skipping %d\n", i);
+		}
+	}
 
 	return 0;
 }
@@ -1162,7 +1762,7 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 	int uncompressed_length;
 	int flags;
 
-	uncompressed_length = FetchLE32(cp);
+	uncompressed_length = *lenp;
 	flags = uncompressed_length >> 24;
 	uncompressed_length &= 0x00FFFFFF;
 
@@ -1203,7 +1803,7 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 					buf[bi] = j;
                     			bi++;
 				} else {
-					o = FetchLE16(cp);
+					o = Fetch16(cp);
 					j = (o >> 12) + 3;
 					o &= 0xFFF;
 					while (j--) {
@@ -1226,15 +1826,12 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 			}
 		}
 		//if (dp!=ep ) printf("%p,%p %d\n",dp,ep,dp-dest);
-	} else if (flags == 0x00) {
-		memcpy(dest, cp, uncompressed_length);
 	} else {
-		printf("Unknown flags %x\n", flags);
-		free(dest);
-		return NULL;
+		memcpy(dest, cp, uncompressed_length);
 	}
 
-	if (lenp) {						// return resulting length
+	if (lenp && (lenp < ArchiveSizes || lenp > (ArchiveSizes + ArchiveEntries))) {
+		// return resulting length, if requested
 		*lenp = uncompressed_length;
 	}
 
@@ -1248,6 +1845,7 @@ int CloseArchive(void)
 {
 	free(ArchiveBuffer);
 	free(ArchiveOffsets);
+	free(ArchiveSizes);
 	ArchiveBuffer = 0;
 	ArchiveOffsets = 0;
 
@@ -1280,7 +1878,7 @@ void ConvertFLC_COLOR256(unsigned char* buf)
 	index = 0;
 	p = buf;
 
-	packets = FetchLE16(p);
+	packets = Fetch16(p);
 	for (; packets; --packets) {
 		skip = FetchByte(p);
 		index += skip;
@@ -1314,12 +1912,12 @@ void ConvertFLC_SS2(unsigned char* buf)
 	char pngbuf[1024];
 
 	p = buf;
-	lines = FetchLE16(p);
+	lines = Fetch16(p);
 	skiplines = 0;
 
 	for (; lines; --lines) {
 		i = FLCImage + FLCWidth * skiplines;
-		w = FetchLE16(p);
+		w = Fetch16(p);
 		if ((w & 0xC000) == 0) {
 			packets = w;
 			for (; packets; --packets) {
@@ -1328,11 +1926,11 @@ void ConvertFLC_SS2(unsigned char* buf)
 				type = FetchByte(p);
 				if (type > 0) {
 					for (; type; --type) {
-						*(unsigned short*)i = FetchLE16(p);
+						*(unsigned short*)i = Fetch16(p);
 						i += 2;
 					}
 				} else if (type < 0) {
-					packet = FetchLE16(p);
+					packet = Fetch16(p);
 					for (; type; ++type) {
 						*(unsigned short*)i = packet;
 						i += 2;
@@ -1376,8 +1974,8 @@ void ConvertFLC_LC(unsigned char* buf)
 	char pngbuf[1024];
 
 	p = buf;
-	skiplines = FetchLE16(p);
-	lines = FetchLE16(p);
+	skiplines = Fetch16(p);
+	lines = Fetch16(p);
 
 	for (; lines; --lines) {
 		packets = FetchByte(p);
@@ -1486,9 +2084,9 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	int height, width, pstamp_type;
 	
 	p = buf;
-	height = FetchLE16(p);
-	width = FetchLE16(p);
-	SkipLE16(p);
+	height = Fetch16(p);
+	width = Fetch16(p);
+	Skip16(p);
 	
 	image = (unsigned char*)malloc(height * width);
 	if (!image) {
@@ -1501,8 +2099,8 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	//
 	//  PSTAMP header
 	//
-	SkipLE32(p);
-	pstamp_type = FetchLE16(p);
+	Skip32(p);
+	pstamp_type = Fetch16(p);
 
 	switch (pstamp_type) {
 		case 15:
@@ -1556,21 +2154,21 @@ int ConvertFLCFrameChunk(unsigned char* buf)
 	//  Read header
 	//
 	p = buf;
-	frame_size = FetchLE32(p);
-	frame_type = FetchLE16(p);
+	frame_size = Fetch32(p);
+	frame_type = Fetch16(p);
 	if (frame_type != 0xF1FA) {
 		printf("Wrong magic: %04x != %04x\n", frame_type, 0xF1FA);
 		return 0;
 	}
-	frame_chunks = FetchLE16(p);
+	frame_chunks = Fetch16(p);
 	p += 8; // reserved
 
 	//
 	//  Read chunks
 	//
 	for (; frame_chunks; --frame_chunks) {
-		data_size = FetchLE32(p);
-		data_type = FetchLE16(p);
+		data_size = Fetch32(p);
+		data_type = Fetch16(p);
 		switch (data_type) {
 			case 4:
 				ConvertFLC_COLOR256(p);
@@ -1702,34 +2300,34 @@ void ConvertFLC(const char* file, const char* flc)
 	//  Read header
 	//
 	p = buf;
-	i = FetchLE32(p);
+	i = Fetch32(p);
 	if (i != stat_buf.st_size) {
 		printf("FLC file size incorrect: %d != %ld\n", i, (long)stat_buf.st_size);
 		free(buf);
 		return;
 	}
-	i = FetchLE16(p);
+	i = Fetch16(p);
 	if (i != 0xAF12) {
 		printf("Wrong FLC magic: %04x != %04x\n", i, 0xAF12);
 		free(buf);
 		return;
 	}
-	frames = FetchLE16(p);
-	FLCWidth = FetchLE16(p);
-	FLCHeight = FetchLE16(p);
-	i = FetchLE16(p); // depth always 8
-	i = FetchLE16(p); // flags, unused
-	speed = FetchLE32(p);
-	i = FetchLE16(p); // reserved
-	i = FetchLE32(p); // created
-	i = FetchLE32(p); // creator
-	i = FetchLE32(p); // updated
-	i = FetchLE32(p); // updater
-	i = FetchLE16(p); // aspectx
-	i = FetchLE16(p); // aspecty
+	frames = Fetch16(p);
+	FLCWidth = Fetch16(p);
+	FLCHeight = Fetch16(p);
+	i = Fetch16(p); // depth always 8
+	i = Fetch16(p); // flags, unused
+	speed = Fetch32(p);
+	i = Fetch16(p); // reserved
+	i = Fetch32(p); // created
+	i = Fetch32(p); // creator
+	i = Fetch32(p); // updated
+	i = Fetch32(p); // updater
+	i = Fetch16(p); // aspectx
+	i = Fetch16(p); // aspecty
 	p += 38;		// reserved
-	oframe1 = FetchLE32(p);
-	oframe2 = FetchLE32(p);
+	oframe1 = Fetch32(p);
+	oframe2 = Fetch32(p);
 	p += 40;		// reserved
 
 	FLCImage = malloc(FLCWidth * FLCHeight);
@@ -1955,13 +2553,29 @@ void MuxIntroVideos(void) {
 */
 unsigned char* ConvertPalette(unsigned char* pal)
 {
-	int i;
+	if (Todo == TodoDos) {
+		int i;
 
-	for (i = 0; i < 768; ++i) {  // PNG needs 0-256
-		pal[i] <<= 2;
+		for (i = 0; i < 768; ++i) {  // PNG needs 0-256
+			pal[i] <<= 2;
+		}
+
+		return pal;
+	} else {
+		unsigned char* new_pal = (unsigned char*)calloc(sizeof(char), 768);
+		pal += 8; // 8 byte header		
+		for (int i = 0; i < 256 /*num colors*/ * (2 /*idx*/ + 6 /*rrggbb*/); i += 8) {
+			FixByteOrder16(pal);
+			int idx = Fetch16(pal);
+			int r = Fetch16(pal);
+			int g = Fetch16(pal);
+			int b = Fetch16(pal);
+			new_pal[idx * 3] = (char)(r >> 8);
+			new_pal[idx * 3 + 1] = (char)(g >> 8);
+			new_pal[idx * 3 + 2] = (char)(b >> 8);
+		}
+		return new_pal;
 	}
-
-	return pal;
 }
 
 //----------------------------------------------------------------------------
@@ -1997,7 +2611,7 @@ int ConvertTileset(char* file,int index)
 	unsigned char* mini;
 	unsigned char* mega;
 	unsigned char* image;
-	const unsigned short* mp;
+	unsigned short* mp;
 	int msize;
 	int height;
 	int width;
@@ -2011,6 +2625,7 @@ int ConvertTileset(char* file,int index)
 	int pale;
 
 	pale = index + 1;
+	len = ArchiveSizes[pale];
 	palp = ExtractEntry(ArchiveOffsets[pale], &len);
 	if (!palp) {
 		return 0;
@@ -2022,7 +2637,7 @@ int ConvertTileset(char* file,int index)
 	if (pale == 191 || pale == 194 || pale == 197) {
 		unsigned char* gpalp;
 		int i;
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+		gpalp = ExtractEntry(ArchiveOffsets[HighPal], &ArchiveSizes[HighPal]);
 		for (i = 0; i < 128; ++i) {
 			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
 					palp[i * 3 + 2] == 63) {
@@ -2041,15 +2656,16 @@ int ConvertTileset(char* file,int index)
 		}
 		free(gpalp);
 	}
-	mini = ExtractEntry(ArchiveOffsets[index], NULL);
+	mini = ExtractEntry(ArchiveOffsets[index], &ArchiveSizes[index]);
 	if (!mini) {
-		free(palp);
+		// free(palp);
 		return 0;
 	}
+	msize = ArchiveSizes[index - 1];
 	mega = ExtractEntry(ArchiveOffsets[index - 1], &msize);
 	if (!mega) {
-		free(palp);
-		free(mini);
+		// free(palp);
+		// free(mini);
 		return 0;
 	}
 	numtiles = msize / 8;
@@ -2060,10 +2676,11 @@ int ConvertTileset(char* file,int index)
 	memset(image, 0, height * width);
 
 	for (i = 0; i < numtiles; ++i) {
-		mp = (const unsigned short*)(mega + i * 8);
+		mp = (unsigned short*)(mega + i * 8);
 		for (y = 0; y < 2; ++y) {
 			for (x = 0; x < 2; ++x) {
-				offset = ConvertLE16(mp[x + y * 2]);
+				FixByteOrder16(mp + x + y * 2);
+				offset = mp[x + y * 2];
 				DecodeMiniTile(image,
 					x + ((i % TILE_PER_ROW) * 2), y + (i / TILE_PER_ROW) * 2,
 					width, mini, (offset & 0xFFFC) << 1, offset & 2, offset & 1);
@@ -2071,7 +2688,7 @@ int ConvertTileset(char* file,int index)
 		}
 	}
 
-	ConvertPalette(palp);
+	palp = ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
@@ -2089,9 +2706,11 @@ int ConvertTileset(char* file,int index)
 	CheckPath(buf);
 	SavePNG(buf, image, 16 * 32, 32, palp, 0);
 
-	free(palp);
-	free(mini);
-	free(mega);
+	/* 
+     * free(palp);
+	 * free(mini);
+	 * free(mega);
+     */
 
 	return 0;
 }
@@ -2105,7 +2724,7 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 	unsigned char* mini;
 	unsigned char* mega;
 	unsigned char* image;
-	const unsigned short* mp;
+	unsigned short* mp;
 	int msize;
 	int height;
 	int width;
@@ -2116,6 +2735,7 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 	int pale;
 
 	pale = index + 1;
+	len = ArchiveSizes[pale];
 	palp = ExtractEntry(ArchiveOffsets[pale], &len);
 	if (!palp) {
 		return 0;
@@ -2127,7 +2747,7 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 	if (pale == 191 || pale == 194 || pale == 197) {
 		unsigned char* gpalp;
 		int i;
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+		gpalp = ExtractEntry(ArchiveOffsets[HighPal], &ArchiveSizes[HighPal]);
 		for (i = 0; i < 128; ++i) {
 			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
 					palp[i * 3 + 2] == 63) {
@@ -2144,17 +2764,18 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 				palp[i * 3 + 2] = gpalp[i * 3 + 2];
 			}
 		}
-		free(gpalp);
+		// free(gpalp);
 	}
-	mini = ExtractEntry(ArchiveOffsets[index], NULL);
+	mini = ExtractEntry(ArchiveOffsets[index], &ArchiveSizes[index]);
 	if (!mini) {
-		free(palp);
+		// free(palp);
 		return 0;
 	}
+	msize = ArchiveSizes[index - 1];
 	mega = ExtractEntry(ArchiveOffsets[index - 1], &msize);
 	if (!mega) {
-		free(palp);
-		free(mini);
+		// free(palp);
+		// free(mini);
 		return 0;
 	}
 
@@ -2164,10 +2785,11 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 	memset(image, 0, height * width);
 
 	for (direction = 0; direction < NumUnitDirections; direction++) {
-		mp = (const unsigned short*)(mega + TilesetUnitDirections[directions_idx].directions[direction] * 8);
+		mp = (unsigned short*)(mega + TilesetUnitDirections[directions_idx].directions[direction] * 8);
 		for (y = 0; y < 2; ++y) {
 			for (x = 0; x < 2; ++x) {
-				offset = ConvertLE16(mp[x + y * 2]);
+				FixByteOrder16(mp + x + y * 2);
+				offset = mp[x + y * 2];
 				DecodeMiniTile(image,
 					       direction * 2 + x, y,
 					       width, mini,
@@ -2177,16 +2799,18 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 		}
 	}
 
-	ConvertPalette(palp);
+	palp = ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, width, height, 2 * width, 2 * height);
 	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
 
-	free(palp);
-	free(mini);
-	free(mega);
+	/* 
+     * free(palp);
+	 * free(mini);
+	 * free(mega);
+     */
 
 	return 0;
 }
@@ -2201,7 +2825,7 @@ int ConvertRuin(char* file, int index, int partsidx, int dimensions)
 	unsigned char* mini;
 	unsigned char* mega;
 	unsigned char* image;
-	const unsigned short* mp;
+	unsigned short* mp;
 	int msize;
 	int height;
 	int width;
@@ -2212,6 +2836,7 @@ int ConvertRuin(char* file, int index, int partsidx, int dimensions)
 	int pale;
 
 	pale = index + 1;
+	len = ArchiveSizes[pale];
 	palp = ExtractEntry(ArchiveOffsets[pale], &len);
 	if (!palp) {
 		return 0;
@@ -2223,7 +2848,7 @@ int ConvertRuin(char* file, int index, int partsidx, int dimensions)
 	if (pale == 191 || pale == 194 || pale == 197) {
 		unsigned char* gpalp;
 		int i;
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+		gpalp = ExtractEntry(ArchiveOffsets[HighPal], &ArchiveSizes[HighPal]);
 		for (i = 0; i < 128; ++i) {
 			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
 				palp[i * 3 + 2] == 63) {
@@ -2240,17 +2865,18 @@ int ConvertRuin(char* file, int index, int partsidx, int dimensions)
 				palp[i * 3 + 2] = gpalp[i * 3 + 2];
 			}
 		}
-		free(gpalp);
+		/* free(gpalp); */
 	}
-	mini = ExtractEntry(ArchiveOffsets[index], NULL);
+	mini = ExtractEntry(ArchiveOffsets[index], &ArchiveSizes[index]);
 	if (!mini) {
-		free(palp);
+		/* free(palp); */
 		return 0;
 	}
+	msize = ArchiveSizes[index - 1];
 	mega = ExtractEntry(ArchiveOffsets[index - 1], &msize);
 	if (!mega) {
-		free(palp);
-		free(mini);
+		/* free(palp); */
+		/* free(mini); */
 		return 0;
 	}
 
@@ -2259,23 +2885,26 @@ int ConvertRuin(char* file, int index, int partsidx, int dimensions)
 	image = malloc(height * width);
 	memset(image, 0, height * width);
 	for (part = 0; part < dimensions*dimensions; part++) {
-		mp = (const unsigned short*)(mega + TilesetRuinParts[partsidx].parts[part] * 8);
+		mp = (unsigned short*)(mega + TilesetRuinParts[partsidx].parts[part] * 8);
 		for (y = 0; y < 2; ++y) {
 			for (x = 0; x < 2; ++x) {
-				offset = ConvertLE16(mp[x + y * 2]);
+				FixByteOrder16(mp + x + y * 2);
+				offset = mp[x + y * 2];
 				DecodeMiniTile(image, (part % dimensions) * 2 + x, y + (part / dimensions) * 2, width, mini, (offset & 0xFFFC) << 1, 0, 0);
 			}
 		}
 	}
-	ConvertPalette(palp);
+	palp = ConvertPalette(palp);
 	sprintf(buf, "%s/%s/%s_%dx%d.png", Dir, TILESET_PATH, file, dimensions, dimensions);
 	CheckPath(buf);
 	ResizeImage(&image, width, height, 2 * width, 2 * height);
 	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
 
-	free(palp);
-	free(mini);
-	free(mega);
+	/* 
+     * free(palp);
+	 * free(mini);
+	 * free(mega);
+     */
 
 	return 0;
 }
@@ -2290,7 +2919,7 @@ int ConvertRuin(char* file, int index, int partsidx, int dimensions)
 void DecodeGfuEntry(int index, unsigned char* start,
 	unsigned char* image, int iadd)
 {
-	unsigned char* bp;
+	unsigned char* bp, *next_bp;
 	unsigned char* sp;
 	unsigned char* dp;
 	int i;
@@ -2299,24 +2928,69 @@ void DecodeGfuEntry(int index, unsigned char* start,
 	int width;
 	int height;
 	int offset;
+	int next_offset;
 
 	bp = start + index * 8;
+	FixByteOrder32(bp);
 	xoff = FetchByte(bp);
 	yoff = FetchByte(bp);
 	width = FetchByte(bp);
 	height = FetchByte(bp);
-	offset = FetchLE32(bp);
+	FixByteOrder32(bp);
+	offset = Fetch32(bp);
+
+	if (TodoMac == Todo) {
+		// dance for Mac RLE encoding
+		next_bp = start + (index + 1) * 8; // next entry
+		Skip32(next_bp); // skip the offsets and w/h
+		FixByteOrder32(next_bp); // shuffle bytes
+		next_offset = Access32(next_bp); // get next entry offset
+		FixByteOrder32(next_bp); // shuffle bytes back, so they are as before
+		                         // when we get to the next entry
+	} else {
+		next_offset = offset + width * height;
+	}
+
 	if (offset < 0) {  // High bit of width
 		offset &= 0x7FFFFFFF;
 		width += 256;
 	}
 
-	sp = start + offset - 4;
-	dp = image + xoff + yoff * iadd;
-	for (i = 0; i < height; ++i) {
-		memcpy(dp, sp, width);
-		dp += iadd;
-		sp += width;
+	if (width * height > next_offset - offset) {
+		assert(Todo == TodoMac);
+		sp = start + offset;
+		dp = image + xoff + yoff * iadd;
+		for (i = 0; i < height; ++i) {
+			printf("%dx%d\n", width, height);
+			int destoff = 0;
+			while (1) {
+				unsigned char head = FetchByte(sp);
+				// printf("head: %d (%d)\n", head, 0x80 & head);
+				if (head == 0x0) { // end of line
+					break;
+				} else if (head == 0xff) { // end of frame
+					return;
+				} else if ((0x80 & head) == 0) { // head-many uncompressed pixels
+					// printf("pixels: %d\n", head);
+					memcpy(dp + destoff, sp, head);
+					destoff += head;
+					sp += head;
+				} else if (0x80 & head) { // compressed transparent pixels
+					// printf("transp: %d\n", (0x7f & head) + 1);
+					destoff += ((0x7f & head) + 1);
+				}
+				// assert(destoff <= width);
+			}
+			dp += iadd;
+		}
+	} else {
+		sp = start + offset - 4;
+		dp = image + xoff + yoff * iadd;
+		for (i = 0; i < height; ++i) {
+			memcpy(dp, sp, width);
+			dp += iadd;
+			sp += width;
+		}
 	}
 }
 /**
@@ -2334,14 +3008,16 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 	int IPR;
 
 	if (bp2) {  // Init pointer to 2nd animation
-		count = FetchLE16(bp2);
+		FixByteOrder16(bp2);
+		count = Fetch16(bp2);
+		FixByteOrder16(bp);
 		max_width = FetchByte(bp2);
 		max_height = FetchByte(bp2);
 	}
-	count = FetchLE16(bp);
+	FixByteOrder16(bp);
+	count = Fetch16(bp);
 	max_width = FetchByte(bp);
 	max_height = FetchByte(bp);
-
 
 	if (count % 5 == 0) {
 		IPR = 5;
@@ -2387,6 +3063,7 @@ int ConvertGfu(char* file, int pale, int gfue)
 	char buf[1024];
 	int len;
 
+	len = ArchiveSizes[pale];
 	palp = ExtractEntry(ArchiveOffsets[pale], &len);
 	if (!palp) {
 		return 0;
@@ -2399,7 +3076,7 @@ int ConvertGfu(char* file, int pale, int gfue)
 		unsigned char* gpalp;
 		int i;
 
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+		gpalp = ExtractEntry(ArchiveOffsets[HighPal], &ArchiveSizes[HighPal]);
 		for (i = 0; i < 128; ++i) {
 			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
 					palp[i * 3 + 2] == 63) {
@@ -2416,19 +3093,19 @@ int ConvertGfu(char* file, int pale, int gfue)
 				palp[i * 3 + 2] = gpalp[i * 3 + 2];
 			}
 		}
-		free(gpalp);
+		/* free(gpalp); */
 	}
 
-	gfup = ExtractEntry(ArchiveOffsets[gfue], NULL);
+	gfup = ExtractEntry(ArchiveOffsets[gfue], &ArchiveSizes[gfue]);
 	if (!gfup) {
-		free(palp);
+		/* free(palp); */
 		return 0;
 	}
 
 	image = ConvertGraphic(gfup, &w, &h, NULL);
 
-	free(gfup);
-	ConvertPalette(palp);
+	/* free(gfup); */
+	palp = ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, UNIT_PATH, file);
 	CheckPath(buf);
@@ -2449,8 +3126,10 @@ int ConvertGfu(char* file, int pale, int gfue)
 
 	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
 
-	free(image);
-	free(palp);
+	/* 
+     * free(image);
+	 * free(palp);
+     */
 
 	return 0;
 }
@@ -2469,8 +3148,10 @@ unsigned char* ConvertImg(unsigned char* bp, int *wp, int *hp)
 	unsigned char* image;
 	int i;
 
-	width = FetchLE16(bp);
-	height = FetchLE16(bp);
+	FixByteOrder16(bp);
+	width = Fetch16(bp);
+	FixByteOrder16(bp);
+	height = Fetch16(bp);
 
 	image = malloc(width * height);
 	if (!image) {
@@ -2504,6 +3185,7 @@ int ConvertImage(char* file, int pale, int imge)
 	char buf[1024];
 	int len;
 
+	len = ArchiveSizes[pale];
 	palp = ExtractEntry(ArchiveOffsets[pale], &len);
 	if (!palp) {
 		return 0;
@@ -2515,7 +3197,7 @@ int ConvertImage(char* file, int pale, int imge)
 	if (pale == 191 || pale == 194 || pale == 197) {
 		unsigned char* gpalp;
 		int i;
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+		gpalp = ExtractEntry(ArchiveOffsets[HighPal], &ArchiveSizes[HighPal]);
 		for (i = 0; i < 128; ++i) {
 			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
 					palp[i * 3 + 2] == 63) {
@@ -2532,19 +3214,19 @@ int ConvertImage(char* file, int pale, int imge)
 				palp[i * 3 + 2] = gpalp[i * 3 + 2];
 			}
 		}
-		free(gpalp);
+		/* free(gpalp); */
 	}
 
-	imgp = ExtractEntry(ArchiveOffsets[imge], NULL);
+	imgp = ExtractEntry(ArchiveOffsets[imge], &ArchiveSizes[imge]);
 	if (!imgp) {
-		free(palp);
+		/* free(palp); */
 		return 0;
 	}
 
 	image = ConvertImg(imgp, &w, &h);
 
-	free(imgp);
-	ConvertPalette(palp);
+	/* free(imgp); */
+	palp = ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, GRAPHIC_PATH, file);
 	CheckPath(buf);
@@ -2565,8 +3247,8 @@ int ConvertImage(char* file, int pale, int imge)
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
 	SavePNG(buf, image, 2 * w, 2 * h, palp, -1);
 
-	free(image);
-	free(palp);
+	/* free(image); */
+	/* free(palp); */
 
 	return 0;
 }
@@ -2588,36 +3270,38 @@ int ConvertCursor(char* file, int pale, int cure)
 	int h;
 	char buf[1024];
 
-	palp = ExtractEntry(ArchiveOffsets[pale], NULL);
+	palp = ExtractEntry(ArchiveOffsets[pale], &ArchiveSizes[pale]);
 	if (!palp) {
 		return 0;
 	}
-	p = curp = ExtractEntry(ArchiveOffsets[cure], NULL);
+	p = curp = ExtractEntry(ArchiveOffsets[cure], &ArchiveSizes[cure]);
 	if (!curp) {
 		if (pale != 27 && cure != 314) {
-			free(palp);
+			/* free(palp); */
 		}
 		return 0;
 	}
 
-	SkipLE16(p); // hoty
-	SkipLE16(p); // hotx
-	w = FetchLE16(p);
-	h = FetchLE16(p);
+	Skip16(p); // hoty
+	Skip16(p); // hotx
+	FixByteOrder16(p);
+	w = Fetch16(p);
+	FixByteOrder16(p);
+	h = Fetch16(p);
 	image = malloc(w * h);
 	memcpy(image, p, w * h);
 
-	ConvertPalette(palp);
+	palp = ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, CURSOR_PATH, file);
 	CheckPath(buf);
 	ResizeImage(&image, w, h, 2 * w, 2 * h);
 	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
 
-	free(curp);
-	free(image);
+	/* free(curp); */
+	/* free(image); */
 	if (pale != 27 && cure != 314) {
-		free(palp);
+		/* free(palp); */
 	}
 
 	return 0;
@@ -2637,6 +3321,7 @@ int ConvertWav(char* file, int wave)
 	gzFile gf;
 	int l;
 
+	l = ArchiveSizes[wave];
 	wavp = ExtractEntry(ArchiveOffsets[wave], &l);
 	if (!wavp) {
 		return 0;
@@ -2644,7 +3329,7 @@ int ConvertWav(char* file, int wave)
 
 	if (strncmp((char*)wavp, "RIFF", 4)) {
 		printf("Not a wav file: %s\n", file);
-		free(wavp);
+		/* free(wavp); */
 		return 0;
 	}
 
@@ -2660,7 +3345,7 @@ int ConvertWav(char* file, int wave)
 		printf("Can't write %d bytes\n", l);
 	}
 
-	free(wavp);
+	/* free(wavp); */
 
 	gzclose(gf);
 	return 0;
@@ -2688,10 +3373,11 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 	size_t oggl;
 	int ret;
 
+	xmil = (size_t)ArchiveSizes[xmi];
 	xmip = ExtractEntry(ArchiveOffsets[xmi], (int*)&xmil);
 	midp = TranscodeXmiToMid(xmip, xmil, &midl);
 
-	free(xmip);
+	/* free(xmip); */
 
 	sprintf(buf, "%s/%s/%s.mid", Dir, MUSIC_PATH, file);
 	CheckPath(buf);
@@ -2705,7 +3391,7 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 		printf("Can't write %d bytes\n", (int)midl);
 		fflush(stdout);
 	}
-	free(midp);
+	/* free(midp); */
 	fclose(f);
 	if (!midiToOgg) return;
 	cmd = (char*)calloc(strlen("timidity -Ow \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
@@ -2812,6 +3498,7 @@ int ConvertVoc(char* file,int voce)
 	unsigned char* wavp;
 	int w, wavlen, i, s;
 
+	l = ArchiveSizes[voce];
 	vocp = ExtractEntry(ArchiveOffsets[voce], &l);
 	if (!vocp) {
 		return 0;
@@ -2825,9 +3512,9 @@ int ConvertVoc(char* file,int voce)
 	}
 	p += 19;
 	++p; // 0x1A
-	SkipLE16(p);
-	i = FetchLE16(p); // Version
-	i = FetchLE16(p); // 1's comp of version
+	Skip16(p);
+	i = Fetch16(p); // Version
+	i = Fetch16(p); // 1's comp of version
 
 	wavp = NULL;
 	wavlen = 0;
@@ -2908,6 +3595,7 @@ int ConvertText(char* file, int txte, int ofs)
 	gzFile gf;
 	int l;
 
+	l = ArchiveSizes[txte];
 	txtp = ExtractEntry(ArchiveOffsets[txte], &l);
 	if (!txtp) {
 		return 0;
@@ -2942,7 +3630,8 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 	unsigned int i;
 	char objectives[1024];
 
-	offset = ConvertLE16(*(unsigned short*)(txtp + 0x94));
+	FixByteOrder16(txtp + 0x94);
+	offset = (*(unsigned short*)(txtp + 0x94));
 	if (!offset) {
 		return;
 	}
@@ -2965,15 +3654,16 @@ static void SmsSaveResources(FILE* sms_c2, unsigned char* txtp)
 	// 0x0070 - 0x0083: 5xDWord: Gold for each player. 
 	fprintf(sms_c2, "\n-- Resources\n");
 	for (int p = 0; p < 5; p++) {
-		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"wood\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
-		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"gold\", %d)\n", p, AccessLE32(txtp + 0x70 + (4 * p)));
+		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"wood\", %d)\n", p, Access32(txtp + 0x5c + (4 * p)));
+		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"gold\", %d)\n", p, Access32(txtp + 0x70 + (4 * p)));
 	}
 	fprintf(sms_c2, "\n");
 }
 
 static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
 {
-	int allowid = AccessLE32(txtp);
+	FixByteOrder32(txtp);
+	int allowid = Access32(txtp);
 
 	fprintf(sms_c2, "\n-- Allowed units\n"\
 					"DefineAllowHumanUnits(\"FFFFFFFFFFFFFFFF\")\n"\
@@ -2995,7 +3685,8 @@ static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
 
 static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 {
-	int allowid = AccessLE32(txtp);
+	FixByteOrder32(txtp);
+	int allowid = Access32(txtp);
 	char *allowed1, *allowed2;
 	allowed1 = (char*)calloc(sizeof(char), 17);
 	allowed2 = (char*)calloc(sizeof(char), 17);
@@ -3011,7 +3702,7 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 	// 0x0027 - 0x002B: 5xByte: Spell: far seeing / dark vision.
 	// 0x002C - 0x0030: 5xByte: Spell: invisibility / unholy armor.
 	// 0x0031 - 0x0035: 5xByte: Upgrade: Shields.
-	assert(AccessLE32(txtp + 0x36) == 0xFFFFFFFF);
+	assert(Access32(txtp + 0x36) == 0xFFFFFFFF);
 	const char* upgradeNames[20] = {
 		"upgrade-spear", "upgrade-arrow",
 		"upgrade-axe", "upgrade-sword",
@@ -3228,7 +3919,7 @@ static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath)
 	int i;
 	int j;
 
-	mtxm = ExtractEntry(ArchiveOffsets[mtxme], NULL);
+	mtxm = ExtractEntry(ArchiveOffsets[mtxme], &ArchiveSizes[mtxme]);
 	if (!mtxm) {
 		return;
 	}
@@ -3242,7 +3933,7 @@ static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath)
 	for (i = 0; i < 64; ++i) {
 		gzprintf(sms, "  -- %d\n",i);
 		for (j = 0; j < 64; ++j) {
-			s = FetchLE16(p);
+			s = Fetch16(p);
 			gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, j, i);
 		}
 	}
@@ -3320,7 +4011,8 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 		++p;
 	}
 	p += 4;
-	x = FetchLE16(p);
+	FixByteOrder16(p);
+	x = Fetch16(p);
 	p = txtp + x;
 
 	numunits = 0;
@@ -3352,7 +4044,10 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 		player = FetchByte(p);
 		if (type == 0x32) {
 			// gold mine
-		        value = FetchLE16(p);
+			value = FetchByte(p);
+			assert(value == 0xfe);
+			value = FetchByte(p);
+			value *= 250;			
 		} else {
 			value = 0;
 		}
@@ -3458,7 +4153,7 @@ void ConvertSkirmishMap(const char* file, int mtxme)
 	    CheckPath((char*)buf);
 	    sms = gzopen((char*)buf, "wb9");
 
-	    mtxm = ExtractEntry(ArchiveOffsets[mtxme], NULL);
+	    mtxm = ExtractEntry(ArchiveOffsets[mtxme], &ArchiveSizes[mtxme]);
 	    if (!mtxm) {
 		return;
 	    }
@@ -3499,7 +4194,7 @@ void ConvertSkirmishMap(const char* file, int mtxme)
 	    for (i = 0; i < 64; ++i) {
 		gzprintf(sms, "  -- %d\n",i);
 		for (j = 0; j < 64; ++j) {
-		    s = FetchLE16(p);
+		    s = Fetch16(p);
 		    gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, j, i);
 		}
 	    }
@@ -3543,7 +4238,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	gzFile smp, sms;
 	FILE* sms_c2;
 
-	txtp = ExtractEntry(ArchiveOffsets[txte], NULL);
+	txtp = ExtractEntry(ArchiveOffsets[txte], &ArchiveSizes[txte]);
 	if (!txtp) {
 		return 0;
 	}
@@ -3621,10 +4316,10 @@ void CopyDirectories(char** directories) {
 }
 
 void CreateConfig(char* outputdir, int video, int miditoogg) {
-	CheckPath(Dir);
 	char cfile[2048];
 	FILE *config;
 	sprintf(cfile, "%s/%s", outputdir, "scripts/wc1-config.lua");
+	CheckPath(cfile);
 	config = fopen(cfile, "w");
 	fprintf(config, "war1gus.music_extension = \"%s\"\n", miditoogg ? ".ogg" : ".mid");
 	fclose(config);
@@ -3758,14 +4453,18 @@ int main(int argc, char** argv)
 	dirs[0] = "scripts";
 	dirs[1] = "contrib";
 	dirs[2] = "campaigns";
-	CopyDirectories(dirs);
+	/* CopyDirectories(dirs); */
 	
-	CreateConfig(Dir, video, midi);
+	CreateConfig(Dir, video, midi);	
 
-	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
+	for (u = 0; u < (Todo == TodoDos ? sizeof(TodoDos) : sizeof(TodoMac)) / sizeof(*Todo); ++u) {
 		// Should only be on the expansion cd
 #ifdef DEBUG
 		printf("%s:\n", Todo[u].File);
+        if (setjmp(ex_buf)) {
+            printf("exception, continue\n");
+            continue;
+        }
 #endif
 		switch (Todo[u].Type) {
 			case F:
