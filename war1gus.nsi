@@ -279,6 +279,7 @@ Section "-${NAME}"
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 	CreateDirectory "$SMPROGRAMS\$STARTMENUDIR"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME}.lnk" "$INSTDIR\${EXE}"
+	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Retro).lnk" "$INSTDIR\${EXE} -Z -x 1"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\Uninstall.lnk" "$INSTDIR\${UNINSTALL}"
 	CreateShortcut "$DESKTOP\${NAME}.lnk" "$INSTDIR\${EXE}"
 	!insertmacro MUI_STARTMENU_WRITE_END
@@ -373,6 +374,7 @@ Section "un.${NAME}" Executable
 
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $STARTMENUDIR
 	Delete "$SMPROGRAMS\$STARTMENUDIR\${NAME}.lnk"
+	Delete "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Retro).lnk"
 	Delete "$SMPROGRAMS\$STARTMENUDIR\Uninstall.lnk"
 	RMDir "$SMPROGRAMS\$STARTMENUDIR"
 	Delete "$DESKTOP\${NAME}.lnk"
