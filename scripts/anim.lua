@@ -267,8 +267,8 @@ DefineAnimations(
 
 local grizelda_garona_anim = {
    Still = DefaultStillAnimation(),
-   Move = BuildMoveAnimation(frameNumbers_5_5_5_3[1]),
-   Death = BuildDeathAnimation(frameNumbers_5_5_5_3[3])
+   Move = BuildMoveAnimation({10, 20, 30, 35}),
+   Death = BuildDeathAnimation({5, 15, 25})
 }
 DefineAnimations("animations-grizelda", grizelda_garona_anim)
 DefineAnimations("animations-garona", grizelda_garona_anim)
