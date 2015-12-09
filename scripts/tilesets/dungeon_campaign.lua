@@ -196,9 +196,86 @@ DefineTileset("name", "dungeon_campaign",
 	   325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335}},                        -- 140,
 	"solid", {"rock", "unpassable",  -- bridge
 	  {336, 337}},                        -- 150,
+    "solid", {"unused", {}}, -- 160
+    "solid", {"unused", {}}, -- 170
+    "solid", {"unused", {}}, -- 180
+    "solid", {"unused", {}}, -- 190
+    "solid", {"unused", {}}, -- 1A0
+    "solid", {"unused", {}}, -- 1B0
+    "solid", {"unused", {}}, -- 1C0
+    "solid", {"unused", {}}, -- 1D0
+    "solid", {"unused", {}}, -- 1E0
+    "solid", {"unused", {}}, -- 1F0
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 200
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 300
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 400
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 500
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 600
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 700
+    "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
+    {0x0a,   0,  0x14,   0,  0x1e},						-- 800
+    {0x0b,   0,  0x15,   0,  0x1f},						-- 810
+    {0x0c,   0,  0x16,   0,  0x20},						-- 820
+    {0x0d,   0,  0x17,   0,  0x21},						-- 830
+    {0x0e,   0,  0x18,   0,  0x22},     				-- 840
+    {0x0f,   0,  0x19,   0,  0x23},						-- 850
+    {0x10,   0,  0x1a,   0,  0x24},						-- 860
+    {0x11,   0,  0x1b,   0,  0x25},						-- 870
+    {0x12,   0,  0x1c,   0,  0x26},						-- 880
+    {0x13,   0,  0x1d,   0,  0x27},		        		-- 890
+    {0x28,   0,  0x29,   0,  0x2a},						-- 8A0
+    {0x2b,   0,  0x2c,   0,  0x2d},						-- 8B0
+    {},						-- 8C0
+    {},						-- 8D0
+    {},									-- 8E0
+    {}},								-- 8F0
+    "mixed", { "orc-wall", "dark-grass", "land", "wall", "unpassable",
+    {0x0a,   0,  0x14,   0,  0x1e},						-- 900
+    {0x0b,   0,  0x15,   0,  0x1f},						-- 910
+    {0x0c,   0,  0x16,   0,  0x20},						-- 920
+    {0x0d,   0,  0x17,   0,  0x21},						-- 930
+    {0x0e,   0,  0x18,   0,  0x22},     				-- 940
+    {0x0f,   0,  0x19,   0,  0x23},						-- 950
+    {0x10,   0,  0x1a,   0,  0x24},						-- 960
+    {0x11,   0,  0x1b,   0,  0x25},						-- 970
+    {0x12,   0,  0x1c,   0,  0x26},						-- 980
+    {0x13,   0,  0x1d,   0,  0x27},		        		-- 990
+    {0x28,   0,  0x29,   0,  0x2a},						-- 9A0
+    {0x2b,   0,  0x2c,   0,  0x2d},						-- 9B0
+    {},						-- 9C0
+    {}}						-- 9D0
 	}
   )
 
--- BuildTilesetTables() -- needs proper wall definitions
+BuildTilesetTables() -- needs proper wall definitions
 war1gus.tileset = "dungeon_campaign"
 Load("scripts/scripts.lua")
+
+-- Transformation function to translate tile indices for doors into wall indices
+OldSetTile = SetTile
+function SetTile(oldidx, x, y, oldvalue)
+    print "yeah, setting tiles!"
+    local idx = oldidx
+    local value = oldvalue
+    if (idx >= 0x0a and idx <= 0x13) then
+      idx = ((idx - 0x0a) * 0x10) + 0x800
+    else
+      if (idx == 0x28) then
+        idx = 0x8a0
+      else
+        if (idx == 0x2b) then
+          idx = 0x8b0
+        end
+      end
+    end
+    if (idx ~= oldidx) then
+      print("Tile mapped from " .. oldidx .. " to " .. idx)
+      value = 100
+    end
+    value = 100
+    if (x == 64 and y == 64) then
+      -- campaign maps are always 64x64, reset the old SetTile function
+      SetTile = OldSetTile
+    end
+    return OldSetTile(idx, x, y, 100)
+end
