@@ -1,5 +1,14 @@
 LoadTileModels("scripts/tilesets/swamp_campaign.lua")
+OldCreateUnit = CreateUnit
+function CreateUnit(name, player, pos)
+  if (name == "unit-orc-blackrock-spire") then
+    pos[1] = pos[1] - 1
+    pos[2] = pos[2] + 1
+  end
+  return OldCreateUnit(name, player, pos)
+end
 Load("campaigns/human/12.sms")
+CreateUnit = OldCreateUnit
 Load("campaigns/human/12_c2.sms")
 Load("campaigns/human/campaign_titles.lua")
 title = campaign_titles[12]
