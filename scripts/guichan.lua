@@ -518,6 +518,7 @@ function RunSinglePlayerGameMenu()
     end)
   menu:addFullButton("~!Start Game", "s", offx + 640 - 239 - 16, offy + 360 + 36*0,
     function()
+      SetColorScheme()
       GameSettings.Presets[0].Race = race:getSelected()
       GameSettings.Resources = resources:getSelected()
       GameSettings.Opponents = opponents:getSelected()

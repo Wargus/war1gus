@@ -34,7 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "2.4.0.2015-12-3" // Version of extractor wartool
+#define VERSION "2.4.0.2015-12-10" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2015 by The Stratagus Project"
 
@@ -3517,10 +3517,10 @@ void ConvertSkirmishMap(const char* file, int mtxme)
 		     "unit = CreateUnit(\"unit-peasant\", 0, {16, 16})\n"\
 		     "unit = CreateUnit(\"unit-peon\", 1, {48, 48})\n");
 	    if (numPlayers > 2) {
-		gzprintf(sms, "unit = CreateUnit(\"unit-peasant\", 1, {16, 48})\n");
+		gzprintf(sms, "unit = CreateUnit(\"unit-peasant\", 2, {16, 48})\n");
 	    }
 	    if (numPlayers > 3) {
-		gzprintf(sms, "unit = CreateUnit(\"unit-peon\", 1, {48, 16})\n");
+		gzprintf(sms, "unit = CreateUnit(\"unit-peon\", 3, {48, 16})\n");
 	    }
 	    gzprintf(smp, "\n");
 	    gzclose(sms);
