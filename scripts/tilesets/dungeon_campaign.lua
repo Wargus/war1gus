@@ -41,13 +41,13 @@ DefineTileset("name", "dungeon_campaign",
 	{
 	"solid", {"land", -- "wall"
           {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-	   10, 11, 12, 13, 14, 15}},   -- 000
+	   0, 0, 0, 13, 0, 15}},   -- 000
 	"solid", {"land", -- "wall"
-          {16, 17, 18, 19, 20, 31, 22, 23, 24, 25,
-	   26, 27, 28, 29, 30, 31}}, -- water                    -- 010
+          {0, 17, 0, 19, 0, 0, 0, 23, 0, 25,
+	   0, 27, 0, 29, 30, 31}}, -- water                    -- 010
 	"solid", {"land",
-          {32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
-	   42, 43, 44, 45, 46, 47, {"rock", "unpassable"}}},                                       -- 020
+          {32, 33, 34, 35, 36, 37, 38, 39, 0, 0,
+	   42, 0, 0, 45, 46, 47, {"rock", "unpassable"}}},                                       -- 020
 	"solid", {"land",
           {48, 49,
 	   50, {"rock", "unpassable"},
@@ -101,10 +101,10 @@ DefineTileset("name", "dungeon_campaign",
 	   138, {"rock", "unpassable"},
 	   139, 140, 141, 142, 143}},                                  -- 080
 	"solid", {"land",
-          {144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158,
-	   159, {"rock", "unpassable"}}},                             -- 090
+          {0, -- remapped default door, for destructions
+           145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, {"rock", "unpassable"}}},                             -- 090
 	"solid", {"land",
-          {160, {"rock", "unpassable"},
+          {0, -- remapped default door, for destructions
 	   161, 162, 163, 164, 165, 166, 
 	   167, 168, 169, 170, 171, 172, 173, 174, 175}},              -- 0A0
 	"solid", {"land",
@@ -196,9 +196,96 @@ DefineTileset("name", "dungeon_campaign",
 	   325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335}},                        -- 140,
 	"solid", {"rock", "unpassable",  -- bridge
 	  {336, 337}},                        -- 150,
+    "solid", {"unused", {}},                                  -- 160
+    "solid", {"unused", {}}, -- 170
+    "solid", {"remapped-land", {144,
+                                160, {"rock", "unpassable"}}}, -- 180
+    "solid", {"unused", {}}, -- 190
+    "solid", {"unused", {}}, -- 1A0
+    "solid", {"unused", {}}, -- 1B0
+    "solid", {"unused", {}}, -- 1C0
+    "solid", {"unused", {}}, -- 1D0
+    "solid", {"unused", {}}, -- 1E0
+    "solid", {"unused", {}}, -- 1F0
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 200
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 300
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 400
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 500
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 600
+    "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 700
+    "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
+    {0x0b,   0,  0x15,   0,  0x1f},						-- 800
+    {0x0c,   0,  0x16,   0,  0x20},						-- 810
+    {   0,   0,     0,   0,     0},						-- 820
+    {0x0a,   0,  0x14,   0,  0x1e},						-- 830
+    {   0,   0,     0,   0,     0},     				-- 840
+    {   0,   0,     0,   0,     0},						-- 850
+    {   0,   0,     0,   0,     0},						-- 860
+    {0x0e,   0,  0x18,   0,  0x22},						-- 870
+    {   0,   0,     0,   0,     0},						-- 880
+    {   0,   0,     0,   0,     0},		        		-- 890
+    {   0,   0,     0,   0,     0},						-- 8A0
+    {   0,   0,     0,   0,     0},						-- 8B0
+    {},						-- 8C0
+    {},						-- 8D0
+    {},									-- 8E0
+    {}},								-- 8F0
+    "mixed", { "orc-wall", "dark-grass", "land", "wall", "unpassable",
+    {0x28,   0,  0x29,   0,  0x2a},						-- 900
+    {0x10,   0,  0x1a,   0,  0x24},						-- 910
+    {   0,   0,     0,   0,     0},						-- 920
+    {0x2b,   0,  0x2c,   0,  0x2d},						-- 930
+    {   0,   0,     0,   0,     0},     				-- 940
+    {   0,   0,     0,   0,     0},						-- 950
+    {   0,   0,     0,   0,     0},						-- 960
+    {0x12,   0,  0x1c,   0,  0x26},						-- 970
+    {   0,   0,     0,   0,     0},						-- 980
+    {   0,   0,     0,   0,     0},		        		-- 990
+    {   0,   0,     0,   0,     0},						-- 9A0
+    {   0,   0,     0,   0,     0},						-- 9B0
+    {},						-- 9C0
+    {}}						-- 9D0
 	}
   )
 
--- BuildTilesetTables() -- needs proper wall definitions
+BuildTilesetTables() -- needs proper wall definitions
 war1gus.tileset = "dungeon_campaign"
 Load("scripts/scripts.lua")
+
+local wallTileMapping = {}
+wallTileMapping[0x0b] = 0x800
+wallTileMapping[0x15] = 0x802
+wallTileMapping[0x0c] = 0x810
+wallTileMapping[0x16] = 0x812
+wallTileMapping[0x0a] = 0x830
+wallTileMapping[0x14] = 0x832
+wallTileMapping[0x0e] = 0x870
+wallTileMapping[0x18] = 0x872
+wallTileMapping[0x28] = 0x900
+wallTileMapping[0x29] = 0x902
+wallTileMapping[0x10] = 0x910
+wallTileMapping[0x1a] = 0x912
+wallTileMapping[0x2b] = 0x930
+wallTileMapping[0x2c] = 0x932
+wallTileMapping[0x12] = 0x970
+wallTileMapping[0x1c] = 0x972
+-- hardcoded default walls for human and orc
+-- remap those tiles to something else, their
+-- indices must have placeholders
+wallTileMapping[0x90] = 0x180
+wallTileMapping[0xa0] = 0x181
+
+-- Transformation function to translate tile indices for doors into wall indices
+OldSetTile = SetTile
+function SetTile(oldidx, x, y, oldvalue)
+    local idx = wallTileMapping[oldidx] or oldidx
+    local value = oldvalue
+    if (idx ~= oldidx) then
+      value = 35 -- doors are lighter than walls
+    end
+    if (x == 64 and y == 64) then
+      -- campaign maps are always 64x64, reset the old SetTile function
+      SetTile = OldSetTile
+    end
+    return OldSetTile(idx, x, y, 100)
+end
