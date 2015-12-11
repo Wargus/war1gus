@@ -8,21 +8,26 @@ function RunResultsMenu()
   local result = "Humpf"
   local scene
   local human = (GetPlayerData(GetThisPlayer(), "RaceName") == "human")
+  local sound
 
   if (human) then
+     sound = "human"
      background = houtcome
   else
+     sound = "orc"
      background = ooutcome
   end
 
   if (GameResult == GameVictory) then
     result = "Victory!"
     scene = victoryscene
-    PlayMusic(VictoryMusic)
+    sound = sound .. "-victory"
+    -- PlayMusic(VictoryMusic)
   elseif (GameResult == GameDefeat) then
     result = "Defeat!"
     scene = defeatscene
-    PlayMusic(DefeatMusic)
+    sound = sound .. "-defeat"
+    -- PlayMusic(DefeatMusic)
   elseif (GameResult == GameDraw) then
     result = "Draw!"
     scene = victoryscene
@@ -74,6 +79,9 @@ function RunResultsMenu()
   end
   
   local lineHeight = 17 * multy
+
+  StopAllChannels()
+  PlaySound(sound, true)
 
   menu:addLabel(kills.you, 115 * multx, 280 * multy, Fonts["large"], true)
   menu:addLabel(kills.enemy, 115 * multx, 280 * multy + lineHeight, Fonts["large"], true)

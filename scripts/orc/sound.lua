@@ -61,6 +61,8 @@ MakeSound("orc-selected",
 MakeSoundGroup("orc selected",
   "orc-selected", "orc annoyed")
 
+MakeSound("orc-victory", { "orc/victory_1.wav", "orc/victory_2.wav", "orc/victory_3.wav" })
+MakeSound("orc-defeat", { "orc/defeat.wav" })
 
 ------------------------------------------------------------------------------
 --	Define orc selected sounds.

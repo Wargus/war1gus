@@ -59,6 +59,8 @@ MakeSound("human-selected",
 MakeSoundGroup("human selected",
   "human-selected", "human annoyed")
 
+MakeSound("human-victory", { "human/victory_1.wav", "human/victory_2.wav", "human/victory_3.wav" })
+MakeSound("human-defeat", { "human/defeat.wav" })
 
 ------------------------------------------------------------------------------
 --	Define human selected sounds.
