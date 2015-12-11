@@ -58,6 +58,7 @@ local units = {
     PiercingDamage = 40,
     BasicDamage = 0,
     MaxAttackRange = 3,
+    Missile = "missile-water",
     organic = false},
    {Names = {orc = "Grizelda"},
     Image = {"file", "neutral/units/grizelda,garona.png", "size", {64, 64}},
