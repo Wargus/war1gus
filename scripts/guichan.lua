@@ -382,7 +382,7 @@ function RunMap(map, fow, revealmap)
   SetPlayerData(GetThisPlayer(), "RaceName", "orc")
 end
 
-mapname = "maps/forest1_2_players.smp"
+mapname = "maps/single/forest1_2_players.smp"
 buttonStatut = 0 -- 0:not initialised, 1: Ok, 2: Cancel
 mapinfo = {
   playertypes = {nil, nil, nil, nil, nil, nil, nil, nil},

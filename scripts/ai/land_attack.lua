@@ -56,9 +56,30 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSet(AiWorker(), 4) end,
 	  function() return AiWait(AiWorker()) end,
 
-	  function() return AiSet("unit-road", 12) end,
-	  function() return AiWait("unit-road") end,
-
+	  function()
+         for i,unit in ipairs(GetUnits(AiPlayer())) do
+           if GetUnitVariable(unit, "Ident") == AiCityCenter() then
+             local posx = GetUnitVariable(unit, "PosX")
+             local posy = GetUnitVariable(unit, "PosY")
+             for i,road in ipairs({{{-1,-1}, {-2,-1}, {-3,-1}, {-4,-1}, {-5,-1}, {-6,-1}, {-7,-1}, {-8,-1}, {-9,-1}},
+                                  {{ 3,-1}, { 3,-2}, { 3,-3}, { 3,-4}, { 3,-5}, { 3,-6}, { 3,-7}, { 3,-8}, { 3,-9}},
+                                  {{ 3, 4}, { 3, 5}, { 4, 5}, { 5, 5}, { 6, 5}, { 7, 5}, { 8, 5}, { 9, 5}, {10, 5}},
+                                  {{ 0, 3}, { 0, 4}, { 0, 5}, { 0, 6}, { 0, 7}, { 0, 8}, { 0, 9}, { 0,10}, { 0,11}}}) do
+               for j,pos in ipairs(road) do
+                 if (not (GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "no-building") or
+                          GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "water") or
+                          GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "coast") or
+                          GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "wall") or
+                          GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "rock"))) then
+                   CreateUnit("unit-road", AiPlayer(), {posx-pos[1],posy+pos[2]})
+                 else
+                   break -- road ends here
+                 end
+               end
+             end
+           end
+         end
+      end,
       function() return AiNeed(AiBarracks()) end,
 	  function() return AiSet(AiWorker(), 4) end,
 	  function() return AiNeed(AiLumberMill()) end,
@@ -104,8 +125,6 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
 
-	  function() return AiSet("unit-road", 24) end,
-	  function() return AiWait("unit-road") end,
       function() return AiSleep(500) end,
 
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
@@ -129,8 +148,6 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiAttackWithForce(1) end,
 
       function() return AiSleep(500) end,
-	  function() return AiSet("unit-road", 32) end,
-	  function() return AiWait("unit-road") end,
       function() return AiNeed(AiTemple()) end,
       function() return AiResearch(AiMageSpell2()) end,
       function() return AiResearch(AiMageSpell3()) end,

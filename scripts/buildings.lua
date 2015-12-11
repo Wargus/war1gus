@@ -264,41 +264,41 @@ DefineUnitType(
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}}},
      AiBuildingRules = {-- these are silly, but what can you do
-	-- the first road is next to a town hall
-	{"has-unit", { Type = "unit-road", Count = 0, CountType = "=", Owner = "any" },
-	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
-	{"has-unit", { Type = "unit-road", Count = 0, CountType = "=", Owner = "any" },
-	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}},
-	
-	-- the first four roads should be at the town hall and have some space between them
-	{"has-unit", { Type = "unit-road", Count = 6, CountType = "<", Owner = "any" },
-	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true},
-	 "distance", {Distance = 2, DistanceType = ">", Type = "unit-road", Owner = "self"} },
-	{"has-unit", { Type = "unit-road", Count = 6, CountType = "<", Owner = "any" },
-	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true},
-	 "distance", {Distance = 2, DistanceType = ">", Type = "unit-road", Owner = "self"} },
+--	-- the first road is next to a town hall
+--	{"has-unit", { Type = "unit-road", Count = 4, CountType = "<=", Owner = "any" },
+--	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
+--	{"has-unit", { Type = "unit-road", Count = 4, CountType = "<=", Owner = "any" },
+--	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}},
 
-	-- the next 12 roads should lead away from the town hall
-	{"has-unit", { Type = "unit-road", Count = 6, CountType = ">=", Owner = "any" },
-	 "has-unit", { Type = "unit-road", Count = 16, CountType = "<", Owner = "any" },
-	 "surrounded-by", { Type = "unit-road", Owner = "self", Count = 1, CountType = "<=", Distance = 1, DistanceType = "=" },
-	 "distance", {Distance = 2, DistanceType = ">=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true},
-	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self", Diagonal = false} },
-	{"has-unit", { Type = "unit-road", Count = 6, CountType = ">=", Owner = "any" },
-	 "has-unit", { Type = "unit-road", Count = 16, CountType = "<", Owner = "any" },
-	 "surrounded-by", { Type = "unit-road", Count = 1, CountType = "<=", Distance = 1, DistanceType = "=" },
-	 "distance", {Distance = 2, DistanceType = ">=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true},
-	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self", Diagonal = false} },
+--	-- the first four roads should be at the town hall and have some space between them
+--	{"has-unit", { Type = "unit-road", Count = 8, CountType = "<", Owner = "any" },
+--	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true},
+--	 "distance", {Distance = 2, DistanceType = ">", Type = "unit-road", Owner = "any"} },
+--	{"has-unit", { Type = "unit-road", Count = 8, CountType = "<", Owner = "any" },
+--	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true},
+--	 "distance", {Distance = 2, DistanceType = ">", Type = "unit-road", Owner = "any"} },
 
-	-- when building next to a road later, do not build next to the town hall
-	{"has-unit", { Type = "unit-road", Count = 16, CountType = ">=", Owner = "any" },
-	 "surrounded-by", { Type = "unit-road", Count = 3, CountType = "<=", Distance = 1, DistanceType = "=" },
-	 "surrounded-by", { Type = "unit-road", Count = 4, CountType = "<=", Distance = 2, DistanceType = "=" },
-	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"} },
-	{"has-unit", { Type = "unit-road", Count = 16, CountType = ">=", Owner = "any" },
-	 "surrounded-by", { Type = "unit-road", Count = 3, CountType = "<=", Distance = 1, DistanceType = "=" },
-	 "surrounded-by", { Type = "unit-road", Count = 4, CountType = "<=", Distance = 2, DistanceType = "=" },
-	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "self"} }
+--	-- the next 12 roads should lead away from the town hall
+--	{"has-unit", { Type = "unit-road", Count = 8, CountType = ">=", Owner = "any" },
+--	 "has-unit", { Type = "unit-road", Count = 16, CountType = "<", Owner = "any" },
+--	 "surrounded-by", { Type = "unit-road", Owner = "self", Count = 1, CountType = "<=", Distance = 1, DistanceType = "=" },
+--	 "distance", {Distance = 2, DistanceType = ">=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true},
+--	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "any", Diagonal = true} },
+--	{"has-unit", { Type = "unit-road", Count = 8, CountType = ">=", Owner = "any" },
+--	 "has-unit", { Type = "unit-road", Count = 16, CountType = "<", Owner = "any" },
+--	 "surrounded-by", { Type = "unit-road", Count = 1, CountType = "<=", Distance = 1, DistanceType = "=" },
+--	 "distance", {Distance = 2, DistanceType = ">=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true},
+--	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "any", Diagonal = true} },
+
+--	-- when building next to a road later, do not build next to the town hall
+--	{"has-unit", { Type = "unit-road", Count = 16, CountType = ">=", Owner = "any" },
+--	 "surrounded-by", { Type = "unit-road", Count = 3, CountType = "<=", Distance = 1, DistanceType = "=" },
+--	 "surrounded-by", { Type = "unit-road", Count = 4, CountType = "<=", Distance = 2, DistanceType = "=" },
+--	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "any"} },
+--	{"has-unit", { Type = "unit-road", Count = 16, CountType = ">=", Owner = "any" },
+--	 "surrounded-by", { Type = "unit-road", Count = 3, CountType = "<=", Distance = 1, DistanceType = "=" },
+--	 "surrounded-by", { Type = "unit-road", Count = 4, CountType = "<=", Distance = 2, DistanceType = "=" },
+--	 "distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Owner = "any"} }
      },
      BuilderOutside = true,
      Priority = 0,
