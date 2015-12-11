@@ -159,25 +159,25 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-unholy-armor",
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-fireball",
   Action = "attack",
   Key = "a", Hint = "FIREBALL ~!ATTACK",
-  ForUnit = {"unit-warlock"} } )
+  ForUnit = {"unit-warlock", "unit-medivh"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-spider",
   Action = "cast-spell", Value = "spell-summon-spiders",
   Allowed = "check-upgrade", AllowArg = {"upgrade-spider"},
   Key = "u", Hint = "S~!UMMON SPIDERS",
-  ForUnit = {"unit-warlock"} } )
+  ForUnit = {"unit-warlock", "unit-medivh"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-poison-cloud",
   Action = "cast-spell", Value = "spell-poison-cloud",
   Allowed = "check-upgrade", AllowArg = {"upgrade-poison-cloud"},
   Key = "p", Hint = "~!POISON CLOUD",
-  ForUnit = {"unit-warlock"} } )
+  ForUnit = {"unit-warlock", "unit-medivh"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-daemon",
   Action = "cast-spell", Value = "spell-summon-daemon",
   Allowed = "check-upgrade", AllowArg = {"upgrade-daemon"},
   Key = "d", Hint = "SUMMON D~!AEMON",
-  ForUnit = {"unit-warlock"} } )
+  ForUnit = {"unit-warlock", "unit-medivh"} } )
 
 -- peon specific actions ---------------------------------------------------
 

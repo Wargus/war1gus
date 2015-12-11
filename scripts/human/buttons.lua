@@ -159,7 +159,7 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-invisibility",
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-fireball",
   Action = "attack",
   Key = "a", Hint = "FIREBALL ~!ATTACK",
-  ForUnit = {"unit-conjurer", "unit-medivh"} } )
+  ForUnit = {"unit-conjurer"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-scorpion",
   Action = "cast-spell", Value = "spell-summon-scorpions",
