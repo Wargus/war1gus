@@ -53,25 +53,33 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSet(AiWorker(), 1) end,
       function() return AiWait(AiCityCenter()) end,
       function() return AiWait(AiWorker()) end, -- start hangs if nothing available
-      function() return AiSet(AiWorker(), 4) end,
-	  function() return AiWait(AiWorker()) end,
 
-	  function()
+      -- a function to just generate roads. this gives the ai player an advantage, but what the heck
+      function()
          for i,unit in ipairs(GetUnits(AiPlayer())) do
            if GetUnitVariable(unit, "Ident") == AiCityCenter() then
              local posx = GetUnitVariable(unit, "PosX")
              local posy = GetUnitVariable(unit, "PosY")
-             for i,road in ipairs({{{-1,-1}, {-2,-1}, {-3,-1}, {-4,-1}, {-5,-1}, {-6,-1}, {-7,-1}, {-8,-1}, {-9,-1}},
-                                  {{ 3,-1}, { 3,-2}, { 3,-3}, { 3,-4}, { 3,-5}, { 3,-6}, { 3,-7}, { 3,-8}, { 3,-9}},
-                                  {{ 3, 4}, { 3, 5}, { 4, 5}, { 5, 5}, { 6, 5}, { 7, 5}, { 8, 5}, { 9, 5}, {10, 5}},
+             for i,road in ipairs({
+                                  {{ 0,-1}, { 0,-2}, { 0,-3}, { 0,-4}, { 0,-5}, { 0,-6}, { 0,-7}, { 0,-8}, { 0,-9}},
+                                  {{-1, 0}, {-2, 0}, {-3, 0}, {-4, 0}, {-5, 0}, {-6, 0}, {-7, 0}, {-8, 0}, {-9, 0}},
+                                  {{ 3, 0}, { 4, 0}, { 5, 0}, { 6, 0}, { 7, 0}, { 8, 0}, { 9, 0}, {10, 0}, {11, 0}},
+                                  {{ 2,-1}, { 2,-2}, { 2,-3}, { 2,-4}, { 2,-5}, { 2,-6}, { 2,-7}, { 2,-8}, { 2,-9}},
+                                  {{ 3, 2}, { 4, 2}, { 5, 2}, { 6, 2}, { 7, 2}, { 8, 2}, { 9, 2}, {10, 2}, {11, 2}},
+                                  {{ 2, 3}, { 2, 4}, { 2, 5}, { 2, 6}, { 2, 7}, { 2, 8}, { 2, 9}, { 2,10}, { 2,11}},
+                                  {{-1, 2}, {-2, 2}, {-3, 2}, {-4, 2}, {-5, 2}, {-6, 2}, {-7, 2}, {-8, 2}, {-9, 2}},
                                   {{ 0, 3}, { 0, 4}, { 0, 5}, { 0, 6}, { 0, 7}, { 0, 8}, { 0, 9}, { 0,10}, { 0,11}}}) do
                for j,pos in ipairs(road) do
-                 if (not (GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "no-building") or
-                          GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "water") or
-                          GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "coast") or
-                          GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "wall") or
-                          GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "rock"))) then
-                   CreateUnit("unit-road", AiPlayer(), {posx-pos[1],posy+pos[2]})
+                 local px = posx+pos[1]
+                 local py = posy+pos[2]
+                 if (px >= 0 and py >= 0 and Map.Info.MapWidth >= px and Map.Info.MapHeight >= py and
+                     (not (GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "no-building") or
+                           GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "water") or
+                           GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "coast") or
+                           GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "wall") or
+                           GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "forest") or
+                           GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "rock")))) then
+                   CreateUnit("unit-road", AiPlayer(), {px,py})
                  else
                    break -- road ends here
                  end
@@ -80,6 +88,10 @@ function CreateAiLandAttack(sleep_factor, max_force)
            end
          end
       end,
+
+      function() return AiSet(AiWorker(), 4) end,
+	  function() return AiWait(AiWorker()) end,
+
       function() return AiNeed(AiBarracks()) end,
 	  function() return AiSet(AiWorker(), 4) end,
 	  function() return AiNeed(AiLumberMill()) end,
@@ -87,6 +99,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 	  function() return AiWait(AiLumberMill()) end,
       function() return AiForce(0, {AiSoldier(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
       function() return AiSleep(1) end,      
@@ -98,6 +111,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 	  function() return AiWait(AiWorker()) end,
       function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 2, AiShooter(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
@@ -113,6 +127,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiSleep(600) end,
       function() return AiAttackWithForce(1) end,
@@ -121,6 +136,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSet(AiWorker(), 15) end,
       function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
@@ -135,6 +151,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiNeed(AiStables()) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
       
@@ -144,6 +161,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
@@ -154,6 +172,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 4, AiMage(), 1, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiMage(), 1, AiCatapult(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
@@ -164,6 +183,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
@@ -172,6 +192,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
@@ -179,6 +200,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
@@ -186,6 +208,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
@@ -193,6 +216,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSleep(500) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
