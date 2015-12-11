@@ -199,3 +199,4 @@ end
 -- global default land attack
 AiLandAttack = CreateAiLandAttack(1)
 DefineAi("wc1-land-attack", "*", "wc1-land-attack", AiLandAttack)
+DefineAi("ai-land-attack", "*", "ai-land-attack", AiLandAttack)

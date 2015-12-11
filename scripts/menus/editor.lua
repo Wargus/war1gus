@@ -192,7 +192,7 @@ function RunEditorPlayerProperties()
 
   local types = {"neutral", "nobody", "computer", "person", "rescue-passive", "rescue-active"}
   local racenames = {"human", "orc"}
-  local ais = {"wc1-passive"} -- todo add ai
+  local ais = {"wc1-land-attack", "wc1-passive"} -- todo add ai
 
   menu:addLabel("#", 15, 36)
   menu:addLabel("Type", offxType, 36)

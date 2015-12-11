@@ -3471,22 +3471,29 @@ void ConvertSkirmishMap(const char* file, int mtxme)
 		     "-- File generated automatically from pudconvert.\n"\
 		     "DefinePlayerTypes(\"person\"%s)\n"\
 		     "PresentMap(\"(unnamed)\", %d, 64, 64, 1)\n", extraPlayers, numPlayers);
+		gzprintf(sms, "Player(0,\"ai-name\", \"wc1-land-attack\")\n");
+		gzprintf(sms, "Player(1,\"ai-name\", \"wc1-land-attack\")\n");
+		if (numPlayers > 2) gzprintf(sms, "Player(2,\"ai-name\", \"wc1-land-attack\")\n");
+		if (numPlayers > 3) gzprintf(sms, "Player(3,\"ai-name\", \"wc1-land-attack\")\n");
 	    gzprintf(sms,
 		     "LoadTileModels(\"scripts/tilesets/%s.lua\")\n"\
 		     "SetStartView(0, 16, 16)\n"\
 		     "SetPlayerData(0, \"Resources\", \"gold\", 10000)\n"\
 		     "SetPlayerData(0, \"Resources\", \"wood\", 3000)\n"\
 		     "SetPlayerData(0, \"RaceName\", \"human\")\n"\
+             "SetAiType(0, \"wc1-land-attack\")\n"\
 		     "SetStartView(1, 48, 48)\n"\
 		     "SetPlayerData(1, \"Resources\", \"gold\", 10000)\n"\
 		     "SetPlayerData(1, \"Resources\", \"wood\", 3000)\n"\
 		     "SetPlayerData(1, \"RaceName\", \"orc\")\n"\
+			 "SetAiType(1, \"wc1-land-attack\")\n"\
 		     "SetPlayerData(15, \"RaceName\", \"neutral\")\n\n", tileset);
 	    if (numPlayers > 2) {
 		gzprintf(sms,
 			 "SetStartView(2, 16, 48)\n"\
 			 "SetPlayerData(2, \"Resources\", \"gold\", 10000)\n"\
 			 "SetPlayerData(2, \"Resources\", \"wood\", 3000)\n"\
+			 "SetAiType(2, \"wc1-land-attack\")\n"\
 			 "SetPlayerData(2, \"RaceName\", \"human\")\n");
 	    }
 	    if (numPlayers > 3) {
@@ -3494,6 +3501,7 @@ void ConvertSkirmishMap(const char* file, int mtxme)
 			 "SetStartView(3, 48, 16)\n"\
 			 "SetPlayerData(3, \"Resources\", \"gold\", 10000)\n"\
 			 "SetPlayerData(3, \"Resources\", \"wood\", 3000)\n"\
+			 "SetAiType(3, \"wc1-land-attack\")\n"\
 			 "SetPlayerData(3, \"RaceName\", \"orc\")\n");
 	    }
 	    for (i = 0; i < 64; ++i) {
