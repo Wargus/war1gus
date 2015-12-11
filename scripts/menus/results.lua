@@ -22,12 +22,12 @@ function RunResultsMenu()
     result = "Victory!"
     scene = victoryscene
     sound = sound .. "-victory"
-    -- PlayMusic(VictoryMusic)
+    PlayMusic(VictoryMusic)
   elseif (GameResult == GameDefeat) then
     result = "Defeat!"
     scene = defeatscene
     sound = sound .. "-defeat"
-    -- PlayMusic(DefeatMusic)
+    PlayMusic(DefeatMusic)
   elseif (GameResult == GameDraw) then
     result = "Draw!"
     scene = victoryscene
