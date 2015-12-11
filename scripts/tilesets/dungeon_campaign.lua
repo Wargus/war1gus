@@ -283,7 +283,7 @@ function SetTile(oldidx, x, y, oldvalue)
     if (idx ~= oldidx) then
       value = 35 -- doors are lighter than walls
     end
-    if (x == 64 and y == 64) then
+    if (x == 63 and y == 63) then
       -- campaign maps are always 64x64, reset the old SetTile function
       SetTile = OldSetTile
     end
