@@ -230,6 +230,36 @@ DefineSpell("spell-invisibility",
 	"ai-cast", {"range", 6, "combat", "false", "condition", {"LandUnit", "false", "alliance", "only"}}
 )
 
+DefineSpell("spell-summon-elemental",
+	"showname", "summan elemental",
+	"manacost", 60,
+	"range", 2,
+	"target", "position",
+	"action", {
+	   {"summon", "unit-type", "unit-water-elemental", "time-to-live", 4500},
+	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
+		  },
+	"sound-when-cast", "raise dead",
+	"depend-upgrade", "upgrade-water-elemental",
+	"autocast", {"range", 5, "combat", "only", "position-autocast", SpellBlizzard},
+	"ai-cast", {"range", 4, "combat", "only", "position-autocast", SpellBlizzard}
+)
+
+DefineSpell("spell-summon-daemon",
+	"showname", "summan daemon",
+	"manacost", 60,
+	"range", 2,
+	"target", "position",
+	"action", {
+	   {"summon", "unit-type", "unit-daemon", "time-to-live", 4500},
+	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
+		  },
+	"sound-when-cast", "raise dead",
+	"depend-upgrade", "upgrade-daemon",
+	"autocast", {"range", 5, "combat", "only", "position-autocast", SpellBlizzard},
+	"ai-cast", {"range", 4, "combat", "only", "position-autocast", SpellBlizzard}
+)
+
 DefineSpell("spell-summon-scorpions",
 	"showname", "summon scorpions",
 	"manacost", 20,
@@ -242,23 +272,8 @@ DefineSpell("spell-summon-scorpions",
 		  },
 	"sound-when-cast", "raise dead",
 	"depend-upgrade", "upgrade-scorpion",
-	"autocast", {"range", 12, "priority", {"Priority", true}, "condition", {"Building", "only", "opponent", "only"}, "position-autocast", SpellBlizzard},
-	"ai-cast", {"range", 12, "priority", {"Priority", true}, "condition", {"Building", "only", "opponent", "only"}, "position-autocast", SpellBlizzard}
-)
-
-DefineSpell("spell-summon-elemental",
-	"showname", "summan elemental",
-	"manacost", 60,
-	"range", 2,
-	"target", "position",
-	"action", {
-	   {"summon", "unit-type", "unit-water-elemental", "time-to-live", 4500},
-	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
-		  },
-	"sound-when-cast", "raise dead",
-	"depend-upgrade", "upgrade-water-elemental",
-	"autocast", {"range", 12, "priority", {"Priority", true}, "condition", {"Building", "only", "opponent", "only"}, "position-autocast", SpellBlizzard},
-	"ai-cast", {"range", 12, "priority", {"Priority", true}, "condition", {"Building", "only", "opponent", "only"}, "position-autocast", SpellBlizzard}
+	"autocast", {"range", 6, "combat", "only", "position-autocast", SpellBlizzard},
+	"ai-cast", {"range", 4, "combat", "only", "position-autocast", SpellBlizzard}
 )
 
 DefineSpell("spell-summon-spiders",
@@ -273,23 +288,8 @@ DefineSpell("spell-summon-spiders",
 		  },
 	"sound-when-cast", "raise dead",
 	"depend-upgrade", "upgrade-spider",
-	"autocast", {"range", 12, "priority", {"Priority", true}, "condition", {"Building", "only", "opponent", "only"}, "position-autocast", SpellBlizzard},
-	"ai-cast", {"range", 12, "priority", {"Priority", true}, "condition", {"Building", "only", "opponent", "only"}, "position-autocast", SpellBlizzard}
-)
-
-DefineSpell("spell-summon-daemon",
-	"showname", "summan daemon",
-	"manacost", 60,
-	"range", 2,
-	"target", "position",
-	"action", {
-	   {"summon", "unit-type", "unit-daemon", "time-to-live", 4500},
-	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
-		  },
-	"sound-when-cast", "raise dead",
-	"depend-upgrade", "upgrade-daemon",
-	"autocast", {"range", 12, "priority", {"Priority", true}, "condition", {"Building", "only", "opponent", "only"}, "position-autocast", SpellBlizzard},
-	"ai-cast", {"range", 12, "priority", {"Priority", true}, "condition", {"Building", "only", "opponent", "only"}, "position-autocast", SpellBlizzard}
+	"autocast", {"range", 6, "combat", "only", "position-autocast", SpellBlizzard},
+	"ai-cast", {"range", 4, "combat", "only", "position-autocast", SpellBlizzard}
 )
 
 DefineSpell("spell-poison-cloud",
