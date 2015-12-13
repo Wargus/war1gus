@@ -122,9 +122,9 @@ function DefineBuildingFromSpec(building)
 	 VisibleUnderFog = true,
 	 BuildingRules = { -- all buildings except the town hall
 	    {"distance", { Distance = 1, DistanceType = "=", Type = "unit-road"},
-	     "distance", { Distance = 3, DistanceType = "<", Owner = "self"}}},
+	     "distance", { Distance = 5, DistanceType = "<", Owner = "self"}}},
 	 AiBuildingRules = { -- all buildings except the town hall
-	    { "distance", { Distance = 3, DistanceType = ">=", Type = "unit-gold-mine" },
+	    { "distance", { Distance = 2, DistanceType = ">=", Type = "unit-gold-mine" },
           "distance", { Distance = 2, DistanceType = ">=", Owner = "self" } } },
 	 Sounds = {
 	    "ready", race .. " work complete",

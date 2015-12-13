@@ -56,19 +56,33 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       -- a function to just generate roads. this gives the ai player an advantage, but what the heck
       function()
+         local first_roads = {
+                                  {{ 0,-1}, { 0,-2}, { 0,-3}, { 0,-4}, { 0,-5}, { 0,-6}, { 0,-7}, { 0,-8}, { 0,-9}},
+                                  {{-1,-1}, {-2,-1}, {-3,-1}, {-4,-1}, {-5,-1}, {-6,-1}, {-7,-1}, {-8,-1}, {-9,-1}},
+                                  {{ 3, 0}, { 4, 0}, { 5, 0}, { 6, 0}, { 7, 0}, { 8, 0}, { 9, 0}, {10, 0}, {11, 0}},
+                                  {{ 3,-1}, { 3,-2}, { 3,-3}, { 3,-4}, { 3,-5}, { 3,-6}, { 3,-7}, { 3,-8}, { 3,-9}},
+                                  {{ 3, 3}, { 4, 3}, { 5, 3}, { 6, 3}, { 7, 3}, { 8, 3}, { 9, 3}, {10, 3}, {11, 3}},
+                                  {{ 2, 3}, { 2, 4}, { 2, 5}, { 2, 6}, { 2, 7}, { 2, 8}, { 2, 9}, { 2,10}, { 2,11}},
+                                  {{-1, 2}, {-2, 2}, {-3, 2}, {-4, 2}, {-5, 2}, {-6, 2}, {-7, 2}, {-8, 2}, {-9, 2}},
+                                  {{-1, 3}, {-1, 4}, {-1, 5}, {-1, 6}, {-1, 7}, {-1, 8}, {-1, 9}, {-1,10}, {-1,11}}
+                              }
+         local second_roads = {
+                                {{-1,-9}, {-2,-9}, {-3,-9}, {-4,-9}},
+                                {{-9,-2}, {-9,-3}, {-9,-4}, {-9,-5}},
+                                {{11,-1}, {11,-2}, {11,-3}, {11,-4}},
+                                {{ 4,-9}, { 5,-9}, { 6,-9}, { 7,-9}},
+                                {{11, 4}, {11, 5}, {11, 6}, {11, 7}},
+                                {{ 2,11}, { 3,11}, { 4,11}, { 5,11}},
+                                {{-9, 3}, {-9, 4}, {-9, 5}, {-9, 6}},
+                                {{-2,11}, {-3,11}, {-4,11}, {-3,11}},
+                              }
+         local do_second_road = {false,false,false,false,false,false,false,false}
          for i,unit in ipairs(GetUnits(AiPlayer())) do
            if GetUnitVariable(unit, "Ident") == AiCityCenter() then
              local posx = GetUnitVariable(unit, "PosX")
              local posy = GetUnitVariable(unit, "PosY")
-             for i,road in ipairs({
-                                  {{ 0,-1}, { 0,-2}, { 0,-3}, { 0,-4}, { 0,-5}, { 0,-6}, { 0,-7}, { 0,-8}, { 0,-9}},
-                                  {{-1, 0}, {-2, 0}, {-3, 0}, {-4, 0}, {-5, 0}, {-6, 0}, {-7, 0}, {-8, 0}, {-9, 0}},
-                                  {{ 3, 0}, { 4, 0}, { 5, 0}, { 6, 0}, { 7, 0}, { 8, 0}, { 9, 0}, {10, 0}, {11, 0}},
-                                  {{ 2,-1}, { 2,-2}, { 2,-3}, { 2,-4}, { 2,-5}, { 2,-6}, { 2,-7}, { 2,-8}, { 2,-9}},
-                                  {{ 3, 2}, { 4, 2}, { 5, 2}, { 6, 2}, { 7, 2}, { 8, 2}, { 9, 2}, {10, 2}, {11, 2}},
-                                  {{ 2, 3}, { 2, 4}, { 2, 5}, { 2, 6}, { 2, 7}, { 2, 8}, { 2, 9}, { 2,10}, { 2,11}},
-                                  {{-1, 2}, {-2, 2}, {-3, 2}, {-4, 2}, {-5, 2}, {-6, 2}, {-7, 2}, {-8, 2}, {-9, 2}},
-                                  {{ 0, 3}, { 0, 4}, { 0, 5}, { 0, 6}, { 0, 7}, { 0, 8}, { 0, 9}, { 0,10}, { 0,11}}}) do
+             for i,road in ipairs(first_roads) do
+               do_second_road[i] = true
                for j,pos in ipairs(road) do
                  local px = posx+pos[1]
                  local py = posy+pos[2]
@@ -81,7 +95,27 @@ function CreateAiLandAttack(sleep_factor, max_force)
                            GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "rock")))) then
                    CreateUnit("unit-road", AiPlayer(), {px,py})
                  else
+                   do_second_road[i] = false
                    break -- road ends here
+                 end
+               end
+             end
+             for i,road in ipairs(second_roads) do
+               if do_second_road[i] then
+                 for j,pos in ipairs(road) do
+                   local px = posx+pos[1]
+                   local py = posy+pos[2]
+                   if (px >= 0 and py >= 0 and Map.Info.MapWidth >= px and Map.Info.MapHeight >= py and
+                       (not (GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "no-building") or
+                             GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "water") or
+                             GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "coast") or
+                             GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "wall") or
+                             GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "forest") or
+                             GetTileTerrainHasFlag(posx+pos[1], posy+pos[2], "rock")))) then
+                     CreateUnit("unit-road", AiPlayer(), {px,py})
+                   else
+                     break -- road ends here
+                   end
                  end
                end
              end
@@ -93,13 +127,10 @@ function CreateAiLandAttack(sleep_factor, max_force)
 	  function() return AiWait(AiWorker()) end,
 
       function() return AiNeed(AiBarracks()) end,
-	  function() return AiSet(AiWorker(), 4) end,
 	  function() return AiNeed(AiLumberMill()) end,
 	  function() return AiWait(AiBarracks()) end,
-	  function() return AiWait(AiLumberMill()) end,
       function() return AiForce(0, {AiSoldier(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1}) end,
-      function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
       function() return AiSleep(1) end,      
@@ -107,8 +138,8 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSet(AiWorker(), 9) end,
       function() return AiSleep(500) end,
       function() return AiNeed(AiBlacksmith()) end,
-	  function() return AiWait(AiBlacksmith()) end,
 	  function() return AiWait(AiWorker()) end,
+	  function() return AiWait(AiLumberMill()) end,
       function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiWaitForce(0) end,
@@ -116,6 +147,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
 
+	  function() return AiWait(AiBlacksmith()) end,
       function() return AiResearch(AiUpgradeWeapon1()) end,
       function() return AiResearch(AiUpgradeArmor1()) end,
       function() return AiResearch(AiUpgradeMissile1()) end,
