@@ -66,6 +66,9 @@
 !define FFMPEG "ffmpeg.exe"
 !define SF2BANK "TimGM6mb.sf2"
 
+!define VCREDIST "vc_redist.x86.exe"
+!define VCREDISTREGKEY "SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86"
+
 !define UNINSTALL "uninstall.exe"
 !define INSTALLER "${NAME}-${VERSION}.exe"
 !define INSTALLDIR "$PROGRAMFILES\${NAME}\"
@@ -76,6 +79,8 @@ ${redefine} INSTALLER "${NAME}-${VERSION}-x86_64.exe"
 ${redefine} INSTALLDIR "$PROGRAMFILES64\${NAME}\"
 ${redefine} NAME "Wargus (64 bit)"
 ${redefine} STRATAGUS_NAME "Stratagus (64 bit)"
+${redefine} VCREDIST "vc_redist.x64.exe"
+${redefine} VCREDISTREGKEY "SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\x64"
 !endif
 
 ; Registry paths
@@ -89,6 +94,7 @@ ${redefine} STRATAGUS_NAME "Stratagus (64 bit)"
 !system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${FFMPEG2THEORA} -OutFile ${FFMPEG2THEORA}}$\""
 !system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${FFMPEG} -OutFile ${FFMPEG}}$\""
 !system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${SF2BANK} -OutFile ${SF2BANK}}$\""
+!system "powershell -Command $\"& {wget https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/${VCREDIST} -OutFile ${VCREDIST}}$\""
 !endif
 
 !addplugindir .
@@ -260,6 +266,16 @@ Section "-${NAME}"
 	File "${FFMPEG2THEORA}"
 
 	ClearErrors
+
+	ReadRegDword $R0 HKLM "${VCREDISTREGKEY}" "Installed"
+	IfErrors 0 NoErrors
+	StrCpy $R0 0
+	NoErrors:
+	${If} $R0 == 0
+	  File "${VCREDIST}"
+	  ExecWait "$\"$INSTDIR\${VCREDIST}$\"  /passive /norestart"
+	  Delete "$\"$INSTDIR\${VCREDIST}$\""
+    ${EndIf}
 
 	SetOutPath "$INSTDIR\music"
 	File "${SF2BANK}"
