@@ -95,7 +95,10 @@ function SetPlayerData(player, data, arg1, arg2)
     elseif (GameSettings.Presets[player].Race == 2) then
         arg1 = "orc"
     end
-    ShouldTogglePlayerRace[player] = (oldarg1 ~= arg1)
+    ShouldTogglePlayerRace[player] = (oldarg1 ~= arg1)  
+    if (GetThisPlayer() == player) then
+        LoadUI(arg1, Video.Width, Video.Height)
+    end
   elseif (data == "Resources") then
     local res
     if (GameSettings.Resources == 1) then
