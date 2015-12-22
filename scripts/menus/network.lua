@@ -174,6 +174,7 @@ function RunJoiningMapMenu(s)
           RevealMap()
         end
         NetworkGamePrepareGameSettings()
+        war1gus.InCampaign = false
         RunMap(NetworkMapName, fow:isMarked())
         PresentMap = OldPresentMap
         menu:stop()
@@ -347,6 +348,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
       end
       NetworkServerStartGame() 
       NetworkGamePrepareGameSettings()
+      war1gus.InCampaign = false
       RunMap(map, fow:isMarked())
       menu:stop()
     end

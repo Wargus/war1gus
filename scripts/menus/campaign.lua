@@ -183,6 +183,7 @@ function CreateMapStep(map)
   return function()
     -- If there is a pre-setup step, run it, if that fails, don't worry
     pcall(function () Load(string.gmatch(map, "[^\.]+")() .. "_prerun.lua") end)
+    war1gus.InCampaign = true
     Load(map)
     RunMap(map, preferences.FogOfWar)
     if (GameResult == GameVictory) then

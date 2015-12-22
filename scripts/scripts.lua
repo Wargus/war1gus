@@ -41,6 +41,12 @@ if war1gus.tileset == "dungeon_campaign" then
     UnitTypeOrcWall = UnitTypeByIdent("unit-wall");
 end
 
+if war1gus.tileset == "dungeon" or war1gus.tileset == "dungeon_campaign" then
+    GameSettings.Inside = true
+else
+    GameSettings.Inside = false
+end
+
 LoadUI(GetPlayerData(GetThisPlayer(), "RaceName"), Video.Width, Video.Height)
 
 StopMusic()

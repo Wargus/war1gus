@@ -379,7 +379,7 @@ function RunMap(map, fow, revealmap)
   ResetColorSchemes()
   RunResultsMenu(s)
   InitGameSettings()
-  SetPlayerData(GetThisPlayer(), "RaceName", "orc")
+  -- SetPlayerData(GetThisPlayer(), "RaceName", "orc")
 end
 
 mapname = "maps/single/forest1_2_players.smp"
@@ -524,6 +524,7 @@ function RunSinglePlayerGameMenu()
       GameSettings.Opponents = opponents:getSelected()
       GameSettings.NumUnits = numunits:getSelected()
       GameSettings.GameType = gametype:getSelected() - 1
+      war1gus.InCampaign = false
       RunMap(mapname, preferences.FogOfWar)
       menu:stop()
     end)
