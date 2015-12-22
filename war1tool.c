@@ -3424,7 +3424,6 @@ void ConvertSkirmishMap(const char* file, int mtxme)
     unsigned short s;
     int i, j;
     char* tileset;
-    char* extraPlayers;
 
     if (strstr(file, "forest")) {
 	tileset = "forest_campaign";
@@ -3434,107 +3433,77 @@ void ConvertSkirmishMap(const char* file, int mtxme)
 	tileset = "dungeon_campaign";
     }
 
-    for (int numPlayers = 2; numPlayers <= 4; numPlayers++) {
-	for (int isMulti = 0; isMulti <= 1; isMulti++) {
-	    char* path = isMulti ? "multi" : "single";
-	    if (numPlayers == 2 && !isMulti) {
-		extraPlayers = ",\"computer\"";
-	    } else if (numPlayers == 3 && !isMulti) {
-		extraPlayers = ",\"computer\",\"computer\"";
-	    } else if (numPlayers == 4 && !isMulti) {
-		extraPlayers = ",\"computer\",\"computer\",\"computer\"";
-	    } else if (numPlayers == 2 && isMulti) {
-		extraPlayers = ",\"person\"";
-	    } else if (numPlayers == 3 && isMulti) {
-		extraPlayers = ",\"person\",\"person\"";
-	    } else if (numPlayers == 4 && isMulti) {
-		extraPlayers = ",\"person\",\"person\",\"person\"";
-	    }
+	sprintf((char*)buf, "%s/%s/maps/%s.smp.gz", Dir, CM_PATH, file);
+	CheckPath((char*)buf);
+	smp = gzopen((char*)buf, "wb9");
+	sprintf((char*)buf, "%s/%s/maps/%s.sms.gz", Dir, CM_PATH, file);
+	CheckPath((char*)buf);
+	sms = gzopen((char*)buf, "wb9");
 
-	    sprintf((char*)buf, "%s/%s/maps/%s/%s_%d_players.smp.gz", Dir, CM_PATH, path, file, numPlayers);
-	    CheckPath((char*)buf);
-	    smp = gzopen((char*)buf, "wb9");
-	    sprintf((char*)buf, "%s/%s/maps/%s/%s_%d_players.sms.gz", Dir, CM_PATH, path, file, numPlayers);
-	    CheckPath((char*)buf);
-	    sms = gzopen((char*)buf, "wb9");
-
-	    mtxm = ExtractEntry(ArchiveOffsets[mtxme], NULL);
-	    if (!mtxm) {
+	mtxm = ExtractEntry(ArchiveOffsets[mtxme], NULL);
+	if (!mtxm) {
 		return;
-	    }
-	    p = mtxm;
-
-	
-	
-	    gzprintf(smp,
-		     "-- Stratagus Map Presentation\n"\
-		     "-- File generated automatically from pudconvert.\n"\
-		     "DefinePlayerTypes(\"person\"%s)\n"\
-		     "PresentMap(\"(unnamed)\", %d, 64, 64, 1)\n", extraPlayers, numPlayers);
-		gzprintf(sms, "Player(0,\"ai-name\", \"wc1-land-attack\")\n");
-		gzprintf(sms, "Player(1,\"ai-name\", \"wc1-land-attack\")\n");
-		if (numPlayers > 2) gzprintf(sms, "Player(2,\"ai-name\", \"wc1-land-attack\")\n");
-		if (numPlayers > 3) gzprintf(sms, "Player(3,\"ai-name\", \"wc1-land-attack\")\n");
-	    gzprintf(sms,
-		     "LoadTileModels(\"scripts/tilesets/%s.lua\")\n"\
-		     "SetStartView(0, 16, 16)\n"\
-		     "SetPlayerData(0, \"Resources\", \"gold\", 10000)\n"\
-		     "SetPlayerData(0, \"Resources\", \"wood\", 3000)\n"\
-		     "SetPlayerData(0, \"RaceName\", \"human\")\n"\
-             "SetAiType(0, \"wc1-land-attack\")\n"\
-		     "SetStartView(1, 48, 48)\n"\
-		     "SetPlayerData(1, \"Resources\", \"gold\", 10000)\n"\
-		     "SetPlayerData(1, \"Resources\", \"wood\", 3000)\n"\
-		     "SetPlayerData(1, \"RaceName\", \"orc\")\n"\
-			 "SetAiType(1, \"wc1-land-attack\")\n"\
-		     "SetPlayerData(15, \"RaceName\", \"neutral\")\n\n", tileset);
-	    if (numPlayers > 2) {
-		gzprintf(sms,
-			 "SetStartView(2, 16, 48)\n"\
-			 "SetPlayerData(2, \"Resources\", \"gold\", 10000)\n"\
-			 "SetPlayerData(2, \"Resources\", \"wood\", 3000)\n"\
-			 "SetAiType(2, \"wc1-land-attack\")\n"\
-			 "SetPlayerData(2, \"RaceName\", \"human\")\n");
-	    }
-	    if (numPlayers > 3) {
-		gzprintf(sms,
-			 "SetStartView(3, 48, 16)\n"\
-			 "SetPlayerData(3, \"Resources\", \"gold\", 10000)\n"\
-			 "SetPlayerData(3, \"Resources\", \"wood\", 3000)\n"\
-			 "SetAiType(3, \"wc1-land-attack\")\n"\
-			 "SetPlayerData(3, \"RaceName\", \"orc\")\n");
-	    }
-	    for (i = 0; i < 64; ++i) {
-		gzprintf(sms, "  -- %d\n",i);
-		for (j = 0; j < 64; ++j) {
-		    s = FetchLE16(p);
-		    gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, j, i);
-		}
-	    }
-
-	    gzprintf(sms,
-		     "\n\nif (MapUnitsInit ~= nil) then MapUnitsInit() end\n"\
-		     "unit = CreateUnit(\"unit-gold-mine\", 15, {16, 16})\n"\
-		     "SetResourcesHeld(unit, 45000)\n"\
-		     "unit = CreateUnit(\"unit-gold-mine\", 15, {16, 48})\n"\
-		     "SetResourcesHeld(unit, 45000)\n"\
-		     "unit = CreateUnit(\"unit-gold-mine\", 15, {48, 16})\n"\
-		     "SetResourcesHeld(unit, 45000)\n"\
-		     "unit = CreateUnit(\"unit-gold-mine\", 15, {48, 48})\n"\
-		     "SetResourcesHeld(unit, 45000)\n"\
-		     "unit = CreateUnit(\"unit-peasant\", 0, {16, 16})\n"\
-		     "unit = CreateUnit(\"unit-peon\", 1, {48, 48})\n");
-	    if (numPlayers > 2) {
-		gzprintf(sms, "unit = CreateUnit(\"unit-peasant\", 2, {16, 48})\n");
-	    }
-	    if (numPlayers > 3) {
-		gzprintf(sms, "unit = CreateUnit(\"unit-peon\", 3, {48, 16})\n");
-	    }
-	    gzprintf(smp, "\n");
-	    gzclose(sms);
-	    gzclose(smp);
 	}
-    }
+	p = mtxm;
+
+	gzprintf(smp,
+		    "-- Stratagus Map Presentation\n"\
+		    "-- File generated automatically from pudconvert.\n"\
+		    "DefinePlayerTypes(\"person\",\"person\",\"person\",\"person\")\n"\
+		    "PresentMap(\"(unnamed)\", 4, 64, 64, 1)\n");
+	gzprintf(sms, "Player(0,\"ai-name\", \"wc1-land-attack\")\n"\
+				  "Player(1,\"ai-name\", \"wc1-land-attack\")\n"\
+				  "Player(2,\"ai-name\", \"wc1-land-attack\")\n"\
+				  "Player(3,\"ai-name\", \"wc1-land-attack\")\n");
+	gzprintf(sms,
+		    "LoadTileModels(\"scripts/tilesets/%s.lua\")\n"\
+		    "SetStartView(0, 16, 16)\n"\
+		    "SetPlayerData(0, \"Resources\", \"gold\", 10000)\n"\
+		    "SetPlayerData(0, \"Resources\", \"wood\", 3000)\n"\
+		    "SetPlayerData(0, \"RaceName\", \"human\")\n"\
+            "SetAiType(0, \"wc1-land-attack\")\n"\
+		    "SetStartView(1, 48, 48)\n"\
+		    "SetPlayerData(1, \"Resources\", \"gold\", 10000)\n"\
+		    "SetPlayerData(1, \"Resources\", \"wood\", 3000)\n"\
+		    "SetPlayerData(1, \"RaceName\", \"orc\")\n"\
+			"SetAiType(1, \"wc1-land-attack\")\n"\
+		    "SetPlayerData(15, \"RaceName\", \"neutral\")\n\n"\
+			"SetStartView(2, 16, 48)\n"\
+			"SetPlayerData(2, \"Resources\", \"gold\", 10000)\n"\
+			"SetPlayerData(2, \"Resources\", \"wood\", 3000)\n"\
+			"SetAiType(2, \"wc1-land-attack\")\n"\
+			"SetPlayerData(2, \"RaceName\", \"human\")\n"\
+			"SetStartView(3, 48, 16)\n"\
+			"SetPlayerData(3, \"Resources\", \"gold\", 10000)\n"\
+			"SetPlayerData(3, \"Resources\", \"wood\", 3000)\n"\
+			"SetAiType(3, \"wc1-land-attack\")\n"\
+			"SetPlayerData(3, \"RaceName\", \"orc\")\n", tileset);
+
+	for (i = 0; i < 64; ++i) {
+	gzprintf(sms, "  -- %d\n",i);
+	for (j = 0; j < 64; ++j) {
+		s = FetchLE16(p);
+		gzprintf(sms, "SetTile(%d, %d, %d, 0)\n", s, j, i);
+	}
+	}
+
+	gzprintf(sms,
+		    "\n\nif (MapUnitsInit ~= nil) then MapUnitsInit() end\n"\
+		    "unit = CreateUnit(\"unit-gold-mine\", 15, {16, 16})\n"\
+		    "SetResourcesHeld(unit, 45000)\n"\
+		    "unit = CreateUnit(\"unit-gold-mine\", 15, {16, 48})\n"\
+		    "SetResourcesHeld(unit, 45000)\n"\
+		    "unit = CreateUnit(\"unit-gold-mine\", 15, {48, 16})\n"\
+		    "SetResourcesHeld(unit, 45000)\n"\
+		    "unit = CreateUnit(\"unit-gold-mine\", 15, {48, 48})\n"\
+		    "SetResourcesHeld(unit, 45000)\n"\
+		    "unit = CreateUnit(\"unit-peasant\", 0, {16, 16})\n"\
+		    "unit = CreateUnit(\"unit-peon\", 1, {48, 48})\n"\
+			"unit = CreateUnit(\"unit-peasant\", 2, {16, 48})\n"\
+			"unit = CreateUnit(\"unit-peon\", 3, {48, 16})\n");
+	gzprintf(smp, "\n");
+	gzclose(sms);
+	gzclose(smp);
     free(mtxm);
 }
 

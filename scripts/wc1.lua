@@ -128,7 +128,7 @@ OldDefinePlayerTypes = OldDefinePlayerTypes or DefinePlayerTypes
 function DefinePlayerTypes(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15)
   if (war1gus.InCampaign) then
     return OldDefinePlayerTypes(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15)
-  elseif (IsNetworkGame()==true or GameSettings.NetGameType == 2 or Editor.Running==4 or GameSettings.GameType==-1) then
+  elseif (IsNetworkGame()==true or GameSettings.GameType == -1) then
 	  local p = {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15}
 	  local foundperson = false
 	  local nump = GameSettings.Opponents
@@ -142,6 +142,10 @@ function DefinePlayerTypes(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p1
 			if (nump == 0) then
 			  p[i] = "nobody"
 			else
+              if (foundperson and (not IsNetworkGame())) then
+                -- in solo game, all persons save the first become computers
+                p[i] = "computer"
+              end
 			  nump = nump - 1
 			end
 		  end

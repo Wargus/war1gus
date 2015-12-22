@@ -373,7 +373,7 @@ function RunCreateMultiGameMenu(s)
   local menu
   local map = "No Map"
   local description = "No map"
-  local mapfile = "maps/multi/(2)mysterious-dragon-isle.smp.gz"
+  local mapfile = "maps/forest1.smp.gz"
   local numplayers = 3
   local sx = Video.Width / 20
   local sy = Video.Height / 20
