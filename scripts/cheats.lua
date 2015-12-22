@@ -111,6 +111,11 @@ function HandleCheats(str)
   elseif (str:gsub("^orc%d$", "") == "") then
      AddMessage("Skip to orc lvl" .. str:gsub("orc", "") .. ". Not implemented yet")
 
+  elseif (str == "action defeat") then
+    ActionDefeat()
+  elseif (str == "action victory") then
+    ActionVictory()
+
   else
     return false
   end
