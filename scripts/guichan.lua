@@ -523,7 +523,7 @@ function RunSinglePlayerGameMenu()
       GameSettings.Resources = resources:getSelected()
       GameSettings.Opponents = opponents:getSelected()
       GameSettings.NumUnits = numunits:getSelected()
-      GameSettings.GameType = gametype:getSelected() - 1
+      -- GameSettings.GameType = gametype:getSelected() - 1
       war1gus.InCampaign = false
       RunMap(mapname, preferences.FogOfWar)
       menu:stop()
@@ -553,10 +553,10 @@ function RunSinglePlayerGameMenu()
     function(dd) end)
   opponents:setSize(152, 20)
 
-  menu:addLabel("~<Game Type:~>", offx + 220, offy + (10 + 300) - 20, Fonts["game"], false)
-  gametype = menu:addDropDown({"Use map settings", "Melee", "Free for all", "Top vs bottom", "Left vs right", "Man vs Machine"}, offx + 220, offy + 10 + 300,
-    function(dd) end)
-  gametype:setSize(152, 20)
+  --menu:addLabel("~<Game Type:~>", offx + 220, offy + (10 + 300) - 20, Fonts["game"], false)
+  --gametype = menu:addDropDown({"Use map settings", "Melee", "Free for all", "Top vs bottom", "Left vs right", "Man vs Machine"}, offx + 220, offy + 10 + 300,
+  --  function(dd) end)
+  --gametype:setSize(152, 20)
 
   function MapChanged()
     mapl:setCaption(string.sub(mapname, 6))
