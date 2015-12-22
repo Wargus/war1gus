@@ -162,7 +162,7 @@ end
 --
 function AiStables()
    if (AiGetRace() == race1) then
-      return "unit-human-stables"
+      return "unit-human-stable"
    else
       return "unit-orc-kennel"
    end
