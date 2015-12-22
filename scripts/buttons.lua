@@ -39,6 +39,7 @@ Load("scripts/orc/buttons.lua")
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-road",
   Action = "build", Value = "unit-road",
   Allowed = "check-no-research",
+  Description = "Use shift+click and slow dragging to build entire road networks quickly.",
   Key = "r", Hint = "BUILD ~!ROAD",
   ForUnit = {"unit-orc-town-hall", "unit-human-town-hall", "unit-orc-blackrock-spire", "unit-human-stormwind-keep"} } )
 

@@ -455,3 +455,91 @@ function LoadUI(race, screen_width, screen_height)
     }
   }
 end
+
+-- Popups
+PopupFont = nil
+PopupFont = "small"
+local GetRGBA = function(r, g, b, a)
+	if (wc1.preferences.UseOpenGL == false) then
+		return b + g*0x100 + r*0x10000 + a*0x1000000
+	else
+		return r + g*0x100 + b*0x10000 + a*0x1000000
+	end
+end
+local PopupBackgroundColor = GetRGBA(0,32,96, 208)
+local PopupBorderColor = GetRGBA(192,192,255, 160)
+
+if (wc1.preferences.ShowButtonPopups) then
+    local OldDefineButton = DefineButton
+    DefineButton = function(spec)
+        if spec.Popup == nil then
+            spec.Popup = "popup"
+        end
+        return OldDefineButton(spec)
+    end
+	DefinePopup({
+		Ident = "popup",
+		BackgroundColor = PopupBackgroundColor,
+		BorderColor = PopupBorderColor,
+		Contents = {
+				{ 	Margin = {1, 1}, HighlightColor = "full-red",
+					More = {"ButtonInfo", {InfoType = "Hint", Font = PopupFont}}
+				}, 
+				-- Move  hint
+				{ 	Margin = {1, 1}, Condition = {ButtonAction = "move"},
+					More = {"Line", {Width = 0, Height = 1, Color = HumanPopupBorderColor}}
+				},
+				{ 	Condition = {ButtonAction = "move"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+					More = {"Text", {Text = _("~<ALT~>-click to defend unit."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+				},
+				{ 	Condition = {ButtonAction = "move"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+					More = {"Text", {Text = _("~<SHIFT~>-click to make waypoints."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+				},
+				-- Repair hint
+				{ 	Margin = {1, 1}, Condition = {ButtonAction = "repair"},
+					More = {"Line", {Width = 0, Height = 1, Color = HumanPopupBorderColor}}
+				},
+				{ 	Condition = {ButtonAction = "repair"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+					More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-repair of damaged buildings."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+				},
+                -- buildings, units, upgrades
+                { 	Condition = {ButtonAction = "build"},
+                    More = {"Costs"}, HighlightColor = "full-red",
+				},
+				{ 	Condition = {ButtonAction = "train-unit"},
+                    More = {"Costs"}, HighlightColor = "full-red",
+				}, 
+                { 	Condition = {ButtonAction = "research"},
+                 	More = {"Costs"}, HighlightColor = "full-red",
+				},
+                { 	Condition = {ButtonAction = "upgrade-to"},
+                 	More = {"Costs"}, HighlightColor = "full-red",
+				}, 
+                { 	Condition = {ButtonAction = "cast-spell"},
+                 	More = {"Costs"}, HighlightColor = "full-red",
+				}, 
+                -- Multi-build hint
+				{ 	Margin = {1, 1}, Condition = {ButtonAction = "build"},
+					More = {"Line", {Width = 0, Height = 1, Color = HumanPopupBorderColor}}
+				},
+				{ 	Condition = {ButtonAction = "build"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+					More = {"Text", {Text = _("~<SHIFT~>-click could be used to make a building queue."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+				},
+                -- Auto-cast hint
+				{ 	Margin = {1, 1}, Condition = {ButtonAction = "cast-spell"},
+					More = {"Line", {Width = 0, Height = 1, Color = HumanPopupBorderColor}}
+				},
+				{ 	Condition = {ButtonAction = "cast-spell"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+					More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-cast ability."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+				},
+                -- Description
+				{ 	Margin = {1, 1}, Condition = {HasDescription = true},
+					More = {"Line", {Width = 0, Height = 1, Color = HumanPopupBorderColor}}
+				}, 
+				{ 	Condition = {HasDescription = true}, Margin = {1, 1}, HighlightColor = "full-red",
+					More = {"ButtonInfo", {InfoType = "Description", MaxWidth = Video.Width / 5, Font = PopupFont}}
+				},
+
+            }	
+	})
+end

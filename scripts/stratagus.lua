@@ -266,36 +266,43 @@ Load("preferences.lua")
 if wc1 == nil then wc1 = {} end
 preferences = wc1.preferences
 if (preferences == nil) then
-  preferences = {
-    VideoWidth = 640,
-    VideoHeight = 400,
-    VideoFullScreen = false,
-    PlayerName = "Player",
-    FogOfWar = false,
-    ShowCommandKey = true,
-    GroupKeys = "0123456789`",
-    GameSpeed = 30,
-    EffectsEnabled = true,
-    EffectsVolume = 128,
-    MusicEnabled = true,
-    MusicVolume = 128,
-    StratagusTranslation = "",
-    GameTranslation = "",
-    TipNumber = 0,
-    ShowTips = true,
-    GrabMouse = false,
-    UseOpenGL = false,
-    MaxOpenGLTexture = 0,
-    CampaignOrc = 1,
-    CampaignHuman = 1,
-    PlayIntro = true,
-    MaxSelection = 4,
-    TrainingQueue = false,
-    AllowMultipleTownHalls = false,
-    AllowTownHallUpgrade = false,
-	MultiColoredCampaigns = false
-  }
+  preferences = {}
 end
+local DefaultPreference = function(name, value)
+    if preferences[name] == nil then
+        preferences[name] = value
+    end
+end
+DefaultPreference("VideoWidth", 640)
+DefaultPreference("VideoHeight", 400)
+DefaultPreference("VideoFullScreen", false)
+DefaultPreference("PlayerName", "Player")
+DefaultPreference("FogOfWar", false)
+DefaultPreference("ShowCommandKey", true)
+DefaultPreference("GroupKeys", "0123456789`")
+DefaultPreference("GameSpeed", 30)
+DefaultPreference("EffectsEnabled", true)
+DefaultPreference("EffectsVolume", 128)
+DefaultPreference("MusicEnabled", true)
+DefaultPreference("MusicVolume", 128)
+DefaultPreference("StratagusTranslation", "")
+DefaultPreference("GameTranslation", "")
+DefaultPreference("TipNumber", 0)
+DefaultPreference("ShowTips", true)
+DefaultPreference("GrabMouse", false)
+DefaultPreference("UseOpenGL", false)
+DefaultPreference("MaxOpenGLTexture", 0)
+DefaultPreference("CampaignOrc", 1)
+DefaultPreference("CampaignHuman", 1)
+DefaultPreference("PlayIntro", true)
+DefaultPreference("MaxSelection", 4)
+DefaultPreference("TrainingQueue", false)
+DefaultPreference("AllowMultipleTownHalls", false)
+DefaultPreference("AllowTownHallUpgrade", false)
+DefaultPreference("MultiColoredCampaigns", false)
+DefaultPreference("MultiColoredCampaigns", false)
+DefaultPreference("ShowButtonPopups", true)
+
 wc1.preferences = preferences
 SetUseOpenGL(preferences.UseOpenGL)
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
@@ -351,8 +358,8 @@ Load("scripts/units.lua")
 Load("scripts/upgrade.lua")
 
 Load("scripts/fonts.lua")
-Load("scripts/buttons.lua")
 Load("scripts/ui.lua")
+Load("scripts/buttons.lua")
 Load("scripts/ai.lua")
 Load("scripts/cheats.lua")
 Load("scripts/colors.lua")
