@@ -36,8 +36,10 @@ table.foreach(UnitTypeFiles,
 DefineUnitType("unit-wall", {NumDirections = 16, Flip = false})
 DefineUnitType("unit-road", {NumDirections = 16, Flip = false})
 -- Hardcoded unit-types, moved from Stratagus to games
-UnitTypeHumanWall = UnitTypeByIdent("unit-wall");
-UnitTypeOrcWall = UnitTypeByIdent("unit-wall");
+if war1gus.tileset == "dungeon_campaign" then
+    UnitTypeHumanWall = UnitTypeByIdent("unit-wall");
+    UnitTypeOrcWall = UnitTypeByIdent("unit-wall");
+end
 
 LoadUI(GetPlayerData(GetThisPlayer(), "RaceName"), Video.Width, Video.Height)
 
