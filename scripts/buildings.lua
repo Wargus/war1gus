@@ -134,17 +134,11 @@ local buildings = {
     CanStore = {"wood"},
     Size = {128, 128}},
 
-   {Names = {orc = "Kennel"},
+   {Names = {orc = "Kennel", human = "Stable"},
     Costs = {"time", 150, "gold", 1000, "wood", 400},
     HitPoints = 500,
-    Size = {128, 96},
-    Dependency = {orc = "lumber-mill"}},
-
-   {Names = {human = "Stable"},
-    Costs = {"time", 150, "gold", 1000, "wood", 400},
-    HitPoints = 500,
-    Size = {128, 128},
-    Dependency = {human = "lumber-mill"}},
+    Size = {orc = {128, 96}, human = {128, 128}},
+    Dependency = {human = "lumber-mill", orc = "lumber-mill"}},
 
    {Names = {orc = "Blacksmith", human = "Blacksmith"},
     Costs = {"time", 150, "gold", 900, "wood", 400},
