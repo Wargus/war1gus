@@ -3598,10 +3598,10 @@ void CopyDirectories(char** directories) {
 }
 
 void CreateConfig(char* outputdir, int video, int miditoogg) {
-	CheckPath(Dir);
 	char cfile[2048];
 	FILE *config;
 	sprintf(cfile, "%s/%s", outputdir, "scripts/wc1-config.lua");
+	CheckPath(cfile);
 	config = fopen(cfile, "w");
 	fprintf(config, "war1gus.music_extension = \"%s\"\n", miditoogg ? ".ogg" : ".mid");
 	fclose(config);
