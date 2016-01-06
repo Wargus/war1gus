@@ -95,34 +95,23 @@ if(STRATAGUS_FOUND)
       "${PROJECT_SOURCE_DIR}/war1gus.desktop.in"
       "${PROJECT_BINARY_DIR}/war1gus.desktop"
     )
-    if (APPLE)
-      add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.png"
-	COMMAND sips
-	ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" "--out" "${PROJECT_BINARY_DIR}/war1gus.png"
-	DEPENDS war1gus.ico
-	COMMENT "Generating war1gus.png" VERBATIM
-	)
-    else()
-      add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.png"
-	COMMAND convert
-	ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" "${PROJECT_BINARY_DIR}/war1gus.png"
-	DEPENDS war1gus.ico
-	COMMENT "Generating war1gus.png" VERBATIM
-	)
-    endif()
+    add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.png"
+      COMMAND convert
+      ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" "${PROJECT_BINARY_DIR}/war1gus.png"
+      DEPENDS war1gus.ico
+      COMMENT "Generating war1gus.png" VERBATIM
+    )
     add_custom_target(icon ALL DEPENDS war1gus.png)
     install(FILES "${PROJECT_BINARY_DIR}/war1gus.png" DESTINATION ${ICONDIR})
-    if (NOT APPLE)
-      add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.xpm"
-	COMMAND convert
-	ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" -resize 32x32 "${PROJECT_BINARY_DIR}/war1gus.xpm"
-	DEPENDS war1gus.ico
-	COMMENT "Generating war1gus.xmp" VERBATIM
-	)
-      add_custom_target(xpmicon ALL DEPENDS war1gus.xpm)
-      install(FILES "${PROJECT_BINARY_DIR}/war1gus.xpm" DESTINATION ${ICONDIR})
-      install(FILES "${PROJECT_BINARY_DIR}/war1gus.desktop" DESTINATION ${DESKTOPDIR})
-    endif()
+    add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.xpm"
+      COMMAND convert
+      ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" -resize 32x32 "${PROJECT_BINARY_DIR}/war1gus.xpm"
+      DEPENDS war1gus.ico
+      COMMENT "Generating war1gus.xmp" VERBATIM
+    )
+    add_custom_target(xpmicon ALL DEPENDS war1gus.xpm)
+    install(FILES "${PROJECT_BINARY_DIR}/war1gus.xpm" DESTINATION ${ICONDIR})
+    install(FILES "${PROJECT_BINARY_DIR}/war1gus.desktop" DESTINATION ${DESKTOPDIR})
     install(DIRECTORY campaigns contrib scripts DESTINATION ${SHAREDIR})
   elseif (WIN32)
     set(war1gus_SRCS ${war1gus_SRCS} war1gus.rc)
