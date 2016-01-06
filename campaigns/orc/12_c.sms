@@ -1,13 +1,13 @@
 LoadTileModels("scripts/tilesets/forest_campaign.lua")
-OldCreateUnit = CreateUnit
+local oldcu = CreateUnit
 function CreateUnit(name, player, pos)
   if (name == "unit-human-stormwind-keep") then
     pos[2] = pos[2] + 2
   end
-  return OldCreateUnit(name, player, pos)
+  return oldcu(name, player, pos)
 end
 Load("campaigns/orc/12.sms")
-CreateUnit = OldCreateUnit
+CreateUnit = oldcu
 Load("campaigns/orc/12_c2.sms")
 Load("campaigns/orc/campaign_titles.lua")
 title = campaign_titles[12]
