@@ -2,6 +2,13 @@ Windows: <a href="https://ci.appveyor.com/project/timfel/war1gus"><img width="10
 
 Linux & OSX: [![Build Status](https://travis-ci.org/Wargus/war1gus.svg?branch=master)](https://travis-ci.org/Wargus/war1gus)
 
+Nightly builds are available:
+
+- Windows Installer: https://github.com/Wargus/war1gus/releases/tag/master-builds
+- Ubuntu/Debian Packages: https://launchpad.net/~stratagus/+archive/ubuntu/ppa
+- OS X App Bundle: https://github.com/Wargus/stratagus/wiki/osx/War1gus.app.tar.gz
+
+
 This tool is to extract the data from the DOS version of "Warcraft: Orcs & Humans".
 To extract music, sounds, and videos, "ffmpeg", "ffmpeg2theora", and "timidity" must
 be set up and in the PATH. When running the tool.
