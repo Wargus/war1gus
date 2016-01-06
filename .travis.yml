@@ -21,7 +21,7 @@ before_script:
   - "if [ $TRAVIS_OS_NAME == linux ]; then \
         curl -O -L https://github.com/Wargus/stratagus/archive/master.zip;
         unzip master.zip;
-        cmake -DSTRATAGUS=stratagus -DSTRATAGUS_INCLUDE_DIR=\"$PWD/stratagus-master/gameheaders\" ..
+        cmake -DSTRATAGUS=stratagus -DSTRATAGUS_INCLUDE_DIR=\"$PWD/stratagus-master/gameheaders\" ..;
     fi"
 script: make
 after_success:
