@@ -98,7 +98,7 @@ if(STRATAGUS_FOUND)
     if (APPLE)
       add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/war1gus.png"
 	COMMAND sips
-	ARGS "-z" "256" "256" "${PROJECT_SOURCE_DIR}/war1gus.ico" "--out" "${PROJECT_BINARY_DIR}/war1gus.png"
+	ARGS "${PROJECT_SOURCE_DIR}/war1gus.ico" "--out" "${PROJECT_BINARY_DIR}/war1gus.png"
 	DEPENDS war1gus.ico
 	COMMENT "Generating war1gus.png" VERBATIM
 	)
