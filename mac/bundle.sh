@@ -13,6 +13,7 @@ cd "`dirname "$0"`"
 rm -rf War1gus.app
 mkdir -p War1gus.app/Contents/Resources
 mkdir -p War1gus.app/Contents/MacOS
+mkdir -p War1gus.app/Contents/libs
 
 # Copy launchscript and info.plist
 cp Info.plist War1gus.app/Contents/
@@ -46,7 +47,6 @@ cd ..
 
 cp ../build/war1tool War1gus.app/Contents/MacOS
 cp "$STRATAGUS" War1gus.app/Contents/MacOS/stratagus
+cp "$STRATAGUS"/../libs/* War1gus.app/Contents/libs/
 
 macdylibbundler/dylibbundler -cd -of -b -x ./War1gus.app/Contents/MacOS/war1tool -d ./War1gus.app/Contents/libs/
-
-macdylibbundler/dylibbundler -cd -of -b -x ./War1gus.app/Contents/MacOS/stratagus -d ./War1gus.app/Contents/libs/
