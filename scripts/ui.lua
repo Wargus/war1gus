@@ -83,11 +83,14 @@ DefinePanelContents(
 -- FIXME more condition. not town hall.
   Contents = {
 -- Food building
-	{ Pos = {9, 66}, More = {"Text", {Text = "Supply : ", Variable = "Supply", Component = "Max"}} },
-	{ Pos = {9, 82}, More = { "Text", {Text = Concat("Demand : ",
-									If(GreaterThan(ActiveUnitVar("Demand", "Max"), ActiveUnitVar("Supply", "Max")),
-										InverseVideo(String(ActiveUnitVar("Demand", "Max"))),
-										String(ActiveUnitVar("Demand", "Max")) ))}}
+	{ Pos = {9, 66}, More = {"Text", {Text = function () return "Supply: " .. GetPlayerData(GetThisPlayer(), "Supply") end }} },
+	{ Pos = {9, 82}, More = { "Text", {Text = function ()
+                                                  if GetPlayerData(GetThisPlayer(), "Demand") > GetPlayerData(GetThisPlayer(), "Supply") then
+                                                    return "Demand: ~<" .. GetPlayerData(GetThisPlayer(), "Demand") .. "~>"
+                                                  else 
+                                                    return "Demand: " .. GetPlayerData(GetThisPlayer(), "Demand")
+                                                  end
+                                                end }}
     }
 
   } },
