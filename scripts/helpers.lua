@@ -328,10 +328,11 @@ end
 function DefineUpgradeFromSpec(spec)
     for _, race in ipairs( { "orc", "human" }) do
         name = spec[race][1]
+        iconname = spec[race][3] or name
         units = spec[race][2]
 
         u = CUpgrade:New("upgrade-" .. name)
-        u.Icon = Icons["icon-" .. name]
+        u.Icon = Icons["icon-" .. iconname]
 
         for j, amount in ipairs(spec.cost) do
             u.Costs[j - 1] = amount
