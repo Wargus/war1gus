@@ -160,7 +160,7 @@ local units = {
     MaxAttackRange = 8,
     Armor = 0,
     Speed = 5,
-    organic = false,
+    organic = true,
     Missile = "missile-catapult-rock",
     Dependencies = {orc = {"blacksmith", "lumber-mill"},
                     human = {"blacksmith", "lumber-mill"}}},
