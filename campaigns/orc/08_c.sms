@@ -1,5 +1,14 @@
 LoadTileModels("scripts/tilesets/dungeon_campaign.lua")
+local oldcu = CreateUnit
+function CreateUnit(name, player, pos)
+  if (name ~= "unit-archer" and player == 1) then
+    return oldcu(name, player+1, pos)
+  else
+    return oldcu(name, player, pos)
+  end  
+end
 Load("campaigns/orc/08.sms")
+CreateUnit = oldcu
 Load("campaigns/orc/08_c2.sms")
 Load("campaigns/orc/campaign_titles.lua")
 title = campaign_titles[8]

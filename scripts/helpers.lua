@@ -327,9 +327,9 @@ end
 -- spec definition
 function DefineUpgradeFromSpec(spec)
     for _, race in ipairs( { "orc", "human" }) do
-        name = spec[race][1]
-        iconname = spec[race][3] or name
-        units = spec[race][2]
+        local name = spec[race][1]
+        local iconname = spec[race][3] or name
+        local units = spec[race][2]
 
         u = CUpgrade:New("upgrade-" .. name)
         u.Icon = Icons["icon-" .. iconname]

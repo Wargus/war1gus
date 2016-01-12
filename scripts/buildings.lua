@@ -334,7 +334,7 @@ DefineUnitType(
 	 Revealer = false,
 	 Decoration = true,
 	 -- 
-     Type = "land", Building = true,
+     Type = "land", Building = false,
      VisibleUnderFog = true })
 
 UnitTypeFiles["unit-wall"] = {
