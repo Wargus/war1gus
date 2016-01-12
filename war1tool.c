@@ -2446,6 +2446,26 @@ int ConvertGfu(char* file, int pale, int gfue)
 			++p;
 		}
 	}
+	if (strstr(file, "neutral/") != NULL) {
+		unsigned char* p = image;
+		unsigned char* end = image + (2 * w * 2 * h);
+		while (p < end) {
+			if (*p >= 176 && *p <= 183) {
+				*p = *p + 24;
+			}
+			++p;
+		}
+	}
+	if (strstr(file, "spider") != NULL) {
+		unsigned char* p = image;
+		unsigned char* end = image + (2 * w * 2 * h);
+		while (p < end) {
+			if (*p >= 99 && *p <= 102) {
+				*p = *p + 104;
+			}
+			++p;
+		}
+	}
 
 	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
 
