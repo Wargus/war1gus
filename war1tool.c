@@ -2323,9 +2323,9 @@ void DecodeGfuEntry(int index, unsigned char* start,
 **  Convert graphics into image.
 */
 unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
-	unsigned char* bp2)
+	unsigned char* bp2, const unsigned short* palette_swap_indices)
 {
-	int i;
+	int i, idx;
 	int count;
 	int length;
 	int max_width;
@@ -2366,6 +2366,22 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 		DecodeGfuEntry(i, bp,
 			image + max_width * (i % IPR) + max_height * max_width * IPR * (i / IPR),
 			max_width * IPR);
+		if (palette_swap_indices) {
+			for (idx = 0 ;; idx++) {
+				if (idx > 0 && palette_swap_indices[idx] == 0) {
+					break;
+				} else if (palette_swap_indices[idx] == i) {
+					unsigned char* p = image + max_width * (i % IPR) + max_height * max_width * IPR * (i / IPR);
+					unsigned char* end = image + max_width * ((i + 1) % IPR) + max_height * max_width * IPR * ((i + 1) / IPR);
+					while (p < end) {
+						if (*p >= 176 && *p <= 183) {
+							*p = *p + 24;
+						}
+						++p;
+					}
+				}
+			}
+		}
 	}
 
 	*wp = max_width * IPR;
@@ -2425,7 +2441,15 @@ int ConvertGfu(char* file, int pale, int gfue)
 		return 0;
 	}
 
-	image = ConvertGraphic(gfup, &w, &h, NULL);
+	if (strstr(file, "portrait_icons") != NULL) {
+		const unsigned short icon_swap_indices[] = {
+			1,3,5,7,9,11,13,15,19,23,27,34,49,55,56,82,83,84,
+			0
+		};
+		image = ConvertGraphic(gfup, &w, &h, NULL, icon_swap_indices);
+	} else {
+		image = ConvertGraphic(gfup, &w, &h, NULL, NULL);
+	}
 
 	free(gfup);
 	ConvertPalette(palp);
