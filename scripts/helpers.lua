@@ -242,6 +242,7 @@ function DefineUnitFromSpec(unit)
             BasicDamage = 0,
             PiercingDamage = 0,
             Missile = "missile-none",
+            DecayRate = 0,
             NoFriendlyFire = true,
             Priority = 63,
             Points = 100,
