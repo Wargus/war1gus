@@ -309,6 +309,7 @@ DefineTileset(--"tileset-swamp", "class", "swamp",
 
 BuildTilesetTables()
 AddColorCyclingRange(114, 118) -- water coast boundry
+AddColorCyclingRange(121, 126) -- water
 
 war1gus.tileset = "swamp_campaign"
 Load("scripts/scripts.lua")
