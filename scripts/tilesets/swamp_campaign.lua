@@ -118,7 +118,7 @@ DefineTileset(--"tileset-swamp", "class", "swamp",
 	   198, {"coast", "land", "no-building"},
 	   199, {"water"}, 200, {"water"},
 	   201, {"coast", "land", "no-building"},
-	   201, 203, 204, 205, 206, 207}},                             -- 0C0
+	   202, 203, 204, 205, 206, 207}},                             -- 0C0
 	"solid", {"land",
           {208, 209, 210,
 	   211, {"coast", "land", "no-building"},
