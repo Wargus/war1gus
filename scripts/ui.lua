@@ -308,7 +308,7 @@ UI.Resources[1].Font = Fonts["game"]
 
 -- wood
 UI.Resources[2].G = CGraphic:New("ui/lumber_icon_1.png", 18, 18)
-UI.Resources[2].IconFrame = 1
+UI.Resources[2].IconFrame = 0
 UI.Resources[2].IconX = Video.Width - 258 - 18
 UI.Resources[2].IconY = 0
 UI.Resources[2].TextX = Video.Width - 258 - 18 - 80
