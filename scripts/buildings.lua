@@ -139,7 +139,7 @@ local buildings = {
     Supply = 5,
     RepairRange = InfiniteRepairRange,
     BuildingRules = townHallBuildingRules,
-        AiBuildingRules = townHallBuildingRules,
+    AiBuildingRules = townHallBuildingRules,
     Size = {128, 128}},
 
    {Names = {orc = "Barracks", human = "Barracks"},

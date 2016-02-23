@@ -108,7 +108,7 @@ DefinePanelContents(
      { Pos = {70, 22}, Condition = {Research = "only"},
        More = {"CompleteBar", {Variable = "Research", Width = 55, Height = 10}}
      },
-     { Pos = {9, 86}, Condition = {Research = "only"}, More = {"Text", "Researching:"}},
+     { Pos = {9, 50}, Condition = {Research = "only"}, More = {"Text", "Researching"}},
      { Pos = {98, 23}, Condition = {Research = "only"},
        More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
 -- Training
@@ -116,11 +116,13 @@ DefinePanelContents(
        More = {"CompleteBar", {Variable = "Training", Width = 55, Height = 10}}},
      { Pos = {98, 23}, Condition = {Training = "only"},
        More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
+     { Pos = {9, 50}, Condition = {Training = "only"},
+       More = {"Text", {Text = "Training", Font = "small", Centered = false}}},
 -- Upgrading To
      { Pos = {70, 22}, Condition = {UpgradeTo = "only"},
        More = {"CompleteBar", {Variable = "UpgradeTo", Width = 55, Height = 10}}
      },
-     { Pos = {9,  86}, More = {"Text", "Upgrading:"}, Condition = {UpgradeTo = "only"} },
+     { Pos = {9,  50}, More = {"Text", "Upgrading"}, Condition = {UpgradeTo = "only"} },
      { Pos = {98, 23}, Condition = {UpgradeTo = "only"},
        More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
 -- Mana
@@ -309,7 +311,7 @@ UI.Resources[1].Font = Fonts["game"]
 -- wood
 UI.Resources[2].G = CGraphic:New("ui/lumber_icon_1.png", 18, 18)
 UI.Resources[2].IconFrame = 0
-UI.Resources[2].IconX = Video.Width - 258 - 18
+UI.Resources[2].IconX = Video.Width - 274 - 18
 UI.Resources[2].IconY = 0
 UI.Resources[2].TextX = Video.Width - 258 - 18 - 80
 UI.Resources[2].TextY = 1
@@ -343,7 +345,7 @@ UI.MaxSelectedTextY = info_panel_y + 10
 --
 
 b = CUIButton:new()
-b.X = 6
+b.X = 9
 b.Y = 200
 b.Style = FindButtonStyle("icon")
 UI.SingleTrainingButton = b

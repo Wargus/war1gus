@@ -5,70 +5,64 @@ function AddSoundOptions(menu, offx, offy, centerx, bottom)
 
   b = menu:addLabel("Sound Options", 176, 11)
 
-  b = Label("Effects Volume")
-  b:setFont(CFont:Get("game"))
-  b:adjustSize();
-  menu:add(b, offx + 16, offy + 36 * 1)
+  local makeSlider = function(getvalue, setvalue, isenabled, setenabled, title, offstart)
+     local b = Label(title)
+     b:setFont(CFont:Get("game"))
+     b:adjustSize();
+     menu:add(b, 16, offy + 36 * offstart)
 
-  -- FIXME: disable if effects turned off
-  local soundslider = Slider(0, 255)
-  soundslider:setValue(GetEffectsVolume())
-  soundslider:setActionCallback(function() SetEffectsVolume(soundslider:getValue()) end)
-  soundslider:setWidth(198)
-  soundslider:setHeight(18)
-  soundslider:setBaseColor(dark)
-  soundslider:setForegroundColor(clear)
-  soundslider:setBackgroundColor(clear)
-  menu:add(soundslider, offx + 32, offy + 36 * 1.5)
+     local slider = Slider(0, 255)
+     slider:setValue(getvalue())
+     slider:setActionCallback(function() setvalue(slider:getValue()) end)
+     slider:setWidth(198)
+     slider:setHeight(18)
+     slider:setBaseColor(dark)
+     slider:setForegroundColor(clear)
+     slider:setBackgroundColor(clear)
 
-  b = Label("min")
-  b:setFont(CFont:Get("game"))
-  b:adjustSize();
-  menu:addCentered(b, offx + 44, offy + 36 * 2 + 6)
+     local effectscheckbox = {}
+     effectscheckbox = menu:addCheckBox(
+	"Enabled",
+	offx + 16, offy + 36 * (offstart + 0.5),
+	function()
+	   slider:setEnabled(effectscheckbox:isMarked())
+	   setenabled(effectscheckbox:isMarked())
+	end
+     )
+     effectscheckbox:setMarked(isenabled())
+     effectscheckbox:adjustSize()
+     menu:add(slider, offx + 20, offy + 36 * (offstart + 1))
+     
+     b = Label("min")
+     b:setFont(CFont:Get("game"))
+     b:adjustSize();
+     menu:addCentered(b, offx + 44, offy + 36 * (offstart + 1.5) + 6)
+     
+     b = Label("max")
+     b:setFont(CFont:Get("game"))
+     b:adjustSize();
+     menu:addCentered(b, offx + 218, offy + 36 * (offstart + 1.5) + 6)
+  end
 
-  b = Label("max")
-  b:setFont(CFont:Get("game"))
-  b:adjustSize();
-  menu:addCentered(b, offx + 218, offy + 36 * 2 + 6)
 
-  local effectscheckbox = {}
-  effectscheckbox = menu:addCheckBox("Enabled", offx + 240, offy + 36 * 1.5,
-    function() SetEffectsEnabled(effectscheckbox:isMarked()) end)
-  effectscheckbox:setMarked(IsEffectsEnabled())
-  effectscheckbox:adjustSize()
-
-  b = Label("Music Volume")
-  b:setFont(CFont:Get("game"))
-  b:adjustSize();
-  menu:add(b, offx + 16, offy + 36 * 3)
-
-  -- FIXME: disable if music turned off
-  local musicslider = Slider(0, 255)
-  musicslider:setValue(GetMusicVolume())
-  musicslider:setActionCallback(function() SetMusicVolume(musicslider:getValue()) end)
-  musicslider:setWidth(198)
-  musicslider:setHeight(18)
-  musicslider:setBaseColor(dark)
-  musicslider:setForegroundColor(clear)
-  musicslider:setBackgroundColor(clear)
-  menu:add(musicslider, offx + 32, offy + 36 * 3.5)
-
-  b = Label("min")
-  b:setFont(CFont:Get("game"))
-  b:adjustSize();
-  menu:addCentered(b, offx + 44, offy + 36 * 4 + 6)
-
-  b = Label("max")
-  b:setFont(CFont:Get("game"))
-  b:adjustSize();
-  menu:addCentered(b, offx + 218, offy + 36 * 4 + 6)
-
-  local musiccheckbox = {}
-  musiccheckbox = menu:addCheckBox("Enabled", offx + 240, offy + 36 * 3.5,
-    function() SetMusicEnabled(musiccheckbox:isMarked()); MusicStopped() end)
-  musiccheckbox:setMarked(IsMusicEnabled())
-  musiccheckbox:adjustSize();
-
+  makeSlider(
+     GetEffectsVolume,
+     SetEffectsVolume,
+     IsEffectsEnabled,
+     SetEffectsEnabled,
+     "Sounds",
+     1)
+  makeSlider(
+     GetMusicVolume,
+     SetMusicVolume,
+     IsMusicEnabled,
+     function (bool)
+	SetMusicEnabled(bool)
+	MusicStopped()
+     end,
+     "Music",
+     3.5)
+ 
   b = menu:addFullButton("~!OK", "o", centerx, bottom - 11 - 27,
     function()
       preferences.EffectsVolume = GetEffectsVolume()
@@ -81,10 +75,9 @@ function AddSoundOptions(menu, offx, offy, centerx, bottom)
 end
 
 function RunGameSoundOptionsMenu()
-  local menu = WarGameMenu(panel(5))
-  menu:resize(352, 352)
+  local menu = WarGameMenu(panel(1))
 
-  AddSoundOptions(menu, 0, 0, 352/2 - 254/2, 352)
+  AddSoundOptions(menu, 28, 0, 25, 272)
 
   menu:run(false)
 end
@@ -92,8 +85,18 @@ end
 function RunPreferencesMenu()
   local menu = WarGameMenu(panel(1))
 
+  menu:addFullButton("~!OK", "o", 25, 288 - 60,
+    function()
+      preferences.FogOfWar = GetFogOfWar()
+      preferences.ShowCommandKey = UI.ButtonPanel.ShowCommandKey
+      preferences.GameSpeed = GetGameSpeed()
+      SavePreferences()
+      menu:stop()
+    end)
+  
   menu:addLabel("Preferences", 128, 11)
 
+  -- fog of war
   local fog = {}
   fog = menu:addCheckBox("Fog of War", 16, 40 + 36 * 0,
     function()
@@ -106,32 +109,57 @@ function RunPreferencesMenu()
     fog:setEnabled(false)
   end
 
+  -- Command keys
   local ckey = {}
-  ckey = menu:addCheckBox("Show command key", 16, 40 + 36 * 1,
+  ckey = menu:addCheckBox("Show command keys", 16, 40 + 36 * 0.5,
     function() UI.ButtonPanel.ShowCommandKey = ckey:isMarked() end)
   ckey:setMarked(UI.ButtonPanel.ShowCommandKey)
 
-  menu:addLabel("Game Speed", 16, 40 + 36 * 2, Fonts["game"], false)
-
+  -- Game speed
+  menu:addLabel("Game Speed", 16, 40 + 36 * 1, Fonts["game"], false)
   local gamespeed = {}
-  gamespeed = menu:addSlider(15, 75, 198, 18, 32, 40 + 36 * 2.5,
+  gamespeed = menu:addSlider(15, 75, 208, 18, 32, 40 + 36 * 1.5,
     function() SetGameSpeed(gamespeed:getValue()) end)
   gamespeed:setValue(GetGameSpeed())
-
-  menu:addLabel("slow", 34, 40 + (36 * 3) + 6, Fonts["small"], false)
+  menu:addLabel("slow", 34, 40 + (36 * 2) + 6, Fonts["small"], false)
   local l = Label("fast")
   l:setFont(Fonts["small"])
   l:adjustSize()
-  menu:add(l, 230 - l:getWidth(), 40 + (36 * 3) + 6)
+  menu:add(l, 230 - l:getWidth(), 40 + (36 * 2) + 6)
 
-  menu:addFullButton("~!OK", "o", 25, 288 - 60,
+  local b = menu:addCheckBox("Full Screen", 16, 40 + 36 * 3,
     function()
-      preferences.FogOfWar = GetFogOfWar()
-      preferences.ShowCommandKey = UI.ButtonPanel.ShowCommandKey
-      preferences.GameSpeed = GetGameSpeed()
+      ToggleFullScreen()
+      preferences.VideoFullScreen = Video.FullScreen
       SavePreferences()
-      menu:stop()
     end)
+  b:setMarked(Video.FullScreen)
+
+  b = menu:addCheckBox("Allow Training Queue", 16, 40 + 36 * 3.5,
+    function()
+	  preferences.TrainingQueue = not preferences.TrainingQueue
+	  SetTrainingQueue(not not preferences.TrainingQueue)
+      SavePreferences()
+    end)
+  b:setMarked(preferences.TrainingQueue)
+
+  menu:addLabel("Max Selection", 16, 40 + 36 * 4, Fonts["game"], false)
+  local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
+  maxselection = menu:addDropDown(maxselections, 16 + 150, 40 + 36 * 4,
+    function(dd)
+	  local selected = maxselections[maxselection:getSelected() + 1]
+	  local count = tonumber(string.gmatch(selected, "%d+")())
+	  preferences.MaxSelection = count
+	  SavePreferences()
+	  SetMaxSelectable(count)
+	end)
+  for idx,str in ipairs(maxselections) do
+    local count = tonumber(string.gmatch(str, "%d+")())
+  	if preferences.MaxSelection == count then
+  	  maxselection:setSelected(idx - 1)
+  	  break
+  	end
+  end
 
   menu:run(false)
 end

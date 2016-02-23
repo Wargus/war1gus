@@ -322,6 +322,7 @@ SetGrabMouse(preferences.GrabMouse)
 SetMaxSelectable(preferences.MaxSelection)
 SetTrainingQueue(not not preferences.TrainingQueue)
 Preference.SF2Soundfont = "music/TimGM6mb.sf2"
+Preference.PauseOnLeave = false
 
 if file_exists("videos", "INTRO.ogv") and preferences.PlayIntro then
    SetTitleScreens(

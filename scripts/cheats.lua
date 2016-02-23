@@ -105,6 +105,14 @@ function HandleCheats(str)
       end
 	end
 
+  elseif (string.find(str, ".lua")) then
+     AddMessage("Reloading " .. str)
+     Load("scripts/" .. str)
+  elseif (string.find(str, "eval") == 1) then
+     local code = str:gsub("^eval%s", "")
+     AddMessage("Running: " .. code)
+     local result = loadstring(code)
+     AddMessage(" => " .. tostring(result))
   elseif (str:gsub("^human%d$", "") == "") then
      AddMessage("Skip to human lvl" .. str:gsub("human", "") .. ". Not implemented yet")
 
