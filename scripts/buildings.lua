@@ -62,7 +62,7 @@ for i=1,4,1 do
 	  Animations = "animations-ruins",
 	  Icon = "icon-peasant",
 	  Speed = 0,
-	  HitPoints = 255,
+	  HitPoints = 0,
 	  DrawLevel = 10,
 	  TileSize = {i, i}, BoxSize = {i * 32 - 1, i * 32 - 1},
 	  SightRange = 0,
@@ -316,7 +316,7 @@ DefineUnitType(
      },
      BuilderOutside = true,
      Priority = 0,
-     HitPoints = 1,
+     HitPoints = 0,
      Icon = "icon-road",
      TileSize = {1, 1}, BoxSize = {32, 32},
      SightRange = 0,
@@ -334,7 +334,7 @@ DefineUnitType(
 	 Revealer = false,
 	 Decoration = true,
 	 -- 
-     Type = "land", Building = false,
+     Type = "land", Building = true,
      VisibleUnderFog = true })
 
 UnitTypeFiles["unit-wall"] = {
