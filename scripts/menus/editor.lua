@@ -1,3 +1,29 @@
+local function HackEditorUI()
+  LoadUI("orc", Video.Width, Video.Height)
+  DefinePlayerColors(wc1.HumanMultiColors)
+   -- hack the coordinates for editor tools
+   local btny = UI.InfoPanel.Y + 4 + 10 + 38 + 20 + 18 + 4 + 24
+   UI.ButtonPanel.Y = UI.ButtonPanel.Y + 24
+   UI.ButtonPanel.Buttons:clear()
+   AddButtonPanelButton(0, btny + 47 * 0)
+   AddButtonPanelButton(60, btny + 47 * 0)
+   AddButtonPanelButton(120, btny + 47 * 0)
+   if (Video.Height >= 600) then
+      -- let's add another row of units
+      UI.ButtonPanel.Y = UI.ButtonPanel.Y + 47
+      AddButtonPanelButton(0, btny + 47 * 1)
+      AddButtonPanelButton(60, btny + 47 * 1)
+      AddButtonPanelButton(120, btny + 47 * 1)
+   end
+   if (Video.Height >= 768) then
+      -- let's add another row of units
+      UI.ButtonPanel.Y = UI.ButtonPanel.Y + 47
+      AddButtonPanelButton(0, btny + 47 * 2)
+      AddButtonPanelButton(60, btny + 47 * 2)
+      AddButtonPanelButton(120, btny + 47 * 2)
+   end
+   -- end of hack
+end
 
 --  Menu for new map to edit
 local function RunEditorNewMapMenu()
@@ -6,7 +32,6 @@ local function RunEditorNewMapMenu()
   local offy = (Video.Height - 480) / 2
   local tilesets = { "forest", "swamp", "dungeon" }
   local mapSizes = {"32", "64", "96", "128", "256"}
-  LoadUI("orc", Video.Width, Video.Height)
 
   menu:addLabel("Map description :", offx + 208, offy + 104 + 32 * 0, Fonts["game"], false)
   local mapDescription = menu:addTextInputField("", offx + 208, offy + 104 + 32 * 1, 200)
@@ -29,6 +54,7 @@ local function RunEditorNewMapMenu()
       LoadTileModels("scripts/tilesets/" .. tilesets[1 + dropDownTileset:getSelected()] .. ".lua")
 --	  Load("scripts/tilesets/" .. tilesets[1 + dropDownTileset:getSelected()] .. ".lua")
       menu:stop()
+      HackEditorUI()
       StartEditor(nil)
     end)
   menu:addFullButton("~!Cancel", "c", offx + 193, offy + 104 + 36 * 6, function() menu:stop(1) end)
@@ -75,7 +101,7 @@ local function RunEditorLoadMapMenu()
       end
     end)
 
-  menu:addFullButton("~!Edit map", "e", offx + 193, offy + 104 + 36 * 5, function() menu:stop(); StartEditor(mapname);  end)
+  menu:addFullButton("~!Edit map", "e", offx + 193, offy + 104 + 36 * 5, function() menu:stop(); HackEditorUI(); StartEditor(mapname);  end)
   menu:addFullButton("~!Cancel", "c", offx + 193, offy + 104 + 36 * 6, function() menu:stop(1) end)
 
   GetMapInfo(mapname)
@@ -327,8 +353,14 @@ function RunInEditorMenu()
 
   buttonEditorLoad:setEnabled(false) -- To be removed when enabled.
 
-  menu:addFullButton("E~!xit to Menu", "x", 25, 40 + 36 * 4,
-    function() Editor.Running = EditorNotRunning; menu:stopAll(); end)
+  menu:addFullButton(
+     "E~!xit to Menu", "x", 25, 40 + 36 * 4,
+     function()
+	Load("scripts/ui.lua")
+	Editor.Running = EditorNotRunning;
+	menu:stopAll();
+     end
+  )
   menu:addFullButton("Return to Editor (~<Esc~>)", "escape", 25, 288 - 60, function() menu:stop() end)
 
   menu:run(false)

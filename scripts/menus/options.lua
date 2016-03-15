@@ -187,7 +187,21 @@ function BuildOptionsMenu()
   local top = 140 * Video.Height / 400
 
   menu:addLabel("Video Resolution", offx + 16, offy + top, Fonts["game"], false)
-  local resolutions = {"640x400", "800x480", "1024x640", "1280x800", "1440x900", "1680x1050"}
+  local resolutions = {
+     "640x400",
+     "640x480",
+     "800x480",
+     "800x600",
+     "1024x640",
+     "1024x768",
+     "1280x720",
+     "1280x800",
+     "1280x920",
+     "1280x1024",
+     "1440x900",
+     "1680x1050",
+     "1920x1080",
+  }
   resolution = menu:addDropDown(resolutions, offx + 16 + 250, offy + top,
     function(dd)
 	  local selected = resolutions[resolution:getSelected() + 1]
