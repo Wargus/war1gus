@@ -1792,7 +1792,7 @@ void ConvertFLC(const char* file, const char* flc)
 ** Mux intro music and video using ffmpeg. TODO: find a way to do this inline
 */
 void MuxIntroVideos(int upper) {
-	char* videos[9];
+	char** videos;
 	if (upper) {
 		char* v1[] = {"HINTRO1.ogv", "HINTRO2.ogv",
 				  "OINTRO1.ogv", "OINTRO2.ogv", "OINTRO3.ogv",
