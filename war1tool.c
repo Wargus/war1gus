@@ -1791,11 +1791,21 @@ void ConvertFLC(const char* file, const char* flc)
 /**
 ** Mux intro music and video using ffmpeg. TODO: find a way to do this inline
 */
-void MuxIntroVideos(void) {
-	char* videos[] = {"HINTRO1.ogv", "HINTRO2.ogv",
-			  "OINTRO1.ogv", "OINTRO2.ogv", "OINTRO3.ogv",
-			  "CAVE1.ogv", "CAVE2.ogv", "CAVE3.ogv",
-			  "TITLE.ogv"};
+void MuxIntroVideos(int upper) {
+	char* videos[9];
+	if (upper) {
+		char* v1[] = {"HINTRO1.ogv", "HINTRO2.ogv",
+				  "OINTRO1.ogv", "OINTRO2.ogv", "OINTRO3.ogv",
+				  "CAVE1.ogv", "CAVE2.ogv", "CAVE3.ogv",
+			  	  "TITLE.ogv"};
+		videos = v1;
+	} else {
+		char* v2[] = {"hintro1.ogv", "hintro2.ogv",
+				  "ointro1.ogv", "ointro2.ogv", "ointro3.ogv",
+				  "cave1.ogv", "cave2.ogv", "cave3.ogv",
+			  	  "title.ogv"};
+		videos = v2;
+	}
 	char* audios[] = {"intro_1.wav", "intro_2.wav",
 			  "intro_3.wav", "intro_door.wav",
 			  "intro_4.wav",
@@ -3873,7 +3883,7 @@ int main(int argc, char** argv)
 
 	if (video) {
 	    // TODO: embed this somewhere nicer
-	    MuxIntroVideos();
+	    MuxIntroVideos(upper);
 	}
 
 	char *versionfilepath = (char*)calloc(sizeof(char),
