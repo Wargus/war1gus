@@ -1,9 +1,9 @@
---       _________ __                 __                               
+--       _________ __                 __
 --      /   _____//  |_____________ _/  |______     ____  __ __  ______
 --      \_____  \\   __\_  __ \__  \\   __\__  \   / ___\|  |  \/  ___/
---      /        \|  |  |  | \// __ \|  |  / __ \_/ /_/  >  |  /\___ \ 
+--      /        \|  |  |  | \// __ \|  |  / __ \_/ /_/  >  |  /\___ \
 --     /_______  /|__|  |__|  (____  /__| (____  /\___  /|____//____  >
---             \/                  \/          \//_____/            \/ 
+--             \/                  \/          \//_____/            \/
 --  ______________________                           ______________________
 --                        T H E   W A R   B E G I N S
 --         Stratagus - A free fantasy real time strategy game engine
@@ -16,17 +16,19 @@
 --      it under the terms of the GNU General Public License as published by
 --      the Free Software Foundation; either version 2 of the License, or
 --      (at your option) any later version.
---  
+--
 --      This program is distributed in the hope that it will be useful,
 --      but WITHOUT ANY WARRANTY; without even the implied warranty of
 --      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 --      GNU General Public License for more details.
---  
+--
 --      You should have received a copy of the GNU General Public License
 --      along with this program; if not, write to the Free Software
 --      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 --
 --      $Id$
+
+Preference.IconsShift = true
 
 UI.MessageFont = Fonts["game"]
 UI.MessageScrollSpeed = 5
@@ -87,7 +89,7 @@ DefinePanelContents(
 	{ Pos = {9, 82}, More = { "Text", {Text = function ()
                                                   if GetPlayerData(GetThisPlayer(), "Demand") > GetPlayerData(GetThisPlayer(), "Supply") then
                                                     return "Demand: ~<" .. GetPlayerData(GetThisPlayer(), "Demand") .. "~>"
-                                                  else 
+                                                  else
                                                     return "Demand: " .. GetPlayerData(GetThisPlayer(), "Demand")
                                                   end
                                                 end }}
@@ -261,7 +263,7 @@ function AddFiller(file, x, y, resize_x, resize_y)
                 b.X = x
                 b.Y = y
                 UI.Fillers:push_back(b)
-        end    
+        end
 end
 
 function AddSelectedButton(x, y)
@@ -450,6 +452,9 @@ function LoadUI(race, screen_width, screen_height)
   AddFiller("ui/" .. race .. "/right_panel.png", Video.Width - 16, 0, 16, Video.Height)
   AddFiller("ui/" .. race .. "/bottom_panel.png", 144, Video.Height - 24, Video.Width - (640 - 480), 24)
 
+  Preference.IconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
+  Preference.PressedIconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
+
   local ui = {
     "info-panel", {
       "panels", {"panel-general-contents", "panel-attack-unit-contents",
@@ -489,7 +494,7 @@ if (wc1.preferences.ShowButtonPopups) then
 		Contents = {
 				{ 	Margin = {1, 1}, HighlightColor = "red",
 					More = {"ButtonInfo", {InfoType = "Hint", Font = PopupFont}}
-				}, 
+				},
 				-- Move  hint
 				{ 	Margin = {1, 1}, Condition = {ButtonAction = "move"},
 					More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
@@ -513,16 +518,16 @@ if (wc1.preferences.ShowButtonPopups) then
 				},
 				{ 	Condition = {ButtonAction = "train-unit"},
                     More = {"Costs"}, HighlightColor = "red",
-				}, 
+				},
                 { 	Condition = {ButtonAction = "research"},
                  	More = {"Costs"}, HighlightColor = "red",
 				},
                 { 	Condition = {ButtonAction = "upgrade-to"},
                  	More = {"Costs"}, HighlightColor = "red",
-				}, 
+				},
                 { 	Condition = {ButtonAction = "cast-spell"},
                  	More = {"Costs"}, HighlightColor = "red",
-				}, 
+				},
                 -- Multi-build hint
 				{ 	Margin = {1, 1}, Condition = {ButtonAction = "build"},
 					More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
@@ -540,11 +545,11 @@ if (wc1.preferences.ShowButtonPopups) then
                 -- Description
 				{ 	Margin = {1, 1}, Condition = {HasDescription = true},
 					More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
-				}, 
+				},
 				{ 	Condition = {HasDescription = true}, Margin = {1, 1}, HighlightColor = "red",
 					More = {"ButtonInfo", {InfoType = "Description", MaxWidth = Video.Width / 5, Font = PopupFont}}
 				},
 
-            }	
+            }
 	})
 end
