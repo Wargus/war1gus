@@ -1,5 +1,6 @@
-war1gus (2.4.0-1) UNRELEASED; urgency=medium
+war1gus (2.4.1-1) trusty; urgency=medium
 
-  * Initial release.
+  [ timfel ]
+  * Initial release, supports DOS retail Warcraft 1 floppy and CD
 
- -- tim <tim@tim-ThinkPad-T420>  Wed, 25 Nov 2015 13:40:08 +0100
+ -- timfel <timfelgentreff@gmail.com>  Tue, 08 Nov 2016 15:27:04 +0100

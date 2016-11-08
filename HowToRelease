@@ -1,0 +1,7 @@
+war1gus.nsi
+war1gus.rc
+war1tool.c
+scripts/stratagus.lua
+mac/Info.plist
+debian/changelog
+debian/copyright
