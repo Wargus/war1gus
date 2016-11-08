@@ -45,7 +45,7 @@
 
 ; General variables
 !define NAME "War1gus"
-!define VERSION "2.4"
+!define VERSION "2.4.1"
 !define VIVERSION "${VERSION}.0.0"
 !define HOMEPAGE "https://github.com/wargus/war1gus"
 !define LICENSE "GPL v2"
@@ -354,7 +354,7 @@ Function PageExtractDataLeave
 FunctionEnd
 
 Section "-${NAME}" ExtractData
-	
+
 	StrCmp "$EXTRACTNEEDED" "no" end
 
 	AddSize 110348
@@ -362,7 +362,7 @@ Section "-${NAME}" ExtractData
 	DetailPrint ""
 	DetailPrint "$(EXTRACTDATA_FILES)"
 	StrCpy $DataDirectory "$DATADIR"
-	
+
 	DetailPrint "$DataDirectory"
 	DetailPrint "$\"$INSTDIR\${WARTOOL}$\" $\"$DataDirectory$\" $\"$INSTDIR$\""
 	SetOutPath "$INSTDIR"

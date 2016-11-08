@@ -34,7 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "2.4.0.2015-12-10" // Version of extractor wartool
+#define VERSION "2.4.1.20161108" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2015 by The Stratagus Project"
 
@@ -1484,12 +1484,12 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	//
 	unsigned char *p, *image, *i;
 	int height, width, pstamp_type;
-	
+
 	p = buf;
 	height = FetchLE16(p);
 	width = FetchLE16(p);
 	SkipLE16(p);
-	
+
 	image = (unsigned char*)malloc(height * width);
 	if (!image) {
 		printf("Can't allocate image\n");
@@ -1625,7 +1625,7 @@ void EncodeFLC(const char* flc, int speed)
 
 	buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(output) + 1);
 	sprintf(buf, "%s/%s/%s", Dir, VIDEO_PATH, output);
-	CheckPath(buf);	
+	CheckPath(buf);
 
 	sprintf(pngfiles, "%s-%%04d.png", FLCFile);
 
@@ -1772,7 +1772,7 @@ void ConvertFLC(const char* file, const char* flc)
 
 	outputPath = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(output) + 1);
 	sprintf(outputPath, "%s/%s/%s", Dir, VIDEO_PATH, output);
-	CheckPath(outputPath);	
+	CheckPath(outputPath);
 
 	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 2 + strlen(file) + strlen(outputOptions) + 3 + strlen(outputPath) + 2);
 	sprintf(cmd, "%s \"%s\"%s\"%s\"", cmdprefix, file, outputOptions, outputPath);
@@ -1866,7 +1866,7 @@ void MuxIntroVideos(int upper) {
 	 		free(inputWavGz);
 	 		continue;
 	 	}
-	 
+
 	 	inputAudio = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
 	 	sprintf(inputAudio, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
 		wavFile = fopen(inputAudio, "wb");
@@ -1878,7 +1878,7 @@ void MuxIntroVideos(int upper) {
 	 		free(inputAudio);
 	 		continue;
 	 	}
-	 
+
 	 	wavBuffer = (unsigned char*)calloc(sizeof(char), 1024 * 128);
 	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char))) > 0) {
 	 		fwrite(wavBuffer, sizeof(char), readM,  wavFile);
@@ -1927,7 +1927,7 @@ void MuxIntroVideos(int upper) {
 	}
 	free(outputIntro);
 	free(cmd);
-	
+
 	// remove unneeded files
 	for (i = 0; i < 9; i++) {
 		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(videos[i]) + 1);
@@ -3016,7 +3016,7 @@ static void SmsSaveResources(FILE* sms_c2, unsigned char* txtp)
 {
 
 	// 0x005C - 0x0069: 5xDWord: Lumber for each player.
-	// 0x0070 - 0x0083: 5xDWord: Gold for each player. 
+	// 0x0070 - 0x0083: 5xDWord: Gold for each player.
 	fprintf(sms_c2, "\n-- Resources\n");
 	for (int p = 0; p < 5; p++) {
 		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"wood\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
@@ -3031,7 +3031,7 @@ static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
 
 	fprintf(sms_c2, "\n-- Allowed units\n"\
 					"DefineAllowHumanUnits(\"FFFFFFFFFFFFFFFF\")\n"\
-					"DefineAllowOrcUnits(\"FFFFFFFFFFFFFFFF\")\n");	
+					"DefineAllowOrcUnits(\"FFFFFFFFFFFFFFFF\")\n");
 	fprintf(sms_c2, "\n-- Allowed upgraded units. These are just enabled if the corresponding update is researched, anyway\n"\
 					"DefineAllow(\"unit-knight1\", \"AAAAAAAAAAAAAAAA\")\n"\
 					"DefineAllow(\"unit-knight2\", \"AAAAAAAAAAAAAAAA\")\n"\
@@ -3087,7 +3087,7 @@ static void SmsSaveUpgrades(FILE* sms_c2, unsigned char* txtp)
 			allowed1[player == 4 ? 15 : player] = offset >= 1 ? 'R' : 'A';
 			allowed2[player == 4 ? 15 : player] = offset >= 2 ? 'R' : 'A';
 		}
-		for (int race = 0; race < 2; race++) {	
+		for (int race = 0; race < 2; race++) {
 			fprintf(sms_c2, "DefineAllow(\"%s1\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed1);
 			fprintf(sms_c2, "DefineAllow(\"%s2\", \"%s\")\n", upgradeNames[((upgrade - 0x4) / 5) * 2 + race], allowed2);
 		}
@@ -3144,7 +3144,7 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
 {
 	int i;
 	const char* computerrace = strcmp(race, "orc") ? "orc" : "human";
-	
+
 	gzprintf(smp, "-- Stratagus Map Presentation\n");
 	gzprintf(smp, "-- Generated from war1tool\n\n");
 
@@ -3634,7 +3634,7 @@ void CopyDirectories(char** directories) {
 	int i, ret;
 	char* dir;
 	char cmd[2048];
-	
+
 	CheckPath(Dir);
 
 	for (i = 0; (dir = directories[i]); i++) {
@@ -3790,7 +3790,7 @@ int main(int argc, char** argv)
 	dirs[1] = "contrib";
 	dirs[2] = "campaigns";
 	CopyDirectories(dirs);
-	
+
 	CreateConfig(Dir, video, midi);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
