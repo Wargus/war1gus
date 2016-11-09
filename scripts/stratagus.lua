@@ -37,7 +37,7 @@ war1gus.Name = "War1gus"
 war1gus.Version = "2.4.1"
 war1gus.Homepage = "https://github.com/Wargus/war1gus"
 war1gus.Licence = "GPL v2"
-war1gus.Copyright = "Copyright (c) 1998-2015 by The Stratagus Project"
+war1gus.Copyright = "(C) 1998-2016 by The Stratagus Project"
 
 function file_exists(path, name)
    for i,f in ipairs(ListFilesInDirectory(path)) do
