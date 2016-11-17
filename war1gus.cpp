@@ -29,8 +29,18 @@
 */
 
 #define GAME_NAME "War1gus"
-#define GAME_CD "Warcraft I CD or Floppy"
+#define GAME_CD "Warcraft I DOS DATA.WAR file"
+#define GAME_CD_FILE_PATTERNS "DATA.WAR", "data.war"
 #define GAME "war1gus"
+#define EXTRACTOR_TOOL "war1tool"
+#define EXTRACTOR_ARGS "-v"
+#define CONTRIB_DIRECTORIES { "campaigns", "campaigns", \
+			      "contrib", "contrib", \
+			      "maps", "maps", \
+			      "scripts", "scripts", NULL }
+
+const char* SRC_PATH() { return __FILE__; }
+
 #ifdef WIN32
 #define TITLE_PNG "%s\\graphics\\ui\\title_screen.png"
 #else
