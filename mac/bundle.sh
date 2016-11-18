@@ -17,7 +17,6 @@ mkdir -p War1gus.app/Contents/libs
 
 # Copy launchscript and info.plist
 cp Info.plist War1gus.app/Contents/
-cp launchscript.sh War1gus.app/Contents/MacOS
 
 # Generate icons
 mkdir war1gus.iconset
@@ -45,8 +44,10 @@ cd macdylibbundler
 make
 cd ..
 
-cp ../build/war1tool War1gus.app/Contents/MacOS
+cp ../build/war1tool War1gus.app/Contents/MacOS/
+cp ../build/war1gus War1gus.app/Contents/MacOS/
 cp "$STRATAGUS" War1gus.app/Contents/MacOS/stratagus
 cp "$(dirname "$STRATAGUS")"/../libs/* War1gus.app/Contents/libs/
 
 macdylibbundler/dylibbundler -cd -of -b -x ./War1gus.app/Contents/MacOS/war1tool -d ./War1gus.app/Contents/libs/
+macdylibbundler/dylibbundler -cd -of -b -x ./War1gus.app/Contents/MacOS/war1gus -d ./War1gus.app/Contents/libs/
