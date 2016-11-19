@@ -103,7 +103,6 @@ ${redefine} VCREDISTREGKEY "SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\
 
 Var STARTMENUDIR
 Var DATADIR
-Var EXTRACTNEEDED
 
 Var DataDirectory
 
@@ -128,15 +127,8 @@ Var DataDirectory
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 
-!define MUI_PAGE_HEADER_TEXT "$(EXTRACTDATA_PAGE_HEADER_TEXT)"
-!define MUI_PAGE_HEADER_SUBTEXT "$(EXTRACTDATA_PAGE_HEADER_SUBTEXT)"
-!define MUI_DIRECTORYPAGE_TEXT_TOP "$(EXTRACTDATA_PAGE_TEXT_TOP)"
-!define MUI_DIRECTORYPAGE_TEXT_DESTINATION "$(EXTRACTDATA_PAGE_TEXT_DESTINATION)"
 !define MUI_DIRECTORYPAGE_VARIABLE $DATADIR
 !define MUI_DIRECTORYPAGE_VERIFYONLEAVE
-!define MUI_PAGE_CUSTOMFUNCTION_PRE PageExtractDataPre
-!define MUI_PAGE_CUSTOMFUNCTION_SHOW PageExtractDataShow
-!define MUI_PAGE_CUSTOMFUNCTION_LEAVE PageExtractDataLeave
 !insertmacro MUI_PAGE_DIRECTORY
 
 !insertmacro MUI_PAGE_STARTMENU Application $STARTMENUDIR
@@ -168,35 +160,6 @@ LangString DESC_REMOVEEXE ${LANG_ENGLISH} "Remove ${NAME} binary executables"
 LangString DESC_REMOVEEXE ${LANG_RUSSIAN} "Удаляются исполняемые файлы ${NAME}"
 LangString DESC_REMOVECONF ${LANG_ENGLISH} "Remove all other configuration and extracted data files and directories in ${NAME} install directory created by user or ${NAME}"
 LangString DESC_REMOVECONF ${LANG_RUSSIAN} "Удалить все прочие файлы и директории в установочной папке ${NAME}, созданные пользователем ${NAME}"
-
-LangString EXTRACTDATA_FILES ${LANG_ENGLISH} "Extracting Warcraft data files..."
-LangString EXTRACTDATA_FILES ${LANG_RUSSIAN} "Извлекаются файлы Warcraft..."
-LangString EXTRACTDATA_RIP_AUDIO ${LANG_ENGLISH} "Ripping Warcraft audio tracks..."
-LangString EXTRACTDATA_RIP_AUDIO ${LANG_RUSSIAN} "Копируется CD-музыка Warcraft..."
-LangString EXTRACTDATA_COPY_AUDIO ${LANG_ENGLISH} "Coping Warcraft audio tracks..."
-LangString EXTRACTDATA_COPY_AUDIO ${LANG_RUSSIAN} "Копируется музыка Warcraft..."
-LangString EXTRACTDATA_CONVERT_AUDIO ${LANG_ENGLISH} "Converting Warcraft audio tracks..."
-LangString EXTRACTDATA_CONVERT_AUDIO ${LANG_RUSSIAN} "Конвертируется музыка Warcraft..."
-
-LangString EXTRACTDATA_FILES_FAILED ${LANG_ENGLISH} "Extracting Warcraft data files failed."
-LangString EXTRACTDATA_FILES_FAILED ${LANG_RUSSIAN} "Не удалось извлечь файлы Warcraft."
-LangString EXTRACTDATA_RIP_AUDIO_FAILED ${LANG_ENGLISH} "Ripping Warcraft audio tracks failed."
-LangString EXTRACTDATA_RIP_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось скопировать CD-музыку Warcraft."
-LangString EXTRACTDATA_COPY_AUDIO_FAILED ${LANG_ENGLISH} "Coping Warcraft audio tracks failed."
-LangString EXTRACTDATA_COPY_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось скопировать музыку Warcraft."
-LangString EXTRACTDATA_CONVERT_AUDIO_FAILED ${LANG_ENGLISH} "Converting Warcraft audio tracks failed."
-LangString EXTRACTDATA_CONVERT_AUDIO_FAILED ${LANG_RUSSIAN} "Не удалось сконвертировать музыку Warcraft."
-
-LangString EXTRACTDATA_PAGE_HEADER_TEXT ${LANG_ENGLISH} "Choose Warcraft Location"
-LangString EXTRACTDATA_PAGE_HEADER_TEXT ${LANG_RUSSIAN} "Укажите местоположение Warcraft"
-LangString EXTRACTDATA_PAGE_HEADER_SUBTEXT ${LANG_ENGLISH} "Choose the folder in which are Warcraft data files."
-LangString EXTRACTDATA_PAGE_HEADER_SUBTEXT ${LANG_RUSSIAN} "Укажите папку, в которой содержатся файлы Warcraft."
-LangString EXTRACTDATA_PAGE_TEXT_TOP ${LANG_ENGLISH} "Setup will extract Warcraft data files from the following folder. You can specify location of CD or install location of Warcraft data files (doesn't work for Battle.net edition)."
-LangString EXTRACTDATA_PAGE_TEXT_TOP ${LANG_RUSSIAN} "Программа установки извлечет файлы Warcraft из указанной папки. Вы можете указать либо CD-диск с игрой, либо указать папку с установленным Warcraft (не подходит для версии Battle.net)."
-LangString EXTRACTDATA_PAGE_TEXT_DESTINATION ${LANG_ENGLISH} "Source Folder"
-LangString EXTRACTDATA_PAGE_TEXT_DESTINATION ${LANG_RUSSIAN} "Папка с файлами Warcraft"
-LangString EXTRACTDATA_PAGE_NOT_VALID ${LANG_ENGLISH} "This is not valid Warcraft data directory."
-LangString EXTRACTDATA_PAGE_NOT_VALID ${LANG_RUSSIAN} "Программа установки не обнаружила Warcraft в указанной папке."
 
 LangString STR_VERSION ${LANG_ENGLISH} "version"
 LangString STR_VERSION ${LANG_RUSSIAN} "версия"
@@ -323,57 +286,6 @@ Section "-${NAME}"
 	WriteRegStr HKLM "${STRATAGUS_REGKEY}\Games" "${NAME}" "${VERSION}"
 
 	WriteUninstaller "$INSTDIR\${UNINSTALL}"
-
-SectionEnd
-
-;--------------------------------
-
-Function PageExtractDataPre
-
-	StrCpy $EXTRACTNEEDED "yes"
-
-FunctionEnd
-
-Function PageExtractDataShow
-
-	FindWindow $0 "#32770" "" $HWNDPARENT
-	GetDlgItem $1 $0 1023
-	ShowWindow $1 0
-	GetDlgItem $1 $0 1024
-	ShowWindow $1 0
-
-FunctionEnd
-
-Function PageExtractDataLeave
-
-	IfFileExists "$DATADIR\data\data.war" +3
-
-	MessageBox MB_OK|MB_ICONSTOP "$(EXTRACTDATA_PAGE_NOT_VALID)"
-	Abort
-
-FunctionEnd
-
-Section "-${NAME}" ExtractData
-
-	StrCmp "$EXTRACTNEEDED" "no" end
-
-	AddSize 110348
-
-	DetailPrint ""
-	DetailPrint "$(EXTRACTDATA_FILES)"
-	StrCpy $DataDirectory "$DATADIR"
-
-	DetailPrint "$DataDirectory"
-	DetailPrint "$\"$INSTDIR\${WARTOOL}$\" $\"$DataDirectory$\" $\"$INSTDIR$\""
-	SetOutPath "$INSTDIR"
-	ExecWait "$\"$INSTDIR\${WARTOOL}$\" -v $\"$DataDirectory$\" $\"$INSTDIR$\""
-	Pop $0
-	IntCmp $0 0 +3
-
-	MessageBox MB_OK|MB_ICONSTOP "$(EXTRACTDATA_FILES_FAILED)"
-	Abort
-
-end:
 
 SectionEnd
 
