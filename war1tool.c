@@ -1751,7 +1751,7 @@ void ConvertFLC(const char* file, const char* flc)
 }
 #else
 /**
-**  Convert FLC using ffmpeg. Manual conversion into PNGs (above) and
+**  Convert FLC using ffmpeg resp. avconv. Manual conversion into PNGs (above) and
 **  then into ogv should produce better results, but ffmpeg2theora
 **  screws up the colors. Until then, just convert directly, and live
 **  with the direct conversion bugs.
@@ -1777,15 +1777,19 @@ void ConvertFLC(const char* file, const char* flc)
 	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 2 + strlen(file) + strlen(outputOptions) + 3 + strlen(outputPath) + 2);
 	sprintf(cmd, "%s \"%s\"%s\"%s\"", cmdprefix, file, outputOptions, outputPath);
 	ret = system(cmd);
+	if (ret != 0) { // try avconv
+		strncpy(cmd, "avconv", 6);
+		ret = system(cmd);
+	}
+
+	if (ret != 0) {
+		printf("Can't convert video %s to ogv format. Is ffmpeg/avconv installed in PATH?\n", file);
+		fflush(stdout);
+	}
 
 	free(outputPath);
 	free(cmd);
 	free(output);
-
-	if (ret != 0) {
-		printf("Can't convert video %s to ogv format. Is ffmpeg installed in PATH?\n", file);
-		fflush(stdout);
-	}
 }
 
 /**
@@ -1845,8 +1849,12 @@ void MuxIntroVideos(int upper) {
 	printf("%s\n\n", cmd);
 	fflush(stdout);
 	ret = system(cmd);
+	if (ret != 0) { // try avconv
+		strncpy(cmd, "avconv", 6);
+		ret = system(cmd);
+	}
 	if (ret != 0) {
-		printf("Can't concat intro videos. Is ffmpeg installed in PATH?\n");
+		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
 		exit(-1);
 	}
@@ -1901,8 +1909,12 @@ void MuxIntroVideos(int upper) {
 	printf("%s\n\n", cmd);
 	fflush(stdout);
 	ret = system(cmd);
+	if (ret != 0) { // try avconv
+		strncpy(cmd, "avconv", 6);
+		ret = system(cmd);
+	}
 	if (ret != 0) {
-		printf("Can't concat intro videos. Is ffmpeg installed in PATH?\n");
+		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
 		exit(-1);
 	}
@@ -1921,8 +1933,12 @@ void MuxIntroVideos(int upper) {
 	sprintf(cmd, "%s -i %s -i %s %s %s", cmdprefix, outputVideo, outputAudio, encoderIntroOpts, outputIntro);
 	printf("%s\n", cmd);
  	ret = system(cmd);
+	if (ret != 0) { // try avconv
+		strncpy(cmd, "avconv", 6);
+		ret = system(cmd);
+	}
  	if (ret != 0) {
-		printf("Can't mux intro video and audio. Is ffmpeg installed in PATH?\n");
+		printf("Can't mux intro video and audio. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
 	}
 	free(outputIntro);
