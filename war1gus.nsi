@@ -102,9 +102,6 @@ ${redefine} VCREDISTREGKEY "SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\
 ;--------------------------------
 
 Var STARTMENUDIR
-Var DATADIR
-
-Var DataDirectory
 
 !define MUI_ICON "${ICON}"
 !define MUI_UNICON "${ICON}"
@@ -125,10 +122,6 @@ Var DataDirectory
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "COPYING"
 !insertmacro MUI_PAGE_COMPONENTS
-!insertmacro MUI_PAGE_DIRECTORY
-
-!define MUI_DIRECTORYPAGE_VARIABLE $DATADIR
-!define MUI_DIRECTORYPAGE_VERIFYONLEAVE
 !insertmacro MUI_PAGE_DIRECTORY
 
 !insertmacro MUI_PAGE_STARTMENU Application $STARTMENUDIR
@@ -282,7 +275,6 @@ Section "-${NAME}"
 	WriteRegStr HKLM "${REGKEY}" "URLInfoAbout" "${HOMEPAGE}"
 	WriteRegDWORD HKLM "${REGKEY}" "NoModify" 1
 	WriteRegDWORD HKLM "${REGKEY}" "NoRepair" 1
-	WriteRegStr HKLM "${REGKEY}" "DataDir" "$DATADIR"
 	WriteRegStr HKLM "${STRATAGUS_REGKEY}\Games" "${NAME}" "${VERSION}"
 
 	WriteUninstaller "$INSTDIR\${UNINSTALL}"
@@ -360,10 +352,6 @@ Function .onInit
 
 !endif
 
-	ReadRegStr $DATADIR HKLM "${REGKEY}" "DataDir"
-	StrCmp $DATADIR "" 0 +2
-
-	StrCpy $DATADIR "D:"
 	!insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
 
