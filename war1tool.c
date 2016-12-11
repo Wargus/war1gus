@@ -60,6 +60,8 @@
 #include <ctype.h>
 #include <png.h>
 #include <zlib.h>
+#include <liblhasa-1.0/lhasa.h>
+#include <setjmp.h>
 
 #include "xmi2mid.h"
 #include "scale2x.h"
@@ -67,6 +69,8 @@
 #if defined(_MSC_VER) || defined(__MINGW32__) || defined(USE_BEOS)
 typedef unsigned long u_int32_t;
 #endif
+
+jmp_buf skipEntry;
 
 #ifndef __GNUC__
 #define __attribute__(args)  // Does nothing for non GNU CC
@@ -84,6 +88,13 @@ typedef unsigned long u_int32_t;
 #define O_BINARY 0
 #endif
 
+static inline unsigned short Swap16(unsigned short D) {
+	return ((D << 8) | (D >> 8));
+}
+static inline unsigned int Swap32(unsigned int D) {
+	return ((D << 24) | ((D << 8) & 0x00FF0000) | ((D >> 8) & 0x0000FF00) | (D >> 24));
+}
+
 // From SDL_byteorder.h
 #if  defined(__i386__) || defined(__ia64__) || defined(WIN32) || \
     (defined(__alpha__) || defined(__alpha)) || \
@@ -92,6 +103,7 @@ typedef unsigned long u_int32_t;
      defined(__SYMBIAN32__) || \
      defined(__x86_64__) || \
      defined(__LITTLE_ENDIAN__)
+#define LITTLE_ENDIAN_SYSTEM 1
 #ifdef __cplusplus
 static inline void SkipLE16(unsigned char*& p) {
 	p += 2;
@@ -119,14 +131,9 @@ static inline unsigned int FetchLE32(unsigned char*& p) {
 #define AccessLE32(p) (*((unsigned int*)(p)))
 #define ConvertLE16(v) (v)
 #else
-static inline unsigned short Swap16(unsigned short D) {
-	return ((D << 8) | (D >> 8));
-}
-static inline unsigned int Swap32(unsigned int D) {
-	return ((D << 24) | ((D << 8) & 0x00FF0000) | ((D >> 8) & 0x0000FF00) | (D >> 24));
-}
+#define LITTLE_ENDIAN_SYSTEM 0
 #define FetchLE16(p) Swap16(*((unsigned short*)(p))); p += 2
-#define FetchLE32(p) Swap32(*((unsigned int*)(p))) p += 4
+#define FetchLE32(p) Swap32(*((unsigned int*)(p))); p += 4
 #define AccessLE16(p) Swap16((*((unsigned short*)(p))))
 #define AccessLE32(p) Swap32(*((unsigned int*)(p)))
 #define ConvertLE16(v) Swap16(v)
@@ -1069,15 +1076,21 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 //  Archive
 //----------------------------------------------------------------------------
 
+size_t progress_callback(void* buf, size_t buf_len, void* user_data) {
+	return 0;
+}
+
 /**
 **  Open the archive file.
 **
 **  @param file  Archive file name
 **  @param type  Archive type requested
 */
-int OpenArchive(const char* file, int type)
+int OpenArchive(const char* file, int type, int demo)
 {
 	int f;
+	char* actual_file = (char*)calloc(sizeof(char), strlen(file) + 1);
+	strcpy(actual_file, file);
 	struct stat stat_buf;
 	unsigned char* buf;
 	unsigned char* cp;
@@ -1085,17 +1098,31 @@ int OpenArchive(const char* file, int type)
 	int entries;
 	int i;
 
+	if (demo) { // decompress file first
+		LHAInputStream *stream = lha_input_stream_from(actual_file);
+		LHAReader *reader = lha_reader_new(stream);
+		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen("data.war") + 1);
+		sprintf(buf, "%s/%s", Dir, "data.war");
+		printf("Uncompressing %s to %s\n", actual_file, buf);
+		LHAFileHeader *header = lha_reader_next_file(reader);
+		if (!lha_reader_extract(reader, buf, NULL, NULL)) {
+			printf("Can't uncompress %s\n", buf);
+			exit(-1);
+		}
+		free(actual_file);
+		actual_file = buf;
+	}
+
 	//
 	//  Open the archive file
 	//
-	f = open(file, O_RDONLY | O_BINARY, 0);
-
+	f = open(actual_file, O_RDONLY | O_BINARY, 0);
 	if (f == -1) {
-		printf("Can't open %s\n", file);
+		printf("Can't open %s\n", actual_file);
 		exit(-1);
 	}
 	if (fstat(f, &stat_buf)) {
-		printf("Can't fstat %s\n", file);
+		printf("Can't fstat %s\n", actual_file);
 		exit(-1);
 	}
 
@@ -1117,7 +1144,7 @@ int OpenArchive(const char* file, int type)
 	i = FetchLE32(cp);
 	if (i != 0x19 && i != 0x18) {
 		printf("Wrong magic %08x, expected %08x or %08x\n",
-			i, 0x00000019, 0x00000018);
+			   i, 0x00000019, 0x00000018);
 		exit(-1);
 	}
 	entries = FetchLE16(cp);
@@ -1130,13 +1157,18 @@ int OpenArchive(const char* file, int type)
 	//
 	//  Read offsets.
 	//
-	op = malloc((entries + 1) * sizeof(unsigned char**));
+	op = calloc(sizeof(unsigned char**), entries + 1);
 	if (!op) {
 		printf("Can't malloc %d entries\n", entries);
 		exit(-1);
 	}
 	for (i = 0; i < entries; ++i) {
-		op[i] = buf + FetchLE32(cp);
+		int nextoff = FetchLE32(cp);
+		if (nextoff == 0xffffffff || nextoff == 0x0) {
+			op[i] = 0x0;
+		} else {
+			op[i] = buf + nextoff;
+		}
 	}
 	op[i] = buf + stat_buf.st_size;
 
@@ -1161,6 +1193,11 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 	unsigned char* dest;
 	int uncompressed_length;
 	int flags;
+
+	if (cp == 0x0) {
+		printf("Skipping placeholder\n");
+		longjmp(skipEntry, 1);
+	}
 
 	uncompressed_length = FetchLE32(cp);
 	flags = uncompressed_length >> 24;
@@ -3711,6 +3748,7 @@ int main(int argc, char** argv)
 	char* archive_dir;
 	int a;
 	int upper;
+	int demo = 0;
 	struct stat st;
 	int midi, video;
 	char* dirs[4] = {0x0};
@@ -3785,12 +3823,24 @@ int main(int argc, char** argv)
 		upper = 0;
 	}
 	if (stat(buf, &st)) {
+		sprintf(buf, "%s/data.waa", ArchiveDir);
+		upper = 0;
+		demo = 1;
+	}
+	if (stat(buf, &st)) {
+		sprintf(buf, "%s/DATA.WAA", ArchiveDir);
+		upper = 1;
+		demo = 1;
+	}
+	if (stat(buf, &st)) {
 		fprintf(stderr, "error: %s/data.war does not exist\n", ArchiveDir);
 		fprintf(stderr, "error: %s/fdata/data.war does not exist\n", ArchiveDir);
 		fprintf(stderr, "error: %s/data/data.war does not exist\n", ArchiveDir);
 		fprintf(stderr, "error: %s/DATA.WAR does not exist\n", ArchiveDir);
 		fprintf(stderr, "error: %s/FDATA/DATA.WAR does not exist\n", ArchiveDir);
 		fprintf(stderr, "error: %s/DATA/DATA.WAR does not exist\n", ArchiveDir);
+		fprintf(stderr, "error: %s/DATA.WAA does not exist\n", ArchiveDir);
+		fprintf(stderr, "error: %s/data.waa does not exist\n", ArchiveDir);
 		fflush(stderr);
 		exit(1);
 	}
@@ -3811,9 +3861,7 @@ int main(int argc, char** argv)
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		// Should only be on the expansion cd
-#ifdef DEBUG
 		printf("%s:\n", Todo[u].File);
-#endif
 		switch (Todo[u].Type) {
 			case F:
 				if (upper) {
@@ -3828,13 +3876,20 @@ int main(int argc, char** argv)
 				}
 
 				sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
+				if (demo) {
+					if (!strcmp(Todo[u].File, "DATA.WAR")) {
+						buf[strlen(buf) - 1] = 'A'; // data.waa
+					} else if (!strcmp(Todo[u].File, "data.war")) {
+						buf[strlen(buf) - 1] = 'a'; // data.waa
+					}
+				}
 #ifdef DEBUG
 				printf("Archive \"%s\"\n", buf);
 #endif
 				if (ArchiveBuffer) {
 					CloseArchive();
 				}
-				OpenArchive(buf, Todo[u].Arg1);
+				OpenArchive(buf, Todo[u].Arg1, demo);
 				break;
 			case FLC:
 				if (video) {
@@ -3894,6 +3949,9 @@ int main(int argc, char** argv)
 				break;
 			default:
 				break;
+		}
+		if (setjmp(skipEntry) != 0) {
+			unlink(Todo[u - 1].File);
 		}
 	}
 

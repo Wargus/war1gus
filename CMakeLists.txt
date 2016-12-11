@@ -30,13 +30,17 @@ file(GLOB war1tool_SRCS
   "README"
   )
 
-set(war1tool_HDRS xmi2mid.h scale2x.h)
+file(GLOB war1tool_HDRS
+  "xmi2mid.h"
+  "scale2x.h"
+  )
 
 find_package(PNG REQUIRED)
 find_package(ZLIB REQUIRED)
+find_package(LHASA REQUIRED)
 
-include_directories(${PNG_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS})
-set(war1tool_LIBS ${PNG_LIBRARIES} ${ZLIB_LIBRARIES})
+include_directories(${PNG_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS} ${LHASA_INCLUDE_DIR})
+set(war1tool_LIBS ${PNG_LIBRARIES} ${ZLIB_LIBRARIES} ${LHASA_LIBRARIES})
 
 add_executable(war1tool ${war1tool_SRCS} ${war1tool_HDRS})
 target_link_libraries(war1tool ${war1tool_LIBS})
@@ -79,14 +83,6 @@ if(STRATAGUS_FOUND)
 
   include_directories(${X11_INCLUDE_DIR} ${STRATAGUS_INCLUDE_DIR})
   if (NOT WIN32)
-    find_package(GTK2 REQUIRED gtk)
-    if (NOT GTK2_FOUND)
-      add_definitions("-DNOGTK")
-    else()
-      include_directories(${GTK2_INCLUDE_DIRS})
-      set(war1gus_LIBS ${war1gus_LIBS} ${GTK2_LIBRARIES})
-    endif()
-    find_package(X11 REQUIRED)
     set(war1gus_LIBS ${war1gus_LIBS} ${X11_X11_LIB})
     add_definitions(-DDATA_PATH="${DATA_PATH}")
     add_definitions(-DSCRIPTS_PATH="${DATA_PATH}")
