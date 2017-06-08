@@ -34,6 +34,7 @@
 #define GAME "war1gus"
 #define EXTRACTOR_TOOL "war1tool"
 #define EXTRACTOR_ARGS "-v"
+#define CHECK_EXTRACTED_VERSION 1
 #define CONTRIB_DIRECTORIES { "campaigns", "campaigns", \
 			      "contrib", "contrib", \
 			      "maps", "maps", \
