@@ -8,9 +8,6 @@ addons:
   apt:
     packages:
       - libpng12-dev
-env:
-  global:
-    secure: "wnFO9Le2ya93TOTgPXeTPvlYTg7T+3TXezElGhozx6L1iYMmLbnSq188T4ESy+NNjNCMtrN0o84Gdwt8Ykc4/c8OpDLjXSFjXgki0wRwZBoRVpCbKpQKmdHUW1fUjN3UaNL4uGMMHU81NuMaTUw4m+2123f+4o98hGm0zptdRPp0mX2Mlq5iagLJXmdtc1oPEMMVbXF5ZCcKle9/Uwnrwtdem9u8FJl5j+hGWVWQYaS3hbr7CgyE2wyjuk5QSGdrGDiOGbdPoJmF3c4OEaYGI/7T4Gdq9iOsO1yy4hoFb5ZKGOgSSnw36HJWXfLw5ItZy73W+k7h6tb8AHpCQdLD8pGMlvTvdP9ycGIoqoW3Zr64lGbOD0eCuwzqnHpukRE02rGq14n9qTRjlD8vPbgzC9QGmZ4oB2UA9Jaw3d2rhiKOh+5a5AOn3pMPPT5pVDcHt+knMmo/JBJwoaICMfwbJ/PzijiPLOf4VOTO5W+Ua+5YlSrYwNT3tTrQIu+amFbHptim7u9kmqhWB5hCaeN5cQJktKMNP5DGA/y0t/cOg4JAZFvlsEdw1z4RW6TlUjIG31h1jprRitB9cO5vDtkMW9il6sO3LbwM21c76R4Xp1mNYhwTsh6pW+6UCBo1XNMZJio1PH3C1y0/TQ3b1FTAWQ/BDLM7pVJejVIPfMPviC8="
 before_script:
   - mkdir build
   - cd build
