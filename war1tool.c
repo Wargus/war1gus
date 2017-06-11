@@ -2789,13 +2789,14 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 	ret = system(cmd);
 
 	free(cmd);
-	remove(buf);
 
 	if (ret != 0) {
 		printf("Can't convert midi sound %s to wav format. Is timidity installed in PATH?\n", file);
 		fflush(stdout);
 		return;
 	}
+
+	remove(buf);
 
 	sprintf(buf, "%s/%s/%s.wav", Dir, MUSIC_PATH, file);
 	CheckPath(buf);
