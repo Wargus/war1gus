@@ -33,11 +33,12 @@
 #define GAME_CD_FILE_PATTERNS "DATA.WAR", "data.war"
 #define GAME "war1gus"
 #define EXTRACTOR_TOOL "war1tool"
-#define EXTRACTOR_ARGS "-v"
+#define EXTRACTOR_ARGS "-v -m"
 #define CHECK_EXTRACTED_VERSION 1
 #define CONTRIB_DIRECTORIES { "campaigns", "campaigns", \
 			      "contrib", "contrib", \
 			      "maps", "maps", \
+			      "shaders", "shaders",	\
 			      "scripts", "scripts", NULL }
 
 const char* SRC_PATH() { return __FILE__; }
