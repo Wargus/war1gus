@@ -35,7 +35,7 @@ rm -R war1gus.iconset
 mv war1gus.icns War1gus.app/Contents/Resources/
 
 # Bundle resources
-cp -R ../campaigns ../contrib ../maps ../scripts War1gus.app/Contents/Resources/
+cp -R ../campaigns ../contrib ../maps ../shaders ../scripts War1gus.app/Contents/Resources/
 
 # Bundle binaries and their dependencies
 rm -rf macdylibbundler
