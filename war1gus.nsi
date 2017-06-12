@@ -249,6 +249,8 @@ Section "-${NAME}"
 	!cd ${CMAKE_CURRENT_SOURCE_DIR}
 	SetOutPath "$INSTDIR\contrib"
 	File /r "contrib\"
+	SetOutPath "$INSTDIR\maps"
+	File /r "maps\"
 	SetOutPath "$INSTDIR\scripts"
 	File /r "scripts\"
 	SetOutPath "$INSTDIR\campaigns"
