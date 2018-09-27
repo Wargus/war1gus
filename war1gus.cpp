@@ -35,11 +35,21 @@
 #define EXTRACTOR_TOOL "war1tool"
 #define EXTRACTOR_ARGS "-v -m"
 #define CHECK_EXTRACTED_VERSION 1
-#define CONTRIB_DIRECTORIES { "campaigns", "campaigns", \
-			      "contrib", "contrib", \
-			      "maps", "maps", \
-			      "shaders", "shaders",	\
-			      "scripts", "scripts", NULL }
+#define __war1gus_contrib__ "campaigns", "campaigns", \
+			    "contrib", "contrib", \
+			    "maps", "maps", \
+			    "shaders", "shaders", \
+			    "scripts", "scripts", \
+                           ":optional:", \
+                           "music/TimGM6mb.sf2", "music/TimGM6mb.sf2"
+
+#ifdef WIN32
+#define CONTRIB_DIRECTORIES { __war1gus_contrib__, NULL }
+#else
+// for convenience during development, we also try to copy the system
+// soundfont to the data directory on linux
+#define CONTRIB_DIRECTORIES { __war1gus_contrib__, "/usr/share/sounds/sf2/TimGM6mb.sf2", "music/TimGM6mb.sf2", NULL }
+#endif
 
 const char* SRC_PATH() { return __FILE__; }
 
