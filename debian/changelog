@@ -1,9 +1,10 @@
 war1gus (2.4.2-1) xenial; urgency=medium
 
+  * Copy midi soundfont to extraction dir to make midi music work
   * Ship libretro shaders
   * Use new mechanism for data extraction on first launch
 
- -- Tim Felgentreff <timfelgentreff@gmail.com>  Sun, 11 Jun 2017 20:29:45 +0200
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Sat, 29 Sep 2018 19:22:00 +0000
 
 war1gus (2.4.1-1) trusty; urgency=medium
 
