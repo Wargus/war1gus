@@ -6,7 +6,7 @@ STRINGS = {
   version: "2.4.2",
   homepage: "https://github.com/wargus/war1gus",
   license: "GPL v2",
-  copyright: "(C) 1998-2017 by The Stratagus Project",
+  copyright: "(c) 1998-2018 by The Stratagus Project",
   authors: "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 }
 

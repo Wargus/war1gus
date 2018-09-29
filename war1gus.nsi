@@ -49,7 +49,7 @@
 !define VIVERSION "${VERSION}.0.0"
 !define HOMEPAGE "https://github.com/wargus/war1gus"
 !define LICENSE "GPL v2"
-!define COPYRIGHT "(C) 1998-2017 by The Stratagus Project"
+!define COPYRIGHT "(c) 1998-2018 by The Stratagus Project"
 !define STRATAGUS_NAME "Stratagus"
 !define STRATAGUS_HOMEPAGE "https://github.com/wargus/stratagus"
 
