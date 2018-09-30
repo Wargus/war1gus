@@ -1,3 +1,9 @@
+war1gus (2.4.2.1-1) xenial; urgency=medium
+
+  * Replace ffmpeg2theora usage with plain ffmpeg usage
+
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Sun, 30 Sep 2018 02:14:26 +0000
+
 war1gus (2.4.2-1) xenial; urgency=medium
 
   * Copy midi soundfont to extraction dir to make midi music work
