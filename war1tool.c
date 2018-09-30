@@ -1268,7 +1268,7 @@ void ConvertFLC(const char* file, const char* flc)
 	int cmdlen;
 	char *cmd, *output, *outputPath;
 	char *cmdprefix = "ffmpeg -y -i ";
-	char *outputOptions = " -q:v 10 -vb 4000k -vf scale=640:-1 ";
+	char *outputOptions = " -codec:v libtheora -qscale:v 10 -codec:a libvorbis -qscale:a 5 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
 
 	output = (char*)calloc(sizeof(char), strlen(flc) + 1);
 	strcpy(output, flc);
