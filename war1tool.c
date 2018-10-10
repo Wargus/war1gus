@@ -1350,8 +1350,8 @@ void MuxIntroVideos(int upper) {
 	}
 	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + strlen(listfile) + strlen(cmdsuffixVideo) + strlen(outputVideo));
-	sprintf(cmd, "%s %s %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixVideo) + strlen(outputVideo));
+	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
 	fclose(mylist);
 	printf("%s\n\n", cmd);
 	fflush(stdout);
@@ -1363,7 +1363,7 @@ void MuxIntroVideos(int upper) {
 	if (ret != 0) {
 		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
-		exit(-1);
+		return;
 	}
 	free(cmd);
 	unlink(listfile);
@@ -1410,8 +1410,8 @@ void MuxIntroVideos(int upper) {
 	}
 	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + strlen(listfile) + strlen(cmdsuffixAudio) + strlen(outputAudio));
-	sprintf(cmd, "%s %s %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixAudio) + strlen(outputAudio));
+	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
 	fclose(mylist);
 	printf("%s\n\n", cmd);
 	fflush(stdout);
@@ -1423,7 +1423,7 @@ void MuxIntroVideos(int upper) {
 	if (ret != 0) {
 		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
-		exit(-1);
+		return;
 	}
 	free(cmd);
 	unlink(listfile);
