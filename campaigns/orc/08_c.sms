@@ -9,17 +9,6 @@ function CreateUnit(name, player, pos)
 end
 Load("campaigns/orc/08.sms")
 CreateUnit = oldcu
-Load("campaigns/orc/08_c2.sms")
-Load("campaigns/orc/campaign_titles.lua")
-title = campaign_titles[8]
-
-Briefing(
-  title,
-  objectives,
-  "../graphics/ui/orc/briefing.png",
-  "campaigns/orc/08_intro.txt",
-  {"campaigns/orc/08_intro.wav"}
-)
 
 AddTrigger(
   function() return (GetPlayerData(4, "UnitTypesCount", "unit-garona") == 0 and

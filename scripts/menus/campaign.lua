@@ -179,23 +179,31 @@ function CreatePictureStep(bg, sound, title, text)
   end
 end
 
-function CreateMapStep(map)
+function CreateMapStep(race, map)
   return function()
     -- If there is a pre-setup step, run it, if that fails, don't worry
-    pcall(function () Load(string.gmatch(map, "[^\.]+")() .. "_prerun.lua") end)
+    local prefix = "campaigns/" .. race .. "/"
+    pcall(function () Load(prefix .. map .. "_prerun.lua") end)
+    Load(prefix .. map .. "_c2.sms")
+    Load(prefix .. "campaign_titles.lua")
+
+    Briefing(
+       campaign_titles[tonumber(map)],
+       objectives,
+       "../graphics/ui/" .. race .. "/briefing.png",
+       prefix .. map .. "_intro.txt",
+       {prefix .. map .. "_intro.wav"}
+    )
+
+    local video_prefix = string.upper(string.sub(race, 1, 1))
+    PlayMovie("videos/" .. video_prefix .. "MAP" .. map .. ".ogv")
+
     war1gus.InCampaign = true
-    Load(map)
-    RunMap(map, preferences.FogOfWar)
+    Load(prefix .. map .. ".smp")
+    RunMap(prefix .. map .. ".smp", preferences.FogOfWar)
     if (GameResult == GameVictory) then
       IncreaseCampaignState(currentRace, currentState)
     end
-  end
-end
-
-function CreateVideoStep(video)
-  return function()
-    PlayMovie(video)
-    GameResult = GameVictory
   end
 end
 
