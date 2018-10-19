@@ -1,42 +1,58 @@
 --      (c) Copyright 2010      by Pali Rohár
 
-function Briefing(title, objs, bg, text, voices)
+function Briefing(title, objs, bg, mapbg, text, voices)
   SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
 
-  local menu = WarMenu(nil, bg)
+  local menu = WarMenu()
+
+  local voice = 0
+  local channel = -1
+  local head1 = nil
+  local head2 = nil
+
+  local bg1 = CGraphic:New(bg)
+  bg1:Load()
+  bg1:Resize(Video.Width, Video.Height)
+  local bg2 = CGraphic:New(mapbg)
+  bg2:Load()
+  bg2:Resize(Video.Width, Video.Height)
+
+  local bg = ImageButton()
+  bg:setNormalImage(bg1)
+  menu:add(bg, 0, 0)
 
   if (currentRace == "human") then
     PlayMusic(HumanBriefingMusic)
     LoadUI("human", Video.Width, Video.Height)
 
-    warriorg = CGraphic:New("graphics/428.png", 240 / 5, 48) -- TODO: animate
-    warriorg:Load()
-	warriorg:Resize((240 / 5) * (Video.Width / 640), 48 * Video.Height / 400)
-    wizardg = CGraphic:New("graphics/429.png", 134, 84) -- TODO: animate
-    wizardg:Load()
-	wizardg:Resize(134 * Video.Width / 640, 84 * Video.Height / 400)
+    local g = CGraphic:New("graphics/428.png", 240 / 5, 48) -- TODO: animate
+    g:Load()
+    g:Resize((240 / 5) * (Video.Width / 640), 48 * Video.Height / 400)
+    head1 = ImageWidget(g)
 
-    warriorw = ImageWidget(warriorg)
-    wizardw = ImageWidget(wizardg)
+    g = CGraphic:New("graphics/429.png", 134, 84) -- TODO: animate
+    g:Load()
+    g:Resize(134 * Video.Width / 640, 84 * Video.Height / 400)
+    head2 = ImageWidget(g)
 
-    menu:add(warriorw, 166 * Video.Width / 640, 74 * Video.Height / 400)
-    menu:add(wizardw, 414 * Video.Width / 640, 58 * Video.Height / 400)
+    menu:add(head1, 166 * Video.Width / 640, 74 * Video.Height / 400)
+    menu:add(head2, 414 * Video.Width / 640, 58 * Video.Height / 400)
   elseif (currentRace == "orc") then
     PlayMusic(OrcBriefingMusic)
     LoadUI("orc", Video.Width, Video.Height)
 
-    femaleg = CGraphic:New("graphics/426.png", 560 / 5, 134) -- TODO: animate
-    maleg = CGraphic:New("graphics/427.png", 690 / 5, 116) -- TODO: animate
-    femaleg:Load()
-	femaleg:Resize(560 / 5 * Video.Width / 640, 134 * Video.Height / 400)
-    maleg:Load()
-	maleg:Resize(690 / 5 * Video.Width / 640, 116 * Video.Height / 400)
+    local g = CGraphic:New("graphics/426.png", 560 / 5, 134) -- TODO: animate
+    g:Load()
+    g:Resize(560 / 5 * Video.Width / 640, 134 * Video.Height / 400)
+    head1 = ImageWidget(g)
     
-    femalew = ImageWidget(femaleg)
-    malew = ImageWidget(maleg)
+    g = CGraphic:New("graphics/427.png", 690 / 5, 116) -- TODO: animate
+    g:Load()
+    g:Resize(690 / 5 * Video.Width / 640, 116 * Video.Height / 400)
+    head2 = ImageWidget(g)
 
-    menu:add(femalew, 36 * Video.Width / 640, 134 * Video.Height / 400)
-    menu:add(malew, 404 * Video.Width / 640, 104 * Video.Height / 400)
+    menu:add(head1, 36 * Video.Width / 640, 134 * Video.Height / 400)
+    menu:add(head2, 404 * Video.Width / 640, 104 * Video.Height / 400)
   else
     StopMusic()
   end
@@ -44,50 +60,26 @@ function Briefing(title, objs, bg, text, voices)
   Objectives = objs
 
   if (title ~= nil) then
-    menu:addLabel(title, (70 + 340) / 2 * Video.Width / 640, 28 * Video.Height / 480, Fonts["large"], true)
+     local headline = title
+     if (objs ~= nil) then
+        headline = title .. " - " .. objectives[1]
+     end
+     menu:addLabel(headline, 0.1 * Video.Width, 0.1 * Video.Height, Fonts["large"], false)
   end
 
   local t = LoadBuffer(text)
   t = "\n\n\n\n\n\n" .. t .. "\n\n\n\n\n\n\n\n\n\n\n\n\n"
-  local sw = ScrollingWidget(320, 170 * Video.Height / 480)
+  local sw = ScrollingWidget(Video.Width, 0.6 * Video.Height)
   sw:setBackgroundColor(Color(0,0,0,0))
   sw:setSpeed(0.28)
+
   local l = MultiLineLabel(t)
   l:setFont(Fonts["large"])
-  l:setAlignment(MultiLineLabel.LEFT)
-  l:setLineWidth(320)
+  l:setAlignment(MultiLineLabel.CENTER)
+  l:setLineWidth(0.7 * Video.Width)
   l:adjustSize()
   sw:add(l, 0, 0)
-  menu:add(sw, 70 * Video.Width / 640, 80 * Video.Height / 480)
-
-  if (objs ~= nil) then
-    menu:addLabel("Objectives:", 372 * Video.Width / 640, 306 * Video.Height / 480, Fonts["large"], false)
-
-    local objectives = ""
-    table.foreachi(objs, function(k,v) objectives = objectives .. v .. "\n" end)
-
-    local l = MultiLineLabel(objectives)
-    l:setFont(Fonts["large"])
-    l:setAlignment(MultiLineLabel.LEFT)
-    l:setLineWidth(250 * Video.Width / 640)
-    l:adjustSize()
-    menu:add(l, 372 * Video.Width / 640, (306 * Video.Height / 480) + 30)
-  end
-
-  local voice = 0
-  local channel = -1
-
-  menu:addHalfButton("~!Continue", "c", 455 * Video.Width / 640, 440 * Video.Height / 480,
-    function()
-      if (channel ~= -1) then
-        voice = table.getn(voices)
-        StopChannel(channel)
-      end
-      menu:stop()
-      StopMusic()
-      MusicStopped()
-    end)
-
+  menu:add(sw, 0.15 * Video.Width, 0.2 * Video.Height)
 
   function PlayNextVoice()
     voice = voice + 1
@@ -102,6 +94,36 @@ function Briefing(title, objs, bg, text, voices)
   local speed = GetGameSpeed()
   SetGameSpeed(30)
 
+  local currentAction = nil
+  function action2()
+     if (channel ~= -1) then
+        voice = table.getn(voices)
+        StopChannel(channel)
+     end
+     StopMusic()
+     MusicStopped()
+     menu:stop()
+  end
+  function action1()
+     bg:setNormalImage(bg2)
+     head1:setVisible(false)
+     head2:setVisible(false)
+     currentAction = action2
+  end
+  currentAction = action1
+
+  local overall = ImageButton()
+  overall:setWidth(Video.Width)
+  overall:setHeight(Video.Height)
+  overall:setBorderSize(0)
+  overall:setBaseColor(Color(0, 0, 0, 0))
+  overall:setForegroundColor(Color(0, 0, 0, 0))
+  overall:setBackgroundColor(Color(0, 0, 0, 0))
+  overall:setActionCallback(function()
+        currentAction()
+  end)
+
+  menu:add(overall, 0, 0)
   menu:run()
 
   SetGameSpeed(speed)
@@ -187,16 +209,18 @@ function CreateMapStep(race, map)
     Load(prefix .. map .. "_c2.sms")
     Load(prefix .. "campaign_titles.lua")
 
+    local race_prefix = string.upper(string.sub(race, 1, 1))
+
     Briefing(
        campaign_titles[tonumber(map)],
        objectives,
        "../graphics/ui/" .. race .. "/briefing.png",
+       "../graphics/" .. race_prefix .. "MAP" .. map .. ".png",
        prefix .. map .. "_intro.txt",
        {prefix .. map .. "_intro.wav"}
     )
 
-    local video_prefix = string.upper(string.sub(race, 1, 1))
-    PlayMovie("videos/" .. video_prefix .. "MAP" .. map .. ".ogv")
+    PlayMovie("videos/" .. race_prefix .. "MAP" .. map .. ".ogv")
 
     war1gus.InCampaign = true
     Load(prefix .. map .. ".smp")
