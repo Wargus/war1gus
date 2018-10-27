@@ -2777,6 +2777,7 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
 	gzprintf(sms, "Player(15,\n\
              \"race\", \"neutral\",\n\
              \"color\", { 100, 100, 100 })\n");
+	gzprintf(sms, "LoadUI(\"%s\", Video.Width, Video.Height)\n", race);
 }
 
 /**
