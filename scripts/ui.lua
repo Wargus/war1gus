@@ -50,7 +50,9 @@ DefinePanelContents(
   Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
   Contents = {
      { Pos = {70, 36}, Condition = {ShowOpponent = true, HideNeutral = false},
-       More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 55}}
+       More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 55, Border = false,
+                           Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
+       }
      },
      { Pos = {98, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
        More = {"FormattedText2", {
@@ -70,7 +72,7 @@ DefinePanelContents(
      },
 -- Construction
      { Pos = {70, 22}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-       More = {"CompleteBar", {Variable = "Build", Width = 55, Height = 10}}
+       More = {"CompleteBar", {Variable = "Build", Width = 55, Height = 10, Color = "green"}}
      },
      { Pos = {98, 23}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
        More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
@@ -108,21 +110,21 @@ DefinePanelContents(
      },
 -- Research
      { Pos = {70, 22}, Condition = {Research = "only"},
-       More = {"CompleteBar", {Variable = "Research", Width = 55, Height = 10}}
+       More = {"CompleteBar", {Variable = "Research", Width = 55, Height = 10, Color = "green"}}
      },
      { Pos = {9, 50}, Condition = {Research = "only"}, More = {"Text", "Researching"}},
      { Pos = {98, 23}, Condition = {Research = "only"},
        More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
 -- Training
      { Pos = {70, 22}, Condition = {Training = "only"},
-       More = {"CompleteBar", {Variable = "Training", Width = 55, Height = 10}}},
+       More = {"CompleteBar", {Variable = "Training", Width = 55, Height = 10, Color = "green"}}},
      { Pos = {98, 23}, Condition = {Training = "only"},
        More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
      { Pos = {9, 50}, Condition = {Training = "only"},
        More = {"Text", {Text = "Training", Font = "small", Centered = false}}},
 -- Upgrading To
      { Pos = {70, 22}, Condition = {UpgradeTo = "only"},
-       More = {"CompleteBar", {Variable = "UpgradeTo", Width = 55, Height = 10}}
+       More = {"CompleteBar", {Variable = "UpgradeTo", Width = 55, Height = 10, Color = "green"}}
      },
      { Pos = {9,  50}, More = {"Text", "Upgrading"}, Condition = {UpgradeTo = "only"} },
      { Pos = {98, 23}, Condition = {UpgradeTo = "only"},
@@ -339,6 +341,14 @@ AddSelectedButton(9, 140 + 6)
 AddSelectedButton(75, 140 + 6)
 AddSelectedButton(9, 140 + 52)
 AddSelectedButton(75, 140 + 52)
+
+UI.LifeBarColorNames:clear()
+UI.LifeBarColorNames:push_back("green")
+UI.LifeBarColorNames:push_back("yellow")
+UI.LifeBarColorNames:push_back("orange")
+UI.LifeBarColorNames:push_back("red")
+UI.LifeBarYOffset = -4
+UI.LifeBarBorder = false
 
 UI.MaxSelectedFont = Fonts["game"]
 UI.MaxSelectedTextX = info_panel_x + 10
