@@ -43,7 +43,8 @@ target_link_libraries(war1tool ${war1tool_LIBS})
 install(TARGETS war1tool DESTINATION "bin")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -ggdb -std=c99")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -ggdb")
 endif()
 
 if (WIN32 AND MSVC)

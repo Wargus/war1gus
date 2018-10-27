@@ -1412,7 +1412,7 @@ void MuxIntroVideos(int upper) {
 	char *cmdprefix = "ffmpeg -y -f concat -i ";
 	char *cmdsuffixVideo = " -c copy ";
 	char *cmdsuffixAudio = " -acodec libvorbis";
-	char *encoderIntroOpts = " -longest -c copy ";
+	char *encoderIntroOpts = " -c copy ";
 	FILE* mylist;
 	char listfile[2048] = { '\0' };
 	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
@@ -1426,7 +1426,7 @@ void MuxIntroVideos(int upper) {
 	}
 	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixVideo) + strlen(outputVideo));
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixVideo) + strlen(outputVideo) + 4);
 	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
 	fclose(mylist);
 	printf("%s\n\n", cmd);
@@ -1486,7 +1486,7 @@ void MuxIntroVideos(int upper) {
 	}
 	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixAudio) + strlen(outputAudio));
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixAudio) + strlen(outputAudio) + 4);
 	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
 	fclose(mylist);
 	printf("%s\n\n", cmd);
@@ -1506,7 +1506,7 @@ void MuxIntroVideos(int upper) {
 
 	// Mux
 	cmdprefix = "ffmpeg -y ";
-	outputIntro = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogv") + 2);
+	outputIntro = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogv") + 2);
 	sprintf(outputIntro, "\"%s/%s/INTRO.ogv\"", Dir, VIDEO_PATH);
 	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1 +
  			    strlen("-i") + 1 + strlen(outputVideo) + 1 +
@@ -2331,12 +2331,12 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 	unsigned char* xmip;
 	unsigned char* midp;
 	unsigned char* oggp;
-	char buf[1024];
+	char buf[8192];
 	char* cmd;
 	gzFile gf;
 	FILE* f;
-	size_t xmil;
-	size_t midl;
+	size_t xmil = 0;
+	size_t midl = 0;
 	size_t oggl;
 	int ret;
 
@@ -2357,7 +2357,7 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 		printf("Can't write %d bytes\n", (int)midl);
 		fflush(stdout);
 	}
-	free(midp);
+	/* free(midp); */ // is in the middle of the C++ object, shouldn't be free'd here
 	fclose(f);
 	if (!midiToOgg) return;
 	cmd = (char*)calloc(strlen("timidity -Ow \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
@@ -2416,7 +2416,7 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 	rewind(f);
 
 	oggp = (unsigned char*)malloc(oggl);
-	if (!oggp) {
+	if (oggp == NULL) {
 		fprintf(stderr, "Memory error\n");
 		exit(-1);
 	}
