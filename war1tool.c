@@ -3006,7 +3006,9 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 		player = FetchByte(p);
 		if (type == 0x32) {
 			// gold mine
-		        value = FetchLE16(p);
+			SkipByte(p); // skip -0xfe
+			value = (int)FetchByte(p);
+			value *= 250;
 		} else {
 			value = 0;
 		}
