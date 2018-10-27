@@ -50,15 +50,15 @@ DefinePanelContents(
   Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
   Contents = {
      { Pos = {70, 36}, Condition = {ShowOpponent = true, HideNeutral = false},
-       More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 55, Border = false,
+       More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 55, Border = true,
                            Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
        }
      },
-     { Pos = {98, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
-       More = {"FormattedText2", {
-		  Font = "small", Variable = "HitPoints", Format = "%d/%d",
-		  Component1 = "Value", Component2 = "Max", Centered = true}}
-     },
+     -- { Pos = {98, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
+     --   More = {"FormattedText2", {
+     --    	  Font = "small", Variable = "HitPoints", Format = "%d/%d",
+     --    	  Component1 = "Value", Component2 = "Max", Centered = true}}
+     -- },
      { Pos = {105, 8}, More = {"Text", {Text = Line(1, UnitName("Active"), 90, "small"), Font = "small", Centered = true}} },
      { Pos = {105, 22}, More = {"Text", {Text = Line(2, UnitName("Active"), 90, "small"), Font = "small", Centered = true}} },
 -- Ressource Left
@@ -71,11 +71,11 @@ DefinePanelContents(
 				  Component = "Value"}}
      },
 -- Construction
-     { Pos = {70, 22}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-       More = {"CompleteBar", {Variable = "Build", Width = 55, Height = 10, Color = "green"}}
-     },
-     { Pos = {98, 23}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
+     -- { Pos = {70, 22}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+     --   More = {"CompleteBar", {Variable = "Build", Width = 55, Height = 10, Color = "green"}}
+     -- },
+     -- { Pos = {98, 23}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+     --   More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
      { Pos = {9, 78}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
        More = {"Icon", {Unit = "Worker"}}}
   } },

@@ -68,16 +68,18 @@ function Briefing(title, objs, bg, mapbg, text, voices)
   end
 
   local t = LoadBuffer(text)
-  t = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" .. t .. "\n"
   local sw = ScrollingWidget(Video.Width, 0.6 * Video.Height)
   sw:setBackgroundColor(Color(0,0,0,0))
   sw:setSpeed(0.38)
 
   local l = MultiLineLabel(t)
+  l:setForegroundColor(Color(0, 0, 0, 255))
   l:setFont(Fonts["large"])
   l:setAlignment(MultiLineLabel.CENTER)
+  l:setVerticalAlignment(MultiLineLabel.BOTTOM)
   l:setLineWidth(0.7 * Video.Width)
   l:adjustSize()
+  l:setHeight(0.9 * Video.Height)
   sw:add(l, 0, 0)
   menu:add(sw, 0.15 * Video.Width, 0.2 * Video.Height)
 
