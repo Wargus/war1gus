@@ -49,6 +49,10 @@ DefinePanelContents(
   Ident = "panel-general-contents",
   Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
   Contents = {
+     { Pos = {70, 26}, Condition = {ShowOpponent = true, HideNeutral = false},
+       More = {"Text", {
+        	  Font = "small", Centered = false, Text = "HP"}}
+     },
      { Pos = {70, 36}, Condition = {ShowOpponent = true, HideNeutral = false},
        More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 55, Border = true,
                            Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
@@ -71,13 +75,13 @@ DefinePanelContents(
 				  Component = "Value"}}
      },
 -- Construction
-     -- { Pos = {70, 22}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-     --   More = {"CompleteBar", {Variable = "Build", Width = 55, Height = 10, Color = "green"}}
-     -- },
-     -- { Pos = {98, 23}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-     --   More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
-     { Pos = {9, 78}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-       More = {"Icon", {Unit = "Worker"}}}
+     { Pos = {6, 60}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+       More = {"CompleteBar", {Variable = "Build", Width = 124, Height = 14, Color = "green", Border = true}}
+     },
+     { Pos = {(6 + 124) / 2, 63}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
+     -- { Pos = {9, 78}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
+     --   More = {"Icon", {Unit = "Worker"}}}
   } },
 -- Supply Building constructed.----------------
   {
