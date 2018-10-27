@@ -336,9 +336,9 @@ UI.SingleSelectedButton = b
 UI.SelectedButtons:clear()
 
 AddSelectedButton(9, 140 + 6)
-AddSelectedButton(70, 140 + 6)
+AddSelectedButton(75, 140 + 6)
 AddSelectedButton(9, 140 + 52)
-AddSelectedButton(70, 140 + 52)
+AddSelectedButton(75, 140 + 52)
 
 UI.MaxSelectedFont = Fonts["game"]
 UI.MaxSelectedTextX = info_panel_x + 10
@@ -382,9 +382,9 @@ UI.ResearchingButton = b
 UI.TransportingButtons:clear()
 
 AddTransportingButton(9, 387)
-AddTransportingButton(70, 387)
+AddTransportingButton(75, 387)
 AddTransportingButton(9, 434)
-AddTransportingButton(70, 434)
+AddTransportingButton(75, 434)
 
 --
 
@@ -394,11 +394,11 @@ UI.CompletedBarShadow = true
 UI.ButtonPanel.Buttons:clear()
 
 AddButtonPanelButton(9, 240 + 47 * 0)
-AddButtonPanelButton(70, 240 + 47 * 0)
+AddButtonPanelButton(75, 240 + 47 * 0)
 AddButtonPanelButton(9, 240 + 47 * 1)
-AddButtonPanelButton(70, 240 + 47 * 1)
+AddButtonPanelButton(75, 240 + 47 * 1)
 AddButtonPanelButton(9, 240 + 47 * 2)
-AddButtonPanelButton(70, 240 + 47 * 2)
+AddButtonPanelButton(75, 240 + 47 * 2)
 
 UI.ButtonPanel.X = 0
 UI.ButtonPanel.Y = 300
