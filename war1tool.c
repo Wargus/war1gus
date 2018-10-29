@@ -2058,14 +2058,15 @@ int ConvertGfu(char* file, int pale, int gfue)
 		image = ConvertGraphic(gfup, &w, &h, NULL, icon_swap_indices);
 	} else if (strstr(file, "icon_selection_boxes") != NULL) {
 		image = ConvertGraphic(gfup, &w, &h, NULL, NULL);
-		// for humans, shift the palette
-		if (strstr(file, "human/icon_selection_boxes") != NULL) {
-			for (int i = 0; i < w * h; i++) {
-				if (image[i] >= 16 && image[i] <= 31) {
-					image[i] = image[i] + 16;
-				}
- 			}
-		}
+                // make the background transparent, we don't need it
+                unsigned char* p = image;
+                unsigned char* end = image + (w * h);
+                while (p < end) {
+                    if (*p >= 220 && *p <= 255) {
+                        *p = 0;
+                    }
+                    ++p;
+                }
 		// There are 9 vertically stacked frames in this
 		unsigned int size_of_one_frame = w * (h / 9);
 		image = (unsigned char*)realloc(image, w * h + size_of_one_frame);
