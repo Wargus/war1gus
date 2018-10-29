@@ -2049,12 +2049,33 @@ int ConvertGfu(char* file, int pale, int gfue)
 		return 0;
 	}
 
+	printf("%s\n", file);
 	if (strstr(file, "portrait_icons") != NULL) {
 		const unsigned short icon_swap_indices[] = {
 			1,3,5,7,9,11,13,15,19,23,27,34,49,55,56,82,83,84,
 			0
 		};
 		image = ConvertGraphic(gfup, &w, &h, NULL, icon_swap_indices);
+	} else if (strstr(file, "icon_selection_boxes") != NULL) {
+		image = ConvertGraphic(gfup, &w, &h, NULL, NULL);
+		// for humans, shift the palette
+		if (strstr(file, "human/icon_selection_boxes") != NULL) {
+			for (int i = 0; i < w * h; i++) {
+				if (image[i] >= 16 && image[i] <= 31) {
+					image[i] = image[i] + 16;
+				}
+ 			}
+		}
+		// There are 9 vertically stacked frames in this
+		unsigned int size_of_one_frame = w * (h / 9);
+		image = (unsigned char*)realloc(image, w * h + size_of_one_frame);
+		if (!image) {
+			printf("Can't allocate selection box image\n");
+			exit(-1);
+		}
+		memmove(image + size_of_one_frame, image, w * h);
+		// make first frame transparent, this one is used for no-selection
+		memset(image, 0, size_of_one_frame);
 	} else {
 		image = ConvertGraphic(gfup, &w, &h, NULL, NULL);
 	}

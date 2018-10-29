@@ -466,6 +466,8 @@ function LoadUI(race, screen_width, screen_height)
   AddFiller("ui/" .. race .. "/right_panel.png", Video.Width - 16, 0, 16, Video.Height)
   AddFiller("ui/" .. race .. "/bottom_panel.png", 144, Video.Height - 24, Video.Width - (640 - 480), 24)
 
+  UI.InfoPanel.G = CGraphic:New("ui/" .. race .. "/icon_selection_boxes.png", 132, 92)
+  
   Preference.IconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
   Preference.PressedIconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
 
