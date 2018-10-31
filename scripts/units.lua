@@ -117,7 +117,7 @@ local units = {
     HitPoints = 40,
     CanAttack = false,
     Coward = true,
-	AnnoyComputerFactor = 100,
+    AnnoyComputerFactor = 100,
     Armor = 0,
     RightMouseAction = "harvest",
     RepairRange = 1,
@@ -140,8 +140,7 @@ local units = {
 	AnnoyComputerFactor = 80,
     PiercingDamage = 1,
     BasicDamage = 9,
-    Size = {human = {96, 96}},
-    MaxAttackRange = 1},
+    Size = {human = {96, 96}}},
    {Names = {orc = "Spearman", human = "Archer"},
     Costs = {"time", 70, "gold", 450, "wood", 50},
     HitPoints = 60,
@@ -252,7 +251,6 @@ local knight_raider_spec = {
    AnnoyComputerFactor = 120,
    PiercingDamage = 1,
    BasicDamage = 13,
-   MaxAttackRange = 1,
    Dependencies = {orc = {"blacksmith", "kennel"},
                    human = {"blacksmith", "stable"}}}
 DefineUnitFromSpec(knight_raider_spec)
