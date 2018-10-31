@@ -243,7 +243,7 @@ local function AddFiller(file, x, y, resize_x, resize_y)
 end
 
 local function MakeButton(x, y)
-   local b = CUIButton:new_local()
+   local b = CUIButton:new()
    b.X = x
    b.Y = y
    b.Style = FindButtonStyle("icon")
@@ -279,11 +279,7 @@ UI.Resources[ManaResCost].IconY = -100
 UI.Resources[ManaResCost].TextX = UI.Resources[2].TextX
 UI.Resources[ManaResCost].TextY = UI.Resources[2].TextY
 
-b = CUIButton:new()
-b.X = info_panel_x + 8
-b.Y = info_panel_y + 9
-b.Style = FindButtonStyle("icon")
-UI.SingleSelectedButton = b
+UI.SingleSelectedButton = MakeButton(info_panel_x + 8, info_panel_y + 9)
 
 UI.SelectedButtons:clear()
 for i = 1,4,1 do
@@ -314,45 +310,25 @@ UI.MaxSelectedTextY = info_panel_y + 10
 
 --
 
-b = CUIButton:new()
-b.X = 9
-b.Y = 200
-b.Style = FindButtonStyle("icon")
-UI.SingleTrainingButton = b
+local button_panel_off_x_1 = 9
+local button_panel_off_x_2 = 75
+local button_panel_off_y_1 = 240 + 47 * 0
+local button_panel_off_y_2 = 240 + 47 * 1
+local button_panel_off_y_3 = 240 + 47 * 2
+local button_panel_off_y_4 = 240 + 47 * 3
 
+local function MakeBuildingButton(index)
+   return MakeButton(button_panel_off_x_1 + (index * 10), button_panel_off_y_4)
+end
+
+UI.SingleTrainingButton = MakeBuildingButton(0)
 UI.TrainingButtons:clear()
+for i=0,5,1 do
+   UI.TrainingButtons:push_back(MakeBuildingButton(i))
+end
 
-AddTrainingButton(9, 200)
-AddTrainingButton(19, 200)
-AddTrainingButton(29, 200)
-AddTrainingButton(39, 200)
-AddTrainingButton(49, 200)
-AddTrainingButton(59, 200)
-
---
-
-b = CUIButton:new()
-b.X = 6
-b.Y = 200
-b.Style = FindButtonStyle("icon")
-UI.UpgradingButton = b
-
---
-
-b = CUIButton:new()
-b.X = 6
-b.Y = 200
-b.Style = FindButtonStyle("icon")
-UI.ResearchingButton = b
-
---
-
-UI.TransportingButtons:clear()
-
-AddTransportingButton(9, 387)
-AddTransportingButton(75, 387)
-AddTransportingButton(9, 434)
-AddTransportingButton(75, 434)
+UI.UpgradingButton = MakeBuildingButton(0)
+UI.ResearchingButton = MakeBuildingButton(0)
 
 --
 
@@ -360,13 +336,14 @@ UI.CompletedBarColorRGB = CColor(48, 100, 4)
 UI.CompletedBarShadow = true
 
 UI.ButtonPanel.Buttons:clear()
-
-AddButtonPanelButton(9, 240 + 47 * 0)
-AddButtonPanelButton(75, 240 + 47 * 0)
-AddButtonPanelButton(9, 240 + 47 * 1)
-AddButtonPanelButton(75, 240 + 47 * 1)
-AddButtonPanelButton(9, 240 + 47 * 2)
-AddButtonPanelButton(75, 240 + 47 * 2)
+for i = 0,5,1 do
+   local x = 9
+   if (i + 1) % 2 == 0 then
+      x = 75
+   end
+   local y = 240 + (47 * math.floor(i / 2))
+   UI.ButtonPanel.Buttons:push_back(MakeButton(x, y))
+end
 
 UI.ButtonPanel.X = 0
 UI.ButtonPanel.Y = 300
@@ -398,7 +375,7 @@ UI.MenuButton:SetCallback(
       else
 	 RunInEditorMenu()
       end
-   end)
+end)
 
 UI.NetworkMenuButton.X = 6
 UI.NetworkMenuButton.Y = 2
@@ -413,113 +390,113 @@ UI.NetworkDiplomacyButton.Style = FindButtonStyle("network")
 UI.NetworkDiplomacyButton:SetCallback(function() RunDiplomacyMenu() end)
 
 function LoadUI(race, screen_width, screen_height)
-  UI.Fillers:clear()
-  AddFiller("ui/" .. race .. "/minimap.png", 0, 0, 144, 144)
-  AddFiller("ui/" .. race .. "/left_panel.png", 0, 144, 144, Video.Height - (400 - 256))
-  AddFiller("ui/" .. race .. "/top_resource_bar.png", 144, 0, Video.Width - (640 - 480), 24)
-  AddFiller("ui/" .. race .. "/right_panel.png", Video.Width - 16, 0, 16, Video.Height)
-  AddFiller("ui/" .. race .. "/bottom_panel.png", 144, Video.Height - 24, Video.Width - (640 - 480), 24)
+   UI.Fillers:clear()
+   AddFiller("ui/" .. race .. "/minimap.png", 0, 0, 144, 144)
+   AddFiller("ui/" .. race .. "/left_panel.png", 0, 144, 144, Video.Height - (400 - 256))
+   AddFiller("ui/" .. race .. "/top_resource_bar.png", 144, 0, Video.Width - (640 - 480), 24)
+   AddFiller("ui/" .. race .. "/right_panel.png", Video.Width - 16, 0, 16, Video.Height)
+   AddFiller("ui/" .. race .. "/bottom_panel.png", 144, Video.Height - 24, Video.Width - (640 - 480), 24)
 
-  UI.InfoPanel.G = CGraphic:New("ui/" .. race .. "/icon_selection_boxes.png", 132, 92)
-  
-  Preference.IconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
-  Preference.PressedIconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
+   UI.InfoPanel.G = CGraphic:New("ui/" .. race .. "/icon_selection_boxes.png", 132, 92)
+   
+   Preference.IconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
+   Preference.PressedIconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
 
-  local ui = {
-    "info-panel", {
-      "panels", {"panel-general-contents", "panel-attack-unit-contents",
-                "panel-all-unit-contents", "panel-building-contents"},
-      "completed-bar", {
-        "color", {48, 100, 4}
-      }
-    }
-  }
+   local ui = {
+      "info-panel", {
+         "panels", {"panel-general-contents", "panel-attack-unit-contents",
+                    "panel-all-unit-contents", "panel-building-contents"},
+         "completed-bar", {
+            "color", {48, 100, 4}
+                          }
+                    }
+   }
 end
 
 -- Popups
 PopupFont = nil
 PopupFont = "small"
 local GetRGBA = function(r, g, b, a)
-	if (wc1.preferences.UseOpenGL == false) then
-		return b + g*0x100 + r*0x10000 + a*0x1000000
-	else
-		return r + g*0x100 + b*0x10000 + a*0x1000000
-	end
+   if (wc1.preferences.UseOpenGL == false) then
+      return b + g*0x100 + r*0x10000 + a*0x1000000
+   else
+      return r + g*0x100 + b*0x10000 + a*0x1000000
+   end
 end
 local PopupBackgroundColor = GetRGBA(0,32,96, 208)
 local PopupBorderColor = GetRGBA(192,192,255, 160)
 
 if (wc1.preferences.ShowButtonPopups) then
-    local OldDefineButton = DefineButton
-    DefineButton = function(spec)
-        if spec.Popup == nil then
-            spec.Popup = "popup"
-        end
-        return OldDefineButton(spec)
-    end
-	DefinePopup({
-		Ident = "popup",
-		BackgroundColor = PopupBackgroundColor,
-		BorderColor = PopupBorderColor,
-		Contents = {
-				{ 	Margin = {1, 1}, HighlightColor = "red",
-					More = {"ButtonInfo", {InfoType = "Hint", Font = PopupFont}}
-				},
-				-- Move  hint
-				{ 	Margin = {1, 1}, Condition = {ButtonAction = "move"},
-					More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
-				},
-				{ 	Condition = {ButtonAction = "move"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-					More = {"Text", {Text = _("~<ALT~>-click to defend unit."), MaxWidth = Video.Width / 5, Font = PopupFont}}
-				},
-				{ 	Condition = {ButtonAction = "move"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-					More = {"Text", {Text = _("~<SHIFT~>-click to make waypoints."), MaxWidth = Video.Width / 5, Font = PopupFont}}
-				},
-				-- Repair hint
-				{ 	Margin = {1, 1}, Condition = {ButtonAction = "repair"},
-					More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
-				},
-				{ 	Condition = {ButtonAction = "repair"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-					More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-repair of damaged buildings."), MaxWidth = Video.Width / 5, Font = PopupFont}}
-				},
-                -- buildings, units, upgrades
-                { 	Condition = {ButtonAction = "build"},
-                    More = {"Costs"}, HighlightColor = "red",
-				},
-				{ 	Condition = {ButtonAction = "train-unit"},
-                    More = {"Costs"}, HighlightColor = "red",
-				},
-                { 	Condition = {ButtonAction = "research"},
-                 	More = {"Costs"}, HighlightColor = "red",
-				},
-                { 	Condition = {ButtonAction = "upgrade-to"},
-                 	More = {"Costs"}, HighlightColor = "red",
-				},
-                { 	Condition = {ButtonAction = "cast-spell"},
-                 	More = {"Costs"}, HighlightColor = "red",
-				},
-                -- Multi-build hint
-				{ 	Margin = {1, 1}, Condition = {ButtonAction = "build"},
-					More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
-				},
-				{ 	Condition = {ButtonAction = "build"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-					More = {"Text", {Text = _("~<SHIFT~>-click could be used to make a building queue."), MaxWidth = Video.Width / 5, Font = PopupFont}}
-				},
-                -- Auto-cast hint
-				{ 	Margin = {1, 1}, Condition = {ButtonAction = "cast-spell"},
-					More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
-				},
-				{ 	Condition = {ButtonAction = "cast-spell"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-					More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-cast ability."), MaxWidth = Video.Width / 5, Font = PopupFont}}
-				},
-                -- Description
-				{ 	Margin = {1, 1}, Condition = {HasDescription = true},
-					More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
-				},
-				{ 	Condition = {HasDescription = true}, Margin = {1, 1}, HighlightColor = "red",
-					More = {"ButtonInfo", {InfoType = "Description", MaxWidth = Video.Width / 5, Font = PopupFont}}
-				},
+   local OldDefineButton = DefineButton
+   DefineButton = function(spec)
+      if spec.Popup == nil then
+         spec.Popup = "popup"
+      end
+      return OldDefineButton(spec)
+   end
+   DefinePopup({
+         Ident = "popup",
+         BackgroundColor = PopupBackgroundColor,
+         BorderColor = PopupBorderColor,
+         Contents = {
+            { 	Margin = {1, 1}, HighlightColor = "red",
+                More = {"ButtonInfo", {InfoType = "Hint", Font = PopupFont}}
+            },
+            -- Move  hint
+            { 	Margin = {1, 1}, Condition = {ButtonAction = "move"},
+                More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
+            },
+            { 	Condition = {ButtonAction = "move"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+                More = {"Text", {Text = _("~<ALT~>-click to defend unit."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+            },
+            { 	Condition = {ButtonAction = "move"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+                More = {"Text", {Text = _("~<SHIFT~>-click to make waypoints."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+            },
+            -- Repair hint
+            { 	Margin = {1, 1}, Condition = {ButtonAction = "repair"},
+                More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
+            },
+            { 	Condition = {ButtonAction = "repair"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+                More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-repair of damaged buildings."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+            },
+            -- buildings, units, upgrades
+            { 	Condition = {ButtonAction = "build"},
+                More = {"Costs"}, HighlightColor = "red",
+            },
+            { 	Condition = {ButtonAction = "train-unit"},
+                More = {"Costs"}, HighlightColor = "red",
+            },
+            { 	Condition = {ButtonAction = "research"},
+                More = {"Costs"}, HighlightColor = "red",
+            },
+            { 	Condition = {ButtonAction = "upgrade-to"},
+                More = {"Costs"}, HighlightColor = "red",
+            },
+            { 	Condition = {ButtonAction = "cast-spell"},
+                More = {"Costs"}, HighlightColor = "red",
+            },
+            -- Multi-build hint
+            { 	Margin = {1, 1}, Condition = {ButtonAction = "build"},
+                More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
+            },
+            { 	Condition = {ButtonAction = "build"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+                More = {"Text", {Text = _("~<SHIFT~>-click could be used to make a building queue."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+            },
+            -- Auto-cast hint
+            { 	Margin = {1, 1}, Condition = {ButtonAction = "cast-spell"},
+                More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
+            },
+            { 	Condition = {ButtonAction = "cast-spell"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
+                More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-cast ability."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+            },
+            -- Description
+            { 	Margin = {1, 1}, Condition = {HasDescription = true},
+                More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
+            },
+            { 	Condition = {HasDescription = true}, Margin = {1, 1}, HighlightColor = "red",
+                More = {"ButtonInfo", {InfoType = "Description", MaxWidth = Video.Width / 5, Font = PopupFont}}
+            },
 
-            }
-	})
+         }
+   })
 end
