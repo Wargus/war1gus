@@ -1,3 +1,11 @@
+local function AddButtonPanelButton(x, y)
+   b = CUIButton:new_local()
+   b.X = x
+   b.Y = y
+   b.Style = FindButtonStyle("icon")
+   UI.ButtonPanel.Buttons:push_back(b)
+end
+
 local function HackEditorUI()
   LoadUI("orc", Video.Width, Video.Height)
   DefinePlayerColors(wc1.HumanMultiColors)

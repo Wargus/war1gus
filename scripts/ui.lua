@@ -70,7 +70,7 @@ DefinePanelContents(
                                Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
            }
          },
-         { Pos = {info_text_off_x, 52}, More = {"Text", {Text = UnitName("Active"), Font = "game", Centered = false}} },
+         { Pos = {info_text_off_x, 52}, More = {"Text", {Text = Line(1, UnitName("Active"), 90, "small"), Font = "game", Centered = false}} },
          -- Ressource Left
          { Pos = first_line, Condition = {ShowOpponent = false, GiveResource = "only"},
            More = {"FormattedText2", {Format = "%s: %d", Variable = "GiveResource", Component1 = "Name", Component2 = "Value"}}
