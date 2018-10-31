@@ -35,273 +35,219 @@ UI.MessageScrollSpeed = 5
 
 Load("scripts/widgets.lua")
 
-local info_panel_x = 0
+local info_panel_x = 4
 local info_panel_y = 140
+local info_panel_w = 128
+
 local min_damage = Div(ActiveUnitVar("PiercingDamage"), 2)
 local max_damage = Add(ActiveUnitVar("PiercingDamage"), ActiveUnitVar("BasicDamage"))
 
 UI.InfoPanel.X = info_panel_x
 UI.InfoPanel.Y = info_panel_y
 
+local life_bar_off_x = 71
+local info_text_off_x = 6
+
+local first_line = {info_text_off_x, 72}
+local second_line = {info_text_off_x, 82}
+local third_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 72}
+local fourth_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 82}
+
+local function MakeCompleteBar(condition, variable)
+   return { Pos = {2, 72}, Condition = condition,
+            More = {"CompleteBar", {Variable = variable, Width = 124, Height = 14, Color = "green", Border = true}}
+   }
+end
+
 DefinePanelContents(
--- Default presentation. ------------------------
-  {
-  Ident = "panel-general-contents",
-  Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
-  Contents = {
-     { Pos = {70, 26}, Condition = {ShowOpponent = true, HideNeutral = false},
-       More = {"Text", {
-        	  Font = "small", Centered = false, Text = "HP"}}
-     },
-     { Pos = {70, 36}, Condition = {ShowOpponent = true, HideNeutral = false},
-       More = {"LifeBar", {Variable = "HitPoints", Height = 7, Width = 55, Border = true,
-                           Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
-       }
-     },
-     -- { Pos = {98, 36}, Condition = {ShowOpponent = false, HideNeutral = true},
-     --   More = {"FormattedText2", {
-     --    	  Font = "small", Variable = "HitPoints", Format = "%d/%d",
-     --    	  Component1 = "Value", Component2 = "Max", Centered = true}}
-     -- },
-     { Pos = {105, 8}, More = {"Text", {Text = Line(1, UnitName("Active"), 90, "small"), Font = "small", Centered = true}} },
-     { Pos = {105, 22}, More = {"Text", {Text = Line(2, UnitName("Active"), 90, "small"), Font = "small", Centered = true}} },
--- Ressource Left
-     { Pos = {10, 86}, Condition = {ShowOpponent = false, GiveResource = "only"},
-       More = {"FormattedText", {Format = "%s Left", Variable = "GiveResource",
-				  Component = "Name"}}
-     },
-     { Pos = {10, 100}, Condition = {ShowOpponent = false, GiveResource = "only"},
-       More = {"FormattedText", {Format = "%d", Variable = "GiveResource",
-				  Component = "Value"}}
-     },
--- Construction
-     { Pos = {6, 60}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-       More = {"CompleteBar", {Variable = "Build", Width = 124, Height = 14, Color = "green", Border = true}}
-     },
-     { Pos = {(6 + 124) / 2, 63}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
-     -- { Pos = {9, 78}, Condition = {ShowOpponent = false, HideNeutral = true, Build = "only"},
-     --   More = {"Icon", {Unit = "Worker"}}}
-  } },
--- Supply Building constructed.----------------
-  {
-  Ident = "panel-building-contents",
-  Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
-  Condition = {ShowOpponent = false, HideNeutral = true, Build = "false", Supply = "only", Training = "false", UpgradeTo = "false"},
--- FIXME more condition. not town hall.
-  Contents = {
--- Food building
-	{ Pos = {9, 66}, More = {"Text", {Text = function () return "Supply: " .. GetPlayerData(GetThisPlayer(), "Supply") end }} },
-	{ Pos = {9, 82}, More = { "Text", {Text = function ()
-                                                  if GetPlayerData(GetThisPlayer(), "Demand") > GetPlayerData(GetThisPlayer(), "Supply") then
-                                                    return "Demand: ~<" .. GetPlayerData(GetThisPlayer(), "Demand") .. "~>"
-                                                  else
-                                                    return "Demand: " .. GetPlayerData(GetThisPlayer(), "Demand")
-                                                  end
-                                                end }}
-    }
+   -- Default presentation. ------------------------
+   {
+      Ident = "panel-general-contents",
+      Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
+      Contents = {
+         { Pos = {life_bar_off_x, 41}, Condition = {ShowOpponent = true, HideNeutral = false},
+           More = {"LifeBar", {Variable = "HitPoints", Height = 6, Width = 54, Border = false,
+                               Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
+           }
+         },
+         { Pos = {info_text_off_x, 52}, More = {"Text", {Text = UnitName("Active"), Font = "game", Centered = false}} },
+         -- Ressource Left
+         { Pos = first_line, Condition = {ShowOpponent = false, GiveResource = "only"},
+           More = {"FormattedText2", {Format = "%s: %d", Variable = "GiveResource", Component1 = "Name", Component2 = "Value"}}
+         },
+      }
+   },
+   -- Supply buildings ----------------
+   {
+      Ident = "panel-supply-building-contents",
+      Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
+      Condition = {ShowOpponent = false, HideNeutral = true, Build = "false", Supply = "only", Training = "false", UpgradeTo = "false"},
+      Contents = {
+         -- Food building
+         { Pos = first_line, More = {"Text", {Text = function () return "Supply: " .. GetPlayerData(GetThisPlayer(), "Supply") end }} },
+         { Pos = second_line, More = { "Text", {Text = function ()
+                                               if GetPlayerData(GetThisPlayer(), "Demand") > GetPlayerData(GetThisPlayer(), "Supply") then
+                                                  return "Demand: ~<" .. GetPlayerData(GetThisPlayer(), "Demand") .. "~>"
+                                               else
+                                                  return "Demand: " .. GetPlayerData(GetThisPlayer(), "Demand")
+                                               end
+                                 end }}
+         }
+      }
+   },
+   -- All own unit -----------------
+   {
+      Ident = "panel-all-unit-contents",
+      Pos = {info_panel_x, info_panel_y},
+      DefaultFont = "small",
+      Condition = {ShowOpponent = false, HideNeutral = true, Building = "false", Build = "false"},
+      Contents = {
+         { Pos = first_line,
+           More = {"FormattedText2", {Format = "HP:%d/%d", Variable = "HitPoints", Component1 = "Value", Component2 = "Max"}}
+         },
+         { Pos = second_line, Condition = {CanAttack = "only"},
+           More = {"Text", {Text = Concat("DMG:", String(min_damage), "-", String(max_damage))}}
+         },
+         { Pos = third_line,
+           More = {"Text", {Text = "ARM:", Variable = "Armor", Stat = true}}
+         },
+         { Pos = fourth_line, Condition = {CanAttack = "only", AttackRange = "only"},
+           More = {"Text", {Text = "RNG:", Variable = "AttackRange" , Stat = true}}
+         },
+         -- Mana
+         { Pos = {71, 19}, Condition = {Mana = "only"},
+           More = {"LifeBar", {Variable = "Mana", Height = 6, Width = 54, Border = false, Colors = {{0, "light-blue"}}}}
+         },
+         -- Resource Carry
+         { Pos = second_line, Condition = {CarryResource = "only"},
+           More = {"FormattedText2", {Format = "%s: %d", Variable = "CarryResource", Component1 = "Name", Component2 = "Value"}}
+         }
+      }
+   },
 
-  } },
--- All own unit -----------------
-  {
-  Ident = "panel-all-unit-contents",
-  Pos = {info_panel_x, info_panel_y},
-  DefaultFont = "small",
-  Condition = {ShowOpponent = false, HideNeutral = true, Build = "false"},
-  Contents = {
-     { Pos = {9, 82}, Condition = {AttackRange = "only"},
-       More = {"Text", {Text = "Range: ", Variable = "AttackRange" , Stat = true}}
-     },
--- Research
-     { Pos = {70, 22}, Condition = {Research = "only"},
-       More = {"CompleteBar", {Variable = "Research", Width = 55, Height = 10, Color = "green"}}
-     },
-     { Pos = {9, 50}, Condition = {Research = "only"}, More = {"Text", "Researching"}},
-     { Pos = {98, 23}, Condition = {Research = "only"},
-       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
--- Training
-     { Pos = {70, 22}, Condition = {Training = "only"},
-       More = {"CompleteBar", {Variable = "Training", Width = 55, Height = 10, Color = "green"}}},
-     { Pos = {98, 23}, Condition = {Training = "only"},
-       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
-     { Pos = {9, 50}, Condition = {Training = "only"},
-       More = {"Text", {Text = "Training", Font = "small", Centered = false}}},
--- Upgrading To
-     { Pos = {70, 22}, Condition = {UpgradeTo = "only"},
-       More = {"CompleteBar", {Variable = "UpgradeTo", Width = 55, Height = 10, Color = "green"}}
-     },
-     { Pos = {9,  50}, More = {"Text", "Upgrading"}, Condition = {UpgradeTo = "only"} },
-     { Pos = {98, 23}, Condition = {UpgradeTo = "only"},
-       More = {"Text", {Text = "% Complete", Font = "small", Centered = true}}},
--- Mana
-     { Pos = {70, 21}, Condition = {Mana = "only"},
-       More = {"CompleteBar", {Variable = "Mana", Height = 8, Width = 52, Border = true, Color = "light-blue"}}
-     },
-     { Pos = {97, 23},
-       Condition = {Mana = "only"},
-       More = {"FormattedText2", {
-		  Font = "small", Variable = "Mana", Format = "%d/%d",
-		  Component1 = "Value", Component2 = "Max", Centered = true}} },
--- Resource Carry
-     { Pos = {9, 52}, Condition = {CarryResource = "only"},
-       More = {"FormattedText2", {Format = "%s: %d", Variable = "CarryResource",
-				  Component1 = "Name", Component2 = "Value"}}
-     }
-  } },
--- Attack Unit -----------------------------
-  {
-  Ident = "panel-attack-unit-contents",
-  Pos = {info_panel_x, info_panel_y},
-  DefaultFont = "small",
-  Condition = {ShowOpponent = true, HideNeutral = true, Building = "false", Build = "false"},
-  Contents = {
--- Unit caracteristics
-     { Pos = {9, 52}, Condition = {Armor = "only"},
-       More = {"Text", {
-		  Text = "Armor: ", Variable = "Armor", Stat = true}}
-     },
-     { Pos = {9, 67},
-       More = {"Text", {
-		  Text = Concat("Damage: ",
-				String(min_damage), "-", String(max_damage))
-		       }
-       }
-     }}
-  })
+   {
+      Ident = "panel-building-unit-contents",
+      Pos = {info_panel_x, info_panel_y},
+      DefaultFont = "small",
+      Condition = {ShowOpponent = false, HideNeutral = true},
+      Contents = {
+         MakeCompleteBar({Build = "only"}, "Build"),
+         MakeCompleteBar({Research = "only"}, "Research"),
+         MakeCompleteBar({Training = "only"}, "Training"),
+         MakeCompleteBar({UpgradeTo = "only"}, "UpgradeTo")
+      }
+   }
+)
 
 DefineCursor({
-  Name = "cursor-point",
-  Race = "any",
-  File = "ui/cursors/arrow.png",
-  HotSpot = {0, 0},
-  Size = {14, 22}})
+      Name = "cursor-point",
+      Race = "any",
+      File = "ui/cursors/arrow.png",
+      HotSpot = {0, 0},
+      Size = {14, 22}})
 DefineCursor({
-  Name = "cursor-glass",
-  Race = "any",
-  File = "ui/cursors/magnifying_glass.png",
-  HotSpot = {11, 11},
-  Size = {28, 28}})
+      Name = "cursor-glass",
+      Race = "any",
+      File = "ui/cursors/magnifying_glass.png",
+      HotSpot = {11, 11},
+      Size = {28, 28}})
 DefineCursor({
-  Name = "cursor-green-hair",
-  Race = "any",
-  File = "ui/cursors/small_green_crosshair.png",
-  HotSpot = {8, 8},
-  Size = {18, 18}})
+      Name = "cursor-green-hair",
+      Race = "any",
+      File = "ui/cursors/small_green_crosshair.png",
+      HotSpot = {8, 8},
+      Size = {18, 18}})
 DefineCursor({
-  Name = "cursor-yellow-hair",
-  Race = "any",
-  File = "ui/cursors/yellow_crosshair.png",
-  HotSpot = {14, 10},
-  Size = {30, 22}})
+      Name = "cursor-yellow-hair",
+      Race = "any",
+      File = "ui/cursors/yellow_crosshair.png",
+      HotSpot = {14, 10},
+      Size = {30, 22}})
 DefineCursor({
-  Name = "cursor-red-hair",
-  Race = "any",
-  File = "ui/cursors/red_crosshair.png",
-  HotSpot = {14, 10},
-  Size = {30, 22}})
+      Name = "cursor-red-hair",
+      Race = "any",
+      File = "ui/cursors/red_crosshair.png",
+      HotSpot = {14, 10},
+      Size = {30, 22}})
 DefineCursor({
-  Name = "cursor-cross",
-  Race = "any",
-  File = "ui/cursors/small_green_crosshair.png",
-  HotSpot = { 8,  8},
-  Size = {18, 18}})
+      Name = "cursor-cross",
+      Race = "any",
+      File = "ui/cursors/small_green_crosshair.png",
+      HotSpot = { 8,  8},
+      Size = {18, 18}})
 DefineCursor({
-  Name = "cursor-scroll", -- Not present for wc1
-  Race = "any",
-  File = "ui/cursors/small_green_crosshair.png",
-  HotSpot = { 8,  8},
-  Size = {18, 18}})
+      Name = "cursor-scroll", -- Not present for wc1
+      Race = "any",
+      File = "ui/cursors/small_green_crosshair.png",
+      HotSpot = { 8,  8},
+      Size = {18, 18}})
 DefineCursor({
-  Name = "cursor-arrow-e",
-  Race = "any",
-  File = "ui/cursors/right_arrow.png",
-  HotSpot = {23, 10},
-  Size = {32, 32}})
+      Name = "cursor-arrow-e",
+      Race = "any",
+      File = "ui/cursors/right_arrow.png",
+      HotSpot = {23, 10},
+      Size = {32, 32}})
 DefineCursor({
-  Name = "cursor-arrow-ne",
-  Race = "any",
-  File = "ui/cursors/upper_right_arrow.png",
-  HotSpot = {21,  2},
-  Size = {32, 32}})
+      Name = "cursor-arrow-ne",
+      Race = "any",
+      File = "ui/cursors/upper_right_arrow.png",
+      HotSpot = {21,  2},
+      Size = {32, 32}})
 DefineCursor({
-  Name = "cursor-arrow-n",
-  Race = "any",
-  File = "ui/cursors/up_arrow.png",
-  HotSpot = {12,  2},
-  Size = {32, 32}})
+      Name = "cursor-arrow-n",
+      Race = "any",
+      File = "ui/cursors/up_arrow.png",
+      HotSpot = {12,  2},
+      Size = {32, 32}})
 DefineCursor({
-  Name = "cursor-arrow-nw",
-  Race = "any",
-  File = "ui/cursors/upper_left_arrow.png",
-  HotSpot = { 2,  2},
-  Size = {32, 32}})
+      Name = "cursor-arrow-nw",
+      Race = "any",
+      File = "ui/cursors/upper_left_arrow.png",
+      HotSpot = { 2,  2},
+      Size = {32, 32}})
 DefineCursor({
-  Name = "cursor-arrow-w",
-  Race = "any",
-  File = "ui/cursors/left_arrow.png",
-  HotSpot = { 4, 10},
-  Size = {32, 32}})
+      Name = "cursor-arrow-w",
+      Race = "any",
+      File = "ui/cursors/left_arrow.png",
+      HotSpot = { 4, 10},
+      Size = {32, 32}})
 DefineCursor({
-  Name = "cursor-arrow-s",
-  Race = "any",
-  File = "ui/cursors/down_arrow.png",
-  HotSpot = {12, 23},
-  Size = {32, 32}})
+      Name = "cursor-arrow-s",
+      Race = "any",
+      File = "ui/cursors/down_arrow.png",
+      HotSpot = {12, 23},
+      Size = {32, 32}})
 DefineCursor({
-  Name = "cursor-arrow-sw",
-  Race = "any",
-  File = "ui/cursors/lower_left_arrow.png",
-  HotSpot = { 2, 19},
-  Size = {32, 32}})
+      Name = "cursor-arrow-sw",
+      Race = "any",
+      File = "ui/cursors/lower_left_arrow.png",
+      HotSpot = { 2, 19},
+      Size = {32, 32}})
 DefineCursor({
-  Name = "cursor-arrow-se",
-  Race = "any",
-  File = "ui/cursors/lower_right_arrow.png",
-  HotSpot = {21, 19},
-  Size = {32, 32}})
+      Name = "cursor-arrow-se",
+      Race = "any",
+      File = "ui/cursors/lower_right_arrow.png",
+      HotSpot = {21, 19},
+      Size = {32, 32}})
 
-function AddFiller(file, x, y, resize_x, resize_y)
-        if CanAccessFile(file) == true then
-                b = CFiller:new_local()
-                b.G = CGraphic:New(file)
-                b.G:Load()
-                b.G:Resize(resize_x, resize_y)
-                b.X = x
-                b.Y = y
-                UI.Fillers:push_back(b)
-        end
+local function AddFiller(file, x, y, resize_x, resize_y)
+   if CanAccessFile(file) == true then
+      local b = CFiller:new_local()
+      b.G = CGraphic:New(file)
+      b.G:Load()
+      b.G:Resize(resize_x, resize_y)
+      b.X = x
+      b.Y = y
+      UI.Fillers:push_back(b)
+   end
 end
 
-function AddSelectedButton(x, y)
-        b = CUIButton:new_local()
-        b.X = x
-        b.Y = y
-        b.Style = FindButtonStyle("icon")
-        UI.SelectedButtons:push_back(b)
-end
-
-function AddTrainingButton(x, y)
-        b = CUIButton:new_local()
-        b.X = x
-        b.Y = y
-        b.Style = FindButtonStyle("icon")
-        UI.TrainingButtons:push_back(b)
-end
-
-function AddTransportingButton(x, y)
-        b = CUIButton:new_local()
-        b.X = x
-        b.Y = y
-        b.Style = FindButtonStyle("icon")
-        UI.TransportingButtons:push_back(b)
-end
-
-function AddButtonPanelButton(x, y)
-        b = CUIButton:new_local()
-        b.X = x
-        b.Y = y
-        b.Style = FindButtonStyle("icon")
-        UI.ButtonPanel.Buttons:push_back(b)
+local function MakeButton(x, y)
+   local b = CUIButton:new_local()
+   b.X = x
+   b.Y = y
+   b.Style = FindButtonStyle("icon")
+   return b
 end
 
 UI.NormalFontColor = "white";
@@ -334,17 +280,25 @@ UI.Resources[ManaResCost].TextX = UI.Resources[2].TextX
 UI.Resources[ManaResCost].TextY = UI.Resources[2].TextY
 
 b = CUIButton:new()
-b.X = 9
-b.Y = 140 + 6
+b.X = info_panel_x + 8
+b.Y = info_panel_y + 9
 b.Style = FindButtonStyle("icon")
 UI.SingleSelectedButton = b
 
 UI.SelectedButtons:clear()
-
-AddSelectedButton(9, 140 + 6)
-AddSelectedButton(75, 140 + 6)
-AddSelectedButton(9, 140 + 52)
-AddSelectedButton(75, 140 + 52)
+for i = 1,4,1 do
+   local x = 9
+   if i % 2 == 0 then
+      x = 75
+   end
+   local y = 140
+   if i <= 2 then
+      y = y + 6
+   else
+      y = y + 52
+   end
+   UI.SelectedButtons:push_back(MakeButton(x, y))
+end
 
 UI.LifeBarColorNames:clear()
 UI.LifeBarColorNames:push_back("green")
