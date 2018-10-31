@@ -167,7 +167,7 @@ local units = {
     Costs = {"time", 90, "gold", 900},
     HitPoints = 40,
     Armor = 0,
-    Mana = {Enable = true},
+    Mana = {Max = 100, Enable = true},
 	AnnoyComputerFactor = 200,
     CanCastSpell = {
        human = {
@@ -187,7 +187,7 @@ local units = {
     HitPoints = 40,
     Armor = 0,
     Coward = true,
-    Mana = {Enable = true},
+    Mana = {Max = 100, Enable = true},
 	AnnoyComputerFactor = 180,
     CanCastSpell = {
        human = {
@@ -223,12 +223,12 @@ local units = {
    {Names = {human = "Medivh"},
     HitPoints = 110,
     Armor = 0,
-    Mana = {Enable = true},
+    Mana = {Max = 100, Enable = true},
     Missile = "missile-fireball",
     PiercingDamage = 10,
     BasicDamage = 0,
     MaxAttackRange = 8,
-    Mana = {Enable = true},
+    Mana = {Max = 100, Enable = true},
     CanCastSpell = {
        human = {"spell-summon-spiders",
                 "spell-summon-daemon"}}}

@@ -31,7 +31,7 @@
 -- For documentation see stratagus/doc/ccl/ccl.html
 
 DefineBoolFlags("isundead", "organic", "hero", "volatile")
-DefineVariables("Mana", {Max = 100, Value = 64, Increase = 1, Enable = false}, "Speed", "ShadowFly", {Max = 2}, "Level")
+DefineVariables("Mana", {Max = 0, Value = 64, Increase = 1, Enable = false}, "Speed", "ShadowFly", {Max = 2}, "Level")
 
 --  Declare some unit types used in spells. This is quite accetable, the other
 --  way would be to define can-cast-spell outside unit definitions, not much of an improvement.
