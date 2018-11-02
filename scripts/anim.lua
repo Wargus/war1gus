@@ -192,7 +192,7 @@ local function BuildAnimations(frames, ...)
       Move = options.Move or BuildMoveAnimation(frames[1], speed),
       Attack = options.Attack or BuildAttackAnimation(frames[2], attackspeed, coolofftime, attacksound),
       Death = options.Death or BuildDeathAnimation(frames[3]),
-      Harvest_wood = options.Harvest_wood
+      Harvest_Wood = options.Harvest_wood
    }
    if options.RepairAsAttack then
      returnvalue.Repair = returnvalue.Attack

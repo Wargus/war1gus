@@ -33,7 +33,7 @@ godcheat = false
 cheatenabled = false
 
 function HandleCheats(str)
-  local resources = { "gold", "wood" }
+  local resources = { "Gold", "Wood" }
 
   if (str == "corwin of amber") then
 	AddMessage("Cheats enabled you wascally wabbit")
@@ -52,10 +52,10 @@ function HandleCheats(str)
     AddMessage("Upgraded technology cheat ... not working yet")
 
   elseif (str == "pot of gold") then
-    SetPlayerData(GetThisPlayer(), "Resources", "gold",
-      GetPlayerData(GetThisPlayer(), "Resources", "gold") + 10000)
-    SetPlayerData(GetThisPlayer(), "Resources", "wood",
-      GetPlayerData(GetThisPlayer(), "Resources", "wood") + 5000)
+    SetPlayerData(GetThisPlayer(), "Resources", "Gold",
+      GetPlayerData(GetThisPlayer(), "Resources", "Gold") + 10000)
+    SetPlayerData(GetThisPlayer(), "Resources", "Wood",
+      GetPlayerData(GetThisPlayer(), "Resources", "Wood") + 5000)
     AddMessage("!!! :)")
 
   elseif (str == "sally shears") then

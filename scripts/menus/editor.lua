@@ -397,7 +397,7 @@ function EditUnitProperties()
     menu:addHalfButton("~!Ok", "o", 15, sizeY - 40,
       function() GetUnitUnderCursor().Active = activeCheckBox:isMarked();  menu:stop() end)
   else
-    local resourceName = {"gold", "lumber"}
+    local resourceName = {"Gold", "lumber"}
     local resource = GetUnitUnderCursor().Type.GivesResource - 1
     menu:addLabel("Amount of " .. resourceName[1 + resource] .. " :", 24, 11 + 36, nil, false)
 	local resourceValue = menu:addTextInputField(GetUnitUnderCursor().ResourcesHeld, sizeX / 2 - 30, 11 + 36 * 2, 60)

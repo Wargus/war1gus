@@ -73,8 +73,8 @@ function RunResultsMenu()
       units[name] = units[name] + GetPlayerData(i, "TotalUnits")
       razings[name] = razings[name] + GetPlayerData(i, "TotalRazings")
       buildings[name] = buildings[name] + GetPlayerData(i, "TotalBuildings")
-      gold[name] = gold[name] + GetPlayerData(i, "TotalResources", "gold")
-      wood[name] = wood[name] + GetPlayerData(i, "TotalResources", "wood")        
+      gold[name] = gold[name] + GetPlayerData(i, "TotalResources", "Gold")
+      wood[name] = wood[name] + GetPlayerData(i, "TotalResources", "Wood")        
     end
   end
   

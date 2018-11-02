@@ -2640,8 +2640,8 @@ static void SmsSaveResources(FILE* sms_c2, unsigned char* txtp)
 	// 0x0070 - 0x0083: 5xDWord: Gold for each player.
 	fprintf(sms_c2, "\n-- Resources\n");
 	for (int p = 0; p < 5; p++) {
-		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"wood\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
-		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"gold\", %d)\n", p, AccessLE32(txtp + 0x70 + (4 * p)));
+		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"Wood\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
+		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"Gold\", %d)\n", p, AccessLE32(txtp + 0x70 + (4 * p)));
 	}
 	fprintf(sms_c2, "\n");
 }
@@ -2782,7 +2782,7 @@ static void SmsSavePlayers(char* race, char* mapnum, gzFile sms, gzFile smp)
             \"race\", \"%s\",\n\
             \"ai-name\", \"camp%s\",\n\
             \"color\", { 255, 0, 0 },\n\
-            \"resources\", {\"gold\", 2000, \"wood\", 2000})\n", i, computerrace, mapnum);
+            \"resources\", {\"Gold\", 2000, \"Wood\", 2000})\n", i, computerrace, mapnum);
 	}
 	gzprintf(smp, "\"neutral\", ");
 	gzprintf(sms, "Player(4,\n\
@@ -3136,24 +3136,24 @@ void ConvertSkirmishMap(const char* file, int mtxme)
 	gzprintf(sms,
 		    "LoadTileModels(\"scripts/tilesets/%s.lua\")\n"\
 		    "SetStartView(0, 16, 16)\n"\
-		    "SetPlayerData(0, \"Resources\", \"gold\", 10000)\n"\
-		    "SetPlayerData(0, \"Resources\", \"wood\", 3000)\n"\
+		    "SetPlayerData(0, \"Resources\", \"Gold\", 10000)\n"\
+		    "SetPlayerData(0, \"Resources\", \"Wood\", 3000)\n"\
 		    "SetPlayerData(0, \"RaceName\", \"human\")\n"\
             "SetAiType(0, \"wc1-land-attack\")\n"\
 		    "SetStartView(1, 48, 48)\n"\
-		    "SetPlayerData(1, \"Resources\", \"gold\", 10000)\n"\
-		    "SetPlayerData(1, \"Resources\", \"wood\", 3000)\n"\
+		    "SetPlayerData(1, \"Resources\", \"Gold\", 10000)\n"\
+		    "SetPlayerData(1, \"Resources\", \"Wood\", 3000)\n"\
 		    "SetPlayerData(1, \"RaceName\", \"orc\")\n"\
 			"SetAiType(1, \"wc1-land-attack\")\n"\
 		    "SetPlayerData(15, \"RaceName\", \"neutral\")\n\n"\
 			"SetStartView(2, 16, 48)\n"\
-			"SetPlayerData(2, \"Resources\", \"gold\", 10000)\n"\
-			"SetPlayerData(2, \"Resources\", \"wood\", 3000)\n"\
+			"SetPlayerData(2, \"Resources\", \"Gold\", 10000)\n"\
+			"SetPlayerData(2, \"Resources\", \"Wood\", 3000)\n"\
 			"SetAiType(2, \"wc1-land-attack\")\n"\
 			"SetPlayerData(2, \"RaceName\", \"human\")\n"\
 			"SetStartView(3, 48, 16)\n"\
-			"SetPlayerData(3, \"Resources\", \"gold\", 10000)\n"\
-			"SetPlayerData(3, \"Resources\", \"wood\", 3000)\n"\
+			"SetPlayerData(3, \"Resources\", \"Gold\", 10000)\n"\
+			"SetPlayerData(3, \"Resources\", \"Wood\", 3000)\n"\
 			"SetAiType(3, \"wc1-land-attack\")\n"\
 			"SetPlayerData(3, \"RaceName\", \"orc\")\n", tileset);
 
