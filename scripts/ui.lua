@@ -125,7 +125,7 @@ DefinePanelContents(
          { Pos = {71, 19},
            More = {"LifeBar", {
                       Variable = {
-                         Max = 20,
+                         Max = 100,
                          Value = ttlpercent
                       },
                       Height = 6, Width = 54, Border = false,
