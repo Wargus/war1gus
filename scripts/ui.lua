@@ -41,6 +41,9 @@ local info_panel_w = 128
 
 local min_damage = Div(ActiveUnitVar("PiercingDamage"), 2)
 local max_damage = Add(ActiveUnitVar("PiercingDamage"), ActiveUnitVar("BasicDamage"))
+local function ttlpercent()
+   return GetUnitVariable(-1, "TTLPercent")
+end
 
 UI.InfoPanel.X = info_panel_x
 UI.InfoPanel.Y = info_panel_y
@@ -117,6 +120,16 @@ DefinePanelContents(
          -- Mana
          { Pos = {71, 19}, Condition = {Mana = "only"},
            More = {"LifeBar", {Variable = "Mana", Height = 6, Width = 54, Border = false, Colors = {{0, "light-blue"}}}}
+         },
+         -- Summoned units
+         { Pos = {71, 19},
+           More = {"LifeBar", {
+                      Variable = {
+                         Max = 20,
+                         Value = ttlpercent
+                      },
+                      Height = 6, Width = 54, Border = false,
+                      Colors = {{0, "light-blue"}}}}
          },
          -- Resource Carry
          { Pos = second_line, Condition = {CarryResource = "only"},

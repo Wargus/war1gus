@@ -185,9 +185,12 @@ DefineSpell("spell-raise-dead",
 	"range", 5,
 	"repeat-cast",
 	"target", "position",
-	"action", {{"summon", "unit-type", "unit-the-dead", "time-to-live", 4500, "require-corpse"},
-		{"spawn-missile", "missile", "missile-normal-spell",
-			"start-point", {"base", "target"}}},
+	"action", {
+           {"summon", "unit-type", "unit-the-dead", "time-to-live", 4500, "require-corpse"},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
+           {"spawn-missile", "missile", "missile-normal-spell",
+            "start-point", {"base", "target"}}
+        },
 	"sound-when-cast", "raise dead",
 	"depend-upgrade", "upgrade-raise-dead",
 	"autocast", {"range", 6, "corpse", "only", "priority", {"Distance", false}, "position-autocast", SpellBlizzard},
@@ -237,6 +240,7 @@ DefineSpell("spell-summon-elemental",
 	"target", "position",
 	"action", {
 	   {"summon", "unit-type", "unit-water-elemental", "time-to-live", 4500},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -252,6 +256,7 @@ DefineSpell("spell-summon-daemon",
 	"target", "position",
 	"action", {
 	   {"summon", "unit-type", "unit-daemon", "time-to-live", 4500},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -268,6 +273,7 @@ DefineSpell("spell-summon-scorpions",
 	"target", "position",
 	"action", {
 	   {"summon", "unit-type", "unit-scorpion", "time-to-live", 4500},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -284,6 +290,7 @@ DefineSpell("spell-summon-spiders",
 	"target", "position",
 	"action", {
 	   {"summon", "unit-type", "unit-spider", "time-to-live", 4500},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
