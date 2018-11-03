@@ -57,6 +57,15 @@ war1gus.InCampaign = true
 ShouldTogglePlayerRace = {}
 UnitEquivalents = UnitEquivalents or { }
 
+local dmg_formula = Add(AttackerVar("BasicDamage"),
+                        Sub(AttackerVar("PiercingDamage"), DefenderVar("Armor")))
+local dmg_with_20pc_miss = NumIf(LessThan(Rand(5), 1), 0, dmg_formula)
+-- WC1 units miss around 20% of the time, except the catapult
+SetDamageFormula(
+   NumIf(Equal(AttackerVar("BasicDamage"), 255), -- 255 is the catapult dmg
+         dmg_formula,
+         dmg_with_20pc_miss))
+
 -- Convert unit type to the opposite race, if current player's race
 -- does not match the predefined race
 OldCreateUnit = OldCreateUnit or CreateUnit
