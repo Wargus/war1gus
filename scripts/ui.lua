@@ -152,6 +152,22 @@ DefinePanelContents(
    }
 )
 
+DefineDecorations({
+      Index = "Invisible", ShowOpponent = false,
+      Offset = {0, 0},
+      Method = {
+         "frame", {Thickness = 4, ColorName = "blue"}
+      }
+})
+
+DefineDecorations({
+      Index = "UnholyArmor", ShowOpponent = false,
+      Offset = {0, 0},
+      Method = {
+         "frame", {Thickness = 4, ColorName = "red"}
+      }
+})
+
 DefineCursor({
       Name = "cursor-point",
       Race = "any",

@@ -137,7 +137,7 @@ local units = {
     Costs = {"time", 60, "Gold", 400},
     HitPoints = 60,
     Armor = 2,
-	AnnoyComputerFactor = 80,
+    AnnoyComputerFactor = 80,
     PiercingDamage = 1,
     BasicDamage = 9,
     Size = {human = {96, 96}}},
@@ -188,7 +188,7 @@ local units = {
     Armor = 0,
     Coward = true,
     Mana = {Max = 100, Enable = true},
-	AnnoyComputerFactor = 180,
+    AnnoyComputerFactor = 180,
     CanCastSpell = {
        human = {
           "spell-healing",
@@ -199,7 +199,7 @@ local units = {
           "spell-dark-vision",
           "spell-unholy-armor" } },
     PiercingDamage = 6,
-        Missile = "missile-magic-fireball",
+    Missile = "missile-magic-fireball",
     BasicDamage = 0,
     MaxAttackRange = {orc = 2, human = 1}},
 

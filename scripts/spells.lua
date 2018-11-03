@@ -80,7 +80,7 @@ local function SpellUnholyArmor(spell, unit, x, y, target)
 		if GetUnitBoolFlag(target, "volatile") == true then
 			DamageUnit(-1, target, 99999)
 		else
-			DamageUnit(-1, target, math.max(1, math.floor(GetUnitVariable(target, "HitPoints", "Value") / 2)))
+			DamageUnit(-1, target, math.max(1, math.floor(GetUnitVariable(target, "HitPoints", "Max") / 2)))
 			SetUnitVariable(target, "UnholyArmor", 500, "Max")
 			SetUnitVariable(target, "UnholyArmor", 500, "Value")
 			SetUnitVariable(target, "UnholyArmor", 1, "Enable")
@@ -206,9 +206,10 @@ DefineSpell("spell-unholy-armor",
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"condition", {
-		"organic", "only",
-		"UnholyArmor", {MaxValue = 10},
-		"HitPoints", {MaxValuePercent = 100}},
+           "organic", "only",
+           "UnholyArmor", {MaxValue = 10},
+           "HitPoints", {MinValuePercent = 51}
+        },
 	"sound-when-cast", "unholy armor",
 	"depend-upgrade", "upgrade-unholy-armor",
 	"autocast", {"attacker", "only", "range", 9, "priority", {"Points", true}, "condition", {"Coward", "false", "alliance", "only"}},
