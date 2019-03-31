@@ -273,8 +273,9 @@ local DefaultPreference = function(name, value)
         preferences[name] = value
     end
 end
-DefaultPreference("VideoWidth", 640)
-DefaultPreference("VideoHeight", 400)
+DefaultPreference("VideoWidth", 1024)
+DefaultPreference("VideoHeight", 768)
+DefaultPreference("Zoom", true)
 DefaultPreference("VideoFullScreen", false)
 DefaultPreference("PlayerName", "Player")
 DefaultPreference("FogOfWar", false)
@@ -290,22 +291,26 @@ DefaultPreference("GameTranslation", "")
 DefaultPreference("TipNumber", 0)
 DefaultPreference("ShowTips", true)
 DefaultPreference("GrabMouse", false)
-DefaultPreference("UseOpenGL", false)
+DefaultPreference("UseOpenGL", true)
 DefaultPreference("MaxOpenGLTexture", 0)
 DefaultPreference("CampaignOrc", 1)
 DefaultPreference("CampaignHuman", 1)
 DefaultPreference("PlayIntro", true)
 DefaultPreference("MaxSelection", 4)
-DefaultPreference("TrainingQueue", false)
+DefaultPreference("TrainingQueue", true)
 DefaultPreference("AllowMultipleTownHalls", false)
 DefaultPreference("AllowTownHallUpgrade", false)
-DefaultPreference("MultiColoredCampaigns", false)
-DefaultPreference("MultiColoredCampaigns", false)
+DefaultPreference("MultiColoredCampaigns", true)
 DefaultPreference("ShowButtonPopups", true)
 
 wc1.preferences = preferences
 SetUseOpenGL(preferences.UseOpenGL)
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
+if preferences.Zoom then
+   SetZoomNoResize(640, 400)
+else
+   SetZoomNoResize(false)
+end
 SetVideoFullScreen(preferences.VideoFullScreen)
 SetMaxOpenGLTexture(preferences.MaxOpenGLTexture)
 SetLocalPlayerName(preferences.PlayerName)
