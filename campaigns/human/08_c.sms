@@ -9,17 +9,6 @@ function CreateUnit(name, player, pos)
 end
 Load("campaigns/human/08.sms")
 CreateUnit = oldcu
-Load("campaigns/human/08_c2.sms")
-Load("campaigns/human/campaign_titles.lua")
-title = campaign_titles[8]
-
-Briefing(
-  title,
-  objectives,
-  "../graphics/ui/human/briefing.png",
-  "campaigns/human/08_intro.txt",
-  {"campaigns/human/08_intro.wav"}
-)
 
 AddTrigger(
   function() return (GetNumOpponents(GetThisPlayer()) == 0) end,

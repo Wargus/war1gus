@@ -1,16 +1,5 @@
 LoadTileModels("scripts/tilesets/swamp_campaign.lua")
 Load("campaigns/orc/01.sms")
-Load("campaigns/orc/01_c2.sms")
-Load("campaigns/orc/campaign_titles.lua")
-title = campaign_titles[1]
-
-Briefing(
-  title,
-  objectives,
-  "../graphics/ui/orc/briefing.png",
-  "campaigns/orc/01_intro.txt",
-  {"campaigns/orc/01_intro.wav"}
-)
 
 AddTrigger(
   function() return (GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-orc-farm") >= 6 and GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-orc-barracks") >= 1) end,
@@ -20,3 +9,5 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 SetStartView(0, 55, 25)
+SetPlayerData(0, "Resources", "gold", 1000)
+SetPlayerData(0, "Resources", "wood", 400)

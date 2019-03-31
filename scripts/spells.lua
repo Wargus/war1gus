@@ -31,7 +31,7 @@
 -- For documentation see stratagus/doc/ccl/ccl.html
 
 DefineBoolFlags("isundead", "organic", "hero", "volatile")
-DefineVariables("Mana", {Max = 100, Value = 64, Increase = 1, Enable = false}, "Speed", "ShadowFly", {Max = 2}, "Level")
+DefineVariables("Mana", {Max = 0, Value = 64, Increase = 1, Enable = false}, "Speed", "ShadowFly", {Max = 2}, "Level")
 
 --  Declare some unit types used in spells. This is quite accetable, the other
 --  way would be to define can-cast-spell outside unit definitions, not much of an improvement.
@@ -80,7 +80,7 @@ local function SpellUnholyArmor(spell, unit, x, y, target)
 		if GetUnitBoolFlag(target, "volatile") == true then
 			DamageUnit(-1, target, 99999)
 		else
-			DamageUnit(-1, target, math.max(1, math.floor(GetUnitVariable(target, "HitPoints", "Value") / 2)))
+			DamageUnit(-1, target, math.max(1, math.floor(GetUnitVariable(target, "HitPoints", "Max") / 2)))
 			SetUnitVariable(target, "UnholyArmor", 500, "Max")
 			SetUnitVariable(target, "UnholyArmor", 500, "Value")
 			SetUnitVariable(target, "UnholyArmor", 1, "Enable")
@@ -140,7 +140,7 @@ DefineSpell("spell-far-seeing",
 	"manacost", 70,
 	"range", "infinite",
 	"target", "position",
-	"action", {{"summon", "unit-type", "unit-revealer", "time-to-live", 25},
+	"action", {{"summon", "unit-type", "unit-revealer", "time-to-live", 100},
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"sound-when-cast", "vision",
@@ -152,7 +152,7 @@ DefineSpell("spell-dark-vision",
 	"manacost", 70,
 	"range", "infinite",
 	"target", "position",
-	"action", {{"summon", "unit-type", "unit-revealer", "time-to-live", 25},
+	"action", {{"summon", "unit-type", "unit-revealer", "time-to-live", 100},
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"sound-when-cast", "vision",
@@ -185,9 +185,12 @@ DefineSpell("spell-raise-dead",
 	"range", 5,
 	"repeat-cast",
 	"target", "position",
-	"action", {{"summon", "unit-type", "unit-the-dead", "time-to-live", 4500, "require-corpse"},
-		{"spawn-missile", "missile", "missile-normal-spell",
-			"start-point", {"base", "target"}}},
+	"action", {
+           {"summon", "unit-type", "unit-the-dead", "time-to-live", 4500, "require-corpse"},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
+           {"spawn-missile", "missile", "missile-normal-spell",
+            "start-point", {"base", "target"}}
+        },
 	"sound-when-cast", "raise dead",
 	"depend-upgrade", "upgrade-raise-dead",
 	"autocast", {"range", 6, "corpse", "only", "priority", {"Distance", false}, "position-autocast", SpellBlizzard},
@@ -203,9 +206,10 @@ DefineSpell("spell-unholy-armor",
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"condition", {
-		"organic", "only",
-		"UnholyArmor", {MaxValue = 10},
-		"HitPoints", {MaxValuePercent = 100}},
+           "organic", "only",
+           "UnholyArmor", {MaxValue = 10},
+           "HitPoints", {MinValuePercent = 51}
+        },
 	"sound-when-cast", "unholy armor",
 	"depend-upgrade", "upgrade-unholy-armor",
 	"autocast", {"attacker", "only", "range", 9, "priority", {"Points", true}, "condition", {"Coward", "false", "alliance", "only"}},
@@ -237,6 +241,7 @@ DefineSpell("spell-summon-elemental",
 	"target", "position",
 	"action", {
 	   {"summon", "unit-type", "unit-water-elemental", "time-to-live", 4500},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -252,6 +257,7 @@ DefineSpell("spell-summon-daemon",
 	"target", "position",
 	"action", {
 	   {"summon", "unit-type", "unit-daemon", "time-to-live", 4500},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -268,6 +274,7 @@ DefineSpell("spell-summon-scorpions",
 	"target", "position",
 	"action", {
 	   {"summon", "unit-type", "unit-scorpion", "time-to-live", 4500},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",
@@ -284,6 +291,7 @@ DefineSpell("spell-summon-spiders",
 	"target", "position",
 	"action", {
 	   {"summon", "unit-type", "unit-spider", "time-to-live", 4500},
+	   {"adjust-variable", {Mana = {Max = 1, Value = 0}}},
 	   {"spawn-missile", "missile", "missile-normal-spell", "start-point", {"base", "target"}}
 		  },
 	"sound-when-cast", "raise dead",

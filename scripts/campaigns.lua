@@ -33,31 +33,18 @@
 function CreateCampaign(race)
    local prefix = string.upper(string.sub(race, 1, 1))
    local campaign_steps = {
-      CreateVideoStep("videos/" .. prefix .. "MAP01.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/01.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP02.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/02.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP03.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/03.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP04.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/04.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP05.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/05.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP06.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/06.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP07.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/07.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP08.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/08.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP09.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/09.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP10.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/10.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP11.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/11.smp"),
-      CreateVideoStep("videos/" .. prefix .. "MAP12.ogv"),
-      CreateMapStep("campaigns/" .. race .. "/12.smp"),
-      CreateVideoStep("videos/" .. prefix .. "FINALE.ogv"),
+      CreateMapStep(race, "01"),
+      CreateMapStep(race, "02"),
+      CreateMapStep(race, "03"),
+      CreateMapStep(race, "04"),
+      CreateMapStep(race, "05"),
+      CreateMapStep(race, "06"),
+      CreateMapStep(race, "07"),
+      CreateMapStep(race, "08"),
+      CreateMapStep(race, "09"),
+      CreateMapStep(race, "10"),
+      CreateMapStep(race, "11"),
+      CreateMapStep(race, "12"),
       CreateEndingStep("graphics/ui/" .. race .. "/victory_1.png",
                        "campaigns/" .. race .. "/ending_1.txt",
                        "campaigns/" .. race .. "/ending_1.wav"),
@@ -65,6 +52,6 @@ function CreateCampaign(race)
 						"campaigns/" .. race .. "/ending_2.txt",
 						"campaigns/" .. race .. "/ending_2.wav.gz")
    }
-   local campaign_menu = { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25 }
+   local campaign_menu = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 }
    return {menu = campaign_menu, steps = campaign_steps}
 end
