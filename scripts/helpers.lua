@@ -118,7 +118,7 @@ function DefineBuildingFromSpec(building)
             Icon = "icon-" .. fullname,
             Costs = building.Costs,
             RepairHp = 4,
-            RepairCosts = { "Gold", 1, "Wood", 1 },
+            RepairCosts = { "gold", 1, "wood", 1 },
             Construction = "construction-" .. fullname,
             HitPoints = building.HitPoints,
             DrawLevel = 20,

@@ -111,13 +111,13 @@ function SetPlayerData(player, data, arg1, arg2)
   elseif (data == "Resources") then
     local res
     if (GameSettings.Resources == 1) then
-      res = {Gold = 2000, Wood = 1000}
+      res = {gold = 2000, wood = 1000}
     elseif (GameSettings.Resources == 2) then
-      res = {Gold = 5000, Wood = 2000}
+      res = {gold = 5000, wood = 2000}
     elseif (GameSettings.Resources == 3) then
-      res = {Gold = 10000, Wood = 5000}
+      res = {gold = 10000, wood = 5000}
 	 elseif (GameSettings.Resources == 4) then
-      res = {Gold = 30000, Wood = 15000}
+      res = {gold = 30000, wood = 15000}
     end
     if res ~= nil then
         arg2 = res[arg1]
