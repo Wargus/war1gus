@@ -13,9 +13,12 @@ function Briefing(title, objs, bg, mapbg, text, voices)
   local bg1 = CGraphic:New(bg)
   bg1:Load()
   bg1:Resize(Video.Width, Video.Height)
-  local bg2 = CGraphic:New(mapbg)
-  bg2:Load()
-  bg2:Resize(Video.Width, Video.Height)
+  local bg2 = nil
+  if CanAccessFile(mapbg) then
+     bg2 = CGraphic:New(mapbg)
+     bg2:Load()
+     bg2:Resize(Video.Width, Video.Height)
+  end
 
   local bg = ImageButton()
   bg:setNormalImage(bg1)
@@ -107,10 +110,14 @@ function Briefing(title, objs, bg, mapbg, text, voices)
      menu:stop()
   end
   function action1()
-     bg:setNormalImage(bg2)
-     head1:setVisible(false)
-     head2:setVisible(false)
-     currentAction = action2
+     if bg2 ~= nil then
+        bg:setNormalImage(bg2)
+        head1:setVisible(false)
+        head2:setVisible(false)
+        currentAction = action2
+     else
+        action2()
+     end
   end
   currentAction = action1
 
