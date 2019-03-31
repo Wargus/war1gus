@@ -1,16 +1,5 @@
 LoadTileModels("scripts/tilesets/forest_campaign.lua")
 Load("campaigns/orc/06.sms")
-Load("campaigns/orc/06_c2.sms")
-Load("campaigns/orc/campaign_titles.lua")
-title = campaign_titles[6]
-
-Briefing(
-  title,
-  objectives,
-  "../graphics/ui/orc/briefing.png",
-  "campaigns/orc/06_intro.txt",
-  {"campaigns/orc/06_intro.wav"}
-)
 
 AddTrigger(
   function() return (GetPlayerData(1, "TotalNumUnits") == 1 and

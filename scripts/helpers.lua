@@ -248,7 +248,6 @@ function DefineUnitFromSpec(unit)
             Points = 100,
             Demand = 1,
             Type = "land",
-            Mana = { Enable = false },
             RightMouseAction = "attack",
             CanAttack = true,
             Coward = false,
@@ -275,6 +274,10 @@ function DefineUnitFromSpec(unit)
             else
                 unitType.Corpse = "unit-human-dead-body"
             end
+        end
+
+        if unit.Mana ~= nil then
+           unitType.Mana = unit.Mana
         end
 
         for k, v in pairs(unit) do

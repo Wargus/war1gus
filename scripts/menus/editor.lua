@@ -1,3 +1,11 @@
+local function AddButtonPanelButton(x, y)
+   b = CUIButton:new_local()
+   b.X = x
+   b.Y = y
+   b.Style = FindButtonStyle("icon")
+   UI.ButtonPanel.Buttons:push_back(b)
+end
+
 local function HackEditorUI()
   LoadUI("orc", Video.Width, Video.Height)
   DefinePlayerColors(wc1.HumanMultiColors)
@@ -225,7 +233,7 @@ function RunEditorPlayerProperties()
   menu:addLabel("Race", offxRace, 36)
   menu:addLabel("AI", offxAI, 36)
   menu:addLabel("Gold", offxGold, 36)
-  menu:addLabel("Lumber", offxLumber, 36)
+  menu:addLabel("Wood", offxLumber, 36)
 
   local playersProp = {nil, nil, nil, nil, nil,
                        nil, nil, nil, nil, nil,
@@ -268,7 +276,7 @@ function RunEditorPlayerProperties()
     playersProp[1 + i].ai:setWidth(130)
 
     playersProp[1 + i].gold = menu:addTextInputField(Players[i].Resources[1], offxGold - 20, offy_i, 40)
-    playersProp[1 + i].lumber = menu:addTextInputField(Players[i].Resources[2], offxLumber - 20, offy_i, 40)
+    playersProp[1 + i].wood = menu:addTextInputField(Players[i].Resources[2], offxLumber - 20, offy_i, 40)
     updateProp(i)
   end
 
@@ -389,7 +397,7 @@ function EditUnitProperties()
     menu:addHalfButton("~!Ok", "o", 15, sizeY - 40,
       function() GetUnitUnderCursor().Active = activeCheckBox:isMarked();  menu:stop() end)
   else
-    local resourceName = {"gold", "lumber"}
+    local resourceName = {"gold", "wood"}
     local resource = GetUnitUnderCursor().Type.GivesResource - 1
     menu:addLabel("Amount of " .. resourceName[1 + resource] .. " :", 24, 11 + 36, nil, false)
 	local resourceValue = menu:addTextInputField(GetUnitUnderCursor().ResourcesHeld, sizeX / 2 - 30, 11 + 36 * 2, 60)

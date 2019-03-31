@@ -148,7 +148,7 @@ local buildings = {
 	AnnoyComputerFactor = 50,
     Size = {128, 128}},
 
-   {Names = {orc = "Lumber mill", human = "Lumber mill"},
+   {Names = {orc = "Lumber Mill", human = "Lumber Mill"},
     Costs = {"time", 150, "gold", 600, "wood", 500},
     HitPoints = 600,
     CanStore = {"wood"},
@@ -186,7 +186,7 @@ local buildings = {
     Costs = {"time", 100, "gold", 500, "wood", 250},
     HitPoints = 5000,
     Size = {160, 160},
-        CanStore = {"wood", "gold"},
+    CanStore = {"wood", "gold"},
     Supply = 5,
     RepairRange = InfiniteRepairRange,
     NotConstructable = true,

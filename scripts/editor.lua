@@ -33,7 +33,6 @@
 SetEditorSelectIcon("icon-human-patrol-land")
 SetEditorUnitsIcon("icon-footman")
 
-
 --
 --	editor-unit-types a sorted list of unit-types for the editor.
 --	FIXME: this is only a temporary hack, for better sorted units.

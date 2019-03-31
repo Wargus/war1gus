@@ -188,7 +188,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-repair",
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-harvest",
   Action = "harvest",
-  Key = "h", Hint = "~!HARVEST LUMBER/MINE GOLD",
+  Key = "h", Hint = "~!HARVEST WOOD/MINE GOLD",
   ForUnit = {"unit-peon"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-return-goods",

@@ -117,7 +117,7 @@ local units = {
     HitPoints = 40,
     CanAttack = false,
     Coward = true,
-	AnnoyComputerFactor = 100,
+    AnnoyComputerFactor = 100,
     Armor = 0,
     RightMouseAction = "harvest",
     RepairRange = 1,
@@ -137,11 +137,10 @@ local units = {
     Costs = {"time", 60, "gold", 400},
     HitPoints = 60,
     Armor = 2,
-	AnnoyComputerFactor = 80,
+    AnnoyComputerFactor = 80,
     PiercingDamage = 1,
     BasicDamage = 9,
-    Size = {human = {96, 96}},
-    MaxAttackRange = 1},
+    Size = {human = {96, 96}}},
    {Names = {orc = "Spearman", human = "Archer"},
     Costs = {"time", 70, "gold", 450, "wood", 50},
     HitPoints = 60,
@@ -168,7 +167,7 @@ local units = {
     Costs = {"time", 90, "gold", 900},
     HitPoints = 40,
     Armor = 0,
-    Mana = {Enable = true},
+    Mana = {Max = 100, Enable = true},
 	AnnoyComputerFactor = 200,
     CanCastSpell = {
        human = {
@@ -188,8 +187,8 @@ local units = {
     HitPoints = 40,
     Armor = 0,
     Coward = true,
-    Mana = {Enable = true},
-	AnnoyComputerFactor = 180,
+    Mana = {Max = 100, Enable = true},
+    AnnoyComputerFactor = 180,
     CanCastSpell = {
        human = {
           "spell-healing",
@@ -200,7 +199,7 @@ local units = {
           "spell-dark-vision",
           "spell-unholy-armor" } },
     PiercingDamage = 6,
-        Missile = "missile-magic-fireball",
+    Missile = "missile-magic-fireball",
     BasicDamage = 0,
     MaxAttackRange = {orc = 2, human = 1}},
 
@@ -224,12 +223,12 @@ local units = {
    {Names = {human = "Medivh"},
     HitPoints = 110,
     Armor = 0,
-    Mana = {Enable = true},
+    Mana = {Max = 100, Enable = true},
     Missile = "missile-fireball",
     PiercingDamage = 10,
     BasicDamage = 0,
     MaxAttackRange = 8,
-    Mana = {Enable = true},
+    Mana = {Max = 100, Enable = true},
     CanCastSpell = {
        human = {"spell-summon-spiders",
                 "spell-summon-daemon"}}}
@@ -252,7 +251,6 @@ local knight_raider_spec = {
    AnnoyComputerFactor = 120,
    PiercingDamage = 1,
    BasicDamage = 13,
-   MaxAttackRange = 1,
    Dependencies = {orc = {"blacksmith", "kennel"},
                    human = {"blacksmith", "stable"}}}
 DefineUnitFromSpec(knight_raider_spec)

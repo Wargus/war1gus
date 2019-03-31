@@ -1,16 +1,5 @@
 LoadTileModels("scripts/tilesets/swamp_campaign.lua")
 Load("campaigns/orc/05.sms")
-Load("campaigns/orc/05_c2.sms")
-Load("campaigns/orc/campaign_titles.lua")
-title = campaign_titles[5]
-
-Briefing(
-  title,
-  objectives,
-  "../graphics/ui/orc/briefing.png",
-  "campaigns/orc/05_intro.txt",
-  {"campaigns/orc/05_intro.wav"}
-)
 
 AddTrigger(
   function() return (GetNumOpponents(GetThisPlayer()) == 0) end,

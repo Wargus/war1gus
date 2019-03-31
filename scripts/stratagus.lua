@@ -219,11 +219,11 @@ DefineDefaultActions(
   "stop", "mine", "chop", "drill", "mine", "mine", "mine")
 
 DefineDefaultResourceNames(
-  "time", "gold", "wood", "oil", "ore", "stone", "coal")
+  "time", _("gold"), _("wood"), "oil", "ore", "stone", "coal")
 
 DefineDefaultResourceAmounts(
-  "gold", 100000,
-  "oil", 50000)
+   _("gold"), 100000,
+   _("wood"), 50000)
 
 DefineDefaultResourceMaxAmounts(-1, -1, -1, -1, -1, -1, -1)
 

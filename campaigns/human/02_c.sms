@@ -1,16 +1,5 @@
 LoadTileModels("scripts/tilesets/forest_campaign.lua")
 Load("campaigns/human/02.sms")
-Load("campaigns/human/02_c2.sms")
-Load("campaigns/human/campaign_titles.lua")
-title = campaign_titles[2]
-
-Briefing(
-  title,
-  objectives,
-  "../graphics/ui/human/briefing.png",
-  "campaigns/human/02_intro.txt",
-  {"campaigns/human/02_intro.wav"}
-)
 
 AddTrigger(
   function() return (GetNumOpponents(GetThisPlayer()) == 0) end,

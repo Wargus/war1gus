@@ -1,16 +1,5 @@
 LoadTileModels("scripts/tilesets/swamp_campaign.lua")
 Load("campaigns/human/03.sms")
-Load("campaigns/human/03_c2.sms")
-Load("campaigns/human/campaign_titles.lua")
-title = campaign_titles[3]
-
-Briefing(
-  title,
-  objectives,
-  "../graphics/ui/human/briefing.png",
-  "campaigns/human/03_intro.txt",
-  {"campaigns/human/03_intro.wav"}
-)
 
 AddTrigger(
   function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
