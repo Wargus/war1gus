@@ -45,11 +45,11 @@
 
 ; General variables
 !define NAME "War1gus"
-!define VERSION "2.4.2"
+!define VERSION "2.4.2.1"
 !define VIVERSION "${VERSION}.0.0"
 !define HOMEPAGE "https://github.com/wargus/war1gus"
 !define LICENSE "GPL v2"
-!define COPYRIGHT "(C) 1998-2017 by The Stratagus Project"
+!define COPYRIGHT "(c) 1998-2018 by The Stratagus Project"
 !define STRATAGUS_NAME "Stratagus"
 !define STRATAGUS_HOMEPAGE "https://github.com/wargus/stratagus"
 
@@ -62,7 +62,6 @@
 !system "powershell -Command $\"& {cp **\${WARTOOL} ${WARTOOL}}$\""
 !system "powershell -Command $\"& {cp **\${EXE} ${EXE}}$\""
 
-!define FFMPEG2THEORA "ffmpeg2theora.exe"
 !define FFMPEG "ffmpeg.exe"
 !define SF2BANK "TimGM6mb.sf2"
 
@@ -91,7 +90,6 @@ ${redefine} VCREDISTREGKEY "SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\
 
 ; Download and extract nessesary 3rd party programs
 !ifndef NO_DOWNLOAD
-!system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${FFMPEG2THEORA} -OutFile ${FFMPEG2THEORA}}$\""
 !system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${FFMPEG} -OutFile ${FFMPEG}}$\""
 !system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${SF2BANK} -OutFile ${SF2BANK}}$\""
 !system "powershell -Command $\"& {wget https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/${VCREDIST} -OutFile ${VCREDIST}}$\""
@@ -142,24 +140,24 @@ Var STARTMENUDIR
 
 ; Language-dependent strings
 LangString INSTALLER_RUNNING ${LANG_ENGLISH} "${NAME} Installer is already running"
-LangString INSTALLER_RUNNING ${LANG_RUSSIAN} "Установщик ${NAME} уже запущен"
+LangString INSTALLER_RUNNING ${LANG_RUSSIAN} "Г“Г±ГІГ Г­Г®ГўГ№ГЁГЄ ${NAME} ГіГ¦ГҐ Г§Г ГЇГіГ№ГҐГ­"
 LangString NO_STRATAGUS ${LANG_ENGLISH} "${STRATAGUS_NAME} ${VERSION} is not installed.$\nYou need ${STRATAGUS_NAME} ${VERSION} to run ${NAME}!$\nFirst install ${STRATAGUS_NAME} ${VERSION} from ${STRATAGUS_HOMEPAGE}"
 LangString NO_STRATAGUS ${LANG_RUSSIAN} "${STRATAGUS_NAME} ${VERSION} is not installed.$\nYou need ${STRATAGUS_NAME} ${VERSION} to run ${NAME}!$\nFirst install ${STRATAGUS_NAME} ${VERSION} from ${STRATAGUS_HOMEPAGE}"
 LangString REMOVEPREVIOUS ${LANG_ENGLISH} "Removing previous installation"
-LangString REMOVEPREVIOUS ${LANG_RUSSIAN} "Удаляются файлы из предыдущей установки"
+LangString REMOVEPREVIOUS ${LANG_RUSSIAN} "Г“Г¤Г Г«ГїГѕГІГ±Гї ГґГ Г©Г«Г» ГЁГ§ ГЇГ°ГҐГ¤Г»Г¤ГіГ№ГҐГ© ГіГ±ГІГ Г­Г®ГўГЄГЁ"
 LangString REMOVECONFIGURATION ${LANG_ENGLISH} "Removing configuration and data files:"
-LangString REMOVECONFIGURATION ${LANG_RUSSIAN} "Удаляются данные и файлы конфигураций:"
+LangString REMOVECONFIGURATION ${LANG_RUSSIAN} "Г“Г¤Г Г«ГїГѕГІГ±Гї Г¤Г Г­Г­Г»ГҐ ГЁ ГґГ Г©Г«Г» ГЄГ®Г­ГґГЁГЈГіГ°Г Г¶ГЁГ©:"
 LangString DESC_REMOVEEXE ${LANG_ENGLISH} "Remove ${NAME} binary executables"
-LangString DESC_REMOVEEXE ${LANG_RUSSIAN} "Удаляются исполняемые файлы ${NAME}"
+LangString DESC_REMOVEEXE ${LANG_RUSSIAN} "Г“Г¤Г Г«ГїГѕГІГ±Гї ГЁГ±ГЇГ®Г«Г­ГїГҐГ¬Г»ГҐ ГґГ Г©Г«Г» ${NAME}"
 LangString DESC_REMOVECONF ${LANG_ENGLISH} "Remove all other configuration and extracted data files and directories in ${NAME} install directory created by user or ${NAME}"
-LangString DESC_REMOVECONF ${LANG_RUSSIAN} "Удалить все прочие файлы и директории в установочной папке ${NAME}, созданные пользователем ${NAME}"
+LangString DESC_REMOVECONF ${LANG_RUSSIAN} "Г“Г¤Г Г«ГЁГІГј ГўГ±ГҐ ГЇГ°Г®Г·ГЁГҐ ГґГ Г©Г«Г» ГЁ Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГЁ Гў ГіГ±ГІГ Г­Г®ГўГ®Г·Г­Г®Г© ГЇГ ГЇГЄГҐ ${NAME}, Г±Г®Г§Г¤Г Г­Г­Г»ГҐ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ¬ ${NAME}"
 
 LangString STR_VERSION ${LANG_ENGLISH} "version"
-LangString STR_VERSION ${LANG_RUSSIAN} "версия"
+LangString STR_VERSION ${LANG_RUSSIAN} "ГўГҐГ°Г±ГЁГї"
 
 !ifdef x86_64
 LangString x86_64_ONLY ${LANG_ENGLISH} "This version is for 64 bits computers only"
-LangString x86_64_ONLY ${LANG_RUSSIAN} "Эта версия предназначена для 64-битных систем"
+LangString x86_64_ONLY ${LANG_RUSSIAN} "ГќГІГ  ГўГҐГ°Г±ГЁГї ГЇГ°ГҐГ¤Г­Г Г§Г­Г Г·ГҐГ­Г  Г¤Г«Гї 64-ГЎГЁГІГ­Г»Гµ Г±ГЁГ±ГІГҐГ¬"
 !endif
 
 ;--------------------------------
@@ -219,7 +217,6 @@ Section "-${NAME}"
 	File "${EXE}"
 	File "${WARTOOL}"
 	File "${FFMPEG}"
-	File "${FFMPEG2THEORA}"
 
         ; -- XXX TODO: include Stratagus and dependencies some better way
 	File "stratagus.exe"

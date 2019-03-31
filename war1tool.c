@@ -34,7 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "2.4.2.20161108" // Version of extractor wartool
+#define VERSION "2.4.2.1.20161108" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2015 by The Stratagus Project"
 
@@ -1257,512 +1257,18 @@ int CloseArchive(void)
 //----------------------------------------------------------------------------
 //  FLC
 //----------------------------------------------------------------------------
-#if 0
-char FLCFile[1024];
-unsigned char FLCPalette[256 * 3];
-int FLCWidth;
-int FLCHeight;
-unsigned char* FLCImage;
-unsigned char* FLCImage2;
-int FLCFrame;
-
 /**
-**  Convert FLC COLOR256
-*/
-void ConvertFLC_COLOR256(unsigned char* buf)
-{
-	int packets;
-	unsigned char* p;
-	int skip;
-	int color_count;
-	int index;
-
-	index = 0;
-	p = buf;
-
-	packets = FetchLE16(p);
-	for (; packets; --packets) {
-		skip = FetchByte(p);
-		index += skip;
-		color_count = FetchByte(p);
-		if (color_count == 0) {
-			color_count = 256;
-		}
-		for (; color_count; --color_count) {
-			FLCPalette[index * 3 + 0] = FetchByte(p);
-			FLCPalette[index * 3 + 1] = FetchByte(p);
-			FLCPalette[index * 3 + 2] = FetchByte(p);
-			++index;
-		}
-	}
-}
-
-/**
-**  Convert FLC SS2
-*/
-void ConvertFLC_SS2(unsigned char* buf)
-{
-	unsigned char* p;
-	int lines;
-	int packets;
-	int w;
-	unsigned char* i;
-	int skip;
-	char type;
-	int packet;
-	int skiplines;
-	char pngbuf[1024];
-
-	p = buf;
-	lines = FetchLE16(p);
-	skiplines = 0;
-
-	for (; lines; --lines) {
-		i = FLCImage + FLCWidth * skiplines;
-		w = FetchLE16(p);
-		if ((w & 0xC000) == 0) {
-			packets = w;
-			for (; packets; --packets) {
-				skip = FetchByte(p);
-				i += skip;
-				type = FetchByte(p);
-				if (type > 0) {
-					for (; type; --type) {
-						*(unsigned short*)i = FetchLE16(p);
-						i += 2;
-					}
-				} else if (type < 0) {
-					packet = FetchLE16(p);
-					for (; type; ++type) {
-						*(unsigned short*)i = packet;
-						i += 2;
-					}
-				}
-			}
-		} else if ((w & 0xC000) == 0x8000) {
-			// Not used, ignore
-			printf("SS2 low order byte stored in last byte of line\n");
-			++lines;
-		} else if ((w & 0xC000) == 0xC000) {
-			skip = -(short)w;
-			skiplines += skip - 1; // -1 because of ++skiplines below
-			++lines;
-		} else {
-			printf("SS2 error\n");
-			return;
-		}
-		++skiplines;
-	}
-
-	sprintf(pngbuf, "%s-%04d.png", FLCFile, FLCFrame++);
-	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
-	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, -1);
-}
-
-/**
-**  Convert FLC LC
-*/
-void ConvertFLC_LC(unsigned char* buf)
-{
-	unsigned char* p;
-	int lines;
-	int packets;
-	unsigned char* i;
-	int skip;
-	char type;
-	unsigned char packet;
-	int skiplines;
-	char pngbuf[1024];
-
-	p = buf;
-	skiplines = FetchLE16(p);
-	lines = FetchLE16(p);
-
-	for (; lines; --lines) {
-		packets = FetchByte(p);
-		i = FLCImage + FLCWidth * skiplines;
-		for (; packets; --packets) {
-			skip = FetchByte(p);
-			i += skip;
-			type = FetchByte(p);
-			if (type > 0) {
-				for (; type; --type) {
-					*i++ = FetchByte(p);
-				}
-			} else if (type < 0) {
-				packet = FetchByte(p);
-				for (; type; ++type) {
-					*i++ = packet;
-				}
-			}
-		}
-		++skiplines;
-	}
-
-	sprintf(pngbuf, "%s-%04d.png", FLCFile, FLCFrame++);
-	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
-	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, -1);
-}
-
-/**
-**  Convert FLC BRUN
-*/
-void ConvertFLC_BRUN(unsigned char* buf)
-{
-	unsigned char* p;
-	unsigned char* i;
-	char type;
-	unsigned char pixel;
-	int h;
-	int w;
-	char pngbuf[1024];
-
-	p = buf;
-	i = FLCImage;
-
-	for (h = FLCHeight; h; --h) {
-		++p; // ignore first byte
-		for (w = FLCWidth; w;) {
-			type = FetchByte(p);
-
-			if (type < 0) {
-				for (; type; ++type) {
-					*i++ = FetchByte(p);
-					--w;
-				}
-			} else {
-				pixel = FetchByte(p);
-				for (; type; --type) {
-					*i++ = pixel;
-					--w;
-				}
-			}
-		}
-	}
-
-	sprintf(pngbuf, "%s-%04d.png", FLCFile, FLCFrame++);
-	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
-	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, -1);
-}
-
-/**
-**  Convert FLC COPY
-*/
-void ConvertFLC_COPY(unsigned char* buf)
-{
-	unsigned char* p;
-	unsigned char* i;
-	int h;
-	int w;
-	char pngbuf[1024];
-
-	p = buf;
-	i = FLCImage;
-
-	for (h = FLCHeight; h; --h) {
-		for (w = FLCWidth; w; --w) {
-			*i++ = FetchByte(p);
-		}
-	}
-
-	sprintf(pngbuf, "%s-%04d.png", FLCFile, FLCFrame++);
-	memcpy(FLCImage2, FLCImage, FLCWidth * FLCHeight);
-	ResizeImage(&FLCImage2, FLCWidth, FLCHeight, 2 * FLCWidth, 2 * FLCHeight);
-	SavePNG(pngbuf, FLCImage2, 2 * FLCWidth, 2 * FLCHeight, FLCPalette, -1);
-}
-
-/**
-**  Convert FLC PSTAMP
-*/
-void ConvertFLC_PSTAMP(unsigned char* buf)
-{
-	//
-	//  Read header
-	//
-	unsigned char *p, *image, *i;
-	int height, width, pstamp_type;
-
-	p = buf;
-	height = FetchLE16(p);
-	width = FetchLE16(p);
-	SkipLE16(p);
-
-	image = (unsigned char*)malloc(height * width);
-	if (!image) {
-		printf("Can't allocate image\n");
-		exit(-1);
-	}
-	memset(image, 255, height * width);
-	i = image;
-
-	//
-	//  PSTAMP header
-	//
-	SkipLE32(p);
-	pstamp_type = FetchLE16(p);
-
-	switch (pstamp_type) {
-		case 15:
-		{
-			int h, w;
-			for (h = height; h; --h) {
-				++p; // ignore first byte
-				for (w = width; w;) {
-					char type = FetchByte(p);
-
-					if (type < 0) {
-						for (; type; ++type) {
-							*i++ = FetchByte(p);
-							--w;
-						}
-					} else {
-						unsigned char pixel = FetchByte(p);
-						for (; type; --type) {
-							*i++ = pixel;
-							--w;
-						}
-					}
-				}
-			}
-
-			break;
-		}
-		default:
-			printf("Unsupported pstamp_type: %d\n", pstamp_type);
-			break;
-	}
-
-	// Image unused, do nothing
-
-	free(image);
-}
-
-/**
-**  Convert FLC Frame Chunk
-*/
-int ConvertFLCFrameChunk(unsigned char* buf)
-{
-	unsigned char* p;
-	int frame_size;
-	int frame_type;
-	int frame_chunks;
-	int data_size;
-	int data_type;
-
-	//
-	//  Read header
-	//
-	p = buf;
-	frame_size = FetchLE32(p);
-	frame_type = FetchLE16(p);
-	if (frame_type != 0xF1FA) {
-		printf("Wrong magic: %04x != %04x\n", frame_type, 0xF1FA);
-		return 0;
-	}
-	frame_chunks = FetchLE16(p);
-	p += 8; // reserved
-
-	//
-	//  Read chunks
-	//
-	for (; frame_chunks; --frame_chunks) {
-		data_size = FetchLE32(p);
-		data_type = FetchLE16(p);
-		switch (data_type) {
-			case 4:
-				ConvertFLC_COLOR256(p);
-				break;
-			case 7:
-				ConvertFLC_SS2(p);
-				break;
-			case 12:
-				ConvertFLC_LC(p);
-				break;
-			case 15:
-				ConvertFLC_BRUN(p);
-				break;
-			case 16:
-				ConvertFLC_COPY(p);
-				break;
-			case 18:
-				ConvertFLC_PSTAMP(p);
-				break;
-			default:
-				printf("Unknown data_type = %d\n",data_type);
-				break;
-		}
-		p += data_size - 6;
-	}
-
-	return frame_size;
-}
-
-
-/**
-**  Convert pngs using ffmpeg2theora.
-*/
-void EncodeFLC(const char* flc, int speed)
-{
-	int ret, i;
-	char *cmd, *output, *buf;
-	char pngfiles[1024];
-	char cmdprefix[512];
-	struct stat st;
-
-	sprintf(cmdprefix, "ffmpeg2theora --inputfps %d --resize-method lanczos -v 10 --max_size 640 -o", speed);
-
-	output = (char*)calloc(sizeof(char), strlen(flc) + 1);
-	strcpy(output, flc);
-	for (i = 0; i < (int)strlen(output); i++) {
-		output[i] = tolower(output[i]);
-	}
-	output[strlen(output) - 3] = 'a';
-	output[strlen(output) - 2] = 'v';
-	output[strlen(output) - 1] = 'i';
-
-	buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(output) + 1);
-	sprintf(buf, "%s/%s/%s", Dir, VIDEO_PATH, output);
-	CheckPath(buf);
-
-	sprintf(pngfiles, "%s-%%04d.png", FLCFile);
-
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 2 + strlen(pngfiles) + 3 + strlen(buf) + 2);
-	sprintf(cmd, "%s \"%s\" \"%s\"", cmdprefix, buf, pngfiles);
-	ret = system(cmd);
-
-	for (i = 0; i < 1000; i++) {
-		sprintf(pngfiles, "%s-%04d.png", FLCFile, i);
-		if (!stat(pngfiles, &st)) {
-			unlink(pngfiles);
-		}
-	}
-
-	free(buf);
-	free(cmd);
-	free(output);
-
-	if (ret != 0) {
-		printf("Can't convert video %s to ogv format. Is ffmpeg2theora installed in PATH?\n", flc);
-		fflush(stdout);
-	}
-}
-
-/**
-**  Convert FLC
-*/
-void ConvertFLC(const char* file, const char* flc)
-{
-	int f;
-	struct stat stat_buf;
-	unsigned char* buf;
-	unsigned char* p;
-	int i;
-	int frames;
-	int oframe1;
-	int oframe2;
-	int offset;
-	int speed;
-
-	f = open(file, O_RDONLY | O_BINARY, 0);
-	if (f == -1) {
-		printf("Can't open %s\n", file);
-		return;
-	}
-	if (fstat(f, &stat_buf)) {
-		printf("Can't fstat %s\n", file);
-		exit(-1);
-	}
-
-	//
-	//  Read in the archive
-	//
-	buf = malloc(stat_buf.st_size);
-	if (!buf) {
-		printf("Can't malloc %ld\n", (long)stat_buf.st_size);
-		exit(-1);
-	}
-	if (read(f, buf, stat_buf.st_size) != stat_buf.st_size) {
-		printf("Can't read %ld\n", (long)stat_buf.st_size);
-		exit(-1);
-	}
-	close(f);
-
-	sprintf(FLCFile, "%s/%s/%s", Dir, VIDEO_PATH, flc);
-	p = (unsigned char*)strrchr(FLCFile, '.');
-	if (p) {
-		*p = '\0';
-	}
-	CheckPath(FLCFile);
-	FLCFrame = 0;
-
-	//
-	//  Read header
-	//
-	p = buf;
-	i = FetchLE32(p);
-	if (i != stat_buf.st_size) {
-		printf("FLC file size incorrect: %d != %ld\n", i, (long)stat_buf.st_size);
-		free(buf);
-		return;
-	}
-	i = FetchLE16(p);
-	if (i != 0xAF12) {
-		printf("Wrong FLC magic: %04x != %04x\n", i, 0xAF12);
-		free(buf);
-		return;
-	}
-	frames = FetchLE16(p);
-	FLCWidth = FetchLE16(p);
-	FLCHeight = FetchLE16(p);
-	i = FetchLE16(p); // depth always 8
-	i = FetchLE16(p); // flags, unused
-	speed = FetchLE32(p);
-	i = FetchLE16(p); // reserved
-	i = FetchLE32(p); // created
-	i = FetchLE32(p); // creator
-	i = FetchLE32(p); // updated
-	i = FetchLE32(p); // updater
-	i = FetchLE16(p); // aspectx
-	i = FetchLE16(p); // aspecty
-	p += 38;		// reserved
-	oframe1 = FetchLE32(p);
-	oframe2 = FetchLE32(p);
-	p += 40;		// reserved
-
-	FLCImage = malloc(FLCWidth * FLCHeight);
-	FLCImage2 = malloc(2 * FLCWidth * 2 * FLCHeight);
-	if (!FLCImage || !FLCImage2) {
-		printf("Can't allocate image\n");
-		exit(-1);
-	}
-
-	offset = oframe1;
-	for (; frames; --frames) {
-		offset += ConvertFLCFrameChunk(buf + offset);
-	}
-
-	EncodeFLC(flc, speed);
-
-	free(buf);
-	free(FLCImage);
-}
-#else
-/**
-**  Convert FLC using ffmpeg resp. avconv. Manual conversion into PNGs (above) and
-**  then into ogv should produce better results, but ffmpeg2theora
-**  screws up the colors. Until then, just convert directly, and live
-**  with the direct conversion bugs.
+**  Convert FLC using ffmpeg resp. avconv. Manual conversion into PNGs (see git history) and
+**  then into ogv should produce better results. Until then,
+**  just convert directly, and live with the direct conversion bugs.
 */
 void ConvertFLC(const char* file, const char* flc)
 {
 	int ret;
+	int cmdlen;
 	char *cmd, *output, *outputPath;
-	/* char *cmdprefix = "ffmpeg2theora --resize-method lanczos -v 10 -V 1000 --soft-target --two-pass --noaudio --max_size 640 -o"; */
 	char *cmdprefix = "ffmpeg -y -i ";
-	char *outputOptions = " -q:v 10 -vb 4000k -vf scale=640:-1 ";
+	char *outputOptions = " -codec:v libtheora -qscale:v 10 -codec:a libvorbis -qscale:a 5 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
 
 	output = (char*)calloc(sizeof(char), strlen(flc) + 1);
 	strcpy(output, flc);
@@ -1774,8 +1280,9 @@ void ConvertFLC(const char* file, const char* flc)
 	sprintf(outputPath, "%s/%s/%s", Dir, VIDEO_PATH, output);
 	CheckPath(outputPath);
 
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 2 + strlen(file) + strlen(outputOptions) + 3 + strlen(outputPath) + 2);
-	sprintf(cmd, "%s \"%s\"%s\"%s\"", cmdprefix, file, outputOptions, outputPath);
+	cmdlen = strlen(cmdprefix) + 2 + strlen(file) + strlen(outputOptions) + 3 + strlen(outputPath) + 4;
+	cmd = (char*)calloc(sizeof(char), cmdlen);
+	snprintf(cmd, cmdlen - 1, "%s \"%s\"%s\"%s\"", cmdprefix, file, outputOptions, outputPath);
 	ret = system(cmd);
 	if (ret != 0) { // try avconv
 		strncpy(cmd, "avconv", 6);
@@ -1843,8 +1350,8 @@ void MuxIntroVideos(int upper) {
 	}
 	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + strlen(listfile) + strlen(cmdsuffixVideo) + strlen(outputVideo));
-	sprintf(cmd, "%s %s %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixVideo) + strlen(outputVideo));
+	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
 	fclose(mylist);
 	printf("%s\n\n", cmd);
 	fflush(stdout);
@@ -1856,7 +1363,7 @@ void MuxIntroVideos(int upper) {
 	if (ret != 0) {
 		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
-		exit(-1);
+		return;
 	}
 	free(cmd);
 	unlink(listfile);
@@ -1903,8 +1410,8 @@ void MuxIntroVideos(int upper) {
 	}
 	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + strlen(listfile) + strlen(cmdsuffixAudio) + strlen(outputAudio));
-	sprintf(cmd, "%s %s %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixAudio) + strlen(outputAudio));
+	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
 	fclose(mylist);
 	printf("%s\n\n", cmd);
 	fflush(stdout);
@@ -1916,7 +1423,7 @@ void MuxIntroVideos(int upper) {
 	if (ret != 0) {
 		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
-		exit(-1);
+		return;
 	}
 	free(cmd);
 	unlink(listfile);
@@ -1966,7 +1473,6 @@ void MuxIntroVideos(int upper) {
 	free(outputAudio);
 	free(outputVideo);
 }
-#endif
 
 //----------------------------------------------------------------------------
 //  Palette
@@ -2801,13 +2307,13 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 	sprintf(buf, "%s/%s/%s.wav", Dir, MUSIC_PATH, file);
 	CheckPath(buf);
 
-	cmd = (char*)calloc(strlen("ffmpeg2theora --optimize \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
+	cmd = (char*)calloc(strlen("ffmpeg -y -i \"") + strlen(buf) + strlen("\" \"") + strlen(buf) + strlen("\"") + 1, 1);
 	if (!cmd) {
 		fprintf(stderr, "Memory error\n");
 		exit(-1);
 	}
 
-	sprintf(cmd, "ffmpeg2theora --optimize \"%s/%s/%s.wav\" -o \"%s/%s/%s.ogg\"", Dir, MUSIC_PATH, file, Dir, MUSIC_PATH, file);
+	sprintf(cmd, "ffmpeg -y -i \"%s/%s/%s.wav\" \"%s/%s/%s.ogg\"", Dir, MUSIC_PATH, file, Dir, MUSIC_PATH, file);
 
 	ret = system(cmd);
 
@@ -2815,7 +2321,7 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 	remove(buf);
 
 	if (ret != 0) {
-		printf("Can't convert wav sound %s to ogv format. Is ffmpeg2theora installed in PATH?\n", file);
+		printf("Can't convert wav sound %s to ogv format. Is ffmpeg installed in PATH?\n", file);
 		fflush(stdout);
 		return;
 	}

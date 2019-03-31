@@ -10,7 +10,7 @@ Homepage: https://github.com/Wargus/war1gus
 Package: war1gus
 Architecture: any
 Depends: ${stratagus:Depends}, ${misc:Depends}, ${shlibs:Depends}
-Pre-Depends: ffmpeg | libav-tools, ffmpeg2theora, timidity | musescore-soundfont-gm
+Pre-Depends: ffmpeg | libav-tools, timidity, timgm6mb-soundfont | musescore-soundfont-gm
 Provides: stratagus-data
 Description: Warcraft: Orc & Humans data game set for the Stratagus engine
  War1gus can be used to play Warcraft: Orcs & Humans from Blizzard Entertainment.
