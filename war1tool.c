@@ -4029,7 +4029,6 @@ int main(int argc, char** argv)
 	}
 
 	if (video) {
-	    // TODO: embed this somewhere nicer
 	    MuxAllIntroVideos();
 	}
 
