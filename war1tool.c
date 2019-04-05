@@ -304,7 +304,7 @@ Control Todo[] = {
 #define _2  ,0,0,
 #define _1  ,0
 {FLC,0,"cave1.war",											 0,  1, 1, 0},
-{FLC,0,"cave2.war",											 0,  3, 1, 0},
+{FLC,0,"cave2.war",											 0,  4, 1, 0},
 {FLC,0,"cave3.war",											 0,  1, 1, 0},
 {FLC,0,"hfinale.war",										 0,  2, 0, 0},
 {FLC,0,"hintro1.war",										 0,  1, 1, 0},
@@ -717,7 +717,7 @@ Control Todo[] = {
 
 // Sounds
 {W,0,"logo",												 472 __},
-{W,0,"intro_door",											 473 __},
+{W,0,"intro_door",											 473, 1, 0, 0},
 {VOC,0,"misc/building",										 474 __},
 {VOC,0,"misc/explosion",									 475 __},
 {VOC,0,"missiles/catapult_rock_fired",						 476 __},
@@ -790,11 +790,11 @@ Control Todo[] = {
 {W,0,"../campaigns/human/ending_2",							 543 __},
 {W,0,"../campaigns/orc/ending_1",							 544 __},
 {W,0,"../campaigns/orc/ending_2",							 545 __},
-{W,0,"intro_1",												 546 __},
-{W,0,"intro_2",												 547 __},
-{W,0,"intro_3",												 548 __},
-{W,0,"intro_4",												 549 __},
-{W,0,"intro_5",												 550 __},
+{W,0,"intro_1",												 546, 1, 0, 0},
+{W,0,"intro_2",												 547, 1, 0, 0},
+{W,0,"intro_3",												 548, 1, 0, 0},
+{W,0,"intro_4",												 549, 1, 0, 0},
+{W,0,"intro_5",												 550, 1, 0, 0},
 {W,0,"../campaigns/human/01_intro",							 551 __},
 {W,0,"../campaigns/human/02_intro",							 552 __},
 {W,0,"../campaigns/human/03_intro",							 553 __},
@@ -2001,77 +2001,106 @@ void MuxIntroVideo(const char* video, const char* audio) {
 
 #define STATIC_CMD_SIZE 32768
 void MuxAllIntroVideos() {
+	struct dirent *ep;
+	DIR *dp;
 	char cmd[STATIC_CMD_SIZE] = {'\0'};	
 
 	// Castle sequence
-	const char* cmd1v = "ffmpeg -i %s/%s/hintro1.avi -i %s/%s/hintro2.avi "
-		"-filter_complex '[0:0][1:0]concat=n=2:v=1[out]' "
+	const char* cmd1v = "ffmpeg -y -i %s/%s/hintro1.avi -i %s/%s/hintro2.avi "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
 		"-map '[out]' -codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k %s/%s/hintro_v.ogv";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd1a = "ffmpeg -i %s/%s/intro_1.wav -i %s/%s/intro_2.wav "
-		"-filter_complex '[0:0][1:0]concat=n=2:a=1[out]' "
+	const char* cmd1a = "ffmpeg -y -i %s/%s/intro_1.wav -i %s/%s/intro_2.wav "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
 		"-map '[out]' -codec:a libvorbis -qscale:a 5 %s/%s/hintro_a.ogg";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, Dir, SOUND_PATH, Dir, SOUND_PATH, Dir, SOUND_PATH);
 	system(cmd);
 
-	const char* cmd1 = "ffmpeg -i %s/%s/hintro_v.ogv -i %s/%s/hintro_a.ogg "
+	const char* cmd1 = "ffmpeg -y -i %s/%s/hintro_v.ogv -i %s/%s/hintro_a.ogg "
 		"-c copy %s/%s/hintro.ogv";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
 	// Blackrock sequence
-	const char* cmd2v = "ffmpeg -i %s/%s/ointro1.avi -i %s/%s/ointro2.avi "
-		"-filter_complex '[0:0][1:0]concat=n=2:v=1[out]' "
+	const char* cmd2v = "ffmpeg -y -i %s/%s/ointro1.avi -i %s/%s/ointro2.avi "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
 		"-map '[out]' -codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k %s/%s/ointro_v.ogv";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd2a = "ffmpeg -i %s/%s/intro_3.wav "
+	const char* cmd2a = "ffmpeg -y -i %s/%s/intro_3.wav "
 		"-codec:a libvorbis -qscale:a 5 %s/%s/ointro_a.ogg";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, Dir, SOUND_PATH, Dir, SOUND_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2a, Dir, SOUND_PATH, Dir, SOUND_PATH);
 	system(cmd);
 
-	const char* cmd2 = "ffmpeg -i %s/%s/ointro_v.ogv -i %s/%s/ointro_a.ogg "
+	const char* cmd2 = "ffmpeg -y -i %s/%s/ointro_v.ogv -i %s/%s/ointro_a.ogg "
 		"-c copy %s/%s/ointro.ogv";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
 	// Cave sequence
-	const char* cmd3v = "ffmpeg -i %s/%s/ointro3.avi -i %s/%s/cave1.avi -i %s/%s/cave2.avi "
-		"-filter_complex '[0:0][1:0][2:0]concat=n=3:v=1[out]' "
+	const char* cmd3v = "ffmpeg -y -i %s/%s/ointro3.avi -i %s/%s/cave1.avi -i %s/%s/cave2.avi "
+		"-filter_complex '[0:0][1:0][2:0]concat=n=3:v=1:a=0[out]' "
 		"-map '[out]' -codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k %s/%s/cave_v.ogv";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd3a = "ffmpeg -i %s/%s/intro_door.wav %s/%s/intro_4.wav "
-		"-filter_complex '[0:0][1:0]concat=n=2:a=1[out]' "
+	const char* cmd3a = "ffmpeg -y -i %s/%s/intro_door.wav -i %s/%s/intro_4.wav "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
 		"-map '[out]' -codec:a libvorbis -qscale:a 5 %s/%s/cave_a.ogg";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, Dir, SOUND_PATH, Dir, SOUND_PATH, Dir, SOUND_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, Dir, SOUND_PATH, Dir, SOUND_PATH, Dir, SOUND_PATH);
 	system(cmd);
 
-	const char* cmd3 = "ffmpeg -i %s/%s/cave_v.ogv -i %s/%s/cave_a.ogg "
+	const char* cmd3 = "ffmpeg -y -i %s/%s/cave_v.ogv -i %s/%s/cave_a.ogg "
 		"-c copy %s/%s/cave.ogv";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
 	// Title sequence
-	const char* cmd4v = "ffmpeg -i %s/%s/cave3.avi -i %s/%s/title.avi "
-		"-filter_complex '[0:0][1:0]concat=n=2:v=1[out]' "
+	const char* cmd4t = "ffmpeg -i %s/%s/title.avi -codec:v huffyuv "
+		"-vf 'pad=width=640:height=400:x=0:y=0:color=black' %s/%s/title_s.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4v, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	const char* cmd4v = "ffmpeg -y -i %s/%s/cave3.avi -i %s/%s/title.avi "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
 		"-map '[out]' -codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k %s/%s/title_v.ogv";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd4a = "ffmpeg -i %s/%s/intro_5.wav "
+	const char* cmd4a = "ffmpeg -y -i %s/%s/intro_5.wav "
 		"-codec:a libvorbis -qscale:a 5 %s/%s/title_a.ogg";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, Dir, SOUND_PATH, Dir, SOUND_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4a, Dir, SOUND_PATH, Dir, SOUND_PATH);
 	system(cmd);
 
-	const char* cmd4 = "ffmpeg -i %s/%s/title_v.ogv -i %s/%s/title_a.ogg "
+	const char* cmd4 = "ffmpeg -y -i %s/%s/title_v.ogv -i %s/%s/title_a.ogg "
 		"-c copy %s/%s/title.ogv";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
 	system(cmd);
+
+	// delete uncompressed videos
+	sprintf(cmd, "%s/%s", Dir, VIDEO_PATH);
+	dp = opendir(cmd);
+	while ((ep = readdir(dp))) {
+		if (strstr(ep->d_name, ".avi")) {
+			sprintf(cmd, "%s/%s/%s", Dir, VIDEO_PATH, ep->d_name);
+			unlink(cmd);
+		}
+	}
+	closedir(dp);
+
+	// delete uncompressed audio
+	sprintf(cmd, "%s/%s", Dir, SOUND_PATH);
+	dp = opendir(cmd);
+	while ((ep = readdir(dp))) {
+		if (strstr(ep->d_name, ".wav")) {
+			sprintf(cmd, "%s/%s/%s", Dir, SOUND_PATH, ep->d_name);
+			unlink(cmd);
+		}
+	}
+	closedir(dp);
 }
 
 //----------------------------------------------------------------------------
@@ -2828,11 +2857,12 @@ int ConvertCursor(char* file, int pale, int cure)
 /**
 **  Convert wav to my format.
 */
-int ConvertWav(char* file, int wave)
+int ConvertWav(char* file, int wave, int noCompression)
 {
 	unsigned char* wavp;
 	char buf[1024];
 	gzFile gf;
+	FILE* f;
 	int l;
 
 	wavp = ExtractEntry(ArchiveOffsets[wave], &l);
@@ -2846,21 +2876,36 @@ int ConvertWav(char* file, int wave)
 		return 0;
 	}
 
-	sprintf(buf, "%s/%s/%s.wav.gz", Dir, SOUND_PATH, file);
-	CheckPath(buf);
-	gf = gzopen(buf, "wb9");
-	if (!gf) {
-		perror("");
-		printf("Can't open %s\n", buf);
-		exit(-1);
-	}
-	if (l != gzwrite(gf, wavp, l)) {
-		printf("Can't write %d bytes\n", l);
+	if (noCompression) {
+		sprintf(buf, "%s/%s/%s.wav", Dir, SOUND_PATH, file);
+		CheckPath(buf);
+		f = fopen(buf, "wb");
+		if (!f) {
+			perror("");
+			printf("Can't open %s\n", buf);
+			exit(-1);
+		}
+		if (l != fwrite(wavp, sizeof(char), l, f)) {
+			printf("Can't write %d bytes\n", l);
+		}
+		fclose(f);
+	} else {
+		sprintf(buf, "%s/%s/%s.wav.gz", Dir, SOUND_PATH, file);
+		CheckPath(buf);
+		gf = gzopen(buf, "wb9");
+		if (!gf) {
+			perror("");
+			printf("Can't open %s\n", buf);
+			exit(-1);
+		}
+		if (l != gzwrite(gf, wavp, l)) {
+			printf("Can't write %d bytes\n", l);
+		}
+		gzclose(gf);
 	}
 
 	free(wavp);
 
-	gzclose(gf);
 	return 0;
 }
 
@@ -3942,9 +3987,7 @@ int main(int argc, char** argv)
 	CreateConfig(Dir, video, midi);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
-#ifdef DEBUG
 		printf("%s:\n", Todo[u].File);
-#endif
 		switch (Todo[u].Type) {
 			case F:
 				if (upper) {
@@ -4002,7 +4045,7 @@ int main(int argc, char** argv)
 				ConvertCursor(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case W:
-				ConvertWav(Todo[u].File, Todo[u].Arg1);
+				ConvertWav(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case M:
 				if (midi) {
