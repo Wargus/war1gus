@@ -164,11 +164,16 @@ function IncreaseCampaignState(race, state)
   SavePreferences()
 end
 
-function CreateEndingStep(bg, text, voice)
+function CreateEndingStep(bg, text, voice, video)
   return function()
       print ("Ending in " .. bg .. " with " .. text .. " and " .. voice)
 	  local menu = WarMenu(nil, bg, true)
 	  StopMusic()
+
+          if (video ~= nil) then
+             PlayMovie(video)
+          end
+          
 	  local t = LoadBuffer(text)
 	  t = "\n\n\n\n\n\n\n\n\n\n" .. t .. "\n\n\n\n\n\n\n\n\n\n\n\n\n"
 	  local sw = ScrollingWidget(320, 170 * Video.Height / 480)
@@ -191,7 +196,7 @@ function CreateEndingStep(bg, text, voice)
 		  menu:stop()
 		  StopMusic()
 		end)
-      channel = PlaySoundFile(voice, function() end);
+          channel = PlaySoundFile(voice, function() end);
 	  menu:run()
 	  GameResult = GameVictory
   end

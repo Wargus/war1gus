@@ -344,6 +344,7 @@ if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") a
        Iterations = 1}
    )
    preferences.PlayIntro = false
+   SavePreferences()
 else
    SetTitleScreens(
       {Image = "ui/logo.png",
