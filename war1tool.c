@@ -1860,11 +1860,17 @@ void ConvertFLC_Manual(const char* file, const char* flc, int keepStill, int iRe
 **  then into ogv should produce better results. Until then,
 **  just convert directly, and live with the direct conversion bugs.
 */
-void ConvertFLC(const char* file, const char* flc, unsigned int stillImage)
+void ConvertFLC(const char* file, const char* iflc, unsigned int stillImage)
 {
+	char* flc;
 	int ret;
 	int cmdlen;
 	char *cmd, *output;
+
+	flc = strdup(iflc);
+	for (int i = 0; i < strlen(flc); i++) {
+		flc[i] = tolower(flc[i]);
+	}
 
 	static char* encoder = NULL;
 	if (encoder == NULL) {
@@ -1971,20 +1977,135 @@ void ConvertFLC(const char* file, const char* flc, unsigned int stillImage)
 	free(pngname);
 }
 
-void MuxIntroVideo(const char* video, const char* audio) {
+/**
+** Mux intro music and video using ffmpeg. TODO: find a way to do this inline
+*/
+void MuxIntroVideos() {
+	static char* audios[] = {"intro_1.wav", "intro_2.wav",
+							 "intro_3.wav", "intro_door.wav",
+							 "intro_4.wav",
+							 "intro_5.wav"};
+	static char* videos[] = {"hintro1.ogv", "hintro2.ogv",
+							 "ointro1.ogv", "ointro2.ogv", "ointro3.ogv",
+							 "cave1.ogv", "cave2.ogv", "cave3.ogv",
+							 "title.ogv"};
+
+	int repeats[] = {1, 12,
+			 1, 18, 1,
+			 1, 4, 1,
+			 1};
+
+	int i, j, ret;
+	size_t readM;
+	gzFile wavGz;
+	FILE *wavFile;
+	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputWavGz, *outputIntro, *buf;
+	unsigned char *wavBuffer;
+	char *cmdprefix = "ffmpeg -y -f concat -i ";
+	char *cmdsuffixVideo = " -c copy ";
+	char *cmdsuffixAudio = " -acodec libvorbis";
+	char *encoderIntroOpts = " -c copy ";
+	FILE* mylist;
+	char listfile[2048] = { '\0' };
+	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
+
+	// VIDEO
+	mylist = fopen(listfile, "w");
+	for (i = 0; i < 9; i++) {
+		for (j = 0; j < repeats[i]; j++) {
+			fprintf(mylist, "file '%s'\n", videos[i]);
+		}
+	}
+	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
+	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixVideo) + strlen(outputVideo) + 4);
+	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
+	fclose(mylist);
+	printf("%s\n\n", cmd);
+	fflush(stdout);
+	ret = system(cmd);
+	if (ret != 0) { // try avconv
+		strncpy(cmd, "avconv", 6);
+		ret = system(cmd);
+	}
+	if (ret != 0) {
+		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
+		fflush(stdout);
+		return;
+	}
+	free(cmd);
+	unlink(listfile);
+
+	// AUDIO
+	sprintf(listfile, "%s/%s/mylist.txt", Dir, SOUND_PATH);
+	mylist = fopen(listfile, "w");
+	for (i = 0; i < 6; i++) {
+		inputWavGz = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
+	 	sprintf(inputWavGz, "%s/%s/%s.gz", Dir, SOUND_PATH, audios[i]);
+	 	wavGz = gzopen(inputWavGz, "rb");
+	 	if (!wavGz) {
+	 		printf("Can't open %s for muxing\n", inputWavGz);
+	 		fflush(stdout);
+	 		free(inputWavGz);
+	 		continue;
+	 	}
+
+	 	inputAudio = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
+	 	sprintf(inputAudio, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
+		wavFile = fopen(inputAudio, "wb");
+	 	if (!wavGz) {
+	 		printf("Can't open %s for muxing\n", inputAudio);
+	 		fflush(stdout);
+	 		free(inputWavGz);
+	 		gzclose(wavGz);
+	 		free(inputAudio);
+	 		continue;
+	 	}
+
+	 	wavBuffer = (unsigned char*)calloc(sizeof(char), 1024 * 128);
+	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char))) > 0) {
+	 		fwrite(wavBuffer, sizeof(char), readM,  wavFile);
+			fflush(wavFile);
+	 	}
+	 	free(wavBuffer);
+	 	unlink(inputWavGz);
+	 	free(inputWavGz);
+	 	gzclose(wavGz);
+	 	fclose(wavFile);
+
+		fprintf(mylist, "file '%s'\n", audios[i]);
+		free(inputAudio);
+	}
+	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
+	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixAudio) + strlen(outputAudio) + 4);
+	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
+	fclose(mylist);
+	printf("%s\n\n", cmd);
+	fflush(stdout);
+	ret = system(cmd);
+	if (ret != 0) { // try avconv
+		strncpy(cmd, "avconv", 6);
+		ret = system(cmd);
+	}
+	if (ret != 0) {
+		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
+		fflush(stdout);
+		return;
+	}
+	free(cmd);
+	unlink(listfile);
+
 	// Mux
-	const char *cmdpattern;
-	char *cmd;
-	char *output;
-	int ret;
-
-	output = strdup(video);
-	memcpy(output + strlen(video) - 3, "ogg", 3);
-
-    cmdpattern = "ffmpeg -y -i \"%s\" -i \"%s\" -c copy \"%s\"";
-
-	cmd = (char*)calloc(sizeof(char), strlen(cmdpattern) + strlen(video) + strlen(audio) + strlen(output));
-	sprintf(cmd, cmdpattern, video, audio, output);
+	cmdprefix = "ffmpeg -y ";
+	outputIntro = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogv") + 2);
+	sprintf(outputIntro, "\"%s/%s/INTRO.ogv\"", Dir, VIDEO_PATH);
+	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1 +
+ 			    strlen("-i") + 1 + strlen(outputVideo) + 1 +
+			    strlen("-i") + 1 + strlen(outputAudio) + 1 +
+			    1 + strlen(encoderIntroOpts) + 1 +
+			    1 + strlen(outputIntro) + 2);
+	sprintf(cmd, "%s -i %s -i %s %s %s", cmdprefix, outputVideo, outputAudio, encoderIntroOpts, outputIntro);
 	printf("%s\n", cmd);
  	ret = system(cmd);
 	if (ret != 0) { // try avconv
@@ -1995,8 +2116,30 @@ void MuxIntroVideo(const char* video, const char* audio) {
 		printf("Can't mux intro video and audio. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
 	}
-	free(output);
+	free(outputIntro);
 	free(cmd);
+
+	// remove unneeded files
+	for (i = 0; i < 9; i++) {
+		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(videos[i]) + 1);
+		sprintf(buf, "%s/%s/%s", Dir, VIDEO_PATH, videos[i]);
+		unlink(buf);
+		free(buf);
+	}
+	for (i = 0; i < 6; i++) {
+		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 1);
+		sprintf(buf, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
+		unlink(buf);
+		free(buf);
+	}
+
+	// remove quotes, then unlink
+	outputAudio[strlen(outputAudio) - 1] = '\0';
+	outputVideo[strlen(outputVideo) - 1] = '\0';
+	unlink(outputAudio + 1);
+	unlink(outputVideo + 1);
+	free(outputAudio);
+	free(outputVideo);
 }
 
 #define STATIC_CMD_SIZE 32768
@@ -4067,7 +4210,11 @@ int main(int argc, char** argv)
 	}
 
 	if (video) {
+#ifdef WIN32
+	    MuxIntroVideos();
+#else
 	    MuxAllIntroVideos();
+#endif
 	}
 
 	char *versionfilepath = (char*)calloc(sizeof(char),
