@@ -2085,7 +2085,7 @@ void MuxAllIntroVideos() {
 	sprintf(cmd, "%s/%s", Dir, SOUND_PATH);
 	dp = opendir(cmd);
 	while ((ep = readdir(dp))) {
-		if (strstr(ep->d_name, ".wav")) {
+		if (strstr(ep->d_name, ".wav") && !strstr(ep->d_name, ".wav.gz")) {
 			sprintf(cmd, "%s/%s/%s", Dir, SOUND_PATH, ep->d_name);
 			unlink(cmd);
 		}
