@@ -31,7 +31,7 @@
 --=============================================================================
 
 function CreateCampaign(race)
-   local prefix = string.upper(string.sub(race, 1, 1))
+   local prefix = string.lower(string.sub(race, 1, 1))
    local campaign_steps = {
       CreateMapStep(race, "01"),
       CreateMapStep(race, "02"),
@@ -47,10 +47,11 @@ function CreateCampaign(race)
       CreateMapStep(race, "12"),
       CreateEndingStep("graphics/ui/" .. race .. "/victory_1.png",
                        "campaigns/" .. race .. "/ending_1.txt",
-                       "campaigns/" .. race .. "/ending_1.wav"),
+                       "campaigns/" .. race .. "/ending_1.wav",
+                       "videos/" .. prefix .. "finale.ogv"),
       CreateEndingStep("graphics/ui/" .. race .. "/victory_1.png",
-						"campaigns/" .. race .. "/ending_2.txt",
-						"campaigns/" .. race .. "/ending_2.wav.gz")
+                       "campaigns/" .. race .. "/ending_2.txt",
+                       "campaigns/" .. race .. "/ending_2.wav.gz")
    }
    local campaign_menu = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 }
    return {menu = campaign_menu, steps = campaign_steps}

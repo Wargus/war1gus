@@ -273,8 +273,9 @@ local DefaultPreference = function(name, value)
         preferences[name] = value
     end
 end
-DefaultPreference("VideoWidth", 640)
-DefaultPreference("VideoHeight", 400)
+DefaultPreference("VideoWidth", 1024)
+DefaultPreference("VideoHeight", 768)
+DefaultPreference("OriginalScale", "640x480")
 DefaultPreference("VideoFullScreen", false)
 DefaultPreference("PlayerName", "Player")
 DefaultPreference("FogOfWar", false)
@@ -290,22 +291,28 @@ DefaultPreference("GameTranslation", "")
 DefaultPreference("TipNumber", 0)
 DefaultPreference("ShowTips", true)
 DefaultPreference("GrabMouse", false)
-DefaultPreference("UseOpenGL", false)
+DefaultPreference("UseOpenGL", true)
 DefaultPreference("MaxOpenGLTexture", 0)
 DefaultPreference("CampaignOrc", 1)
 DefaultPreference("CampaignHuman", 1)
 DefaultPreference("PlayIntro", true)
-DefaultPreference("MaxSelection", 4)
-DefaultPreference("TrainingQueue", false)
+DefaultPreference("MaxSelection", 9)
+DefaultPreference("TrainingQueue", true)
 DefaultPreference("AllowMultipleTownHalls", false)
 DefaultPreference("AllowTownHallUpgrade", false)
-DefaultPreference("MultiColoredCampaigns", false)
-DefaultPreference("MultiColoredCampaigns", false)
+DefaultPreference("MultiColoredCampaigns", true)
 DefaultPreference("ShowButtonPopups", true)
 
 wc1.preferences = preferences
 SetUseOpenGL(preferences.UseOpenGL)
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
+if preferences.OriginalScale then
+   for w,h in string.gmatch(preferences.OriginalScale, "(%d+)x(%d+)") do
+      SetZoomNoResize(tonumber(w),tonumber(h))
+   end
+else
+   SetZoomNoResize(false)
+end
 SetVideoFullScreen(preferences.VideoFullScreen)
 SetMaxOpenGLTexture(preferences.MaxOpenGLTexture)
 SetLocalPlayerName(preferences.PlayerName)
@@ -324,15 +331,22 @@ SetTrainingQueue(not not preferences.TrainingQueue)
 Preference.SF2Soundfont = "music/TimGM6mb.sf2"
 Preference.PauseOnLeave = false
 
-if file_exists("videos", "INTRO.ogv") and preferences.PlayIntro then
+if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") and file_exists("videos", "cave.ogv") and file_exists("videos", "title.ogv") and preferences.PlayIntro then
    SetTitleScreens(
       {Image = "ui/logo.png",
        Music = "sounds/logo.wav",
        Timeout = 3},
-      {Image = "videos/INTRO.ogv",
+      {Image = "videos/hintro.ogv",
+       Iterations = 1},
+      {Image = "videos/ointro.ogv",
+       Iterations = 1},
+      {Image = "videos/cave.ogv",
+       Iterations = 1},
+      {Image = "videos/title.ogv",
        Iterations = 1}
    )
    preferences.PlayIntro = false
+   SavePreferences()
 else
    SetTitleScreens(
       {Image = "ui/logo.png",
