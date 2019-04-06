@@ -275,7 +275,7 @@ local DefaultPreference = function(name, value)
 end
 DefaultPreference("VideoWidth", 1024)
 DefaultPreference("VideoHeight", 768)
-DefaultPreference("OriginalScale", "640x400")
+DefaultPreference("OriginalScale", "640x480")
 DefaultPreference("VideoFullScreen", false)
 DefaultPreference("PlayerName", "Player")
 DefaultPreference("FogOfWar", false)
@@ -306,8 +306,10 @@ DefaultPreference("ShowButtonPopups", true)
 wc1.preferences = preferences
 SetUseOpenGL(preferences.UseOpenGL)
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
-if preferences.Zoom then
-   SetZoomNoResize(640, 400)
+if preferences.OriginalScale then
+   for w,h in string.gmatch(preferences.OriginalScale, "(%d+)x(%d+)") do
+      SetZoomNoResize(tonumber(w),tonumber(h))
+   end
 else
    SetZoomNoResize(false)
 end
