@@ -303,12 +303,12 @@ Control Todo[] = {
 #define __  ,0,0,0
 #define _2  ,0,0,
 #define _1  ,0
-{FLC,0,"cave1.war",											 0 __},
-{FLC,0,"cave2.war",											 0 __},
-{FLC,0,"cave3.war",											 0 __},
-{FLC,0,"hfinale.war",										 0 __},
-{FLC,0,"hintro1.war",										 0 __},
-{FLC,0,"hintro2.war",										 0 __},
+{FLC,0,"cave1.war",											 0,  1, 1, 0},
+{FLC,0,"cave2.war",											 0,  4, 1, 0},
+{FLC,0,"cave3.war",											 0,  1, 1, 0},
+{FLC,0,"hfinale.war",										 0,  2, 0, 0},
+{FLC,0,"hintro1.war",										 0,  1, 1, 0},
+{FLC,0,"hintro2.war",										 0, 12, 1, 0},
 {FLC,0,"hmap01.war",										 1 __},
 {FLC,0,"hmap02.war",										 1 __},
 {FLC,0,"hmap03.war",										 1 __},
@@ -323,10 +323,10 @@ Control Todo[] = {
 {FLC,0,"hmap12.war",										 1 __},
 {FLC,0,"lose1.war",											 0 __},
 {FLC,0,"lose2.war",											 0 __},
-{FLC,0,"ofinale.war",										 0 __},
-{FLC,0,"ointro1.war",										 0 __},
-{FLC,0,"ointro2.war",										 0 __},
-{FLC,0,"ointro3.war",										 0 __},
+{FLC,0,"ofinale.war",										 0,  2, 0, 0},
+{FLC,0,"ointro1.war",										 0,  1, 1, 0},
+{FLC,0,"ointro2.war",										 0, 18, 1, 0},
+{FLC,0,"ointro3.war",										 0,  1, 1, 0},
 {FLC,0,"omap01.war",										 1 __},
 {FLC,0,"omap02.war",										 1 __},
 {FLC,0,"omap03.war",										 1 __},
@@ -339,7 +339,7 @@ Control Todo[] = {
 {FLC,0,"omap10.war",										 1 __},
 {FLC,0,"omap11.war",										 1 __},
 {FLC,0,"omap12.war",										 1 __},
-{FLC,0,"title.war",											 0 __},
+{FLC,0,"title.war",											 0,  1, 1, 0},
 {FLC,0,"win1.war",											 0 __},
 {FLC,0,"win2.war",											 0 __},
 
@@ -717,7 +717,7 @@ Control Todo[] = {
 
 // Sounds
 {W,0,"logo",												 472 __},
-{W,0,"intro_door",											 473 __},
+{W,0,"intro_door",											 473, 1, 0, 0},
 {VOC,0,"misc/building",										 474 __},
 {VOC,0,"misc/explosion",									 475 __},
 {VOC,0,"missiles/catapult_rock_fired",						 476 __},
@@ -790,11 +790,11 @@ Control Todo[] = {
 {W,0,"../campaigns/human/ending_2",							 543 __},
 {W,0,"../campaigns/orc/ending_1",							 544 __},
 {W,0,"../campaigns/orc/ending_2",							 545 __},
-{W,0,"intro_1",												 546 __},
-{W,0,"intro_2",												 547 __},
-{W,0,"intro_3",												 548 __},
-{W,0,"intro_4",												 549 __},
-{W,0,"intro_5",												 550 __},
+{W,0,"intro_1",												 546, 1, 0, 0},
+{W,0,"intro_2",												 547, 1, 0, 0},
+{W,0,"intro_3",												 548, 1, 0, 0},
+{W,0,"intro_4",												 549, 1, 0, 0},
+{W,0,"intro_5",												 550, 1, 0, 0},
 {W,0,"../campaigns/human/01_intro",							 551 __},
 {W,0,"../campaigns/human/02_intro",							 552 __},
 {W,0,"../campaigns/human/03_intro",							 553 __},
@@ -1259,6 +1259,602 @@ int CloseArchive(void)
 //----------------------------------------------------------------------------
 //  FLC
 //----------------------------------------------------------------------------
+typedef struct _flcfile {
+	char FLCFile[1024];
+	unsigned char FLCPalette[256 * 3];
+	int FLCWidth;
+	int FLCHeight;
+	unsigned char* FLCImage;
+	unsigned char* FLCImage2;
+	int FLCFrame;
+} flcfile;
+
+/**
+**  Convert FLC COLOR256
+*/
+void ConvertFLC_COLOR256(flcfile *file, unsigned char* buf)
+{
+	int packets;
+	unsigned char* p;
+	int skip;
+	int color_count;
+	int index;
+
+	index = 0;
+	p = buf;
+
+	packets = FetchLE16(p);
+	for (; packets; --packets) {
+		skip = FetchByte(p);
+		index += skip;
+		color_count = FetchByte(p);
+		if (color_count == 0) {
+			color_count = 256;
+		}
+		for (; color_count; --color_count) {
+			file->FLCPalette[index * 3 + 0] = FetchByte(p);
+			file->FLCPalette[index * 3 + 1] = FetchByte(p);
+			file->FLCPalette[index * 3 + 2] = FetchByte(p);
+			++index;
+		}
+	}
+}
+
+/**
+**  Convert FLC SS2
+*/
+void ConvertFLC_SS2(flcfile *file, unsigned char* buf)
+{
+	unsigned char* p;
+	int lines;
+	int packets;
+	int w;
+	unsigned char* i;
+	int skip;
+	char type;
+	int packet;
+	int skiplines;
+	char pngbuf[1024];
+
+	p = buf;
+	lines = FetchLE16(p);
+	skiplines = 0;
+
+	for (; lines; --lines) {
+		i = file->FLCImage + file->FLCWidth * skiplines;
+		w = FetchLE16(p);
+		if ((w & 0xC000) == 0) {
+			packets = w;
+			for (; packets; --packets) {
+				skip = FetchByte(p);
+				i += skip;
+				type = FetchByte(p);
+				if (type > 0) {
+					for (; type; --type) {
+						*(unsigned short*)i = FetchLE16(p);
+						i += 2;
+					}
+				} else if (type < 0) {
+					packet = FetchLE16(p);
+					for (; type; ++type) {
+						*(unsigned short*)i = packet;
+						i += 2;
+					}
+				}
+			}
+		} else if ((w & 0xC000) == 0x8000) {
+			// Not used, ignore
+			printf("SS2 low order byte stored in last byte of line\n");
+			++lines;
+		} else if ((w & 0xC000) == 0xC000) {
+			skip = -(short)w;
+			skiplines += skip - 1; // -1 because of ++skiplines below
+			++lines;
+		} else {
+			printf("SS2 error\n");
+			return;
+		}
+		++skiplines;
+	}
+
+	sprintf(pngbuf, "%s-%04d.png", file->FLCFile, file->FLCFrame++);
+	memcpy(file->FLCImage2, file->FLCImage, file->FLCWidth * file->FLCHeight);
+	ResizeImage(&(file->FLCImage2), file->FLCWidth, file->FLCHeight, 2 * file->FLCWidth, 2 * file->FLCHeight);
+	SavePNG(pngbuf, file->FLCImage2, 2 * file->FLCWidth, 2 * file->FLCHeight, file->FLCPalette, -1);
+}
+
+/**
+**  Convert FLC LC
+*/
+void ConvertFLC_LC(flcfile *file, unsigned char* buf)
+{
+	unsigned char* p;
+	int lines;
+	int packets;
+	unsigned char* i;
+	int skip;
+	char type;
+	unsigned char packet;
+	int skiplines;
+	char pngbuf[1024];
+
+	p = buf;
+	skiplines = FetchLE16(p);
+	lines = FetchLE16(p);
+
+	for (; lines; --lines) {
+		packets = FetchByte(p);
+		i = file->FLCImage + file->FLCWidth * skiplines;
+		for (; packets; --packets) {
+			skip = FetchByte(p);
+			i += skip;
+			type = FetchByte(p);
+			if (type > 0) {
+				for (; type; --type) {
+					*i++ = FetchByte(p);
+				}
+			} else if (type < 0) {
+				packet = FetchByte(p);
+				for (; type; ++type) {
+					*i++ = packet;
+				}
+			}
+		}
+		++skiplines;
+	}
+
+	sprintf(pngbuf, "%s-%04d.png", file->FLCFile, file->FLCFrame++);
+	memcpy(file->FLCImage2, file->FLCImage, file->FLCWidth * file->FLCHeight);
+	ResizeImage(&(file->FLCImage2), file->FLCWidth, file->FLCHeight, 2 * file->FLCWidth, 2 * file->FLCHeight);
+	SavePNG(pngbuf, file->FLCImage2, 2 * file->FLCWidth, 2 * file->FLCHeight, file->FLCPalette, -1);
+}
+
+/**
+**  Convert FLC BRUN
+*/
+void ConvertFLC_BRUN(flcfile *file, unsigned char* buf)
+{
+	unsigned char* p;
+	unsigned char* i;
+	char type;
+	unsigned char pixel;
+	int h;
+	int w;
+	char pngbuf[1024];
+
+	p = buf;
+	i = file->FLCImage;
+
+	for (h = file->FLCHeight; h; --h) {
+		++p; // ignore first byte
+		for (w = file->FLCWidth; w;) {
+			type = FetchByte(p);
+
+			if (type < 0) {
+				for (; type; ++type) {
+					*i++ = FetchByte(p);
+					--w;
+				}
+			} else {
+				pixel = FetchByte(p);
+				for (; type; --type) {
+					*i++ = pixel;
+					--w;
+				}
+			}
+		}
+	}
+
+	sprintf(pngbuf, "%s-%04d.png", file->FLCFile, file->FLCFrame++);
+	memcpy(file->FLCImage2, file->FLCImage, file->FLCWidth * file->FLCHeight);
+	ResizeImage(&(file->FLCImage2), file->FLCWidth, file->FLCHeight, 2 * file->FLCWidth, 2 * file->FLCHeight);
+	SavePNG(pngbuf, file->FLCImage2, 2 * file->FLCWidth, 2 * file->FLCHeight, file->FLCPalette, -1);
+}
+
+/**
+**  Convert FLC COPY
+*/
+void ConvertFLC_COPY(flcfile *file, unsigned char* buf)
+{
+	unsigned char* p;
+	unsigned char* i;
+	int h;
+	int w;
+	char pngbuf[1024];
+
+	p = buf;
+	i = file->FLCImage;
+
+	for (h = file->FLCHeight; h; --h) {
+		for (w = file->FLCWidth; w; --w) {
+			*i++ = FetchByte(p);
+		}
+	}
+
+	sprintf(pngbuf, "%s-%04d.png", file->FLCFile, file->FLCFrame++);
+	memcpy(file->FLCImage2, file->FLCImage, file->FLCWidth * file->FLCHeight);
+	ResizeImage(&(file->FLCImage2), file->FLCWidth, file->FLCHeight, 2 * file->FLCWidth, 2 * file->FLCHeight);
+	SavePNG(pngbuf, file->FLCImage2, 2 * file->FLCWidth, 2 * file->FLCHeight, file->FLCPalette, -1);
+}
+
+/**
+**  Convert FLC PSTAMP
+*/
+void ConvertFLC_PSTAMP(unsigned char* buf)
+{
+	//
+	//  Read header
+	//
+	unsigned char *p, *image, *i;
+	int height, width, pstamp_type;
+
+	p = buf;
+	height = FetchLE16(p);
+	width = FetchLE16(p);
+	SkipLE16(p);
+
+	image = (unsigned char*)malloc(height * width);
+	if (!image) {
+		printf("Can't allocate image\n");
+		exit(-1);
+	}
+	memset(image, 255, height * width);
+	i = image;
+
+	//
+	//  PSTAMP header
+	//
+	SkipLE32(p);
+	pstamp_type = FetchLE16(p);
+
+	switch (pstamp_type) {
+		case 15:
+		{
+			int h, w;
+			for (h = height; h; --h) {
+				++p; // ignore first byte
+				for (w = width; w;) {
+					char type = FetchByte(p);
+
+					if (type < 0) {
+						for (; type; ++type) {
+							*i++ = FetchByte(p);
+							--w;
+						}
+					} else {
+						unsigned char pixel = FetchByte(p);
+						for (; type; --type) {
+							*i++ = pixel;
+							--w;
+						}
+					}
+				}
+			}
+
+			break;
+		}
+		default:
+			printf("Unsupported pstamp_type: %d\n", pstamp_type);
+			break;
+	}
+
+	// Image unused, do nothing
+
+	free(image);
+}
+
+/**
+**  Convert FLC Frame Chunk
+*/
+int ConvertFLCFrameChunk(flcfile *file, unsigned char* buf)
+{
+	unsigned char* p;
+	int frame_size;
+	int frame_type;
+	int frame_chunks;
+	int data_size;
+	int data_type;
+
+	//
+	//  Read header
+	//
+	p = buf;
+	frame_size = FetchLE32(p);
+	frame_type = FetchLE16(p);
+	if (frame_type != 0xF1FA) {
+		printf("Wrong magic: %04x != %04x\n", frame_type, 0xF1FA);
+		return 0;
+	}
+	frame_chunks = FetchLE16(p);
+	p += 8; // reserved
+
+	//
+	//  Read chunks
+	//
+	for (; frame_chunks; --frame_chunks) {
+		data_size = FetchLE32(p);
+		data_type = FetchLE16(p);
+		switch (data_type) {
+			case 4:
+				// 256-color palette info
+				ConvertFLC_COLOR256(file, p);
+				break;
+			case 7:
+				// delta-compression
+				ConvertFLC_SS2(file, p);
+				break;
+			case 12:
+				// delta-compression (FLI only)
+				ConvertFLC_LC(file, p);
+				break;
+			case 15:
+				// Byte run-length compression
+				ConvertFLC_BRUN(file, p);
+				break;
+			case 16:
+				// literal uncompressed frame
+				ConvertFLC_COPY(file, p);
+				break;
+			case 18:
+				// thumbnail, safe to ignore
+				ConvertFLC_PSTAMP(p);
+				break;
+			default:
+				printf("Unknown data_type = %d\n",data_type);
+				break;
+		}
+		p += data_size - 6;
+	}
+
+	return frame_size;
+}
+
+
+/**
+**  Convert pngs using ffmpeg2theora.
+*/
+void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int uncompressed) {
+	char *flc;
+	int ret, i, cmdlen;
+	char *cmd, *output, *buf;
+	char pngfiles[1024];
+	char cmdprefix[512];
+	struct stat st;
+	static char *encoder = NULL;
+
+	flc = strdup(iflc);
+	for (int i = 0; i < strlen(flc); i++) {
+		flc[i] = tolower(flc[i]);
+	}
+	
+	if (encoder == NULL) {
+		if (system("ffmpeg -version") == 0) {
+			encoder = "ffmpeg";
+		} else if (system("avconv -version") == 0) {
+			encoder = "avconv";
+		} else {
+			encoder = (char *)-1;
+		}
+	}
+	if (encoder == (char *)-1) {
+		// no point in trying over again
+		printf("Can't convert video to ogv format. Is ffmpeg/avconv installed in "
+			   "PATH?\n");
+		fflush(stdout);
+		return;
+	}
+
+	// delete the last png, it's the first frame again (for looping)
+	struct dirent *ep;
+	struct stat result;
+	int last = 0;
+	DIR *dp = opendir(Dir);
+	char *pngname = (char *)calloc(strlen(Dir) + 1 + strlen("thumb0000.png") + 1, sizeof(char));
+	while ((ep = readdir(dp))) {
+		int cur;
+		char *n;
+		if (sscanf(ep->d_name, "%m[a-z0-9]-%d.png", &n, &cur)) {
+			free(n);
+			if (cur > last) {
+				last = cur;
+				sprintf(pngname, "%s/%s", Dir, ep->d_name);
+			}
+		}
+	}
+	closedir(dp);
+	// delete last file
+	unlink(pngname);
+	free(pngname);
+
+	const char *to_video;
+	if (uncompressed) {
+		to_video =
+			"%s -y -r %d -pattern_type glob -i \"%s/%s/*.png\" -codec:v huffyuv "
+			"-vf scale=640:-1 \"%s\"";
+		output = (char *)calloc(strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(flc) + 1, sizeof(char));
+		sprintf(output, "%s/%s/%s", Dir, VIDEO_PATH, flc);
+		output[strlen(output) - 3] = 'a';
+		output[strlen(output) - 2] = 'v';
+		output[strlen(output) - 1] = 'i';
+	} else {
+		to_video =
+			"%s -y -r %d -pattern_type glob -i \"%s/%s/*.png\" -codec:v libtheora "
+			"-qscale:v 10 -codec:a libvorbis -qscale:a 5 -pix_fmt yuv420p -vb 4000k "
+			"-vf scale=640:-1 \"%s\"";
+		output = (char *)calloc(strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(flc) + 1, sizeof(char));
+		sprintf(output, "%s/%s/%s", Dir, VIDEO_PATH, flc);
+		output[strlen(output) - 3] = 'o';
+		output[strlen(output) - 2] = 'g';
+		output[strlen(output) - 1] = 'v';
+	}
+	CheckPath(output);
+
+	cmdlen = strlen(to_video) + 1 /*fps*/ + strlen(encoder) + strlen(Dir) +
+		strlen(VIDEO_PATH) + strlen(output);
+	cmd = (char *)calloc(strlen(to_video) + strlen(encoder) + strlen(Dir) +
+						 strlen(output),
+						 sizeof(char));
+	snprintf(cmd, cmdlen, to_video, encoder, speed, Dir, VIDEO_PATH, output);
+	printf("%s\n", cmd);
+	system(cmd);
+	free(cmd);
+	free(output);
+
+	// keep the first frame as png
+	if (stillImage) {
+		FILE *in, *out;
+
+		pngname = (char *)calloc(strlen(file->FLCFile) + strlen("-0000.png") + 1, sizeof(char));
+		sprintf(pngname, "%s-0000.png", file->FLCFile);
+		in = fopen(pngname, "r");
+		free(pngname);
+
+		output = (char *)calloc(strlen(Dir) + 1 + strlen(GRAPHIC_PATH) + 1 +
+                                strlen(flc) + 1,
+								sizeof(char));
+		sprintf(output, "%s/%s/%s", Dir, GRAPHIC_PATH, flc);
+		output[strlen(output) - 3] = 'p';
+		output[strlen(output) - 2] = 'n';
+		output[strlen(output) - 1] = 'g';
+		CheckPath(output);
+		out = fopen(output, "w");
+		free(output);
+
+		while (1) {
+			int a = fgetc(in);
+			if (!feof(in)) {
+				fputc(a, out);
+			} else {
+				break;
+			}
+		}
+
+		fclose(in);
+		fclose(out);
+	}
+
+	pngname = (char *)calloc(strlen(file->FLCFile) + strlen("-0000.png") + 1, sizeof(char));
+	sprintf(pngname, "%s/%s", Dir, VIDEO_PATH);
+	dp = opendir(pngname);
+	while ((ep = readdir(dp))) {
+		if (strstr(ep->d_name, ".png")) {
+			sprintf(pngname, "%s/%s/%s", Dir, VIDEO_PATH, ep->d_name);
+			unlink(pngname);
+		}
+	}
+	closedir(dp);
+	free(pngname);
+}
+
+/**
+**  Convert FLC
+*/
+void ConvertFLC_Manual(const char* file, const char* flc, int keepStill, int iRepeat, int uncompressed) {
+	int repeat;
+	int f;
+	struct stat stat_buf;
+	unsigned char* buf;
+	unsigned char* p;
+	int i;
+	int frames;
+	int oframe1;
+	int oframe2;
+	int offset;
+	int speed;
+	flcfile filestruct;
+
+	if (iRepeat > 0) {
+		repeat = iRepeat;
+	} else {
+		repeat = 1;
+	}
+
+	f = open(file, O_RDONLY | O_BINARY, 0);
+	if (f == -1) {
+		printf("Can't open %s\n", file);
+		return;
+	}
+	if (fstat(f, &stat_buf)) {
+		printf("Can't fstat %s\n", file);
+		exit(-1);
+	}
+
+	//
+	//  Read in the archive
+	//
+	buf = malloc(stat_buf.st_size);
+	if (!buf) {
+		printf("Can't malloc %ld\n", (long)stat_buf.st_size);
+		exit(-1);
+	}
+	if (read(f, buf, stat_buf.st_size) != stat_buf.st_size) {
+		printf("Can't read %ld\n", (long)stat_buf.st_size);
+		exit(-1);
+	}
+	close(f);
+
+	sprintf(filestruct.FLCFile, "%s/%s/%s", Dir, VIDEO_PATH, flc);
+	p = (unsigned char*)strrchr(filestruct.FLCFile, '.');
+	if (p) {
+		*p = '\0';
+	}
+	CheckPath(filestruct.FLCFile);
+	filestruct.FLCFrame = 0;
+
+	//
+	//  Read header
+	//
+	p = buf;
+	i = FetchLE32(p);
+	if (i != stat_buf.st_size) {
+		printf("FLC file size incorrect: %d != %ld\n", i, (long)stat_buf.st_size);
+		free(buf);
+		return;
+	}
+	i = FetchLE16(p);
+	if (i != 0xAF12) {
+		printf("Wrong FLC magic: %04x != %04x\n", i, 0xAF12);
+		free(buf);
+		return;
+	}
+	frames = FetchLE16(p);
+	filestruct.FLCWidth = FetchLE16(p);
+	filestruct.FLCHeight = FetchLE16(p);
+	i = FetchLE16(p); // depth always 8
+	i = FetchLE16(p); // flags, unused
+	speed = 1000 / FetchLE32(p); // time delay in milliseconds each frame
+	i = FetchLE16(p); // reserved
+	i = FetchLE32(p); // created
+	i = FetchLE32(p); // creator
+	i = FetchLE32(p); // updated
+	i = FetchLE32(p); // updater
+	i = FetchLE16(p); // aspectx
+	i = FetchLE16(p); // aspecty
+	p += 38;		// reserved
+	oframe1 = FetchLE32(p);
+	oframe2 = FetchLE32(p);
+	p += 40;		// reserved
+
+	filestruct.FLCImage = malloc(filestruct.FLCWidth * filestruct.FLCHeight);
+	filestruct.FLCImage2 = malloc(2 * filestruct.FLCWidth * 2 * filestruct.FLCHeight);
+	if (!filestruct.FLCImage || !filestruct.FLCImage2) {
+		printf("Can't allocate image\n");
+		exit(-1);
+	}
+
+	for (int i = 0; i < repeat; i++) {
+		offset = oframe1;
+		for (int j = 0; j < frames; j++) {
+			offset += ConvertFLCFrameChunk(&filestruct, buf + offset);
+		}
+	}
+
+	EncodeFLC(&filestruct, flc, speed, keepStill, uncompressed);
+
+	free(buf);
+	free(filestruct.FLCImage);
+	free(filestruct.FLCImage2);
+}
 /**
 **  Convert FLC using ffmpeg resp. avconv. Manual conversion into PNGs (see git history) and
 **  then into ogv should produce better results. Until then,
@@ -1301,7 +1897,7 @@ void ConvertFLC(const char* file, const char* flc, unsigned int stillImage)
 	int last = 0;
 	DIR *dp = opendir(Dir);
 	char* pngname = (char*)calloc(strlen(Dir) + 1 + strlen("thumb0000.png") + 1, sizeof(char));
-	while (ep = readdir(dp)) {
+	while ((ep = readdir(dp))) {
 		int cur;
 		if (sscanf(ep->d_name, "thumb%d.png", &cur)) {
 			if (cur > last) {
@@ -1364,7 +1960,7 @@ void ConvertFLC(const char* file, const char* flc, unsigned int stillImage)
 
 	pngname = (char*)calloc(strlen(Dir) + 1 + strlen("thumb0000.png") + 1, sizeof(char));
 	dp = opendir(Dir);
-	while (ep = readdir(dp)) {
+	while ((ep = readdir(dp))) {
 		int cur;
 		if (sscanf(ep->d_name, "thumb%d.png", &cur)) {
 			sprintf(pngname, "%s/%s", Dir, ep->d_name);
@@ -1375,145 +1971,20 @@ void ConvertFLC(const char* file, const char* flc, unsigned int stillImage)
 	free(pngname);
 }
 
-/**
-** Mux intro music and video using ffmpeg. TODO: find a way to do this inline
-*/
-void MuxIntroVideos(int upper) {
-	static char* audios[] = {"intro_1.wav", "intro_2.wav",
-							 "intro_3.wav", "intro_door.wav",
-							 "intro_4.wav",
-							 "intro_5.wav"};
-	char** videos;
-	if (upper) {
-		static char* v1[] = {"HINTRO1.ogv", "HINTRO2.ogv",
-							 "OINTRO1.ogv", "OINTRO2.ogv", "OINTRO3.ogv",
-							 "CAVE1.ogv", "CAVE2.ogv", "CAVE3.ogv",
-							 "TITLE.ogv"};
-		videos = v1;
-	} else {
-		static char* v2[] = {"hintro1.ogv", "hintro2.ogv",
-							 "ointro1.ogv", "ointro2.ogv", "ointro3.ogv",
-							 "cave1.ogv", "cave2.ogv", "cave3.ogv",
-							 "title.ogv"};
-		videos = v2;
-	}
-
-	int repeats[] = {1, 12,
-			 1, 18, 1,
-			 1, 4, 1,
-			 1};
-
-	int i, j, ret;
-	size_t readM;
-	gzFile wavGz;
-	FILE *wavFile;
-	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputWavGz, *outputIntro, *buf;
-	unsigned char *wavBuffer;
-	char *cmdprefix = "ffmpeg -y -f concat -i ";
-	char *cmdsuffixVideo = " -c copy ";
-	char *cmdsuffixAudio = " -acodec libvorbis";
-	char *encoderIntroOpts = " -c copy ";
-	FILE* mylist;
-	char listfile[2048] = { '\0' };
-	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
-
-	// VIDEO
-	mylist = fopen(listfile, "w");
-	for (i = 0; i < 9; i++) {
-		for (j = 0; j < repeats[i]; j++) {
-			fprintf(mylist, "file '%s'\n", videos[i]);
-		}
-	}
-	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
-	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixVideo) + strlen(outputVideo) + 4);
-	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
-	fclose(mylist);
-	printf("%s\n\n", cmd);
-	fflush(stdout);
-	ret = system(cmd);
-	if (ret != 0) { // try avconv
-		strncpy(cmd, "avconv", 6);
-		ret = system(cmd);
-	}
-	if (ret != 0) {
-		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
-		fflush(stdout);
-		return;
-	}
-	free(cmd);
-	unlink(listfile);
-
-	// AUDIO
-	sprintf(listfile, "%s/%s/mylist.txt", Dir, SOUND_PATH);
-	mylist = fopen(listfile, "w");
-	for (i = 0; i < 6; i++) {
-		inputWavGz = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
-	 	sprintf(inputWavGz, "%s/%s/%s.gz", Dir, SOUND_PATH, audios[i]);
-	 	wavGz = gzopen(inputWavGz, "rb");
-	 	if (!wavGz) {
-	 		printf("Can't open %s for muxing\n", inputWavGz);
-	 		fflush(stdout);
-	 		free(inputWavGz);
-	 		continue;
-	 	}
-
-	 	inputAudio = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
-	 	sprintf(inputAudio, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
-		wavFile = fopen(inputAudio, "wb");
-	 	if (!wavGz) {
-	 		printf("Can't open %s for muxing\n", inputAudio);
-	 		fflush(stdout);
-	 		free(inputWavGz);
-	 		gzclose(wavGz);
-	 		free(inputAudio);
-	 		continue;
-	 	}
-
-	 	wavBuffer = (unsigned char*)calloc(sizeof(char), 1024 * 128);
-	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char))) > 0) {
-	 		fwrite(wavBuffer, sizeof(char), readM,  wavFile);
-			fflush(wavFile);
-	 	}
-	 	free(wavBuffer);
-	 	unlink(inputWavGz);
-	 	free(inputWavGz);
-	 	gzclose(wavGz);
-	 	fclose(wavFile);
-
-		fprintf(mylist, "file '%s'\n", audios[i]);
-		free(inputAudio);
-	}
-	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
-	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixAudio) + strlen(outputAudio) + 4);
-	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
-	fclose(mylist);
-	printf("%s\n\n", cmd);
-	fflush(stdout);
-	ret = system(cmd);
-	if (ret != 0) { // try avconv
-		strncpy(cmd, "avconv", 6);
-		ret = system(cmd);
-	}
-	if (ret != 0) {
-		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
-		fflush(stdout);
-		return;
-	}
-	free(cmd);
-	unlink(listfile);
-
+void MuxIntroVideo(const char* video, const char* audio) {
 	// Mux
-	cmdprefix = "ffmpeg -y ";
-	outputIntro = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogv") + 2);
-	sprintf(outputIntro, "\"%s/%s/INTRO.ogv\"", Dir, VIDEO_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1 +
- 			    strlen("-i") + 1 + strlen(outputVideo) + 1 +
-			    strlen("-i") + 1 + strlen(outputAudio) + 1 +
-			    1 + strlen(encoderIntroOpts) + 1 +
-			    1 + strlen(outputIntro) + 2);
-	sprintf(cmd, "%s -i %s -i %s %s %s", cmdprefix, outputVideo, outputAudio, encoderIntroOpts, outputIntro);
+	const char *cmdpattern;
+	char *cmd;
+	char *output;
+	int ret;
+
+	output = strdup(video);
+	memcpy(output + strlen(video) - 3, "ogg", 3);
+
+    cmdpattern = "ffmpeg -y -i \"%s\" -i \"%s\" -c copy \"%s\"";
+
+	cmd = (char*)calloc(sizeof(char), strlen(cmdpattern) + strlen(video) + strlen(audio) + strlen(output));
+	sprintf(cmd, cmdpattern, video, audio, output);
 	printf("%s\n", cmd);
  	ret = system(cmd);
 	if (ret != 0) { // try avconv
@@ -1524,30 +1995,102 @@ void MuxIntroVideos(int upper) {
 		printf("Can't mux intro video and audio. Is ffmpeg/avconv installed in PATH?\n");
 		fflush(stdout);
 	}
-	free(outputIntro);
+	free(output);
 	free(cmd);
+}
 
-	// remove unneeded files
-	for (i = 0; i < 9; i++) {
-		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(videos[i]) + 1);
-		sprintf(buf, "%s/%s/%s", Dir, VIDEO_PATH, videos[i]);
-		unlink(buf);
-		free(buf);
-	}
-	for (i = 0; i < 6; i++) {
-		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 1);
-		sprintf(buf, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
-		unlink(buf);
-		free(buf);
-	}
+#define STATIC_CMD_SIZE 32768
+void MuxAllIntroVideos() {
+	struct dirent *ep;
+	DIR *dp;
+	char cmd[STATIC_CMD_SIZE] = {'\0'};	
 
-	// remove quotes, then unlink
-	outputAudio[strlen(outputAudio) - 1] = '\0';
-	outputVideo[strlen(outputVideo) - 1] = '\0';
-	unlink(outputAudio + 1);
-	unlink(outputVideo + 1);
-	free(outputAudio);
-	free(outputVideo);
+	// Castle sequence
+	const char* cmd1v = "ffmpeg -y -i %s/%s/hintro1.avi -i %s/%s/hintro2.avi "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
+		"-map '[out]' -codec:v huffyuv %s/%s/hintro_v.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	const char* cmd1a = "ffmpeg -y -i %s/%s/intro_1.wav -i %s/%s/intro_2.wav "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
+		"-map '[out]' %s/%s/hintro_a.wav";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, Dir, SOUND_PATH, Dir, SOUND_PATH, Dir, SOUND_PATH);
+	system(cmd);
+
+	const char* cmd1 = "ffmpeg -y -i %s/%s/hintro_v.avi -i %s/%s/hintro_a.wav "
+		"-codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 5 %s/%s/hintro.ogv";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	// Blackrock sequence
+	const char* cmd2v = "ffmpeg -y -i %s/%s/ointro1.avi -i %s/%s/ointro2.avi "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
+		"-map '[out]' -codec:v huffyuv %s/%s/ointro_v.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	const char* cmd2 = "ffmpeg -y -i %s/%s/ointro_v.avi -i %s/%s/intro_3.wav "
+		"-codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 5 %s/%s/ointro.ogv";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	// Cave sequence
+	const char* cmd3v = "ffmpeg -y -i %s/%s/ointro3.avi -i %s/%s/cave1.avi -i %s/%s/cave2.avi "
+		"-filter_complex '[0:0][1:0][2:0]concat=n=3:v=1:a=0[out]' "
+		"-map '[out]' -codec:v huffyuv %s/%s/cave_v.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	const char* cmd3a = "ffmpeg -y -i %s/%s/intro_door.wav -i %s/%s/intro_4.wav "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
+		"-map '[out]' %s/%s/cave_a.wav";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, Dir, SOUND_PATH, Dir, SOUND_PATH, Dir, SOUND_PATH);
+	system(cmd);
+
+	const char* cmd3 = "ffmpeg -y -i %s/%s/cave_v.avi -i %s/%s/cave_a.wav "
+		"-codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 5 %s/%s/cave.ogv";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	// Title sequence
+	const char* cmd4t = "ffmpeg -i %s/%s/title.avi -codec:v huffyuv "
+		"-vf 'crop=640:288:0:0' %s/%s/title_s.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4t, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	const char* cmd4v = "ffmpeg -y -i %s/%s/cave3.avi -i %s/%s/title_s.avi "
+		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
+		"-map '[out]' -codec:v huffyuv %s/%s/title_v.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	const char* cmd4 = "ffmpeg -y -i %s/%s/title_v.avi -i %s/%s/intro_5.wav "
+		"-codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 5  %s/%s/title.ogv";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
+	system(cmd);
+
+	// delete uncompressed videos
+	sprintf(cmd, "%s/%s", Dir, VIDEO_PATH);
+	dp = opendir(cmd);
+	while ((ep = readdir(dp))) {
+		if (strstr(ep->d_name, ".avi")) {
+			sprintf(cmd, "%s/%s/%s", Dir, VIDEO_PATH, ep->d_name);
+			unlink(cmd);
+		}
+	}
+	closedir(dp);
+
+	// delete uncompressed audio
+	sprintf(cmd, "%s/%s", Dir, SOUND_PATH);
+	dp = opendir(cmd);
+	while ((ep = readdir(dp))) {
+		if (strstr(ep->d_name, ".wav") && !strstr(ep->d_name, ".wav.gz")) {
+			sprintf(cmd, "%s/%s/%s", Dir, SOUND_PATH, ep->d_name);
+			unlink(cmd);
+		}
+	}
+	closedir(dp);
 }
 
 //----------------------------------------------------------------------------
@@ -2304,11 +2847,12 @@ int ConvertCursor(char* file, int pale, int cure)
 /**
 **  Convert wav to my format.
 */
-int ConvertWav(char* file, int wave)
+int ConvertWav(char* file, int wave, int noCompression)
 {
 	unsigned char* wavp;
 	char buf[1024];
 	gzFile gf;
+	FILE* f;
 	int l;
 
 	wavp = ExtractEntry(ArchiveOffsets[wave], &l);
@@ -2322,21 +2866,36 @@ int ConvertWav(char* file, int wave)
 		return 0;
 	}
 
-	sprintf(buf, "%s/%s/%s.wav.gz", Dir, SOUND_PATH, file);
-	CheckPath(buf);
-	gf = gzopen(buf, "wb9");
-	if (!gf) {
-		perror("");
-		printf("Can't open %s\n", buf);
-		exit(-1);
-	}
-	if (l != gzwrite(gf, wavp, l)) {
-		printf("Can't write %d bytes\n", l);
+	if (noCompression) {
+		sprintf(buf, "%s/%s/%s.wav", Dir, SOUND_PATH, file);
+		CheckPath(buf);
+		f = fopen(buf, "wb");
+		if (!f) {
+			perror("");
+			printf("Can't open %s\n", buf);
+			exit(-1);
+		}
+		if (l != fwrite(wavp, sizeof(char), l, f)) {
+			printf("Can't write %d bytes\n", l);
+		}
+		fclose(f);
+	} else {
+		sprintf(buf, "%s/%s/%s.wav.gz", Dir, SOUND_PATH, file);
+		CheckPath(buf);
+		gf = gzopen(buf, "wb9");
+		if (!gf) {
+			perror("");
+			printf("Can't open %s\n", buf);
+			exit(-1);
+		}
+		if (l != gzwrite(gf, wavp, l)) {
+			printf("Can't write %d bytes\n", l);
+		}
+		gzclose(gf);
 	}
 
 	free(wavp);
 
-	gzclose(gf);
 	return 0;
 }
 
@@ -3294,7 +3853,7 @@ void CreateConfig(char* outputdir, int video, int miditoogg) {
 */
 void Usage(const char* name)
 {
-	printf("wartool V%s for Stratagus, (c) %s.\n\
+	printf("war1tool V%s for Stratagus, (c) %s.\n\
 \tWritten by %s\n\
 \thttps://github.com/Wargus/war1gus\n\n\
 Usage: %s [-m] [-v] [-V] [-h] archive-directory [destination-directory]\n\
@@ -3418,10 +3977,7 @@ int main(int argc, char** argv)
 	CreateConfig(Dir, video, midi);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
-		// Should only be on the expansion cd
-#ifdef DEBUG
 		printf("%s:\n", Todo[u].File);
-#endif
 		switch (Todo[u].Type) {
 			case F:
 				if (upper) {
@@ -3457,7 +4013,7 @@ int main(int argc, char** argv)
 						}
 					}
 					sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
-					ConvertFLC(buf, Todo[u].File, Todo[u].Arg1);
+					ConvertFLC_Manual(buf, Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
 				}
 				break;
 			case T:
@@ -3479,7 +4035,7 @@ int main(int argc, char** argv)
 				ConvertCursor(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case W:
-				ConvertWav(Todo[u].File, Todo[u].Arg1);
+				ConvertWav(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case M:
 				if (midi) {
@@ -3506,8 +4062,7 @@ int main(int argc, char** argv)
 	}
 
 	if (video) {
-	    // TODO: embed this somewhere nicer
-	    MuxIntroVideos(upper);
+	    MuxAllIntroVideos();
 	}
 
 	char *versionfilepath = (char*)calloc(sizeof(char),

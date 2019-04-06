@@ -39,7 +39,7 @@ function Briefing(title, objs, bg, mapbg, text, voices)
     head2 = ImageWidget(g)
 
     menu:add(head1, 166 * Video.Width / 640, 74 * Video.Height / 400)
-    menu:add(head2, 414 * Video.Width / 640, 58 * Video.Height / 400)
+    menu:add(head2, 414 * Video.Width / 640, 59 * Video.Height / 400)
   elseif (currentRace == "orc") then
     PlayMusic(OrcBriefingMusic)
     LoadUI("orc", Video.Width, Video.Height)
@@ -54,8 +54,8 @@ function Briefing(title, objs, bg, mapbg, text, voices)
     g:Resize(690 / 5 * Video.Width / 640, 116 * Video.Height / 400)
     head2 = ImageWidget(g)
 
-    menu:add(head1, 36 * Video.Width / 640, 134 * Video.Height / 400)
-    menu:add(head2, 404 * Video.Width / 640, 104 * Video.Height / 400)
+    menu:add(head1, 36 * Video.Width / 640, 135 * Video.Height / 400)
+    menu:add(head2, 404 * Video.Width / 640, 105 * Video.Height / 400)
   else
     StopMusic()
   end
@@ -164,11 +164,16 @@ function IncreaseCampaignState(race, state)
   SavePreferences()
 end
 
-function CreateEndingStep(bg, text, voice)
+function CreateEndingStep(bg, text, voice, video)
   return function()
       print ("Ending in " .. bg .. " with " .. text .. " and " .. voice)
 	  local menu = WarMenu(nil, bg, true)
 	  StopMusic()
+
+          if (video ~= nil) then
+             PlayMovie(video)
+          end
+          
 	  local t = LoadBuffer(text)
 	  t = "\n\n\n\n\n\n\n\n\n\n" .. t .. "\n\n\n\n\n\n\n\n\n\n\n\n\n"
 	  local sw = ScrollingWidget(320, 170 * Video.Height / 480)
@@ -191,7 +196,7 @@ function CreateEndingStep(bg, text, voice)
 		  menu:stop()
 		  StopMusic()
 		end)
-      channel = PlaySoundFile(voice, function() end);
+          channel = PlaySoundFile(voice, function() end);
 	  menu:run()
 	  GameResult = GameVictory
   end
@@ -221,18 +226,18 @@ function CreateMapStep(race, map)
     Load(prefix .. map .. "_c2.sms")
     Load(prefix .. "campaign_titles.lua")
 
-    local race_prefix = string.upper(string.sub(race, 1, 1))
+    local race_prefix = string.lower(string.sub(race, 1, 1))
 
     Briefing(
        campaign_titles[tonumber(map)],
        objectives,
        "../graphics/ui/" .. race .. "/briefing.png",
-       "../graphics/" .. race_prefix .. "MAP" .. map .. ".png",
+       "../graphics/" .. race_prefix .. "map" .. map .. ".png",
        prefix .. map .. "_intro.txt",
        {prefix .. map .. "_intro.wav"}
     )
 
-    PlayMovie("videos/" .. race_prefix .. "MAP" .. map .. ".ogv")
+    PlayMovie("videos/" .. race_prefix .. "map" .. map .. ".ogv")
 
     war1gus.InCampaign = true
     Load(prefix .. map .. ".smp")

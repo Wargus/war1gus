@@ -275,7 +275,7 @@ local DefaultPreference = function(name, value)
 end
 DefaultPreference("VideoWidth", 1024)
 DefaultPreference("VideoHeight", 768)
-DefaultPreference("Zoom", true)
+DefaultPreference("OriginalScale", "640x480")
 DefaultPreference("VideoFullScreen", false)
 DefaultPreference("PlayerName", "Player")
 DefaultPreference("FogOfWar", false)
@@ -296,7 +296,7 @@ DefaultPreference("MaxOpenGLTexture", 0)
 DefaultPreference("CampaignOrc", 1)
 DefaultPreference("CampaignHuman", 1)
 DefaultPreference("PlayIntro", true)
-DefaultPreference("MaxSelection", 4)
+DefaultPreference("MaxSelection", 9)
 DefaultPreference("TrainingQueue", true)
 DefaultPreference("AllowMultipleTownHalls", false)
 DefaultPreference("AllowTownHallUpgrade", false)
@@ -306,8 +306,10 @@ DefaultPreference("ShowButtonPopups", true)
 wc1.preferences = preferences
 SetUseOpenGL(preferences.UseOpenGL)
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
-if preferences.Zoom then
-   SetZoomNoResize(640, 400)
+if preferences.OriginalScale then
+   for w,h in string.gmatch(preferences.OriginalScale, "(%d+)x(%d+)") do
+      SetZoomNoResize(tonumber(w),tonumber(h))
+   end
 else
    SetZoomNoResize(false)
 end
@@ -329,15 +331,22 @@ SetTrainingQueue(not not preferences.TrainingQueue)
 Preference.SF2Soundfont = "music/TimGM6mb.sf2"
 Preference.PauseOnLeave = false
 
-if file_exists("videos", "INTRO.ogv") and preferences.PlayIntro then
+if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") and file_exists("videos", "cave.ogv") and file_exists("videos", "title.ogv") and preferences.PlayIntro then
    SetTitleScreens(
       {Image = "ui/logo.png",
        Music = "sounds/logo.wav",
        Timeout = 3},
-      {Image = "videos/INTRO.ogv",
+      {Image = "videos/hintro.ogv",
+       Iterations = 1},
+      {Image = "videos/ointro.ogv",
+       Iterations = 1},
+      {Image = "videos/cave.ogv",
+       Iterations = 1},
+      {Image = "videos/title.ogv",
        Iterations = 1}
    )
    preferences.PlayIntro = false
+   SavePreferences()
 else
    SetTitleScreens(
       {Image = "ui/logo.png",
