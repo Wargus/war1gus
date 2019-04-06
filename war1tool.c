@@ -4013,7 +4013,12 @@ int main(int argc, char** argv)
 						}
 					}
 					sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
+#ifdef WIN32
+					// On Windows, manual conversion doesn't seem to work right
+					ConvertFLC(buf, Todo[u].File, Todo[u].Arg1);
+#else
 					ConvertFLC_Manual(buf, Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
+#endif
 				}
 				break;
 			case T:
