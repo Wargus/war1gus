@@ -221,18 +221,18 @@ function CreateMapStep(race, map)
     Load(prefix .. map .. "_c2.sms")
     Load(prefix .. "campaign_titles.lua")
 
-    local race_prefix = string.upper(string.sub(race, 1, 1))
+    local race_prefix = string.lower(string.sub(race, 1, 1))
 
     Briefing(
        campaign_titles[tonumber(map)],
        objectives,
        "../graphics/ui/" .. race .. "/briefing.png",
-       "../graphics/" .. race_prefix .. "MAP" .. map .. ".png",
+       "../graphics/" .. race_prefix .. "map" .. map .. ".png",
        prefix .. map .. "_intro.txt",
        {prefix .. map .. "_intro.wav"}
     )
 
-    PlayMovie("videos/" .. race_prefix .. "MAP" .. map .. ".ogv")
+    PlayMovie("videos/" .. race_prefix .. "map" .. map .. ".ogv")
 
     war1gus.InCampaign = true
     Load(prefix .. map .. ".smp")
