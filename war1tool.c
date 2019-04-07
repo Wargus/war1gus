@@ -2938,7 +2938,7 @@ int ConvertWav(char* file, int wave, int noCompression)
 **  Convert XMI Midi sound to Midi
 */
 
-void ConvertXmi(char* file, int xmi, short midiToOgg)
+void ConvertXmi(char* file, int xmi, int* midiToOgg)
 {
 	unsigned char* xmip;
 	unsigned char* midp;
@@ -2971,7 +2971,9 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 	}
 	/* free(midp); */ // is in the middle of the C++ object, shouldn't be free'd here
 	fclose(f);
-	if (!midiToOgg) return;
+	if (!(*midiToOgg)) {
+		return;
+	}
 	cmd = (char*)calloc(strlen("timidity -Ow \"") + strlen(buf) + strlen("\" -o \"") + strlen(buf) + strlen("\"") + 1, 1);
 	if (!cmd) {
 		fprintf(stderr, "Memory error\n");
@@ -2986,6 +2988,7 @@ void ConvertXmi(char* file, int xmi, short midiToOgg)
 
 	if (ret != 0) {
 		printf("Can't convert midi sound %s to wav format. Is timidity installed in PATH?\n", file);
+		*midiToOgg = 0;
 		fflush(stdout);
 		return;
 	}
@@ -4005,8 +4008,6 @@ int main(int argc, char** argv)
 	dirs[2] = "campaigns";
 	CopyDirectories(dirs);
 
-	CreateConfig(Dir, video, midi);
-
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		printf("%s:\n", Todo[u].File);
 		switch (Todo[u].Type) {
@@ -4074,11 +4075,7 @@ int main(int argc, char** argv)
 				ConvertWav(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case M:
-				if (midi) {
-					ConvertXmi(Todo[u].File, Todo[u].Arg1, 1);
-				} else {
-					ConvertXmi(Todo[u].File, Todo[u].Arg1, 0);
-				}
+				ConvertXmi(Todo[u].File, Todo[u].Arg1, &midi);
 				break;
 			case VOC:
 				ConvertVoc(Todo[u].File, Todo[u].Arg1);
@@ -4104,6 +4101,8 @@ int main(int argc, char** argv)
 	    MuxAllIntroVideos();
 #endif
 	}
+
+	CreateConfig(Dir, video, midi);
 
 	char *versionfilepath = (char*)calloc(sizeof(char),
 					      strlen(Dir) + 1 + strlen("extracted") + 1);
