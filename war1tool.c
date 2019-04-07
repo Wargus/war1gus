@@ -1922,10 +1922,7 @@ void MuxIntroVideos() {
 
 	int i, j, ret;
 	size_t readM;
-	gzFile wavGz;
-	FILE *wavFile;
-	char *cmd, *outputVideo, *outputAudio, *inputAudio, *inputWavGz, *outputIntro, *buf;
-	unsigned char *wavBuffer;
+	char *cmd, *outputVideo, *outputAudio, *inputAudio, *outputIntro, *buf;
 	char *cmdprefix = "ffmpeg -y -f concat -i ";
 	char *cmdsuffixVideo = " -c copy ";
 	char *cmdsuffixAudio = " -acodec libvorbis";
@@ -1965,41 +1962,7 @@ void MuxIntroVideos() {
 	sprintf(listfile, "%s/%s/mylist.txt", Dir, SOUND_PATH);
 	mylist = fopen(listfile, "w");
 	for (i = 0; i < 6; i++) {
-		inputWavGz = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
-	 	sprintf(inputWavGz, "%s/%s/%s.gz", Dir, SOUND_PATH, audios[i]);
-	 	wavGz = gzopen(inputWavGz, "rb");
-	 	if (!wavGz) {
-	 		printf("Can't open %s for muxing\n", inputWavGz);
-	 		fflush(stdout);
-	 		free(inputWavGz);
-	 		continue;
-	 	}
-
-	 	inputAudio = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 4);
-	 	sprintf(inputAudio, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
-		wavFile = fopen(inputAudio, "wb");
-	 	if (!wavGz) {
-	 		printf("Can't open %s for muxing\n", inputAudio);
-	 		fflush(stdout);
-	 		free(inputWavGz);
-	 		gzclose(wavGz);
-	 		free(inputAudio);
-	 		continue;
-	 	}
-
-	 	wavBuffer = (unsigned char*)calloc(sizeof(char), 1024 * 128);
-	 	while((readM = gzread(wavGz, wavBuffer, 1024 * 128 * sizeof(char))) > 0) {
-	 		fwrite(wavBuffer, sizeof(char), readM,  wavFile);
-			fflush(wavFile);
-	 	}
-	 	free(wavBuffer);
-	 	unlink(inputWavGz);
-	 	free(inputWavGz);
-	 	gzclose(wavGz);
-	 	fclose(wavFile);
-
 		fprintf(mylist, "file '%s'\n", audios[i]);
-		free(inputAudio);
 	}
 	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
