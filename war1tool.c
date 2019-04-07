@@ -1926,7 +1926,7 @@ void MuxIntroVideos() {
 	char *cmdprefix = "ffmpeg -y -f concat -i ";
 	char *cmdsuffixVideo = " -c copy ";
 	char *cmdsuffixAudio = " -acodec libvorbis";
-	char *encoderIntroOpts = " -longest -c copy ";
+	char *encoderIntroOpts = " -c copy ";
 	FILE* mylist;
 	char listfile[2048] = { '\0' };
 	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
@@ -1986,8 +1986,8 @@ void MuxIntroVideos() {
 
 	// Mux
 	cmdprefix = "ffmpeg -y ";
-	outputIntro = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogv") + 2);
-	sprintf(outputIntro, "\"%s/%s/INTRO.ogv\"", Dir, VIDEO_PATH);
+	outputIntro = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("intro.ogv") + 2);
+	sprintf(outputIntro, "\"%s/%s/intro.ogv\"", Dir, VIDEO_PATH);
 	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1 +
  			    strlen("-i") + 1 + strlen(outputVideo) + 1 +
 			    strlen("-i") + 1 + strlen(outputAudio) + 1 +
