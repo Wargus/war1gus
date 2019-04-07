@@ -1860,121 +1860,46 @@ void ConvertFLC_Manual(const char* file, const char* flc, int keepStill, int iRe
 **  then into ogv should produce better results. Until then,
 **  just convert directly, and live with the direct conversion bugs.
 */
-void ConvertFLC(const char* file, const char* iflc, unsigned int stillImage)
+void ConvertFLC(const char* file, const char* iflc)
 {
 	char* flc;
 	int ret;
 	int cmdlen;
-	char *cmd, *output;
+	char *cmd, *output, *outputPath;
+	char *cmdprefix = "ffmpeg -y -i ";
+	char *outputOptions = " -codec:v libtheora -qscale:v 10 -codec:a libvorbis -qscale:a 5 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
 
 	flc = strdup(iflc);
 	for (int i = 0; i < strlen(flc); i++) {
 		flc[i] = tolower(flc[i]);
 	}
 
-	static char* encoder = NULL;
-	if (encoder == NULL) {
-		if (system("ffmpeg -version") == 0) {
-			encoder = "ffmpeg";
-		} else if (system("avconv -version") == 0) {
-			encoder = "avconv";
-		} else {
-			encoder = (char*)-1;
-		}
-	}
-	if (encoder == (char*)-1) {
-		// no point in trying over again
-		printf("Can't convert video %s to ogv format. Is ffmpeg/avconv installed in PATH?\n", file);
-		fflush(stdout);
-		return;
-	}
-
-	// first, extract all frames as png
-    static const char* to_png = "%s -hide_banner -loglevel quiet -y -i \"%s\" \"%s/thumb%%04d.png\"";
-	cmdlen = strlen(to_png) + strlen(encoder) + strlen(file) + strlen(Dir) + 1;
-	cmd = (char*)calloc(cmdlen + 1, sizeof(char));
-	snprintf(cmd, cmdlen, to_png, encoder, file, Dir);
-	system(cmd);
-	free(cmd);
-
-	// delete the last png, it's the first frame again (for looping)
-	struct dirent *ep;
-	struct stat result;
-	int last = 0;
-	DIR *dp = opendir(Dir);
-	char* pngname = (char*)calloc(strlen(Dir) + 1 + strlen("thumb0000.png") + 1, sizeof(char));
-	while ((ep = readdir(dp))) {
-		int cur;
-		if (sscanf(ep->d_name, "thumb%d.png", &cur)) {
-			if (cur > last) {
-				last = cur;
-				sprintf(pngname, "%s/%s", Dir, ep->d_name);
-			}
-		}
-	}
-	closedir(dp);
-	// delete last file
-	unlink(pngname);
-	free(pngname);
-
-	// now combine the pngs
-	static const char* to_video = "%s -hide_banner -loglevel quiet -y -r 14 -pattern_type glob -i \"%s/thumb*.png\" -codec:v libtheora -qscale:v 10 -codec:a libvorbis -qscale:a 5 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 \"%s\"";
-	output = (char*)calloc(strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(flc) + 1, sizeof(char));
-	sprintf(output, "%s/%s/%s", Dir, VIDEO_PATH, flc);
+	output = (char*)calloc(sizeof(char), strlen(flc) + 1);
+	strcpy(output, flc);
 	output[strlen(output) - 3] = 'o';
 	output[strlen(output) - 2] = 'g';
 	output[strlen(output) - 1] = 'v';
-	CheckPath(output);
 
-	cmdlen = strlen(to_video) + strlen(encoder) + strlen(Dir) + strlen(output);
-	cmd = (char*)calloc(strlen(to_video) + strlen(encoder) + strlen(Dir) + strlen(output), sizeof(char));
-	snprintf(cmd, cmdlen, to_video, encoder, Dir, output);
-	printf("%s\n", cmd);
-	system(cmd);
+	outputPath = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(output) + 1);
+	sprintf(outputPath, "%s/%s/%s", Dir, VIDEO_PATH, output);
+	CheckPath(outputPath);
+
+	cmdlen = strlen(cmdprefix) + 2 + strlen(file) + strlen(outputOptions) + 3 + strlen(outputPath) + 4;
+	cmd = (char*)calloc(sizeof(char), cmdlen);
+	snprintf(cmd, cmdlen - 1, "%s \"%s\"%s\"%s\"", cmdprefix, file, outputOptions, outputPath);
+	ret = system(cmd);
+	if (ret != 0) { // try avconv
+		strncpy(cmd, "avconv", 6);
+		ret = system(cmd);
+	}
+
+	if (ret != 0) {
+		printf("Can't convert video %s to ogv format. Is ffmpeg/avconv installed in PATH?\n", file);
+		fflush(stdout);	
+	}
+	free(outputPath);
 	free(cmd);
 	free(output);
-
-	// keep the first frame as png
-	if (stillImage) {
-		FILE *in, *out;
-		pngname = (char*)calloc(strlen(Dir) + 1 + strlen("thumb0001.png") + 1, sizeof(char));
-		sprintf(pngname, "%s/thumb0001.png", Dir);
-		in = fopen(pngname, "r");
-		free(pngname);
-
-		output = (char*)calloc(strlen(Dir) + 1 + strlen(GRAPHIC_PATH) + 1 + strlen(flc) + 1, sizeof(char));
-		sprintf(output, "%s/%s/%s", Dir, GRAPHIC_PATH, flc);
-		output[strlen(output) - 3] = 'p';
-		output[strlen(output) - 2] = 'n';
-		output[strlen(output) - 1] = 'g';
-		CheckPath(output);
-		out = fopen(output, "w");
-		free(output);
-
-		while (1) {
-			int a = fgetc(in);
-			if (!feof(in)) {
-				fputc(a, out);
-			} else {
-				break;
-			}
-		}
-
-		fclose(in);
-		fclose(out);
-	}
-
-	pngname = (char*)calloc(strlen(Dir) + 1 + strlen("thumb0000.png") + 1, sizeof(char));
-	dp = opendir(Dir);
-	while ((ep = readdir(dp))) {
-		int cur;
-		if (sscanf(ep->d_name, "thumb%d.png", &cur)) {
-			sprintf(pngname, "%s/%s", Dir, ep->d_name);
-			unlink(pngname);
-		}
-	}
-	closedir(dp);
-	free(pngname);
 }
 
 /**
@@ -2004,7 +1929,7 @@ void MuxIntroVideos() {
 	char *cmdprefix = "ffmpeg -y -f concat -i ";
 	char *cmdsuffixVideo = " -c copy ";
 	char *cmdsuffixAudio = " -acodec libvorbis";
-	char *encoderIntroOpts = " -c copy ";
+	char *encoderIntroOpts = " -longest -c copy ";
 	FILE* mylist;
 	char listfile[2048] = { '\0' };
 	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
@@ -4158,7 +4083,7 @@ int main(int argc, char** argv)
 					sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
 #ifdef WIN32
 					// On Windows, manual conversion doesn't seem to work right
-					ConvertFLC(buf, Todo[u].File, Todo[u].Arg1);
+					ConvertFLC(buf, Todo[u].File);
 #else
 					ConvertFLC_Manual(buf, Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
 #endif
