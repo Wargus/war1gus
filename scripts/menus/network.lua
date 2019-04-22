@@ -215,7 +215,6 @@ function RunOnlineMenu()
             serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
             timeout = 0
          elseif string.match(log.entry, "LIST_OK") then
-            needsRefresh = true
             timeout = 100
          elseif string.match(log.entry, "MESSAGE") then
             timeout = 0
@@ -322,13 +321,13 @@ function RunOnlineMenu()
       end
    end
 
-   local function ask_for_list_refresh()
+   local function keepalive()
       if needsRefresh then
          needsRefresh = false
          timeout = 0
-         gamesList = {}
-         nickList = {}
          MetaClient:Send("LIST")
+      else
+         MetaClient:Send("PING")
       end
    end
 
@@ -385,7 +384,7 @@ function RunOnlineMenu()
          timeout = 100
          if connect() then
             if login() then
-               ask_for_list_refresh()
+               keepalive()
             end
             process_metaserver_events()
          end
