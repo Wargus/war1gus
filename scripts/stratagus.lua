@@ -302,6 +302,8 @@ DefaultPreference("AllowMultipleTownHalls", false)
 DefaultPreference("AllowTownHallUpgrade", false)
 DefaultPreference("MultiColoredCampaigns", true)
 DefaultPreference("ShowButtonPopups", true)
+DefaultPreference("MetaServer", "")
+DefaultPreference("MetaPort", 7775)
 
 wc1.preferences = preferences
 SetUseOpenGL(preferences.UseOpenGL)

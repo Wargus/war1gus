@@ -83,6 +83,293 @@ function addPlayersList(menu, numplayers)
   return updatePlayers
 end
 
+function RunOnlineMenu()
+   local menu = WarMenu("Online Menu")
+   InitGameSettings()
+   InitNetwork1()
+
+   local timeout = 50
+
+   menu:writeText("Metaserver: ", 20, 20)
+   local serverInput = menu:addTextInputField(wc1.preferences.MetaServer .. ":" .. tostring(wc1.preferences.MetaPort), 150, 20, 150)
+
+   menu:writeText("Nickname: ", 20, 40)
+   local nickInput = menu:addTextInputField(wc1.preferences.PlayerName, 150, 40, 150)
+   local nick = wc1.preferences.PlayerName
+
+   menu:writeText("Status: ", 20, 60)
+   local serverStatus = menu:addListBox(150, 60, 300, 35, {})
+   local statusList = {}
+
+   menu:writeText("Logged in: ", 20, 100)
+   local nickListBox = menu:addListBox(150, 100, 300, 35, {})
+   local nickList = {}
+
+   menu:writeText("Games: ", 20, 140)
+   local gamesListBox = menu:addListBox(150, 140, 300, 35, {})
+   local gamesList = {}
+   local hasJoinedGame = false
+   menu:addHalfButton(
+      "~!Join", "j", 455, 145,
+      function()
+         if gamesListBox:getSelected() > 0 then
+            local selectedGame = gamesList[gamesListBox:getSelected() + 1]
+            for id in selectedGame.gmatch("(%d+)") do
+               MetaClient:Send("JOIN " .. chatInput:getText() ..
+                                  " " .. MetaClient:GetInternalIP() .. " " ..
+                                  tostring(MetaClient:GetInternalPort()))
+               hasJoinedGame = true
+            end
+         end
+      end
+   )
+
+   menu:writeText("Chat: ", 20, 180)
+   local chat = menu:addListBox(150, 180, 300, 35, {})
+   local chatList = {}
+   local chatInput = menu:addTextInputField("", 150, 220, 300)
+   menu:addHalfButton(
+      "~!Send", "s", 455, 215,
+      function()
+         MetaClient:Send("MESSAGE " .. chatInput:getText())
+         chatInput:setText("")
+         timeout = 5
+      end
+   )
+
+   local map
+   local description
+   local playercount
+   local gameid
+   local hasCreatedGame = false
+   menu:addFullButton(
+      "~!Create Game", "c", 20, 250,
+      function()
+         RunCreateMultiGameMenu(function(mapfile, desc, numplayers)
+               map = mapfile
+               description = desc
+               playercount = numplayers
+               timeout = 5
+               MetaClient:Send(
+                  "CREATE \"War1gus" .. wc1.Version .. "\" \"" ..
+                     desc .. "\" \"" .. map .. "\" " .. tostring(numplayers) ..
+                     " " .. MetaClient:GetInternalIP() .. " " ..
+                     tostring(MetaClient:GetInternalPort()))
+               hasCreatedGame = true
+         end)
+      end
+   )
+
+   menu:addFullButton(
+      "~!Previous Menu", "p", 20, 280,
+      function()
+         MetaClient:Send("LEAVE " .. nick)
+         menu:stop()
+      end
+   )
+
+   local needsRefresh = true
+   local needsLogin = true
+   local needsConnection = true
+
+   local function process_metaserver_events()
+      while MetaClient:GetLogSize() > 0 do
+         log = MetaClient:GetNextMessage()
+         if string.match(log.entry, "LOGIN_REQUIRED") then
+            needsLogin = true
+            statusList[#statusList+1] = "Login required, choose a nick"
+            serverStatus:setList(statusList)
+         elseif string.match(log.entry, "LOGIN_FAILED") then
+            needsLogin = true
+            statusList[#statusList+1] = "Login failed, nickname already taken"
+            serverStatus:setList(statusList)
+         elseif string.match(log.entry, "LOGIN_OK") then
+            needsLogin = false
+            SetLocalPlayerName(nickInput:getText())
+            statusList[#statusList+1] = "Login ok"
+            serverStatus:setList(statusList)
+            timeout = 0
+         elseif string.match(log.entry, "LIST_OK") then
+            needsRefresh = true
+            timeout = 100
+         elseif string.match(log.entry, "MESSAGE") then
+            timeout = 0
+            local idx = nil
+            idx = string.find(log.entry, "%s")
+            if idx then
+               local msg = nil
+               msg = string.sub(log.entry, idx)
+               local append = true
+               for i,emsg in ipairs(chatList) do
+                  if emsg == msg then
+                     append = false
+                     break
+                  end
+               end
+               if append then
+                  chatList[#chatList+1] = msg
+                  chat:setList(chatList)
+               end
+            end
+         elseif string.match(log.entry, "USERNAME") then
+            timeout = 0
+            local idx = nil
+            idx = string.find(log.entry, "%s")
+            if idx then
+               local user = nil
+               user = string.sub(log.entry, idx)
+               local append = true
+               for i,euser in ipairs(nickList) do
+                  if euser == user then
+                     append = false
+                     break
+                  end
+               end
+               if append then
+                  nickList[#nickList+1] = user
+                  nickListBox:setList(nickList)
+               end
+            end
+         elseif string.match(log.entry, "GAME") then
+            timeout = 0
+            local idx = nil
+            idx = string.find(log.entry, "%s")
+            if idx then
+               local game = nil
+               game = string.sub(log.entry, idx)
+               local append = true
+               for i,egame in ipairs(chatList) do
+                  if egame == game then
+                     append = false
+                     break
+                  end
+               end
+               if append then
+                  gamesList[#gamesList+1] = game
+                  gamesListBox:setList(gamesList)
+               end
+            end
+         elseif string.match(log.entry, "CREATE_MALFORMED") then
+            statusList[#statusList+1] = "Problem creating game, metaserver incompatible with this game"
+            serverStatus:setList(statusList)
+            hasCreatedGame = false
+         elseif string.match(log.entry, "CREATE_OK") then
+            if hasCreatedGame then
+               local gameid = nil
+               for id in string.gmatch(log.entry, "CREATE_OK (%d+\.%d+)") do
+                  gameid = tonumber(id)
+                  break
+               end
+               RunServerMultiGameMenu(map, description, playercount, gameid)
+               hasCreatedGame = false
+            end
+         elseif string.match(log.entry, "JOIN_MALFORMED") then
+            hasJoinedGame = false
+            statusList[#statusList+1] = "Problem creating game, metaserver incompatible with this game"
+            serverStatus:setList(statusList)
+         elseif string.match(log.entry, "JOIN_FAILED") then
+            hasJoinedGame = false
+            statusList[#statusList+1] = "Problem joining game, game already closed"
+            serverStatus:setList(statusList)
+         elseif string.match(log.entry, "JOIN_OK") then
+            if hasJoinedGame then
+               for ip,port in string.gmatch(str, "(%d+.%d+.%d+.%d+):(%d+)") do
+                  if (NetworkSetupServerAddress(ip, tonumber(port)) ~= 0) then
+                     ErrorMenu("Invalid server name " .. ip)
+                  else
+                     NetworkInitClientConnect()
+                     if (RunJoiningGameMenu() ~= 0) then
+                        -- connect failed
+                     else
+                        -- connection worked and we returned, don't try the next IP
+                        break
+                     end
+                  end
+               end
+               hasJoinedGame = false
+            end
+         end
+         MetaClient:PopNextMessage()
+      end
+   end
+
+   local function ask_for_list_refresh()
+      if needsRefresh then
+         needsRefresh = false
+         timeout = 0
+         gamesList = {}
+         nickList = {}
+         MetaClient:Send("LIST")
+      end
+   end
+
+   local function login()
+      if nickInput:getText() ~= nick then
+         nick = nickInput:getText()
+         needsLogin = true
+      end
+      if needsLogin then
+         if nick ~= "" then
+            needsLogin = false
+            MetaClient:Send("LOGIN " .. nick)
+            timeout = 0
+         end
+      end
+      return not needsLogin
+   end
+
+   local function connect()
+      if serverInput:getText() ~= (wc1.preferences.MetaServer .. ":" .. tostring(wc1.preferences.MetaPort)) then
+         print("Server changed")
+         needsConnection = true
+      end
+      if needsConnection then
+         print("Connecting")
+         local ip = string.find(serverInput:getText(), ":")
+         local host
+         local port
+         if ip ~= nil then
+            host = string.sub(serverInput:getText(), 1, ip - 1)
+            port = tonumber(string.sub(serverInput:getText(), ip + 1))
+            if (port == 0) then port = 7775 end
+         else
+            host = string.sub(serverInput:getText(), 1)
+            port = 7775
+         end
+         if host ~= "" then
+            MetaClient:Close()
+            wc1.preferences.MetaServer = host
+            wc1.preferences.MetaPort = port
+            SavePreferences()
+            MetaClient:SetMetaServer(host, port)
+            if MetaClient:Init() == 0 then
+               needsConnection = false
+               timeout = 0
+            end
+         end
+      end
+      return not needsConnection
+   end
+
+   local function loop()
+      if timeout == 0 then
+         timeout = 100
+         if connect() then
+            if login() then
+               ask_for_list_refresh()
+            end
+            process_metaserver_events()
+         end
+      else
+         timeout = timeout - 1
+      end
+   end
+
+   listener = LuaActionListener(loop)
+   menu:addLogicCallback(listener)
+   menu:run()
+   ExitNetwork1()
+end
 
 joincounter = 0
 
@@ -278,7 +565,7 @@ function RunJoinIpMenu()
   menu:run()
 end
 
-function RunServerMultiGameMenu(map, description, numplayers)
+function RunServerMultiGameMenu(map, description, numplayers, optionalGameid)
   local menu
   local sx = Video.Width / 20
   local sy = Video.Height / 20
@@ -363,16 +650,36 @@ function RunServerMultiGameMenu(map, description, numplayers)
     waitingtext:setVisible(not ready)
   end
 
-  local listener = LuaActionListener(function(s) updateStartButton(updatePlayers()) end)
+  local pingTimeout = 100
+  local listener = LuaActionListener(function(s)
+        if optionalGameid ~= nil then
+           -- keep connection to metaserver alive
+           pingTimeout = pingTimeout - 1
+           if pingTimeout < 0 then
+              pingTimeout = 100
+              MetaClient:Send("PING")
+              while MetaClient:GetLogSize() > 0 do
+                 MetaClient:PopNextMessage()
+              end
+           end
+        end
+        updateStartButton(updatePlayers())
+  end)
   menu:addLogicCallback(listener)
 
   menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100, Video.Height - 100,
-    function() menu:stop() end)
+                     function()
+                        if optionalGameid ~= nil then
+                           MetaClient:Send("CANCEL " .. tostring(optionalGameid))
+                        end
+                        menu:stop()
+                     end
+  )
 
   menu:run()
 end
 
-function RunCreateMultiGameMenu(s)
+function RunCreateMultiGameMenu(callback)
   local menu
   local map = "No Map"
   local description = "No map"
@@ -413,10 +720,7 @@ function RunCreateMultiGameMenu(s)
 
   menu:addFullButton("~!Create Game", "c", sx,  sy*11,
     function(s)
-      if (browser:getSelected() < 0) then
-        return
-      end
-      RunServerMultiGameMenu(mapfile, description, numplayers)
+      callback(mapfile, description, numplayers)
       menu:stop()
     end
   )
@@ -457,7 +761,7 @@ function RunMultiPlayerGameMenu(s)
         preferences.PlayerName = nick:getText()
         SavePreferences()
       end
-      RunCreateMultiGameMenu()
+      RunCreateMultiGameMenu(RunServerMultiGameMenu)
       menu:stop()
     end)
 
@@ -468,4 +772,3 @@ function RunMultiPlayerGameMenu(s)
 
   ExitNetwork1()
 end
-
