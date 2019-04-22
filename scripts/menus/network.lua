@@ -90,27 +90,61 @@ function RunOnlineMenu()
 
    local timeout = 50
 
-   menu:writeText("Metaserver: ", 20, 20)
-   local serverInput = menu:addTextInputField(wc1.preferences.MetaServer .. ":" .. tostring(wc1.preferences.MetaPort), 150, 20, 150)
+   menu:writeText("Metaserver", 20, 20)
+   local serverInput = menu:addTextInputField(wc1.preferences.MetaServer .. ":" .. tostring(wc1.preferences.MetaPort), 20, 35, 150)
 
-   menu:writeText("Nickname: ", 20, 40)
-   local nickInput = menu:addTextInputField(wc1.preferences.PlayerName, 150, 40, 150)
+   menu:writeText("Nickname", 20, 60)
+   local nickInput = menu:addTextInputField(wc1.preferences.PlayerName, 20, 75, 150)
    local nick = wc1.preferences.PlayerName
+   local function nickInputCb()
+      MetaClient:Send("LEAVE " .. nick)
+      nick = nickInput:getText()
+      needsLogin = true
+      timeout = 1
+   end
 
-   menu:writeText("Status: ", 20, 60)
-   local serverStatus = menu:addListBox(150, 60, 300, 35, {})
-   local statusList = {}
-
-   menu:writeText("Logged in: ", 20, 100)
-   local nickListBox = menu:addListBox(150, 100, 300, 35, {})
+   menu:writeText("Active Users", 20, 100)
+   local nickListHeight = Video.Height / 4
+   local nickListTop = 115
+   local nickListBox = menu:addListBox(20, nickListTop, 150, nickListHeight, {})
    local nickList = {}
 
-   menu:writeText("Games: ", 20, 140)
-   local gamesListBox = menu:addListBox(150, 140, 300, 35, {})
+   local chat = menu:addListBox(180, 50, Video.Width - 200, nickListHeight + nickListTop - 50, {})
+   local chatList = {}
+   local chatInput = menu:addTextInputField("", 180, nickListHeight + nickListTop + 5, Video.Width - 260)
+   local function chatInputCb()
+      MetaClient:Send("MESSAGE " .. chatInput:getText())
+      chatInput:setText("")
+      timeout = 5
+   end
+   chatInput:addActionListener(LuaActionListener(chatInputCb));
+   local sendButton = menu:addHalfButton(
+      "~!Send", "s", 0, 0,
+      function()
+         chatInputCb()
+      end
+   )
+   sendButton:setSize(60, 20)
+   sendButton:setPosition(Video.Width - 80, nickListHeight + nickListTop + 5)
+
+   menu:writeText("Status: ", 20, Video.Height - 60)
+   local serverStatus = menu:addListBox(100, Video.Height - 60, 300, 30, {})
+   local statusList = {}
+
+   local gameListTop = nickListHeight + nickListTop + 60
+   menu:writeText("Games", 20, gameListTop - 20)
+   local gamesListBox = menu:addListBox(20, gameListTop, Video.Width - 40 - 90, nickListHeight, {})
    local gamesList = {}
+
+   local map
+   local description
+   local playercount
+   local gameid
+   local hasCreatedGame = false
    local hasJoinedGame = false
-   menu:addHalfButton(
-      "~!Join", "j", 455, 145,
+
+   local joinButton = menu:addHalfButton(
+      "~!Join", "j", 0, 0,
       function()
          if gamesListBox:getSelected() > 0 then
             local selectedGame = gamesList[gamesListBox:getSelected() + 1]
@@ -123,27 +157,11 @@ function RunOnlineMenu()
          end
       end
    )
+   joinButton:setSize(80, 30)
+   joinButton:setPosition(Video.Width - 20 - 80, gameListTop)
 
-   menu:writeText("Chat: ", 20, 180)
-   local chat = menu:addListBox(150, 180, 300, 35, {})
-   local chatList = {}
-   local chatInput = menu:addTextInputField("", 150, 220, 300)
-   menu:addHalfButton(
-      "~!Send", "s", 455, 215,
-      function()
-         MetaClient:Send("MESSAGE " .. chatInput:getText())
-         chatInput:setText("")
-         timeout = 5
-      end
-   )
-
-   local map
-   local description
-   local playercount
-   local gameid
-   local hasCreatedGame = false
-   menu:addFullButton(
-      "~!Create Game", "c", 20, 250,
+   local createButton = menu:addFullButton(
+      "~!Create", "c", 0, 0,
       function()
          RunCreateMultiGameMenu(function(mapfile, desc, numplayers)
                map = mapfile
@@ -159,14 +177,18 @@ function RunOnlineMenu()
          end)
       end
    )
+   createButton:setSize(80, 30)
+   createButton:setPosition(Video.Width - 20 - 80, gameListTop + 40)
 
-   menu:addFullButton(
-      "~!Previous Menu", "p", 20, 280,
+   local prevButton = menu:addFullButton(
+      "~!Leave", "l", 0, 0,
       function()
          MetaClient:Send("LEAVE " .. nick)
          menu:stop()
       end
    )
+   prevButton:setSize(80, 30)
+   prevButton:setPosition(Video.Width - 20 - 80, gameListTop + 80)
 
    local needsRefresh = true
    local needsLogin = true
@@ -179,15 +201,18 @@ function RunOnlineMenu()
             needsLogin = true
             statusList[#statusList+1] = "Login required, choose a nick"
             serverStatus:setList(statusList)
+            serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
          elseif string.match(log.entry, "LOGIN_FAILED") then
             needsLogin = true
             statusList[#statusList+1] = "Login failed, nickname already taken"
             serverStatus:setList(statusList)
+            serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
          elseif string.match(log.entry, "LOGIN_OK") then
             needsLogin = false
             SetLocalPlayerName(nickInput:getText())
             statusList[#statusList+1] = "Login ok"
             serverStatus:setList(statusList)
+            serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
             timeout = 0
          elseif string.match(log.entry, "LIST_OK") then
             needsRefresh = true
@@ -211,6 +236,7 @@ function RunOnlineMenu()
                   chat:setList(chatList)
                end
             end
+            chat:setVerticalScrollAmount(chat:getVerticalMaxScroll())
          elseif string.match(log.entry, "USERNAME") then
             timeout = 0
             local idx = nil
@@ -252,6 +278,7 @@ function RunOnlineMenu()
          elseif string.match(log.entry, "CREATE_MALFORMED") then
             statusList[#statusList+1] = "Problem creating game, metaserver incompatible with this game"
             serverStatus:setList(statusList)
+            serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
             hasCreatedGame = false
          elseif string.match(log.entry, "CREATE_OK") then
             if hasCreatedGame then
@@ -267,10 +294,12 @@ function RunOnlineMenu()
             hasJoinedGame = false
             statusList[#statusList+1] = "Problem creating game, metaserver incompatible with this game"
             serverStatus:setList(statusList)
+            serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
          elseif string.match(log.entry, "JOIN_FAILED") then
             hasJoinedGame = false
             statusList[#statusList+1] = "Problem joining game, game already closed"
             serverStatus:setList(statusList)
+            serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
          elseif string.match(log.entry, "JOIN_OK") then
             if hasJoinedGame then
                for ip,port in string.gmatch(str, "(%d+.%d+.%d+.%d+):(%d+)") do
