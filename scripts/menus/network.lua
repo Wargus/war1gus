@@ -83,25 +83,110 @@ function addPlayersList(menu, numplayers)
   return updatePlayers
 end
 
-function RunOnlineMenu()
-   local menu = WarMenu("Online Menu")
+function JoinOnlineMenu()
    InitGameSettings()
    InitNetwork1()
 
-   local timeout = 50
+   local menu = WarMenu("Join Meta Server")
+
+   menu:writeText("Metaserver", 20, 80)
+   local serverInput = menu:addTextInputField(
+      wc1.preferences.MetaServer .. ":" .. tostring(wc1.preferences.MetaPort),
+      20, 100, 200)
+
+   menu:writeText("Nickname", 20, 140)
+   local nickInput = menu:addTextInputField(
+      wc1.preferences.PlayerName,
+      20, 160, 200)
+   local nick = wc1.preferences.PlayerName
+
+   local needsLogin = true
+   local needsConnection = true
+   
+   local statusLabel = menu:writeLargeText("Please log in", 20, 50)   
+
+   local ok_button = menu:addHalfButton(
+      "~!OK", "o", 20, 200,
+      function(s)
+         print("Connecting")
+         statusLabel:setCaption("Logging in...")
+         statusLabel:adjustSize()
+         local ip = string.find(serverInput:getText(), ":")
+         local host
+         local port
+         local nick
+         if ip ~= nil then
+            host = string.sub(serverInput:getText(), 1, ip - 1)
+            port = tonumber(string.sub(serverInput:getText(), ip + 1))
+            if (port == 0) then port = 7775 end
+         else
+            host = string.sub(serverInput:getText(), 1)
+            port = 7775
+         end
+         nick = nickInput:getText()
+         if nick ~= "" then
+            wc1.preferences.PlayerName = nick
+            if host ~= "" then
+               MetaClient:Close()
+               wc1.preferences.MetaServer = host
+               wc1.preferences.MetaPort = port
+               SavePreferences()
+               MetaClient:SetMetaServer(host, port)
+               if MetaClient:Init() == 0 then
+                  needsConnection = false
+                  MetaClient:Send("LOGIN " .. nick)
+               end
+            end
+         end
+      end
+   )
+   local cancel_button = menu:addHalfButton(
+      _("~!Cancel"), "c", 150, 200,
+      function()
+         menu:stop()
+      end
+   )
+
+   local function waitForLogin()
+      if not needsConnection then
+         while MetaClient:GetLogSize() > 0 do
+            log = MetaClient:GetNextMessage()
+            if string.match(log.entry, "LOGIN_FAILED") then
+               needsLogin = true
+               ErrorMenu("Login failed (nick taken)")
+               statusLabel:setCaption("Please log in")
+               statusLabel:adjustSize()
+            elseif string.match(log.entry, "LOGIN_OK") then
+               needsLogin = false
+            else
+               print("METASERVER: " .. log.entry .. " (dropped)")
+            end
+            MetaClient:PopNextMessage()
+         end
+      end
+      if not needsLogin then
+         RunOnlineMenu()
+         menu:stop()
+      end
+   end
+
+   menu:addLogicCallback(LuaActionListener(waitForLogin))
+
+   menu:run()
+   ExitNetwork1()
+end
+
+function RunOnlineMenu()
+   local menu = WarMenu("Online Menu")
+
+   local timeout = 5
 
    menu:writeText("Metaserver", 20, 20)
-   local serverInput = menu:addTextInputField(wc1.preferences.MetaServer .. ":" .. tostring(wc1.preferences.MetaPort), 20, 35, 150)
+   menu:writeText(wc1.preferences.MetaServer .. ":" .. tostring(wc1.preferences.MetaPort), 20, 35)
 
-   menu:writeText("Nickname", 20, 60)
-   local nickInput = menu:addTextInputField(wc1.preferences.PlayerName, 20, 75, 150)
-   local nick = wc1.preferences.PlayerName
-   local function nickInputCb()
-      MetaClient:Send("LEAVE " .. nick)
-      nick = nickInput:getText()
-      needsLogin = true
-      timeout = 1
-   end
+   menu:writeText("Your name", 20, 60)
+   menu:writeText(wc1.preferences.PlayerName, 20, 75)
+   SetLocalPlayerName(wc1.preferences.PlayerName)
 
    menu:writeText("Active Users", 20, 100)
    local nickListHeight = Video.Height / 4
@@ -146,13 +231,14 @@ function RunOnlineMenu()
    local joinButton = menu:addHalfButton(
       "~!Join", "j", 0, 0,
       function()
-         if gamesListBox:getSelected() > 0 then
+         if gamesListBox:getSelected() >= 0 then
             local selectedGame = gamesList[gamesListBox:getSelected() + 1]
-            for id in selectedGame.gmatch("(%d+)") do
-               MetaClient:Send("JOIN " .. chatInput:getText() ..
+            for id in string.gmatch(selectedGame, "(%d+\.%d+)") do
+               MetaClient:Send("JOIN " .. id ..
                                   " " .. MetaClient:GetInternalIP() .. " " ..
                                   tostring(MetaClient:GetInternalPort()))
-               hasJoinedGame = true
+               hasJoinedGame = id
+               break
             end
          end
       end
@@ -183,7 +269,7 @@ function RunOnlineMenu()
    local prevButton = menu:addFullButton(
       "~!Leave", "l", 0, 0,
       function()
-         MetaClient:Send("LEAVE " .. nick)
+         MetaClient:Send("LEAVE " .. wc1.preferences.PlayerName)
          menu:stop()
       end
    )
@@ -191,29 +277,25 @@ function RunOnlineMenu()
    prevButton:setPosition(Video.Width - 20 - 80, gameListTop + 80)
 
    local needsRefresh = true
-   local needsLogin = true
-   local needsConnection = true
 
    local function process_metaserver_events()
       while MetaClient:GetLogSize() > 0 do
          log = MetaClient:GetNextMessage()
          if string.match(log.entry, "LOGIN_REQUIRED") then
             needsLogin = true
-            statusList[#statusList+1] = "Login required, choose a nick"
+            statusList[#statusList+1] = "Login required, kicked from server, please rejoin"
             serverStatus:setList(statusList)
             serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
          elseif string.match(log.entry, "LOGIN_FAILED") then
             needsLogin = true
-            statusList[#statusList+1] = "Login failed, nickname already taken"
+            statusList[#statusList+1] = "Login failed, kicked from server, please rejoin"
             serverStatus:setList(statusList)
             serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
          elseif string.match(log.entry, "LOGIN_OK") then
             needsLogin = false
-            SetLocalPlayerName(nickInput:getText())
             statusList[#statusList+1] = "Login ok"
             serverStatus:setList(statusList)
             serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
-            timeout = 0
          elseif string.match(log.entry, "LIST_OK") then
             timeout = 100
          elseif string.match(log.entry, "MESSAGE") then
@@ -222,7 +304,7 @@ function RunOnlineMenu()
             idx = string.find(log.entry, "%s")
             if idx then
                local msg = nil
-               msg = string.sub(log.entry, idx)
+               msg = string.sub(log.entry, idx + 1)
                local append = true
                for i,emsg in ipairs(chatList) do
                   if emsg == msg then
@@ -242,7 +324,7 @@ function RunOnlineMenu()
             idx = string.find(log.entry, "%s")
             if idx then
                local user = nil
-               user = string.sub(log.entry, idx)
+               user = string.sub(log.entry, idx + 1)
                local append = true
                for i,euser in ipairs(nickList) do
                   if euser == user then
@@ -261,7 +343,7 @@ function RunOnlineMenu()
             idx = string.find(log.entry, "%s")
             if idx then
                local game = nil
-               game = string.sub(log.entry, idx)
+               game = string.sub(log.entry, idx + 1)
                local append = true
                for i,egame in ipairs(chatList) do
                   if egame == game then
@@ -289,6 +371,7 @@ function RunOnlineMenu()
                RunServerMultiGameMenu(map, description, playercount, gameid)
                hasCreatedGame = false
             end
+            needsRefresh = true
          elseif string.match(log.entry, "JOIN_MALFORMED") then
             hasJoinedGame = false
             statusList[#statusList+1] = "Problem creating game, metaserver incompatible with this game"
@@ -299,14 +382,17 @@ function RunOnlineMenu()
             statusList[#statusList+1] = "Problem joining game, game already closed"
             serverStatus:setList(statusList)
             serverStatus:setVerticalScrollAmount(serverStatus:getVerticalMaxScroll())
+            needsRefresh = true
          elseif string.match(log.entry, "JOIN_OK") then
-            if hasJoinedGame then
-               for ip,port in string.gmatch(str, "(%d+.%d+.%d+.%d+):(%d+)") do
+            if hasJoinedGame ~= false then
+               print("Joining...")
+               for ip,port in string.gmatch(log.entry, "(%d+.%d+.%d+.%d+):(%d+)") do
+                  print(ip .. ":" .. port)
                   if (NetworkSetupServerAddress(ip, tonumber(port)) ~= 0) then
                      ErrorMenu("Invalid server name " .. ip)
                   else
                      NetworkInitClientConnect()
-                     if (RunJoiningGameMenu() ~= 0) then
+                     if (RunJoiningGameMenu(hasJoinedGame) ~= 0) then
                         -- connect failed
                      else
                         -- connection worked and we returned, don't try the next IP
@@ -316,6 +402,9 @@ function RunOnlineMenu()
                end
                hasJoinedGame = false
             end
+            needsRefresh = true
+         else
+            print("METASERVER: " .. log.entry)
          end
          MetaClient:PopNextMessage()
       end
@@ -325,69 +414,20 @@ function RunOnlineMenu()
       if needsRefresh then
          needsRefresh = false
          timeout = 0
+         nickList = {}
+         chatList = {}
+         gamesList = {}
          MetaClient:Send("LIST")
       else
          MetaClient:Send("PING")
       end
    end
 
-   local function login()
-      if nickInput:getText() ~= nick then
-         nick = nickInput:getText()
-         needsLogin = true
-      end
-      if needsLogin then
-         if nick ~= "" then
-            needsLogin = false
-            MetaClient:Send("LOGIN " .. nick)
-            timeout = 0
-         end
-      end
-      return not needsLogin
-   end
-
-   local function connect()
-      if serverInput:getText() ~= (wc1.preferences.MetaServer .. ":" .. tostring(wc1.preferences.MetaPort)) then
-         print("Server changed")
-         needsConnection = true
-      end
-      if needsConnection then
-         print("Connecting")
-         local ip = string.find(serverInput:getText(), ":")
-         local host
-         local port
-         if ip ~= nil then
-            host = string.sub(serverInput:getText(), 1, ip - 1)
-            port = tonumber(string.sub(serverInput:getText(), ip + 1))
-            if (port == 0) then port = 7775 end
-         else
-            host = string.sub(serverInput:getText(), 1)
-            port = 7775
-         end
-         if host ~= "" then
-            MetaClient:Close()
-            wc1.preferences.MetaServer = host
-            wc1.preferences.MetaPort = port
-            SavePreferences()
-            MetaClient:SetMetaServer(host, port)
-            if MetaClient:Init() == 0 then
-               needsConnection = false
-               timeout = 0
-            end
-         end
-      end
-      return not needsConnection
-   end
-
    local function loop()
       if timeout == 0 then
          timeout = 100
-         if connect() then
-            if login() then
-               keepalive()
-            end
-            process_metaserver_events()
-         end
+         keepalive()
+         process_metaserver_events()
       else
          timeout = timeout - 1
       end
@@ -396,12 +436,11 @@ function RunOnlineMenu()
    listener = LuaActionListener(loop)
    menu:addLogicCallback(listener)
    menu:run()
-   ExitNetwork1()
 end
 
 joincounter = 0
 
-function RunJoiningMapMenu(s)
+function RunJoiningMapMenu(optionalGameid)
   local menu
   local listener
   local sx = Video.Width / 20
@@ -467,8 +506,60 @@ function RunJoiningMapMenu(s)
 
   local updatePlayersList = addPlayersList(menu, numplayers)
 
+  local cancelBtnY = Video.Height - 100
+  local chat
+  local chatList
+  if optionalGameid ~= nil then
+     -- we can still chat
+     cancelBtnY = Video.Height - 45
+     chat = menu:addListBox(20, Video.Height - 120, Video.Width - 40, 40, {})
+     chatList = {}
+     local chatInput = menu:addTextInputField("", 20, Video.Height - 80, Video.Width - 40)
+     local function chatInputCb()
+        MetaClient:Send("MESSAGE " .. chatInput:getText())
+        chatInput:setText("")
+     end
+     chatInput:addActionListener(LuaActionListener(chatInputCb));
+     MetaClient:Send("LIST")
+  end
+
   joincounter = 0
+  local pingTimeout = 100
   local function listen()
+    if optionalGameid ~= nil then
+       -- keep connection to metaserver alive
+       pingTimeout = pingTimeout - 1
+       if pingTimeout < 0 then
+          pingTimeout = 100
+          MetaClient:Send("PING")
+          while MetaClient:GetLogSize() > 0 do
+             local log = MetaClient:GetNextMessage()
+             if string.match(log.entry, "MESSAGE") then
+                -- we only handle chat messages here
+                local idx = nil
+                idx = string.find(log.entry, "%s")
+                if idx then
+                   local msg = nil
+                   msg = string.sub(log.entry, idx + 1)
+                   local append = true
+                   for i,emsg in ipairs(chatList) do
+                      if emsg == msg then
+                         append = false
+                         break
+                      end
+                   end
+                   if append then
+                      chatList[#chatList+1] = msg
+                      chat:setList(chatList)
+                   end
+                end
+                chat:setVerticalScrollAmount(chat:getVerticalMaxScroll())
+             end
+             MetaClient:PopNextMessage()
+          end
+       end
+    end
+
     NetworkProcessClientRequest()
     fow:setMarked(int2bool(ServerSetupState.FogOfWar))
     GameSettings.NoFogOfWar = not int2bool(ServerSetupState.FogOfWar)
@@ -503,13 +594,13 @@ function RunJoiningMapMenu(s)
   listener = LuaActionListener(listen)
   menu:addLogicCallback(listener)
 
-  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100, Video.Height - 100,
+  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100, cancelBtnY,
     function() NetworkDetachFromServer(); menu:stop() end)
 
   menu:run()
 end
 
-function RunJoiningGameMenu(s)
+function RunJoiningGameMenu(optionalGameid)
   local menu = WarMenu(nil, panel(4), false)
   menu:setSize(288, 128)
   menu:setPosition((Video.Width - 288) / 2, (Video.Height - 128) / 2)
@@ -533,7 +624,7 @@ function RunJoiningGameMenu(s)
     -- FIXME: do not use numbers
     if (state == 3) then -- ccs_mapinfo
       -- got ICMMap => load map
-      RunJoiningMapMenu()
+      RunJoiningMapMenu(optionalGameid)
       menu:stop(0)
     elseif (state == 4) then -- ccs_badmap
       ErrorMenu("Map not available")
@@ -658,17 +749,21 @@ function RunServerMultiGameMenu(map, description, numplayers, optionalGameid)
   NetworkMapName = map
   NetworkInitServerConnect(numplayers)
   ServerSetupState.FogOfWar = 1
-  startgame = menu:addFullButton("~!Start Game", "s", sx * 11,  sy*14,
+  startgame = menu:addFullButton("~!Start Game", "s", sx * 11,  sy*13,
     function(s)
-      SetFogOfWar(fow:isMarked())
-      if revealmap:isMarked() == true then
-        RevealMap()
-      end
-      NetworkServerStartGame()
-      NetworkGamePrepareGameSettings()
-      war1gus.InCampaign = false
-      RunMap(map, fow:isMarked())
-      menu:stop()
+       SetFogOfWar(fow:isMarked())
+       if optionalGameid ~= nil then
+          -- no more joining possible now
+          MetaClient:Send("CANCEL " .. tostring(optionalGameid))
+       end
+       if revealmap:isMarked() == true then
+          RevealMap()
+       end
+       NetworkServerStartGame()
+       NetworkGamePrepareGameSettings()
+       war1gus.InCampaign = false
+       RunMap(map, fow:isMarked())
+       menu:stop()
     end
   )
   startgame:setVisible(false)
@@ -676,6 +771,23 @@ function RunServerMultiGameMenu(map, description, numplayers, optionalGameid)
   local function updateStartButton(ready)
     startgame:setVisible(ready)
     waitingtext:setVisible(not ready)
+  end
+
+  local cancelBtnY = Video.Height - 100
+  local chat
+  local chatList
+  if optionalGameid ~= nil then
+     -- we can still chat
+     cancelBtnY = Video.Height - 45
+     chat = menu:addListBox(20, Video.Height - 120, Video.Width - 40, 40, {})
+     chatList = {}
+     local chatInput = menu:addTextInputField("", 20, Video.Height - 80, Video.Width - 40)
+     local function chatInputCb()
+        MetaClient:Send("MESSAGE " .. chatInput:getText())
+        chatInput:setText("")
+     end
+     chatInput:addActionListener(LuaActionListener(chatInputCb));
+     MetaClient:Send("LIST")
   end
 
   local pingTimeout = 100
@@ -687,6 +799,28 @@ function RunServerMultiGameMenu(map, description, numplayers, optionalGameid)
               pingTimeout = 100
               MetaClient:Send("PING")
               while MetaClient:GetLogSize() > 0 do
+                 local log = MetaClient:GetNextMessage()
+                 if string.match(log.entry, "MESSAGE") then
+                    -- we only handle chat messages here
+                    local idx = nil
+                    idx = string.find(log.entry, "%s")
+                    if idx then
+                       local msg = nil
+                       msg = string.sub(log.entry, idx + 1)
+                       local append = true
+                       for i,emsg in ipairs(chatList) do
+                          if emsg == msg then
+                             append = false
+                             break
+                          end
+                       end
+                       if append then
+                          chatList[#chatList+1] = msg
+                          chat:setList(chatList)
+                       end
+                    end
+                    chat:setVerticalScrollAmount(chat:getVerticalMaxScroll())
+                 end
                  MetaClient:PopNextMessage()
               end
            end
@@ -695,7 +829,7 @@ function RunServerMultiGameMenu(map, description, numplayers, optionalGameid)
   end)
   menu:addLogicCallback(listener)
 
-  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100, Video.Height - 100,
+  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100, cancelBtnY,
                      function()
                         if optionalGameid ~= nil then
                            MetaClient:Send("CANCEL " .. tostring(optionalGameid))
@@ -723,7 +857,7 @@ function RunCreateMultiGameMenu(callback)
   menu:writeText("Players:", sx, sy*3+50)
   players = menu:writeText(numplayers, sx+70, sy*3+50)
   menu:writeText("Description:", sx, sy*3+70)
-  descr = menu:writeText(description, sx+20, sy*3+90)
+  descr = menu:addTextInputField(description, sx+20, sy*3+90, 200)
 
   local OldPresentMap = PresentMap
   PresentMap = function(desc, nplayers, w, h, id)
@@ -731,8 +865,7 @@ function RunCreateMultiGameMenu(callback)
     players:setCaption(""..numplayers)
     players:adjustSize()
     description = desc
-    descr:setCaption(desc)
-    descr:adjustSize()
+    descr:setText(desc)
     OldPresentMap(desc, nplayers, w, h, id)
   end
 
@@ -748,7 +881,7 @@ function RunCreateMultiGameMenu(callback)
 
   menu:addFullButton("~!Create Game", "c", sx,  sy*11,
     function(s)
-      callback(mapfile, description, numplayers)
+      callback(mapfile, descr:getText(), numplayers)
       menu:stop()
     end
   )

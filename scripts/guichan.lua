@@ -592,7 +592,7 @@ function BuildProgramStartMenu()
 
   menu:addFullButton("~!Single Player Game", "s", offx + 193, offy + 104 + 34*3, function() RunSinglePlayerSubMenu(); menu:stop(1) end)
   menu:addFullButton("~!Multi Player Game", "m", offx + 193, offy + 104 + 34*4, function() RunMultiPlayerGameMenu(); menu:stop(1) end)
-  menu:addFullButton("O~!nline Game", "n", offx + 193, offy + 104 + 34*5, function() RunOnlineMenu(); menu:stop(1) end)
+  menu:addFullButton("O~!nline Game", "n", offx + 193, offy + 104 + 34*5, function() JoinOnlineMenu(); menu:stop(1) end)
   menu:addFullButton("~!Options", "o", offx + 193, offy + 104 + 34*6, function() RunOptionsMenu(); menu:stop(1) end)
   menu:addFullButton("~!Editor", "e", offx + 193, offy + 104 + 34*7, function() RunEditorMenu(); menu:stop(1) end)
   menu:addFullButton("S~!how Credits", "h", offx + 193, offy + 104 + 34*8, RunShowCreditsMenu)
