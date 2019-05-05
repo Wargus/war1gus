@@ -61,7 +61,7 @@ local function BuildMoveAnimation(frames, waittime)
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
-            res[1 + #res] = "wait " .. 1
+            res[1 + #res] = "wait 1"
          end
 	 tilesizeinpixel = tilesizeinpixel - 4;
       end
@@ -72,7 +72,7 @@ local function BuildMoveAnimation(frames, waittime)
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
-            res[1 + #res] = "wait " .. 1
+            res[1 + #res] = "wait 1"
          end
 	 tilesizeinpixel = tilesizeinpixel - 4;
       end
@@ -82,7 +82,7 @@ local function BuildMoveAnimation(frames, waittime)
       fractional_counter = fractional_counter + waittime_fraction
       if fractional_counter > 1 then
          fractional_counter = fractional_counter - 1
-         res[1 + #res] = "wait " .. 1
+         res[1 + #res] = "wait 1"
       end
       tilesizeinpixel = tilesizeinpixel - 4;
       
@@ -93,7 +93,7 @@ local function BuildMoveAnimation(frames, waittime)
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
-            res[1 + #res] = "wait " .. 1
+            res[1 + #res] = "wait 1"
          end
 	 tilesizeinpixel = tilesizeinpixel - 4;
       end
@@ -104,7 +104,7 @@ local function BuildMoveAnimation(frames, waittime)
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
-            res[1 + #res] = "wait " .. 1
+            res[1 + #res] = "wait 1"
          end
 	 tilesizeinpixel = tilesizeinpixel - 4;
       end
@@ -114,7 +114,7 @@ local function BuildMoveAnimation(frames, waittime)
       fractional_counter = fractional_counter + waittime_fraction
       if fractional_counter > 1 then
          fractional_counter = fractional_counter - 1
-         res[1 + #res] = "wait " .. 1
+         res[1 + #res] = "wait 1"
       end
       tilesizeinpixel = tilesizeinpixel - 4;
    end	
