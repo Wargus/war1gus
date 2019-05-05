@@ -68,7 +68,7 @@ DefinePanelContents(
       Ident = "panel-general-contents",
       Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
       Contents = {
-         { Pos = {life_bar_off_x, 41}, Condition = {ShowOpponent = true, HideNeutral = false},
+         { Pos = {life_bar_off_x, 41}, Condition = {ShowOpponent = false, HideNeutral = true},
            More = {"LifeBar", {Variable = "HitPoints", Height = 6, Width = 54, Border = false,
                                Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
            }
