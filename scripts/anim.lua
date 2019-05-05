@@ -43,8 +43,9 @@ end
 
 local function BuildMoveAnimation(frames, waittime)
    local tilesizeinpixel = 32
-   local halfIndex;
-   waittime = waittime or 6
+   local fractional_counter = 0
+   local halfIndex, waittime_fraction
+   waittime, waittime_fraction = math.modf(waittime or 6)
 
    if (#frames % 2 == 0) then
       halfIndex = (#frames) / 2
@@ -57,34 +58,64 @@ local function BuildMoveAnimation(frames, waittime)
 	 res[1 + #res] = "frame " .. frames[i]
 	 res[1 + #res] = "move 4"
 	 res[1 + #res] = "wait " .. waittime
+         fractional_counter = fractional_counter + waittime_fraction
+         if fractional_counter > 1 then
+            fractional_counter = fractional_counter - 1
+            res[1 + #res] = "wait " .. 1
+         end
 	 tilesizeinpixel = tilesizeinpixel - 4;
       end
       for i = 1, halfIndex - 1  do
 	 res[1 + #res] = "frame " .. frames[halfIndex - i]
 	 res[1 + #res] = "move 4"
 	 res[1 + #res] = "wait " .. waittime
+         fractional_counter = fractional_counter + waittime_fraction
+         if fractional_counter > 1 then
+            fractional_counter = fractional_counter - 1
+            res[1 + #res] = "wait " .. 1
+         end
 	 tilesizeinpixel = tilesizeinpixel - 4;
       end
       res[1 + #res] = "frame 0"
       res[1 + #res] = "move 4"
       res[1 + #res] = "wait " .. waittime
+      fractional_counter = fractional_counter + waittime_fraction
+      if fractional_counter > 1 then
+         fractional_counter = fractional_counter - 1
+         res[1 + #res] = "wait " .. 1
+      end
       tilesizeinpixel = tilesizeinpixel - 4;
       
       for i = 1, halfIndex do
 	 res[1 + #res] = "frame " .. frames[1 + #frames - i]
 	 res[1 + #res] = "move 4"
 	 res[1 + #res] = "wait " .. waittime
+         fractional_counter = fractional_counter + waittime_fraction
+         if fractional_counter > 1 then
+            fractional_counter = fractional_counter - 1
+            res[1 + #res] = "wait " .. 1
+         end
 	 tilesizeinpixel = tilesizeinpixel - 4;
       end
       for i = (2 + #frames - halfIndex), #frames do
 	 res[1 + #res] = "frame " .. frames[i]
 	 res[1 + #res] = "move 4"
 	 res[1 + #res] = "wait " .. waittime
+         fractional_counter = fractional_counter + waittime_fraction
+         if fractional_counter > 1 then
+            fractional_counter = fractional_counter - 1
+            res[1 + #res] = "wait " .. 1
+         end
 	 tilesizeinpixel = tilesizeinpixel - 4;
       end
       res[1 + #res] = "frame 0"
       res[1 + #res] = "move 4"
       res[1 + #res] = "wait " .. waittime
+      fractional_counter = fractional_counter + waittime_fraction
+      if fractional_counter > 1 then
+         fractional_counter = fractional_counter - 1
+         res[1 + #res] = "wait " .. 1
+      end
       tilesizeinpixel = tilesizeinpixel - 4;
    end	
    res[1 + #res] = "unbreakable end"
@@ -215,7 +246,6 @@ local frameNumbers_5_5_2_3 = GetFrameNumbers(5, {5, 2, 3})
 local frameNumbers_5_3_5_3 = GetFrameNumbers(5, {3, 5, 3})
 local frameNumbers_5_2_5_3 = GetFrameNumbers(5, {2, 5, 3})
 local frameNumbers_5_4_3_3 = GetFrameNumbers(5, {4, 3, 3})
-local frameNumbers_5_4_5_5 = GetFrameNumbers(5, {4, 5, 5})
 
 
 DefineAnimations("animations-brigand", BuildAnimations(frameNumbers_5_5_3_2))
@@ -296,13 +326,13 @@ local catapult_anim = BuildAnimations(
 DefineAnimations("animations-human-catapult", catapult_anim)
 DefineAnimations("animations-orc-catapult", catapult_anim)
 
-local anim_rider = BuildAnimations(frameNumbers_5_5_5_5, {speed = 3})
+local anim_rider = BuildAnimations(frameNumbers_5_5_5_5, {speed = 3.7})
 DefineAnimations("animations-knight", anim_rider)
 DefineAnimations("animations-raider", anim_rider)
-local anim_rider1 = BuildAnimations(frameNumbers_5_4_5_5, {speed = 3})
+local anim_rider1 = BuildAnimations(frameNumbers_5_5_5_5, {speed = 3.2})
 DefineAnimations("animations-knight1", anim_rider1)
 DefineAnimations("animations-raider1", anim_rider1)
-local anim_rider2 = BuildAnimations(frameNumbers_5_4_5_5, {speed = 2})
+local anim_rider2 = BuildAnimations(frameNumbers_5_5_5_5, {speed = 2.7})
 DefineAnimations("animations-knight2", anim_rider2)
 DefineAnimations("animations-raider2", anim_rider2)
 
