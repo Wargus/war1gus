@@ -53,7 +53,7 @@ DefineMissileType("missile-explosion",
   DrawLevel = 50, Class = "missile-class-stay", Sleep = 1, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-normal-spell",
-  { File = "missiles/healing.png", Size = {64, 64}, Frames = 6, NumDirections = 1,
+  { File = "missiles/healing.png", Size = {32, 32}, Frames = 6, NumDirections = 1,
     DrawLevel = 50, Class = "missile-class-stay", Sleep = 5, Speed = 0, Range = 1 } )
 
 DefineMissileType("missile-magic-fireball",
@@ -90,7 +90,7 @@ DefineMissileType("missile-hit",
   Class = "missile-class-hit", Sleep = 1, Speed = 1, Range = 16 } )
 
 DefineMissileType("missile-building-collapse",
-  { File = "missiles/building_collapse.png", Size = {96, 128}, Frames = 18, NumDirections = 1,
+  { File = "missiles/building_collapse.png", Size = {96, 128}, Frames = 17, NumDirections = 1,
   DrawLevel = 50, Class = "missile-class-stay", Sleep = 2, Speed = 1, Range = 1 } )
 
 DefineBurningBuilding(
