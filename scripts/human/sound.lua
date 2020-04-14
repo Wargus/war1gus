@@ -32,7 +32,7 @@
 --	Define basic human sounds.
 --
 
-MakeSound("human work complete", "human/work_completed.wav")
+MakeSound("human work complete", "human/work_complete.wav")
 MakeSound("human ready", "human/ready.wav")
 MakeSound("human help 1", "human/help_1.wav")
 MakeSound("human help 2", "human/help_2.wav")
