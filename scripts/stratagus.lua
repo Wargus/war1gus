@@ -291,8 +291,6 @@ DefaultPreference("GameTranslation", "")
 DefaultPreference("TipNumber", 0)
 DefaultPreference("ShowTips", true)
 DefaultPreference("GrabMouse", false)
-DefaultPreference("UseOpenGL", true)
-DefaultPreference("MaxOpenGLTexture", 0)
 DefaultPreference("CampaignOrc", 1)
 DefaultPreference("CampaignHuman", 1)
 DefaultPreference("PlayIntro", true)
@@ -304,17 +302,8 @@ DefaultPreference("MultiColoredCampaigns", true)
 DefaultPreference("ShowButtonPopups", true)
 
 wc1.preferences = preferences
-SetUseOpenGL(preferences.UseOpenGL)
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
-if preferences.OriginalScale and preferences.UseOpenGL then
-   for w,h in string.gmatch(preferences.OriginalScale, "(%d+)x(%d+)") do
-      SetZoomNoResize(tonumber(w),tonumber(h))
-   end
-else
-   SetZoomNoResize(false)
-end
 SetVideoFullScreen(preferences.VideoFullScreen)
-SetMaxOpenGLTexture(preferences.MaxOpenGLTexture)
 SetLocalPlayerName(preferences.PlayerName)
 SetFogOfWar(preferences.FogOfWar)
 UI.ButtonPanel.ShowCommandKey = preferences.ShowCommandKey

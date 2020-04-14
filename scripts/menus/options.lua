@@ -229,27 +229,6 @@ function BuildOptionsMenu()
     end)
   b:setMarked(Video.FullScreen)
 
-  checkTexture = menu:addCheckBox("Set Maximum OpenGL Texture to 256", offx + 16, offy + top + 15 * 2,
-    function()
-      if (checkTexture:isMarked()) then
-        preferences.MaxOpenGLTexture = 256
-      else
-        preferences.MaxOpenGLTexture = 0
-      end
-      SetMaxOpenGLTexture(preferences.MaxOpenGLTexture)
-      SavePreferences()
-    end)
-  if (preferences.MaxOpenGLTexture == 128) then checkTexture:setMarked(true) end
-
-  checkOpenGL = menu:addCheckBox("OpenGL / OpenGL ES 1.1 (restart required)", offx + 16, offy + top + 15 * 3,
-    function()
---TODO: Add function for immediately change state of OpenGL
-      preferences.UseOpenGL = checkOpenGL:isMarked()
-      SavePreferences()
---      menu:stop(1) --TODO: Enable if we have an OpenGL function
-    end)
-  checkOpenGL:setMarked(preferences.UseOpenGL)
-
   b = menu:addCheckBox("Allow Training Queue", offx + 16, offy + top + 15 * 4,
     function()
 	  preferences.TrainingQueue = not preferences.TrainingQueue

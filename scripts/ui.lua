@@ -451,11 +451,7 @@ end
 PopupFont = nil
 PopupFont = "small"
 local GetRGBA = function(r, g, b, a)
-   if (wc1.preferences.UseOpenGL == false) then
-      return b + g*0x100 + r*0x10000 + a*0x1000000
-   else
-      return r + g*0x100 + b*0x10000 + a*0x1000000
-   end
+   return b + g*0x100 + r*0x10000 + a*0x1000000
 end
 local PopupBackgroundColor = GetRGBA(0,32,96, 208)
 local PopupBorderColor = GetRGBA(192,192,255, 160)
