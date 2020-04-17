@@ -399,7 +399,7 @@ UI.StatusLine.Width = Video.Width - 16 - 2 - 176
 UI.StatusLine.Font = Fonts["game"]
 
 UI.MenuButton.X = 6
-UI.MenuButton.Y = Video.Height - 24
+UI.MenuButton.Y = Video.Height - math.floor(32 * (Video.Height - UI.Minimap.H) / (480 - UI.Minimap.H))
 UI.MenuButton.Text = "            "
 UI.MenuButton.Style = FindButtonStyle("main")
 UI.MenuButton:SetCallback(
