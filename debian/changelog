@@ -1,3 +1,24 @@
+war1gus (2.4.3-1) eoan; urgency=medium
+
+  * Allow actually disabling OpenGL, before we would always revert back to OpenGL
+  * Do not show lifebar for not owned units
+  * Fix knights and wolves upgrades speedup
+  * Build war1gus launcher on macOS
+  * Make sure we play the intro on Windows
+  * Use midi files if timidity is not available to convert them to OGG
+  * Various video conversion improvements on Linux and Windows to work on more platforms
+  * Implement missing cheat codes
+  * Show time to live for summoned units in the Mana bar, as in the original game
+  * Make unholy/holy vision spells last longer
+  * Update the damage formula to be closer to the original
+  * Add decorations for unholy armor and invisibility, similar to the original
+  * Make UI panels and lifebars  much closer to the original game
+  * Fix extraction of gold mine contents
+  * Fix loading the correct race UI again when switching maps
+  * Make briefing look much more like the original game
+
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Sat, 25 Apr 2020 10:32:50 +0200
+
 war1gus (2.4.2.1-1) xenial; urgency=medium
 
   * Replace ffmpeg2theora usage with plain ffmpeg usage
