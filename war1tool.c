@@ -40,10 +40,10 @@
 
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
 #ifndef _MSC_VER
 #define __USE_XOPEN_EXTENDED 1 // to get strdup
 #endif
+#include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -62,6 +62,10 @@
 #include <ctype.h>
 #include <png.h>
 #include <zlib.h>
+
+#include <limits.h>
+
+#include <stratagus-gameutils.h>
 
 #include "xmi2mid.h"
 #include "scale2x.h"
@@ -3847,6 +3851,50 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	return 0;
 }
 
+void copyArchive(const char* partialPath) {
+	FILE *source, *target;
+	char ch;
+
+	char srcname[8192] = {'\0'};
+	char tgtname[8192] = {'\0'};
+
+	strcpy(tgtname, Dir);
+	strcat(tgtname, SLASH);
+	strcat(tgtname, partialPath);
+
+	strcpy(srcname, ArchiveDir);
+	strcat(srcname, SLASH);
+	strcat(srcname, partialPath);
+
+	if (!strcmp(realpath(srcname, NULL), realpath(tgtname, NULL))) {
+		return;
+	}
+
+	source = fopen(srcname, "r");
+	if (source == NULL) {
+		fclose(target);
+		fprintf(stderr, "Cannot copy %s...\n", srcname);
+		exit(-1);
+	}
+
+	mkdir_p(parentdir(strdup(tgtname)));
+	target = fopen(tgtname, "wb");
+	if (target == NULL) {
+		fprintf(stderr, "Cannot open %s for writing.\n", tgtname);
+		exit(-1);
+	}
+
+	char buf[4096];
+	int c = 0;
+	while (c = fread(buf, sizeof(char), 4096, source)) {
+		fwrite(buf, sizeof(char), c, target);
+	}
+	printf("copied %s->%s\n", srcname, tgtname);
+
+	fclose(source);
+	fclose(target);
+}
+
 void CopyDirectories(char** directories) {
 	int i, ret;
 	char* dir;
@@ -4031,19 +4079,20 @@ int main(int argc, char** argv)
 					CloseArchive();
 				}
 				OpenArchive(buf, Todo[u].Arg1);
+				copyArchive(Todo[u].File);
 				break;
 			case FLC:
-				if (video) {
-					if (upper) {
-						int i = 0;
-						char filename[1024];
-						strcpy(filename, Todo[u].File);
-						Todo[u].File = filename;
-						while (Todo[u].File[i]) {
-							Todo[u].File[i] = toupper(Todo[u].File[i]);
-							++i;
-						}
+				if (upper) {
+					int i = 0;
+					char filename[1024];
+					strcpy(filename, Todo[u].File);
+					Todo[u].File = filename;
+					while (Todo[u].File[i]) {
+						Todo[u].File[i] = toupper(Todo[u].File[i]);
+						++i;
 					}
+				}
+				if (video) {
 					sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
 #ifdef WIN32
 					// On Windows, manual conversion doesn't seem to work right
@@ -4052,6 +4101,7 @@ int main(int argc, char** argv)
 					ConvertFLC_Manual(buf, Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
 #endif
 				}
+				copyArchive(Todo[u].File);
 				break;
 			case T:
 				ConvertTileset(Todo[u].File, Todo[u].Arg1);
@@ -4109,6 +4159,11 @@ int main(int argc, char** argv)
 	sprintf(versionfilepath, "%s/extracted", Dir);
 	FILE *versionfile = fopen(versionfilepath, "w");
 	fprintf(versionfile, "%s", VERSION);
+	fclose(versionfile);
+
+	sprintf(versionfilepath, "%s/war1data", Dir);
+	versionfile = fopen(versionfilepath, "w");
+	fprintf(versionfile, "marker file");
 	fclose(versionfile);
 
 	printf("War1gus data setup is now complete\n");
