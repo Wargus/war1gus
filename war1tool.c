@@ -49,7 +49,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #ifdef _MSC_VER
-#define inline __inline
+// #define inline __inline
 #define strdup _strdup
 #define DEBUG _DEBUG
 #include <direct.h>
