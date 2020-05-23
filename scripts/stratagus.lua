@@ -118,6 +118,7 @@ SetRevealAttacker(true)
 --SetRevelationType("buildings-only")
 SetRevelationType("all-units")
 
+SetFoVShadowCasting(true)
 -------------------------------------------------------------------------------
 
 --  If you prefer fighters are attacking by right clicking empty space
