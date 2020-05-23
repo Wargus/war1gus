@@ -235,7 +235,7 @@ DefineTileset("name", "dungeon_campaign",
     "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 500
     "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 600
     "mixed", {"unused", "unused", {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}, -- 700
-    "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
+    "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable", "opaque",
     {0x0b,   0,  0x15,   0,  0x1f},						-- 800
     {0x0c,   0,  0x16,   0,  0x20},						-- 810
     {   0,   0,     0,   0,     0},						-- 820
@@ -252,7 +252,7 @@ DefineTileset("name", "dungeon_campaign",
     {},						-- 8D0
     {},									-- 8E0
     {}},								-- 8F0
-    "mixed", { "orc-wall", "dark-grass", "land", "wall", "unpassable",
+    "mixed", { "orc-wall", "dark-grass", "land", "wall", "unpassable", "opaque",
     {0x28,   0,  0x29,   0,  0x2a},						-- 900
     {0x10,   0,  0x1a,   0,  0x24},						-- 910
     {   0,   0,     0,   0,     0},						-- 920
