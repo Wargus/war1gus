@@ -118,7 +118,13 @@ SetRevealAttacker(true)
 --SetRevelationType("buildings-only")
 SetRevelationType("all-units")
 
-SetFoVShadowCasting(true)
+-- Edit this to enable/disable shadow casting field of view for units
+SetFieldOfViewType("shadow-casting")
+--SetFieldOfViewType("simple-radial")
+
+-- Make these tiles opaque. Possible tile-types "forest", "rock" and "wall"
+SetOpaqueFor("forest", "wall")
+
 -------------------------------------------------------------------------------
 
 --  If you prefer fighters are attacking by right clicking empty space
