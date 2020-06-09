@@ -399,7 +399,7 @@ UI.StatusLine.Width = Video.Width - 16 - 2 - 176
 UI.StatusLine.Font = Fonts["game"]
 
 UI.MenuButton.X = 6
-UI.MenuButton.Y = Video.Height - 24
+UI.MenuButton.Y = Video.Height - math.floor(32 * (Video.Height - UI.Minimap.H) / (480 - UI.Minimap.H))
 UI.MenuButton.Text = "            "
 UI.MenuButton.Style = FindButtonStyle("main")
 UI.MenuButton:SetCallback(
@@ -451,11 +451,7 @@ end
 PopupFont = nil
 PopupFont = "small"
 local GetRGBA = function(r, g, b, a)
-   if (wc1.preferences.UseOpenGL == false) then
-      return b + g*0x100 + r*0x10000 + a*0x1000000
-   else
-      return r + g*0x100 + b*0x10000 + a*0x1000000
-   end
+   return b + g*0x100 + r*0x10000 + a*0x1000000
 end
 local PopupBackgroundColor = GetRGBA(0,32,96, 208)
 local PopupBorderColor = GetRGBA(192,192,255, 160)
