@@ -1,3 +1,9 @@
+war1gus (3.0.0-1) UNRELEASED; urgency=medium
+
+  * Migrate to SDL2
+
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Tue, 09 Jun 2020 07:31:07 +0200
+
 war1gus (2.4.3-1) eoan; urgency=medium
 
   * Allow actually disabling OpenGL, before we would always revert back to OpenGL
