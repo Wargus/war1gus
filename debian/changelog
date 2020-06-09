@@ -1,6 +1,8 @@
 war1gus (3.0.0-1) UNRELEASED; urgency=medium
 
   * Migrate to SDL2
+  * Fix menu button click target when stretched in higher resolutions
+  * Fix human work complete sound
 
  -- Tim Felgentreff <timfelgentreff@gmail.com>  Tue, 09 Jun 2020 07:31:07 +0200
 
