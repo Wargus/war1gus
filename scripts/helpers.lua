@@ -181,6 +181,13 @@ function DefineBuildingFromSpec(building)
             end
         end
 
+        if     unitType.Name == "Town hall" 
+            or unitType.Name == "Stormwind keep" 
+            or unitType.Name == "Blackrock spire" 
+        then
+            unitType.MainFacility = true;
+        end
+
         DefineUnitType("unit-" .. fullname, unitType)
         table.insert(wc1_buildings[race], "unit-" .. fullname)
 

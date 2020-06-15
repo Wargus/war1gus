@@ -113,6 +113,11 @@ SetForestRegeneration(0)
 --  Edit this to enable/disable the reveal of the attacker.
 SetRevealAttacker(true)
 
+--  Edit this to set the type of revelation when a player lost their last main facility
+--SetRevelationType("no-revelation")
+--SetRevelationType("buildings-only")
+SetRevelationType("all-units")
+
 -------------------------------------------------------------------------------
 
 --  If you prefer fighters are attacking by right clicking empty space
