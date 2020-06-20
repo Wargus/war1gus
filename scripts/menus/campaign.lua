@@ -7,8 +7,6 @@ function Briefing(title, objs, bg, mapbg, text, voices)
 
   local voice = 0
   local channel = -1
-  local head1 = nil
-  local head2 = nil
 
   local bg1 = CGraphic:New(bg)
   bg1:Load()
@@ -24,41 +22,143 @@ function Briefing(title, objs, bg, mapbg, text, voices)
   bg:setNormalImage(bg1)
   menu:add(bg, 0, 0)
 
+  local heads = {{},{}}
+  local head1Time = 5
+  local head2Time = 5
+  local head1 = nil
+  local head2 = nil
+  local head1Clip = Container()
+  head1Clip:setOpaque(false)
+  head1Clip:setBorderSize(0)
+  local head2Clip = Container()
+  head2Clip:setOpaque(false)
+  head2Clip:setBorderSize(0)
+
   if (currentRace == "human") then
     PlayMusic(HumanBriefingMusic)
     LoadUI("human", Video.Width, Video.Height)
 
-    local g = CGraphic:New("graphics/428.png", 240 / 5, 48) -- TODO: animate
+    local g = CGraphic:New("graphics/428.png", 240, 48)
+    local headW = math.ceil(240 * (Video.Width / 640))
+    local headH = math.ceil(48 * Video.Height / 400)
     g:Load()
-    g:Resize(240 * (Video.Width / 640), 48 * Video.Height / 400)
+    g:Resize(headW, headH)
     head1 = ImageWidget(g)
+    head1Clip:setWidth(headW / 5)
+    head1Clip:setHeight(headH)
+    head1Clip:add(head1, 0, 0)
 
-    g = CGraphic:New("graphics/429.png", 134, 84) -- TODO: animate
+    menu:add(head1Clip, 166 * Video.Width / 640, 74 * Video.Height / 400)
+
+    -- animation: 5 frames horizontally
+    for i=0,4,1 do
+       heads[1][#heads[1] + 1] = { -(i * headW / 5), 0 }
+    end
+    for i=0,20,1 do
+       heads[1][#heads[1] + 1] = { 0, 0 }
+    end
+    head1Time = 10
+
+    g = CGraphic:New("graphics/429.png", 134, 84 * 21)
+    headW = math.ceil(134 * Video.Width / 640)
+    headH = math.ceil(84 * Video.Height / 400) + 1
     g:Load()
-    g:Resize(134 * Video.Width / 640, 84 * 21 * Video.Height / 400)
+    g:Resize(headW, headH * 21)
     head2 = ImageWidget(g)
+    head2Clip:setWidth(headW)
+    head2Clip:setHeight(headH)
+    head2Clip:add(head2, 0, 0)
 
-    menu:add(head1, 166 * Video.Width / 640, 74 * Video.Height / 400)
-    menu:add(head2, 414 * Video.Width / 640, 59 * Video.Height / 400)
+    -- animation: 21 frames vertically
+    for i=0,20,1 do
+       heads[2][#heads[2] + 1] = { 0, -i * headH }
+    end
+    head2Time = 7
+
+    menu:add(head2Clip, 414 * Video.Width / 640, 59 * Video.Height / 400)
   elseif (currentRace == "orc") then
     PlayMusic(OrcBriefingMusic)
     LoadUI("orc", Video.Width, Video.Height)
 
-    local g = CGraphic:New("graphics/426.png", 560 / 5, 134) -- TODO: animate
+    local g = CGraphic:New("graphics/426.png", 560, 134)
+    local headW = 560 * Video.Width / 640
+    local headH = 134 * Video.Height / 400
     g:Load()
-    g:Resize(560 * Video.Width / 640, 134 * Video.Height / 400)
+    g:Resize(headW, headH)
     head1 = ImageWidget(g)
-    
-    g = CGraphic:New("graphics/427.png", 690 / 5, 116) -- TODO: animate
-    g:Load()
-    g:Resize(690 * Video.Width / 640, 116 * Video.Height / 400)
-    head2 = ImageWidget(g)
+    head1Clip:setWidth(headW / 5)
+    head1Clip:setHeight(headH)
+    head1Clip:add(head1, 0, 0)
 
-    menu:add(head1, 36 * Video.Width / 640, 135 * Video.Height / 400)
-    menu:add(head2, 404 * Video.Width / 640, 105 * Video.Height / 400)
+    menu:add(head1Clip, 36 * Video.Width / 640, 135 * Video.Height / 400)
+
+    -- animation: 5 frames horizontally, but also back
+    for i=0,4,1 do
+       heads[1][#heads[1] + 1] = { -(i * headW / 5), 0 }
+    end
+    for i=4,0,-1 do
+       heads[1][#heads[1] + 1] = { -(i * headW / 5), 0 }
+    end
+    for i=0,20,1 do
+       heads[1][#heads[1] + 1] = { 0, 0 }
+    end
+    head1Time = 10
+
+    g = CGraphic:New("graphics/427.png", 690, 116)
+    local headW = 690 * Video.Width / 640
+    local headH = 116 * Video.Height / 400
+    g:Load()
+    g:Resize(headW, headH)
+    head2 = ImageWidget(g)
+    head2Clip:setWidth(headW / 5)
+    head2Clip:setHeight(headH)
+    head2Clip:add(head2, 0, 0)
+
+    -- animation: 5 frames horizontally, but also back
+    for i=0,4,1 do
+       heads[2][#heads[2] + 1] = { -(i * headW / 5), 0 }
+    end
+    for i=4,0,-1 do
+       heads[2][#heads[2] + 1] = { -(i * headW / 5), 0 }
+    end
+    for i=0,10,1 do
+       heads[2][#heads[2] + 1] = { 0, 0 }
+    end
+    head2Time = 7
+
+    menu:add(head2Clip, 404 * Video.Width / 640, 105 * Video.Height / 400)
   else
     StopMusic()
   end
+
+  local head1Frame = 1
+  local head2Frame = 1
+  local frame1Time = 0
+  local frame2Time = 0
+  local function animateHeads()
+     frame1Time = frame1Time + 1
+     frame2Time = frame2Time + 1
+
+     if frame1Time % head1Time == 0 then
+        head1Clip:remove(head1)
+        head1Clip:add(head1, heads[1][head1Frame][1], heads[1][head1Frame][2])
+        head1Frame = head1Frame + 1
+        if head1Frame > #heads[1] then
+           head1Frame = 1
+        end
+     end
+     if frame2Time % head2Time == 0 then
+        head2Clip:remove(head2)
+        head2Clip:add(head2, heads[2][head2Frame][1], heads[2][head2Frame][2])
+        head2Frame = head2Frame + 1
+        if head2Frame > #heads[2] then
+           head2Frame = 1
+        end
+     end
+  end
+
+  listener = LuaActionListener(animateHeads)
+  menu:addLogicCallback(listener)
 
   Objectives = objs
 
