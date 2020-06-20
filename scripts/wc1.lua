@@ -48,7 +48,7 @@ DefineRaceNames(
 currentRace = "human"
 
 -- overridden by generated wc1-config.lua
-war1gus.music_extension = ".ogg"
+war1gus.music_extension = ".mid"
 
 -- campaign detection
 war1gus.InCampaign = true
