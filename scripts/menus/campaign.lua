@@ -30,12 +30,12 @@ function Briefing(title, objs, bg, mapbg, text, voices)
 
     local g = CGraphic:New("graphics/428.png", 240 / 5, 48) -- TODO: animate
     g:Load()
-    g:Resize((240 / 5) * (Video.Width / 640), 48 * Video.Height / 400)
+    g:Resize(240 * (Video.Width / 640), 48 * Video.Height / 400)
     head1 = ImageWidget(g)
 
     g = CGraphic:New("graphics/429.png", 134, 84) -- TODO: animate
     g:Load()
-    g:Resize(134 * Video.Width / 640, 84 * Video.Height / 400)
+    g:Resize(134 * Video.Width / 640, 84 * 21 * Video.Height / 400)
     head2 = ImageWidget(g)
 
     menu:add(head1, 166 * Video.Width / 640, 74 * Video.Height / 400)
@@ -46,12 +46,12 @@ function Briefing(title, objs, bg, mapbg, text, voices)
 
     local g = CGraphic:New("graphics/426.png", 560 / 5, 134) -- TODO: animate
     g:Load()
-    g:Resize(560 / 5 * Video.Width / 640, 134 * Video.Height / 400)
+    g:Resize(560 * Video.Width / 640, 134 * Video.Height / 400)
     head1 = ImageWidget(g)
     
     g = CGraphic:New("graphics/427.png", 690 / 5, 116) -- TODO: animate
     g:Load()
-    g:Resize(690 / 5 * Video.Width / 640, 116 * Video.Height / 400)
+    g:Resize(690 * Video.Width / 640, 116 * Video.Height / 400)
     head2 = ImageWidget(g)
 
     menu:add(head1, 36 * Video.Width / 640, 135 * Video.Height / 400)
