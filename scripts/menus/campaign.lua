@@ -144,7 +144,7 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
   end
 
   local t = LoadBuffer(text)
-  local sw = ScrollingWidget(Video.Width, 0.6 * Video.Height)
+  local sw = ScrollingWidget(640, 0.6 * 480)
   sw:setBackgroundColor(Color(0,0,0,0))
   sw:setSpeed(0.38)
 
@@ -153,9 +153,9 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
   l:setFont(Fonts["large"])
   l:setAlignment(MultiLineLabel.CENTER)
   l:setVerticalAlignment(MultiLineLabel.BOTTOM)
-  l:setLineWidth(0.7 * Video.Width)
+  l:setLineWidth(0.7 * 640)
   l:adjustSize()
-  l:setHeight(0.9 * Video.Height)
+  l:setHeight(0.9 * 480)
   sw:add(l, 0, 0)
   menu:add(sw, 0.15 * Video.Width, 0.2 * Video.Height)
 
