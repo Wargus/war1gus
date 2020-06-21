@@ -2,8 +2,8 @@
 
 function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, pauseFrameCnt, speedScale, menu)
    local g = CGraphic:New(filename)
-   local headW = w / framecntX * (Video.Width / 640)
-   local headH = h / framecntY * (Video.Height / 400)
+   local headW = w / framecntX * (Video.Width / 640) + 1
+   local headH = h / framecntY * (Video.Height / 400) + 1
    g:Load()
    g:Resize(headW * framecntX, headH * framecntY)
    local head = ImageWidget(g)
