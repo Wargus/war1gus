@@ -1,6 +1,70 @@
 --      (c) Copyright 2010      by Pali Rohár
 
-function Briefing(title, objs, bg, mapbg, text, voices)
+function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, pauseFrameCnt, speedScale, menu)
+   local g = CGraphic:New(filename)
+   local headW = w / framecntX * (Video.Width / 640)
+   local headH = h / framecntY * (Video.Height / 400)
+   g:Load()
+   g:Resize(headW * framecntX, headH * framecntY)
+   local head = ImageWidget(g)
+   local headClip = Container()
+   headClip:setOpaque(false)
+   headClip:setBorderSize(0)
+   headClip:setWidth(headW)
+   headClip:setHeight(headH)
+   headClip:add(head, 0, 0)
+   menu:add(headClip, x * Video.Width / 640, y * Video.Height / 400)
+
+   local animTable = {}
+
+   if framecntX > 1 then
+      -- animation: frames horizontally
+      for i=0,framecntX-1,1 do
+         for j=0,speedScale,1 do
+            animTable[#animTable + 1] = { -math.ceil(i * headW), 0 }
+         end
+      end
+      if backwards then
+         for i=framecntX-1,0,-1 do
+            for j=0,speedScale,1 do
+               animTable[#animTable + 1] = { -math.ceil(i * headW), 0 }
+            end
+         end
+      end
+   else
+      -- animation: frames vertically
+      for i=0,framecntY-1,1 do
+         for j=0,speedScale,1 do
+            animTable[#animTable + 1] = { 0, -math.ceil(i * headH) }
+         end
+      end
+      if backwards then
+         for i=framecntY-1,0,-1 do
+            for j=0,speedScale,1 do
+               animTable[#animTable + 1] = { 0, -math.ceil(i * headH) }
+            end
+         end
+      end
+   end
+
+   for i=0,pauseFrameCnt,1 do
+      animTable[#animTable + 1] = { 0, 0 }
+   end
+
+  local frame = 1
+  local function animationCb()
+     headClip:remove(head)
+     headClip:add(head, animTable[frame][1], animTable[frame][2])
+     frame = frame + 1
+     if frame > #animTable then
+        frame = 1
+     end
+  end
+
+  return animationCb
+end
+
+function Briefing(title, objs, bgImg, mapbg, text, voices)
   SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
 
   local menu = WarMenu()
@@ -8,7 +72,7 @@ function Briefing(title, objs, bg, mapbg, text, voices)
   local voice = 0
   local channel = -1
 
-  local bg1 = CGraphic:New(bg)
+  local bg1 = CGraphic:New(bgImg)
   bg1:Load()
   bg1:Resize(Video.Width, Video.Height)
   local bg2 = nil
@@ -22,137 +86,46 @@ function Briefing(title, objs, bg, mapbg, text, voices)
   bg:setNormalImage(bg1)
   menu:add(bg, 0, 0)
 
-  local heads = {{},{}}
-  local head1Time = 5
-  local head2Time = 5
-  local head1 = nil
-  local head2 = nil
-  local head1Clip = Container()
-  head1Clip:setOpaque(false)
-  head1Clip:setBorderSize(0)
-  local head2Clip = Container()
-  head2Clip:setOpaque(false)
-  head2Clip:setBorderSize(0)
+  local animations = {}
 
   if (currentRace == "human") then
     PlayMusic(HumanBriefingMusic)
     LoadUI("human", Video.Width, Video.Height)
 
-    local g = CGraphic:New("graphics/428.png", 240, 48)
-    local headW = math.ceil(240 * (Video.Width / 640))
-    local headH = math.ceil(48 * Video.Height / 400)
-    g:Load()
-    g:Resize(headW, headH)
-    head1 = ImageWidget(g)
-    head1Clip:setWidth(headW / 5)
-    head1Clip:setHeight(headH)
-    head1Clip:add(head1, 0, 0)
+    animations[1] = SetupAnimation("graphics/428.png", 240, 48, 166, 74, 5, 1, false, 20, 2, menu)
+    animations[2] = SetupAnimation("graphics/429.png", 134, 84 * 21, 414, 59, 1, 21, false, 0, 2, menu)
+    animations[3] = SetupAnimation("graphics/430.png", 48, 1008, 42, 36, 1, 21, true, 0, 0, menu)
+    animations[4] = SetupAnimation("graphics/431.png", 40, 924, 550, 38, 1, 21, true, 0, 0, menu)
 
-    menu:add(head1Clip, 166 * Video.Width / 640, 74 * Video.Height / 400)
-
-    -- animation: 5 frames horizontally
-    for i=0,4,1 do
-       heads[1][#heads[1] + 1] = { -(i * headW / 5), 0 }
+    -- color cycle the shadows
+    local coloridx = 1
+    local colors = {{48, 56, 56}, {44, 48, 48}, {36, 48, 44}, {52, 64, 64}, {56, 68, 64}, {68, 80, 76}, {72, 84, 80}}
+    local function animateFlicker()
+       bg1:SetPaletteColor(255, colors[coloridx][1], colors[coloridx][2], colors[coloridx][3])
+       coloridx = coloridx + 1
+       if coloridx > #colors then
+          coloridx = 1
+       end
     end
-    for i=0,20,1 do
-       heads[1][#heads[1] + 1] = { 0, 0 }
-    end
-    head1Time = 10
+    animations[5] = animateFlicker
 
-    g = CGraphic:New("graphics/429.png", 134, 84 * 21)
-    headW = math.ceil(134 * Video.Width / 640)
-    headH = math.ceil(84 * Video.Height / 400) + 1
-    g:Load()
-    g:Resize(headW, headH * 21)
-    head2 = ImageWidget(g)
-    head2Clip:setWidth(headW)
-    head2Clip:setHeight(headH)
-    head2Clip:add(head2, 0, 0)
-
-    -- animation: 21 frames vertically
-    for i=0,20,1 do
-       heads[2][#heads[2] + 1] = { 0, -i * headH }
-    end
-    head2Time = 7
-
-    menu:add(head2Clip, 414 * Video.Width / 640, 59 * Video.Height / 400)
   elseif (currentRace == "orc") then
     PlayMusic(OrcBriefingMusic)
     LoadUI("orc", Video.Width, Video.Height)
 
-    local g = CGraphic:New("graphics/426.png", 560, 134)
-    local headW = 560 * Video.Width / 640
-    local headH = 134 * Video.Height / 400
-    g:Load()
-    g:Resize(headW, headH)
-    head1 = ImageWidget(g)
-    head1Clip:setWidth(headW / 5)
-    head1Clip:setHeight(headH)
-    head1Clip:add(head1, 0, 0)
-
-    menu:add(head1Clip, 36 * Video.Width / 640, 135 * Video.Height / 400)
-
-    -- animation: 5 frames horizontally, but also back
-    for i=0,4,1 do
-       heads[1][#heads[1] + 1] = { -(i * headW / 5), 0 }
-    end
-    for i=4,0,-1 do
-       heads[1][#heads[1] + 1] = { -(i * headW / 5), 0 }
-    end
-    for i=0,20,1 do
-       heads[1][#heads[1] + 1] = { 0, 0 }
-    end
-    head1Time = 10
-
-    g = CGraphic:New("graphics/427.png", 690, 116)
-    local headW = 690 * Video.Width / 640
-    local headH = 116 * Video.Height / 400
-    g:Load()
-    g:Resize(headW, headH)
-    head2 = ImageWidget(g)
-    head2Clip:setWidth(headW / 5)
-    head2Clip:setHeight(headH)
-    head2Clip:add(head2, 0, 0)
-
-    -- animation: 5 frames horizontally, but also back
-    for i=0,4,1 do
-       heads[2][#heads[2] + 1] = { -(i * headW / 5), 0 }
-    end
-    for i=4,0,-1 do
-       heads[2][#heads[2] + 1] = { -(i * headW / 5), 0 }
-    end
-    for i=0,10,1 do
-       heads[2][#heads[2] + 1] = { 0, 0 }
-    end
-    head2Time = 7
-
-    menu:add(head2Clip, 404 * Video.Width / 640, 105 * Video.Height / 400)
+    animations[1] = SetupAnimation("graphics/426.png", 560, 134, 36, 135, 5, 1, true, 20, 2, menu)
+    animations[2] = SetupAnimation("graphics/427.png", 690, 116, 404, 105, 5, 1, true, 0, 2, menu)
+    animations[3] = SetupAnimation("graphics/425.png", 100, 2046, 290, 140, 1, 31, false, 0, 0, menu)
   else
     StopMusic()
   end
 
-  local head1Frame = 1
-  local head2Frame = 1
-  local frame1Time = 0
-  local frame2Time = 0
+  local frameTime = 0
   local function animateHeads()
-     frame1Time = frame1Time + 1
-     frame2Time = frame2Time + 1
-
-     if frame1Time % head1Time == 0 then
-        head1Clip:remove(head1)
-        head1Clip:add(head1, heads[1][head1Frame][1], heads[1][head1Frame][2])
-        head1Frame = head1Frame + 1
-        if head1Frame > #heads[1] then
-           head1Frame = 1
-        end
-     end
-     if frame2Time % head2Time == 0 then
-        head2Clip:remove(head2)
-        head2Clip:add(head2, heads[2][head2Frame][1], heads[2][head2Frame][2])
-        head2Frame = head2Frame + 1
-        if head2Frame > #heads[2] then
-           head2Frame = 1
+     frameTime = frameTime + 1
+     if frameTime % 3 == 0 then
+        for i=1,#animations,1 do
+           animations[i]()
         end
      end
   end
