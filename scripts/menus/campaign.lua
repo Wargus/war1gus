@@ -2,8 +2,8 @@
 
 function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, pauseFrameCnt, speedScale, menu)
    local g = CGraphic:New(filename)
-   local headW = w / framecntX * (Video.Width / 640) + 1
-   local headH = h / framecntY * (Video.Height / 400) + 1
+   local headW = math.ceil(w / framecntX * (Video.Width / 640) + 0.5)
+   local headH = math.ceil(h / framecntY * (Video.Height / 400) + 0.5)
    g:Load()
    g:Resize(headW * framecntX, headH * framecntY)
    local head = ImageWidget(g)
@@ -21,13 +21,13 @@ function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, p
       -- animation: frames horizontally
       for i=0,framecntX-1,1 do
          for j=0,speedScale,1 do
-            animTable[#animTable + 1] = { -math.ceil(i * headW), 0 }
+            animTable[#animTable + 1] = { -i * headW, 0 }
          end
       end
       if backwards then
          for i=framecntX-1,0,-1 do
             for j=0,speedScale,1 do
-               animTable[#animTable + 1] = { -math.ceil(i * headW), 0 }
+               animTable[#animTable + 1] = { -i * headW, 0 }
             end
          end
       end
@@ -35,13 +35,13 @@ function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, p
       -- animation: frames vertically
       for i=0,framecntY-1,1 do
          for j=0,speedScale,1 do
-            animTable[#animTable + 1] = { 0, -math.ceil(i * headH) }
+            animTable[#animTable + 1] = { 0, -i * headH }
          end
       end
       if backwards then
          for i=framecntY-1,0,-1 do
             for j=0,speedScale,1 do
-               animTable[#animTable + 1] = { 0, -math.ceil(i * headH) }
+               animTable[#animTable + 1] = { 0, -i * headH }
             end
          end
       end
@@ -94,8 +94,8 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
 
     animations[1] = SetupAnimation("graphics/428.png", 240, 48, 166, 74, 5, 1, false, 20, 2, menu)
     animations[2] = SetupAnimation("graphics/429.png", 134, 84 * 21, 414, 59, 1, 21, false, 0, 2, menu)
-    animations[3] = SetupAnimation("graphics/430.png", 48, 1008, 42, 36, 1, 21, true, 0, 0, menu)
-    animations[4] = SetupAnimation("graphics/431.png", 40, 924, 550, 38, 1, 21, true, 0, 0, menu)
+    animations[3] = SetupAnimation("graphics/430.png", 48, 1008, 42, 35, 1, 21, true, 0, 0, menu)
+    animations[4] = SetupAnimation("graphics/431.png", 40, 924, 550, 32, 1, 21, true, 0, 0, menu)
 
     -- color cycle the shadows
     local coloridx = 1
@@ -245,6 +245,20 @@ function CreateEndingStep(bg, text, voice, video)
 
           if (video ~= nil) then
              PlayMovie(video)
+          end
+
+          if currentRace == "orc" then
+             -- there's animations here
+             local animation = SetupAnimation("graphics/460.png", 306, 1302, 178, 0, 1, 31, true, 0, 2, menu)
+             local frameTime = 0
+             local function animateHeads()
+                frameTime = frameTime + 1
+                if frameTime % 3 == 0 then
+                   animation()
+                end
+             end
+             listener = LuaActionListener(animateHeads)
+             menu:addLogicCallback(listener)
           end
           
 	  local t = LoadBuffer(text)
