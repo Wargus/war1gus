@@ -255,9 +255,7 @@ struct midi_token_list_t : std::vector<midi_token_t>
     }
 };
 
-extern "C" {
-
-unsigned char* TranscodeXmiToMid(const unsigned char* pXmiData,
+unsigned char* TranscodeXmiToMid(unsigned char* pXmiData,
                                  size_t iXmiLength, size_t* pMidLength)
 {
     MemoryBuffer bufInput(pXmiData, iXmiLength);
@@ -411,8 +409,6 @@ unsigned char* TranscodeXmiToMid(const unsigned char* pXmiData,
     bufOutput.writeBigEndianUInt32(iLength);
 
     return bufOutput.takeData(pMidLength);
-}
-
 }
 
 //#endif

@@ -33,7 +33,8 @@
 #define GAME_CD_FILE_PATTERNS "DATA.WAR", "data.war"
 #define GAME "war1gus"
 #define EXTRACTOR_TOOL "war1tool"
-#define EXTRACTOR_ARGS "-v -m"
+#define EXTRACTOR_ARGS "-v"
+#define EXTRACTION_FILES "war1data"
 #define CHECK_EXTRACTED_VERSION 1
 #define __war1gus_contrib__ "campaigns", "campaigns", \
 			    "contrib", "contrib", \
@@ -59,4 +60,6 @@ const char* SRC_PATH() { return __FILE__; }
 #define TITLE_PNG "%s/graphics/ui/title_screen.png"
 #endif
 
+#include <stdio.h>
+#include <string.h>
 #include <stratagus-game-launcher.h>

@@ -24,9 +24,9 @@ file(GLOB war1tool_SRCS
   "campaigns/**/*.sms"
   "campaigns/**/*.lua"
   "maps/*.sms"
-  "war1tool.c"
+  "war1tool.cpp"
   "xmi2mid.cpp"
-  "scale2x.c"
+  "scale2x.cpp"
   "README"
   )
 
