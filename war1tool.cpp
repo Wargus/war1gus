@@ -38,18 +38,28 @@
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2015 by The Stratagus Project"
 
-#include <assert.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdlib.h>
 #ifndef _MSC_VER
 #define __USE_XOPEN_EXTENDED 1 // to get strdup
 #endif
+
+#include <assert.h>
+#include <stdio.h>
+#include <limits.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
+#include <stdint.h>
+#include <ctype.h>
+#include <png.h>
+#include <zlib.h>
+
+#include <string>
+
 #ifdef _MSC_VER
 // #define inline __inline
+#define realpath(N,R) _fullpath((R),(N),_MAX_PATH)
 #define strdup _strdup
 #define DEBUG _DEBUG
 #include <direct.h>
@@ -59,11 +69,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #endif
-#include <ctype.h>
-#include <png.h>
-#include <zlib.h>
 
-#include <limits.h>
 
 #include <stratagus-gameutils.h>
 
@@ -1100,8 +1106,8 @@ int OpenArchive(const char* file, int type)
 		printf("Can't open %s\n", file);
 		exit(-1);
 	}
-	if (fstat(f, &stat_buf)) {
-		printf("Can't fstat %s\n", file);
+	if (stat(file, &stat_buf)) {
+		printf("Can't stat %s\n", file);
 		exit(-1);
 	}
 
@@ -1778,8 +1784,8 @@ void ConvertFLC_Manual(const char* file, const char* flc, int keepStill, int iRe
 		printf("Can't open %s\n", file);
 		return;
 	}
-	if (fstat(f, &stat_buf)) {
-		printf("Can't fstat %s\n", file);
+	if (stat(file, &stat_buf)) {
+		printf("Can't stat %s\n", file);
 		exit(-1);
 	}
 
