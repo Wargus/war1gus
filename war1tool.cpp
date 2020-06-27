@@ -4059,10 +4059,10 @@ int main(int argc, char** argv)
 	printf("Please be patient, the data may take a couple of minutes to extract...\n");
 	fflush(stdout);
 
-	dirs[0] = "scripts";
-	dirs[1] = "contrib";
-	dirs[2] = "campaigns";
-	CopyDirectories(dirs);
+	// dirs[0] = "scripts";
+	// dirs[1] = "contrib";
+	// dirs[2] = "campaigns";
+	// CopyDirectories(dirs);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		printf("%s:\n", Todo[u].File);
