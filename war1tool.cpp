@@ -40,13 +40,13 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
 #ifndef _MSC_VER
 #define __USE_XOPEN_EXTENDED 1 // to get strdup
 #endif
-#include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #ifdef _MSC_VER
 // #define inline __inline
