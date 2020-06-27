@@ -61,7 +61,7 @@ function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, p
      end
   end
 
-  return animationCb
+  return {animationCb, headClip}
 end
 
 function Briefing(title, objs, bgImg, mapbg, text, voices)
@@ -97,17 +97,18 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
     animations[3] = SetupAnimation("graphics/430.png", 48, 1008, 42, 35, 1, 21, true, 0, 0, menu)
     animations[4] = SetupAnimation("graphics/431.png", 40, 924, 550, 32, 1, 21, true, 0, 0, menu)
 
-    -- color cycle the shadows
-    local coloridx = 1
-    local colors = {{48, 56, 56}, {44, 48, 48}, {36, 48, 44}, {52, 64, 64}, {56, 68, 64}, {68, 80, 76}, {72, 84, 80}}
-    local function animateFlicker()
-       bg1:SetPaletteColor(255, colors[coloridx][1], colors[coloridx][2], colors[coloridx][3])
-       coloridx = coloridx + 1
-       if coloridx > #colors then
-          coloridx = 1
-       end
-    end
-    animations[5] = animateFlicker
+    bg1:SetPaletteColor(255, 48, 56, 56)
+    -- -- color cycle the shadow pixels to give a sense of flickering light
+    -- local coloridx = 1
+    -- local colors = {{48, 56, 56}, {44, 48, 48}, {36, 48, 44}, {52, 64, 64}, {56, 68, 64}, {68, 80, 76}, {72, 84, 80}}
+    -- local function animateFlicker()
+    --    bg1:SetPaletteColor(255, colors[coloridx][1], colors[coloridx][2], colors[coloridx][3])
+    --    coloridx = coloridx + 1
+    --    if coloridx > #colors then
+    --       coloridx = 1
+    --    end
+    -- end
+    -- animations[5] = {animateFlicker, nil}
 
   elseif (currentRace == "orc") then
     PlayMusic(OrcBriefingMusic)
@@ -125,7 +126,7 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
      frameTime = frameTime + 1
      if frameTime % 3 == 0 then
         for i=1,#animations,1 do
-           animations[i]()
+           animations[i][1]()
         end
      end
   end
@@ -185,8 +186,11 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
   function action1()
      if bg2 ~= nil then
         bg:setNormalImage(bg2)
-        head1:setVisible(false)
-        head2:setVisible(false)
+        for i=1,#animations,1 do
+           if animations[i][2] then
+              animations[i][2]:setVisible(false)
+           end
+        end
         currentAction = action2
      else
         action2()
@@ -254,7 +258,7 @@ function CreateEndingStep(bg, text, voice, video)
              local function animateHeads()
                 frameTime = frameTime + 1
                 if frameTime % 3 == 0 then
-                   animation()
+                   animation[1]()
                 end
              end
              listener = LuaActionListener(animateHeads)
