@@ -211,7 +211,7 @@ char* Dir;
 typedef struct _control_ {
 	int				Type;		/// Entry type
 	int				Version;	/// Only in this version
-	char*			        File;		/// Save file
+	const char*		File;		/// Save file
 	int				Arg1;		/// Extra argument 1
 	int				Arg2;		/// Extra argument 2
 	int				Arg3;		/// Extra argument 3
@@ -1108,7 +1108,7 @@ int OpenArchive(const char* file, int type)
 	//
 	//  Read in the archive
 	//
-	buf = malloc(stat_buf.st_size);
+	buf = (unsigned char*)calloc(sizeof(unsigned char*), stat_buf.st_size);
 	if (!buf) {
 		printf("Can't malloc %ld\n", (long)stat_buf.st_size);
 		exit(-1);
@@ -1136,7 +1136,7 @@ int OpenArchive(const char* file, int type)
 	//
 	//  Read offsets.
 	//
-	op = malloc((entries + 1) * sizeof(unsigned char**));
+	op = (unsigned char**)calloc(sizeof(unsigned char**), entries + 1);
 	if (!op) {
 		printf("Can't malloc %d entries\n", entries);
 		exit(-1);
@@ -1177,7 +1177,7 @@ unsigned char* ExtractEntry(unsigned char* cp, int* lenp)
 		return NULL;
 	}
 
-	dp = dest = malloc(uncompressed_length);
+	dp = dest = (unsigned char*)calloc(sizeof(unsigned char*), uncompressed_length);
 	if (!dest) {
 		printf("Can't malloc %d\n", uncompressed_length);
 		exit(-1);
@@ -1318,7 +1318,7 @@ void ConvertFLC_SS2(flcfile *file, unsigned char* buf)
 	char type;
 	int packet;
 	int skiplines;
-	char pngbuf[1024];
+	char pngbuf[2048];
 
 	p = buf;
 	lines = FetchLE16(p);
@@ -1380,7 +1380,7 @@ void ConvertFLC_LC(flcfile *file, unsigned char* buf)
 	char type;
 	unsigned char packet;
 	int skiplines;
-	char pngbuf[1024];
+	char pngbuf[2048];
 
 	p = buf;
 	skiplines = FetchLE16(p);
@@ -1424,7 +1424,7 @@ void ConvertFLC_BRUN(flcfile *file, unsigned char* buf)
 	unsigned char pixel;
 	int h;
 	int w;
-	char pngbuf[1024];
+	char pngbuf[2048];
 
 	p = buf;
 	i = file->FLCImage;
@@ -1464,7 +1464,7 @@ void ConvertFLC_COPY(flcfile *file, unsigned char* buf)
 	unsigned char* i;
 	int h;
 	int w;
-	char pngbuf[1024];
+	char pngbuf[2048] = {'\0'};
 
 	p = buf;
 	i = file->FLCImage;
@@ -1624,7 +1624,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 	char pngfiles[1024];
 	char cmdprefix[512];
 	struct stat st;
-	static char *encoder = NULL;
+	static const char *encoder = NULL;
 
 	flc = strdup(iflc);
 	for (int i = 0; i < strlen(flc); i++) {
@@ -1786,7 +1786,7 @@ void ConvertFLC_Manual(const char* file, const char* flc, int keepStill, int iRe
 	//
 	//  Read in the archive
 	//
-	buf = malloc(stat_buf.st_size);
+	buf = (unsigned char*)calloc(sizeof(unsigned char*), stat_buf.st_size);
 	if (!buf) {
 		printf("Can't malloc %ld\n", (long)stat_buf.st_size);
 		exit(-1);
@@ -1839,8 +1839,8 @@ void ConvertFLC_Manual(const char* file, const char* flc, int keepStill, int iRe
 	oframe2 = FetchLE32(p);
 	p += 40;		// reserved
 
-	filestruct.FLCImage = malloc(filestruct.FLCWidth * filestruct.FLCHeight);
-	filestruct.FLCImage2 = malloc(2 * filestruct.FLCWidth * 2 * filestruct.FLCHeight);
+	filestruct.FLCImage = (unsigned char*)calloc(sizeof(unsigned char*), filestruct.FLCWidth * filestruct.FLCHeight);
+	filestruct.FLCImage2 = (unsigned char*)calloc(sizeof(unsigned char*), 2 * filestruct.FLCWidth * 2 * filestruct.FLCHeight);
 	if (!filestruct.FLCImage || !filestruct.FLCImage2) {
 		printf("Can't allocate image\n");
 		exit(-1);
@@ -1870,8 +1870,8 @@ void ConvertFLC(const char* file, const char* iflc)
 	int ret;
 	int cmdlen;
 	char *cmd, *output, *outputPath;
-	char *cmdprefix = "ffmpeg -y -i ";
-	char *outputOptions = " -codec:v libtheora -qscale:v 31 -codec:a libvorbis -qscale:a 15 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
+	const char *cmdprefix = "ffmpeg -y -i ";
+	const char *outputOptions = " -codec:v libtheora -qscale:v 31 -codec:a libvorbis -qscale:a 15 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
 
 	flc = strdup(iflc);
 	for (int i = 0; i < strlen(flc); i++) {
@@ -1910,11 +1910,11 @@ void ConvertFLC(const char* file, const char* iflc)
 ** Mux intro music and video using ffmpeg. TODO: find a way to do this inline
 */
 void MuxIntroVideos() {
-	static char* audios[] = {"intro_1.wav", "intro_2.wav",
+	static const char* audios[] = {"intro_1.wav", "intro_2.wav",
 							 "intro_3.wav", "intro_door.wav",
 							 "intro_4.wav",
 							 "intro_5.wav"};
-	static char* videos[] = {"hintro1.ogv", "hintro2.ogv",
+	static const char* videos[] = {"hintro1.ogv", "hintro2.ogv",
 							 "ointro1.ogv", "ointro2.ogv", "ointro3.ogv",
 							 "cave1.ogv", "cave2.ogv", "cave3.ogv",
 							 "title.ogv"};
@@ -1927,10 +1927,10 @@ void MuxIntroVideos() {
 	int i, j, ret;
 	size_t readM;
 	char *cmd, *outputVideo, *outputAudio, *inputAudio, *outputIntro, *buf;
-	char *cmdprefix = "ffmpeg -y -f concat -i ";
-	char *cmdsuffixVideo = " -c copy ";
-	char *cmdsuffixAudio = " -acodec libvorbis";
-	char *encoderIntroOpts = " -c copy ";
+	const char *cmdprefix = "ffmpeg -y -f concat -i ";
+	const char *cmdsuffixVideo = " -c copy ";
+	const char *cmdsuffixAudio = " -acodec libvorbis";
+	const char *encoderIntroOpts = " -c copy ";
 	FILE* mylist;
 	char listfile[2048] = { '\0' };
 	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
@@ -2177,7 +2177,7 @@ void DecodeMiniTile(unsigned char* image, int ix, int iy, int iadd,
 /**
 **  Convert a tileset to my format.
 */
-int ConvertTileset(char* file,int index)
+int ConvertTileset(const char* file,int index)
 {
 	unsigned char* palp;
 	unsigned char* mini;
@@ -2202,7 +2202,7 @@ int ConvertTileset(char* file,int index)
 		return 0;
 	}
 	if (len < 768) {
-		palp = realloc(palp, 768);
+		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
 	if (pale == 191 || pale == 194 || pale == 197) {
@@ -2242,7 +2242,7 @@ int ConvertTileset(char* file,int index)
 
 	width = TILE_PER_ROW * 16;
 	height = ((numtiles + TILE_PER_ROW - 1) / TILE_PER_ROW) * 16;
-	image = malloc(height * width);
+	image = (unsigned char*)calloc(sizeof(unsigned char*), height * width);
 	memset(image, 0, height * width);
 
 	for (i = 0; i < numtiles; ++i) {
@@ -2285,7 +2285,7 @@ int ConvertTileset(char* file,int index)
 /**
 **  Convert one ore more tileset mini image to a separate unit png
 */
-int ConvertTilesetUnit(char* file, int index, int directions_idx)
+int ConvertTilesetUnit(const char* file, int index, int directions_idx)
 {
 	unsigned char* palp;
 	unsigned char* mini;
@@ -2307,7 +2307,7 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 		return 0;
 	}
 	if (len < 768) {
-		palp = realloc(palp, 768);
+		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
 	if (pale == 191 || pale == 194 || pale == 197) {
@@ -2346,7 +2346,7 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 
 	width = 16 * NumUnitDirections;
 	height = 16;
-	image = malloc(height * width);
+	image = (unsigned char*)calloc(sizeof(unsigned char*), height * width);
 	memset(image, 0, height * width);
 
 	for (direction = 0; direction < NumUnitDirections; direction++) {
@@ -2381,7 +2381,7 @@ int ConvertTilesetUnit(char* file, int index, int directions_idx)
 /**
 **  Convert one ore more tileset mini image to a separate unit png
 */
-int ConvertRuin(char* file, int index, int partsidx, int dimensions)
+int ConvertRuin(const char* file, int index, int partsidx, int dimensions)
 {
 	unsigned char* palp;
 	unsigned char* mini;
@@ -2403,7 +2403,7 @@ int ConvertRuin(char* file, int index, int partsidx, int dimensions)
 		return 0;
 	}
 	if (len < 768) {
-		palp = realloc(palp, 768);
+		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
 	if (pale == 191 || pale == 194 || pale == 197) {
@@ -2442,7 +2442,7 @@ int ConvertRuin(char* file, int index, int partsidx, int dimensions)
 
 	width = 16 * dimensions;
 	height = 16 * dimensions;
-	image = malloc(height * width);
+	image = (unsigned char*)calloc(sizeof(unsigned char*), height * width);
 	memset(image, 0, height * width);
 	for (part = 0; part < dimensions*dimensions; part++) {
 		mp = (const unsigned short*)(mega + TilesetRuinParts[partsidx].parts[part] * 8);
@@ -2537,7 +2537,7 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 		length = count;
 	}
 
-	image = malloc(max_width * max_height * length);
+	image = (unsigned char*)calloc(sizeof(unsigned char*), max_width * max_height * length);
 
 	//  Image:  0, 1, 2, 3, 4,
 	//          5, 6, 7, 8, 9, ...
@@ -2579,7 +2579,7 @@ unsigned char* ConvertGraphic(unsigned char* bp,int *wp,int *hp,
 /**
 **  Convert a uncompressed graphic to my format.
 */
-int ConvertGfu(char* file, int pale, int gfue)
+int ConvertGfu(const char* file, int pale, int gfue)
 {
 	unsigned char* palp;
 	unsigned char* gfup;
@@ -2594,7 +2594,7 @@ int ConvertGfu(char* file, int pale, int gfue)
 		return 0;
 	}
 	if (len < 768) {
-		palp = realloc(palp, 768);
+		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
 	if (pale == 191 || pale == 194 || pale == 197) {
@@ -2724,7 +2724,7 @@ unsigned char* ConvertImg(unsigned char* bp, int *wp, int *hp)
 	width = FetchLE16(bp);
 	height = FetchLE16(bp);
 
-	image = malloc(width * height);
+	image = (unsigned char*)calloc(sizeof(unsigned char*), width * height);
 	if (!image) {
 		printf("Can't allocate image\n");
 		exit(-1);
@@ -2746,7 +2746,7 @@ unsigned char* ConvertImg(unsigned char* bp, int *wp, int *hp)
 /**
 **  Convert an image to my format.
 */
-int ConvertImage(char* file, int pale, int imge)
+int ConvertImage(const char* file, int pale, int imge)
 {
 	unsigned char* palp;
 	unsigned char* imgp;
@@ -2761,7 +2761,7 @@ int ConvertImage(char* file, int pale, int imge)
 		return 0;
 	}
 	if (len < 768) {
-		palp = realloc(palp, 768);
+		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
 	if (pale == 191 || pale == 194 || pale == 197) {
@@ -2830,7 +2830,7 @@ int ConvertImage(char* file, int pale, int imge)
 /**
 **  Convert a cursor to my format.
 */
-int ConvertCursor(char* file, int pale, int cure)
+int ConvertCursor(const char* file, int pale, int cure)
 {
 	unsigned char* palp;
 	unsigned char* curp;
@@ -2856,7 +2856,7 @@ int ConvertCursor(char* file, int pale, int cure)
 	SkipLE16(p); // hotx
 	w = FetchLE16(p);
 	h = FetchLE16(p);
-	image = malloc(w * h);
+	image = (unsigned char*)calloc(sizeof(unsigned char*), w * h);
 	memcpy(image, p, w * h);
 
 	ConvertPalette(palp);
@@ -2882,7 +2882,7 @@ int ConvertCursor(char* file, int pale, int cure)
 /**
 **  Convert wav to my format.
 */
-int ConvertWav(char* file, int wave, int noCompression)
+int ConvertWav(const char* file, int wave, int noCompression)
 {
 	unsigned char* wavp;
 	char buf[1024];
@@ -2942,7 +2942,7 @@ int ConvertWav(char* file, int wave, int noCompression)
 **  Convert XMI Midi sound to Midi
 */
 
-void ConvertXmi(char* file, int xmi, int* midiToOgg)
+void ConvertXmi(const char* file, int xmi, int* midiToOgg)
 {
 	unsigned char* xmip;
 	unsigned char* midp;
@@ -3071,7 +3071,7 @@ void ConvertXmi(char* file, int xmi, int* midiToOgg)
 /**
 **  Convert voc to my format.
 */
-int ConvertVoc(char* file,int voce)
+int ConvertVoc(const char* file,int voce)
 {
 	unsigned char* vocp;
 	char buf[1024];
@@ -3119,7 +3119,7 @@ int ConvertVoc(char* file,int voce)
 				SkipByte(p);
 				SkipByte(p);
 				wavlen += size - 2;
-				wavp = realloc(wavp, wavlen);
+				wavp = (unsigned char*)realloc(wavp, wavlen);
 				for (i = size - 2; i; --i) {
 					wavp[w++] = FetchByte(p);
 				}
@@ -3173,7 +3173,7 @@ int ConvertVoc(char* file,int voce)
 /**
 **  Convert text to my format.
 */
-int ConvertText(char* file, int txte, int ofs)
+int ConvertText(const char* file, int txte, int ofs)
 {
 	unsigned char* txtp;
 	char buf[1024];
@@ -3524,7 +3524,7 @@ static void SmsSaveMap(gzFile sms, gzFile smp, int mtxme, const char* lvlpath)
 	free(mtxm);
 }
 
-char *UnitTypes[] = {
+const char *UnitTypes[] = {
 	// 0
 	"unit-footman", "unit-grunt",
 	"unit-peasant", "unit-peon",
@@ -3698,7 +3698,7 @@ void ConvertSkirmishMap(const char* file, int mtxme)
     unsigned char *mtxm, *p;
     unsigned short s;
     int i, j;
-    char* tileset;
+    const char* tileset;
 
     if (strstr(file, "forest")) {
 	tileset = "forest_campaign";
@@ -3877,7 +3877,9 @@ void copyArchive(const char* partialPath) {
 		exit(-1);
 	}
 
-	mkdir_p(parentdir(strdup(tgtname)));
+	char *tgtname_copy = strdup(tgtname);
+	parentdir(tgtname_copy);
+	mkdir_p(tgtname_copy);
 	target = fopen(tgtname, "wb");
 	if (target == NULL) {
 		fprintf(stderr, "Cannot open %s for writing.\n", tgtname);
@@ -3886,7 +3888,7 @@ void copyArchive(const char* partialPath) {
 
 	char buf[4096];
 	int c = 0;
-	while (c = fread(buf, sizeof(char), 4096, source)) {
+	while ((c = fread(buf, sizeof(char), 4096, source))) {
 		fwrite(buf, sizeof(char), c, target);
 	}
 	printf("copied %s->%s\n", srcname, tgtname);
@@ -3895,9 +3897,9 @@ void copyArchive(const char* partialPath) {
 	fclose(target);
 }
 
-void CopyDirectories(char** directories) {
+void CopyDirectories(const char** directories) {
 	int i, ret;
-	char* dir;
+	const char* dir;
 	char cmd[2048];
 
 	CheckPath(Dir);
@@ -3962,7 +3964,7 @@ int main(int argc, char** argv)
 	int upper;
 	struct stat st;
 	int midi, video;
-	char* dirs[4] = {0x0};
+	const char* dirs[4] = {0x0};
 	video = midi = 0;
 
 	a = 1;
@@ -4009,7 +4011,7 @@ int main(int argc, char** argv)
 	if (argc == 3) {
 		Dir = argv[a + 1];
 	} else {
-		Dir = DEFAULT_DATA_DIR;
+		Dir = strdup(DEFAULT_DATA_DIR);
 	}
 
 	sprintf(buf, "%s/data.war", ArchiveDir);
@@ -4058,20 +4060,19 @@ int main(int argc, char** argv)
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		printf("%s:\n", Todo[u].File);
+		char* todoFile;
 		switch (Todo[u].Type) {
 			case F:
+				todoFile = strdup(Todo[u].File);
 				if (upper) {
 					int i = 0;
-					char filename[1024];
-					strcpy(filename, Todo[u].File);
-					Todo[u].File = filename ;
-					while (Todo[u].File[i]) {
-						Todo[u].File[i] = toupper(Todo[u].File[i]);
+					while (todoFile[i]) {
+						todoFile[i] = toupper(todoFile[i]);
 						++i;
 					}
 				}
 
-				sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
+				sprintf(buf, "%s/%s", ArchiveDir, todoFile);
 #ifdef DEBUG
 				printf("Archive \"%s\"\n", buf);
 #endif
@@ -4079,29 +4080,29 @@ int main(int argc, char** argv)
 					CloseArchive();
 				}
 				OpenArchive(buf, Todo[u].Arg1);
-				copyArchive(Todo[u].File);
+				copyArchive(todoFile);
+				free(todoFile);
 				break;
 			case FLC:
+				todoFile = strdup(Todo[u].File);
 				if (upper) {
 					int i = 0;
-					char filename[1024];
-					strcpy(filename, Todo[u].File);
-					Todo[u].File = filename;
-					while (Todo[u].File[i]) {
-						Todo[u].File[i] = toupper(Todo[u].File[i]);
+					while (todoFile[i]) {
+						todoFile[i] = toupper(todoFile[i]);
 						++i;
 					}
 				}
 				if (video) {
-					sprintf(buf, "%s/%s", ArchiveDir, Todo[u].File);
+					sprintf(buf, "%s/%s", ArchiveDir, todoFile);
 #ifdef WIN32
 					// On Windows, manual conversion doesn't seem to work right
-					ConvertFLC(buf, Todo[u].File);
+					ConvertFLC(buf, todoFile);
 #else
-					ConvertFLC_Manual(buf, Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
+					ConvertFLC_Manual(buf, todoFile, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
 #endif
 				}
-				copyArchive(Todo[u].File);
+				copyArchive(todoFile);
+				free(todoFile);
 				break;
 			case T:
 				ConvertTileset(Todo[u].File, Todo[u].Arg1);
