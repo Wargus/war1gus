@@ -21,11 +21,13 @@ function RunResultsMenu()
   if (GameResult == GameVictory) then
     result = "Victory!"
     scene = victoryscene
+    video = "win"
     sound = sound .. "-victory"
     PlayMusic(VictoryMusic)
   elseif (GameResult == GameDefeat) then
     result = "Defeat!"
     scene = defeatscene
+    video = "lose"
     sound = sound .. "-defeat"
     PlayMusic(DefeatMusic)
   elseif (GameResult == GameDraw) then
@@ -50,6 +52,25 @@ function RunResultsMenu()
   sceneg:Resize(368 * Video.Width / 640, 224 * Video.Height / 400)
   scenew = ImageWidget(sceneg)
   menu:add(scenew, 234 * Video.Width / 640, 24 * Video.Height / 400)
+
+  if Movie then
+     local scenem = Movie()
+     scenem:Load("videos/"..video.."1.ogv", math.ceil(368 * Video.Width / 640), math.ceil(224 * Video.Height / 400))
+     local movieW = ImageWidget(scenem)
+     menu:add(movieW, 234 * Video.Width / 640, 24 * Video.Height / 400)
+
+     local function playLoop()
+        if not scenem:IsPlaying() then
+           menu:remove(movieW)
+           scenem = Movie()
+           scenem:Load("videos/"..video.."2.ogv", math.ceil(368 * Video.Width / 640), math.ceil(224 * Video.Height / 400))
+           movieW = ImageWidget(scenem)
+           menu:add(movieW, 234 * Video.Width / 640, 24 * Video.Height / 400)
+        end
+     end
+     local listener = LuaActionListener(playLoop)
+     menu:addLogicCallback(listener)
+  end
 
   local kills = {you = 0, enemy = 0, neutral = 0}
   local units = {you = 0, enemy = 0, neutral = 0}
