@@ -127,7 +127,7 @@ function RunPreferencesMenu()
   l:adjustSize()
   menu:add(l, 230 - l:getWidth(), 40 + (36 * 2) + 6)
 
-  local b = menu:addCheckBox("Full Screen", 16, 40 + 36 * 3,
+  local b = menu:addCheckBox("Full Screen", 16, 40 + 36 * 2.5,
     function()
       ToggleFullScreen()
       preferences.VideoFullScreen = Video.FullScreen
@@ -135,7 +135,7 @@ function RunPreferencesMenu()
     end)
   b:setMarked(Video.FullScreen)
 
-  b = menu:addCheckBox("Allow Training Queue", 16, 40 + 36 * 3.5,
+  b = menu:addCheckBox("Allow Training Queue", 16, 40 + 36 * 3,
     function()
 	  preferences.TrainingQueue = not preferences.TrainingQueue
 	  SetTrainingQueue(not not preferences.TrainingQueue)
@@ -143,9 +143,33 @@ function RunPreferencesMenu()
     end)
   b:setMarked(preferences.TrainingQueue)
 
-  menu:addLabel("Max Selection", 16, 40 + 36 * 4, Fonts["game"], false)
+  b = menu:addCheckBox("Show Orders", 16, 40 + 36 * 3.5,
+    function()
+       preferences.ShowOrders = not preferences.ShowOrders
+       if preferences.ShowOrders then
+          Preference.ShowOrders = 1
+       else
+          Preference.ShowOrders = 0
+       end
+       SavePreferences()
+    end)
+  b:setMarked(preferences.ShowOrders)
+
+  b = menu:addCheckBox("Show Damage", 16, 40 + 36 * 4,
+    function()
+       preferences.ShowDamage = not preferences.ShowDamage
+       if preferences.ShowDamage then
+          SetDamageMissile("missile-hit")
+       else
+          SetDamageMissile(nil)
+       end
+       SavePreferences()
+    end)
+  b:setMarked(preferences.ShowOrders)
+
+  menu:addLabel("Max Selection", 16, 40 + 36 * 4.5, Fonts["game"], false)
   local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
-  maxselection = menu:addDropDown(maxselections, 16 + 150, 40 + 36 * 4,
+  maxselection = menu:addDropDown(maxselections, 16 + 150, 40 + 36 * 4.5,
     function(dd)
 	  local selected = maxselections[maxselection:getSelected() + 1]
 	  local count = tonumber(string.gmatch(selected, "%d+")())

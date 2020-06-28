@@ -305,6 +305,8 @@ DefaultPreference("AllowMultipleTownHalls", false)
 DefaultPreference("AllowTownHallUpgrade", false)
 DefaultPreference("MultiColoredCampaigns", true)
 DefaultPreference("ShowButtonPopups", true)
+DefaultPreference("ShowDamage", true)
+DefaultPreference("ShowOrders", true)
 
 wc1.preferences = preferences
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
@@ -324,6 +326,16 @@ SetMaxSelectable(preferences.MaxSelection)
 SetTrainingQueue(not not preferences.TrainingQueue)
 Preference.SF2Soundfont = "music/TimGM6mb.sf2"
 Preference.PauseOnLeave = false
+if preferences.ShowDamage == true then
+   SetDamageMissile("missile-hit")
+else
+   SetDamageMissile(nil)
+end
+if preferences.ShowOrders == true then
+   Preference.ShowOrders = 1
+else
+   Preference.ShowOrders = 0
+end
 
 if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") and file_exists("videos", "cave.ogv") and file_exists("videos", "title.ogv") and preferences.PlayIntro then
    SetTitleScreens(
