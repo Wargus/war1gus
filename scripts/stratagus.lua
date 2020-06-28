@@ -394,5 +394,6 @@ Load("scripts/buttons.lua")
 Load("scripts/ai.lua")
 Load("scripts/cheats.lua")
 Load("scripts/colors.lua")
+Load("scripts/commands.lua")
 
 print("... ready!\n")
