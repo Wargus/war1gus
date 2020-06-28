@@ -47,25 +47,29 @@ function RunResultsMenu()
 
   menu:addLabel(result, 125 * multx, 52 * multy, Fonts["small-title"])
 
-  sceneg = CGraphic:New(scene)
+  local movieW = math.ceil(368 * Video.Width / 640)
+  local movieH = math.ceil(224 * Video.Height / 400)
+  local movieX = 234 * Video.Width / 640
+  local movieY = 24 * Video.Height / 400
+  local sceneg = CGraphic:New(scene)
   sceneg:Load()
-  sceneg:Resize(368 * Video.Width / 640, 224 * Video.Height / 400)
-  scenew = ImageWidget(sceneg)
-  menu:add(scenew, 234 * Video.Width / 640, 24 * Video.Height / 400)
+  sceneg:Resize(movieW, movieH)
+  local scenew = ImageWidget(sceneg)
+  menu:add(scenew, movieX, movieY)
 
-  if Movie then
-     local scenem = Movie()
-     scenem:Load("videos/"..video.."1.ogv", math.ceil(368 * Video.Width / 640), math.ceil(224 * Video.Height / 400))
-     local movieW = ImageWidget(scenem)
-     menu:add(movieW, 234 * Video.Width / 640, 24 * Video.Height / 400)
+  local scenem = Movie()
+  if scenem:Load("videos/"..video.."1.ogv", movieW, movieH) then
+     local movieWidget = ImageWidget(scenem)
+     menu:add(movieWidget, movieX, movieY)
 
      local function playLoop()
         if not scenem:IsPlaying() then
-           menu:remove(movieW)
            scenem = Movie()
-           scenem:Load("videos/"..video.."2.ogv", math.ceil(368 * Video.Width / 640), math.ceil(224 * Video.Height / 400))
-           movieW = ImageWidget(scenem)
-           menu:add(movieW, 234 * Video.Width / 640, 24 * Video.Height / 400)
+           if scenem:Load("videos/"..video.."2.ogv", movieW, movieH) then
+              menu:remove(movieWidget)
+              movieWidget = ImageWidget(scenem)
+              menu:add(movieWidget, movieX, movieY)
+           end
         end
      end
      local listener = LuaActionListener(playLoop)
