@@ -108,26 +108,33 @@ function RunResultsMenu()
   StopAllChannels()
   PlaySound(sound, true)
 
-  menu:addLabel(kills.you, 115 * multx, 280 * multy, Fonts["large"], true)
-  menu:addLabel(kills.enemy, 115 * multx, 280 * multy + lineHeight, Fonts["large"], true)
-  menu:addLabel(units.you, 115 * multx, 346 * multy, Fonts["large"], true)
-  menu:addLabel(units.enemy, 115 * multx, 346 * multy + lineHeight, Fonts["large"], true)
+  local font = Fonts["large"]
+  if Video.Width >= 1024 then
+     font = Fonts["small-title"]
+  end
 
-  menu:addLabel(razings.you, 315 * multx, 280 * multy, Fonts["large"], true)
-  menu:addLabel(razings.enemy, 315 * multx, 280 * multy + lineHeight, Fonts["large"], true)
-  menu:addLabel(buildings.you, 315 * multx, 346 * multy, Fonts["large"], true)
-  menu:addLabel(buildings.enemy, 315 * multx, 346 * multy + lineHeight, Fonts["large"], true)
+  menu:addLabel(kills.you, 115 * multx, 280 * multy, font, true)
+  menu:addLabel(kills.enemy, 115 * multx, 280 * multy + lineHeight, font, true)
+  menu:addLabel(units.you, 115 * multx, 346 * multy, font, true)
+  menu:addLabel(units.enemy, 115 * multx, 346 * multy + lineHeight, font, true)
 
-  menu:addLabel(gold.you, 515 * multx, 280 * multy, Fonts["large"], true)
-  menu:addLabel(gold.enemy, 515 * multx, 280 * multy + lineHeight, Fonts["large"], true)
-  menu:addLabel(wood.you, 515 * multx, 346 * multy, Fonts["large"], true)
-  menu:addLabel(wood.enemy, 515 * multx, 346 * multy + lineHeight, Fonts["large"], true)
+  menu:addLabel(razings.you, 315 * multx, 280 * multy, font, true)
+  menu:addLabel(razings.enemy, 315 * multx, 280 * multy + lineHeight, font, true)
+  menu:addLabel(buildings.you, 315 * multx, 346 * multy, font, true)
+  menu:addLabel(buildings.enemy, 315 * multx, 346 * multy + lineHeight, font, true)
 
-  menu:addHalfButton("~!Save Replay", "s", 16 * multx, 180 * multy,
-    function() RunSaveReplayMenu() end)
+  menu:addLabel(gold.you, 515 * multx, 280 * multy, font, true)
+  menu:addLabel(gold.enemy, 515 * multx, 280 * multy + lineHeight, font, true)
+  menu:addLabel(wood.you, 515 * multx, 346 * multy, font, true)
+  menu:addLabel(wood.enemy, 515 * multx, 346 * multy + lineHeight, font, true)
 
-  menu:addHalfButton("~!Continue", "c", 16 * multx, 210 * multy,
-    function() StopMusic(); menu:stop() end)
+  local btn = menu:addHalfButton("~!Save Replay", "s", 24 * multx, 180 * multy,
+                                 function() RunSaveReplayMenu() end)
+  btn:setSize(190 * multx, 28)
+
+  btn = menu:addHalfButton("~!Continue", "c", 24 * multx, 210 * multy,
+                           function() StopMusic(); menu:stop() end)
+  btn:setSize(190 * multx, 28)
 
   menu:run()
 end
