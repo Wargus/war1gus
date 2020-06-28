@@ -152,7 +152,7 @@ SetKeyScroll(true)
 --  Set keyboard scroll speed in frames (1=each frame,2 each second,...)
 --SetKeyScrollSpeed(1)
 
---  Set mouse scroll speed in frames (1=each frame,2 each second,...)
+--  Set mouse scroll speed in pixels per frame
 --  This is when the mouse cursor hits the border.
 --SetMouseScrollSpeed(1)
 
