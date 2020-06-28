@@ -34,7 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "3.0.0.20190407" // Version of extractor wartool
+#define VERSION "3.0.0.20200628" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2015 by The Stratagus Project"
 
@@ -3236,17 +3236,16 @@ static void SmsSaveObjectives(FILE* sms_c2, unsigned char* txtp)
 	fprintf(sms_c2, "\"}\n");
 }
 
-static void SmsSaveResources(FILE* sms_c2, unsigned char* txtp)
+static void SmsSaveResources(gzFile sms, unsigned char* txtp)
 {
-
 	// 0x005C - 0x0069: 5xDWord: Lumber for each player.
 	// 0x0070 - 0x0083: 5xDWord: Gold for each player.
-	fprintf(sms_c2, "\n-- Resources\n");
+	gzprintf(sms, "\n-- Resources\n");
 	for (int p = 0; p < 5; p++) {
-		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"wood\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
-		fprintf(sms_c2, "SetPlayerData(%d, \"Resources\", \"gold\", %d)\n", p, AccessLE32(txtp + 0x70 + (4 * p)));
+		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"wood\", %d)\n", p, AccessLE32(txtp + 0x5c + (4 * p)));
+		gzprintf(sms, "SetPlayerData(%d, \"Resources\", \"gold\", %d)\n", p, AccessLE32(txtp + 0x70 + (4 * p)));
 	}
-	fprintf(sms_c2, "\n");
+	gzprintf(sms, "\n");
 }
 
 static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
@@ -3842,9 +3841,9 @@ int ConvertMap(const char* file, int txte, int mtxme)
 	SmsSaveObjectives(sms_c2, txtp);
 	SmsSaveAllowed(sms_c2, txtp);
 	SmsSaveUpgrades(sms_c2, txtp);
-	SmsSaveResources(sms_c2, txtp);
 	SmsSetCurrentRace(sms_c2, race, atoi(mapnum));
 	SmsSavePlayers(race, mapnum, sms, smp);
+	SmsSaveResources(sms, txtp);
 	SmsSaveMap(sms, smp, mtxme, file);
 	SmsSaveUnits(sms, txtp);
 
