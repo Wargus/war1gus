@@ -4099,12 +4099,12 @@ int main(int argc, char** argv)
 				}
 				if (video) {
 					sprintf(buf, "%s/%s", ArchiveDir, todoFile);
-#ifdef WIN32
-					// On Windows, manual conversion doesn't seem to work right
-					ConvertFLC(buf, todoFile);
-#else
+// #ifdef WIN32
+// 					// On Windows, manual conversion doesn't seem to work right
+// 					ConvertFLC(buf, todoFile);
+// #else
 					ConvertFLC_Manual(buf, todoFile, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
-#endif
+// #endif
 				}
 				copyArchive(todoFile);
 				free(todoFile);
@@ -4151,11 +4151,11 @@ int main(int argc, char** argv)
 	}
 
 	if (video) {
-#ifdef WIN32
-	    MuxIntroVideos();
-#else
+// #ifdef WIN32
+// 	    MuxIntroVideos();
+// #else
 	    MuxAllIntroVideos();
-#endif
+// #endif
 	}
 
 	CreateConfig(Dir, video, midi);
