@@ -32,9 +32,11 @@ function CreateAiCampaign(level)
    -- smaller sleep_factors mean faster AI, so we get scaling in the last lvls, even though actions are the same
    local sleep_factor = 13 - level
 
-   local PureAiSleep = AiSleep
-   local AiSleep = function(cycles)
-      return PureAiSleep(cycles * sleep_factor)
+   -- debug
+   -- sleep_factor = 0.5
+
+   local MayISleep = function(cycles)
+      return AiSleep(cycles * sleep_factor)
    end
 
    -- This simulates a timeout around WaitForce. If, for some reason,
@@ -54,7 +56,7 @@ function CreateAiCampaign(level)
          end
 
          waitForceRounds = waitForceRounds + 1
-         return AiSleep(AiGetSleepCycles() * 2)
+         return MayISleep(AiGetSleepCycles() * 2)
       else
          waitForceRounds = 0
          return false
@@ -67,21 +69,21 @@ function CreateAiCampaign(level)
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiSet(AiWorker(), 25) end,
 
       function() print("done with AI at lvl 10!") return false end,
@@ -90,28 +92,27 @@ function CreateAiCampaign(level)
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       -- Everything researched...
       function()
-         stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
-         return false
+         return -6
       end
    }
 
    local campaign_funcs9 = {
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function() print("done with AI at lvl 9!") return false end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
@@ -119,21 +120,20 @@ function CreateAiCampaign(level)
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function()
          if level > 9 then
             stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
             return AiLoop(campaign_funcs10, stratagus.gameData.AIState.loop_index)
          else
-            stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
-            return false
+            return -6
          end
       end
    }
 
    local campaign_funcs7 = {
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
@@ -146,41 +146,40 @@ function CreateAiCampaign(level)
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function()
          if level > 7 then
             stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
             return AiLoop(campaign_funcs9, stratagus.gameData.AIState.loop_index)
          else
-            stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
-            return false
+            return -6
          end
       end
    }
 
    local campaign_funcs6 = {
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiSet(AiWorker(), 15) end,
       function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 6, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 4, AiMage(), 1, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiMage(), 1, AiCatapult(), 1}) end,
@@ -193,33 +192,32 @@ function CreateAiCampaign(level)
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function()
          if level > 6 then
             stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
             return AiLoop(campaign_funcs7, stratagus.gameData.AIState.loop_index)
          else
-            stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
-            return false
+            return -6
          end
       end
    }
 
    local campaign_funcs5 = {
       function() return AiSet(AiWorker(), 9) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiWaitForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
       function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2, AiCavalry(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCavalry(), 2}) end,
       function() return AiWaitForce(1) end,
-      function() return AiSleep(600) end,
+      function() return MayISleep(600) end,
       function() return AiAttackWithForce(1) end,
 
       function() print("done with AI at lvl 5 !") return false end,
@@ -228,47 +226,45 @@ function CreateAiCampaign(level)
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function()
          if level > 5 then
             stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
             return AiLoop(campaign_funcs6, stratagus.gameData.AIState.loop_index)
          else
-            stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
-            return false
+            return -6
          end
       end
    }
 
    local campaign_funcs3 = {
       function() AiDebug(false) return false end,
-      function() return AiSleep(AiGetSleepCycles()) end,
+      function() return MayISleep(AiGetSleepCycles()) end,
 
       function() return AiSet(AiWorker(), 4) end,
       function() return AiForce(0, {AiSoldier(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1}) end,
       function() return AiWaitForce(1) end,
-      function() return AiSleep(100) end,
+      function() return MayISleep(100) end,
       function() return AiAttackWithForce(1) end,
-      function() return AiSleep(1) end,
+      function() return MayISleep(1) end,
 
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function() print("done with AI at lvl 3 !") return false end,
       function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1, AiMage(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiMage(), 1}) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
-      function() return AiSleep(500) end,
+      function() return MayISleep(500) end,
 
       function()
          if level > 3 then
             stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = 1
             return AiLoop(campaign_funcs5, stratagus.gameData.AIState.loop_index)
          else
-            stratagus.gameData.AIState.loop_index[1 + AiPlayer()] = stratagus.gameData.AIState.loop_index[1 + AiPlayer()] - 7
-            return false
+            return -5
          end
       end
    }
@@ -285,14 +281,14 @@ Ai02 = function()
          function()
             AiForce(0, {AiSoldier(), 1})
             if not AiCheckForce(0) then AiForce(0, {AiShooter(), 1}) end
-            return AiSleep(9000)
+            return MayISleep(9000)
          end,
          function() return AiAttackWithForce(0) end,
 
          function()
             AiForce(0, {AiShooter(), 1})
             if not AiCheckForce(0) then AiForce(0, {AiSoldier(), 1}) end
-            return AiSleep(9000)
+            return MayISleep(9000)
          end,
          function() return AiAttackWithForce(0) end,
 

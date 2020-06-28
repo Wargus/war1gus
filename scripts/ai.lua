@@ -381,8 +381,13 @@ function AiLoop(loop_funcs, indexes)
       else
          ret = func()
       end
-      if (ret) then break end
-      indexes[playerIndex] = indexes[playerIndex] + 1
+      if (ret == true) then
+         break
+      elseif (ret == false) then
+         indexes[playerIndex] = indexes[playerIndex] + 1
+      else
+         indexes[playerIndex] = indexes[playerIndex] + ret
+      end
    end
    return true
 end
