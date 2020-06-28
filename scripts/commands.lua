@@ -29,6 +29,8 @@ local function HandleIngameCommandKey(key, ctrl, alt, shift)
   elseif (key == "r" and (ctrl or alt)) then
     if (not IsNetworkGame()) then SetGamePaused(true) end
     RunRestartConfirmMenu()
+  elseif (key == "f" and (ctrl or alt)) then
+     ToggleFullScreen()
   elseif (key == "x" and (ctrl or alt)) then
     if (not IsNetworkGame()) then SetGamePaused(true) end
     RunExitConfirmMenu()
