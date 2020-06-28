@@ -374,13 +374,13 @@ function AiLoop(loop_funcs, indexes)
 
    while (true) do
       local func = loop_funcs[indexes[playerIndex]]
-	  local ret = false
-	  if (func == nil) then
-		AddMessage("BUG: Please file a bug 'AI loop broken' with the level and this number: " .. indexes[playerIndex])
-		indexes[playerIndex] = 0
-	  else
-	    ret = func()
-	  end
+      local ret = false
+      if (func == nil) then
+         AddMessage("BUG: Please file a bug 'AI loop broken' with the level and this number: " .. indexes[playerIndex])
+         indexes[playerIndex] = 0
+      else
+         ret = func()
+      end
       if (ret) then break end
       indexes[playerIndex] = indexes[playerIndex] + 1
    end
