@@ -1662,8 +1662,8 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 	char *pngname = (char *)calloc(strlen(Dir) + 1 + strlen("thumb0000.png") + 1, sizeof(char));
 	while ((ep = readdir(dp))) {
 		int cur;
-		char *n;
-		if (sscanf(ep->d_name, "%m[a-z0-9]-%d.png", &n, &cur)) {
+		char *n = (char*)calloc(200, sizeof(char));
+		if (sscanf(ep->d_name, "%[a-z0-9]-%d.png", n, &cur)) {
 			free(n);
 			if (cur > last) {
 				last = cur;
