@@ -35,7 +35,7 @@ DefineMissileType("missile-arrow",
   Class = "missile-class-point-to-point", Sleep = 1, Speed = 32, Range = 0 } )
 
 DefineMissileType("missile-catapult-rock",
-  { File = "missiles/catapult_projectile.png", Size = {64, 64}, Frames = 15, NumDirections = 5,
+  { File = "missiles/catapult_projectile.png", Size = {64, 64}, Frames = 15, NumDirections = 9,
   ImpactSound = "explosion",
   DrawLevel = 50, Class = "missile-class-parabolic", Sleep = 1, Speed = 3, Range = 2,
   ImpactMissile = "missile-explosion", SplashFactor = 4 } )
