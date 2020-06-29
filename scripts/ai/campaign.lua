@@ -273,19 +273,18 @@ function CreateAiCampaign(level)
 end
 
 Ai02 = function()
-   local sleep_factor = 11
    return AiLoop({
          function()
             AiForce(0, {AiSoldier(), 1})
             if not AiCheckForce(0) then AiForce(0, {AiShooter(), 1}) end
-            return AiSleep(9000 * sleep_factor)
+            return AiSleep(9000)
          end,
          function() return AiAttackWithForce(0) end,
 
          function()
             AiForce(0, {AiShooter(), 1})
             if not AiCheckForce(0) then AiForce(0, {AiSoldier(), 1}) end
-            return AiSleep(9000 * sleep_factor)
+            return AiSleep(9000)
          end,
          function() return AiAttackWithForce(0) end,
 
