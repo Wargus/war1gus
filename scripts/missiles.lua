@@ -30,7 +30,7 @@
 --      $Id$
 
 DefineMissileType("missile-arrow",
-  { File = "missiles/arrow.png", Size = {64, 64}, Frames = 5, NumDirections = 5,
+  { File = "missiles/arrow.png", Size = {64, 64}, Frames = 5, NumDirections = 9,
   DrawLevel = 50, ImpactSound = "bow hit",
   Class = "missile-class-point-to-point", Sleep = 1, Speed = 32, Range = 0 } )
 
@@ -57,17 +57,17 @@ DefineMissileType("missile-normal-spell",
     DrawLevel = 50, Class = "missile-class-stay", Sleep = 5, Speed = 0, Range = 1 } )
 
 DefineMissileType("missile-magic-fireball",
-  { File = "missiles/fireball.png", Size = {64, 64}, Frames = 5, NumDirections = 5,
+  { File = "missiles/fireball.png", Size = {64, 64}, Frames = 25, NumDirections = 9,
     DrawLevel = 200, ImpactSound = "fireball attack",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
 
 DefineMissileType("missile-fireball",
-  { File = "missiles/fireball_2.png", Size = {64, 64}, Frames = 2, NumDirections = 5,
+  { File = "missiles/fireball_2.png", Size = {64, 64}, Frames = 10, NumDirections = 9,
     DrawLevel = 50, ImpactSound = "bow hit",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
 
 DefineMissileType("missile-water",
-  { File = "missiles/water_elemental_projectile.png", Size = {64, 64}, Frames = 2, NumDirections = 5,
+  { File = "missiles/water_elemental_projectile.png", Size = {64, 64}, Frames = 10, NumDirections = 9,
     DrawLevel = 50, ImpactSound = "fireball attack",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
 
