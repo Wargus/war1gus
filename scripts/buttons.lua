@@ -29,6 +29,8 @@
 --
 --      $Id$
 
+ClearButtons()
+
 -- Load the buttons of all races
 
 Load("scripts/human/buttons.lua")

@@ -284,8 +284,9 @@ function BuildOptionsMenu()
   b = menu:addCheckBox("Allow multiple Town Halls", offx + 16, offy + top + 15 * 6,
     function()
       preferences.AllowMultipleTownHalls = not preferences.AllowMultipleTownHalls
+      Load("scripts/buttons.lua")
+      Load("scripts/buildings.lua")
       SavePreferences()
-      menu:stop(1)
     end)
   b:setMarked(preferences.AllowMultipleTownHalls)
 
