@@ -254,7 +254,7 @@ function RunEditorPlayerProperties()
       playersProp[1 + ind].race:setVisible(b)
       playersProp[1 + ind].ai:setVisible(b)
       playersProp[1 + ind].gold:setVisible(b)
-      playersProp[1 + ind].lumber:setVisible(b)
+      playersProp[1 + ind].wood:setVisible(b)
     end
 
     playersProp[1 + i] = playerLine
