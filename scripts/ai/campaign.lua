@@ -273,6 +273,7 @@ function CreateAiCampaign(level)
 end
 
 Ai02 = function()
+   local sleep_factor = 11
    return AiLoop({
          function()
             AiForce(0, {AiSoldier(), 1})
