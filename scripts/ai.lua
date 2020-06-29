@@ -383,7 +383,7 @@ function AiLoop(loop_funcs, indexes)
       end
       if (ret == true) then
          break
-      elseif (ret == false) then
+      elseif ret == false or ret == nil then
          indexes[playerIndex] = indexes[playerIndex] + 1
       else
          indexes[playerIndex] = indexes[playerIndex] + ret
