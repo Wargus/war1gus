@@ -9,6 +9,6 @@ campaign_titles = {
    "VIII. Medivh's Tower",
    "IX. Black Morass",
    "X. Temple of the Damned",
-   "XI. Blackard & Stonard",
+   "XI. Rockard & Stoneard",
    "XII. Black Rock Spire",
    "Ending"}
