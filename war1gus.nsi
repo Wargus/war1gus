@@ -286,16 +286,17 @@ Section "un.${NAME}" Executable
 
 	Delete "$INSTDIR\${EXE}"
 	Delete "$INSTDIR\${WARTOOL}"
-	Delete "$INSTDIR\${UNINSTALL}"
+	Delete "$INSTDIR\${FFMPEG}"
+	Delete "$INSTDIR\*.exe"
+	Delete "$INSTDIR\*.dll"
 
+	RMDir /r "$INSTDIR\music"
+	RMDir /r "$INSTDIR\contrib"
+	RMDir /r "$INSTDIR\maps"
+	RMDir /r "$INSTDIR\shaders"
 	RMDir /r "$INSTDIR\scripts"
-
-	Delete "$INSTDIR\campaigns\human\level*h_c.sms"
-	Delete "$INSTDIR\campaigns\orc\level*o_c.sms"
-	RMDir "$INSTDIR\campaigns\human"
-	RMDir "$INSTDIR\campaigns\orc"
-	RMDir "$INSTDIR\campaigns"
-	RMDir /r "$INSTDIR"
+	RMDir /r "$INSTDIR\campaigns"
+        RMDir "$INSTDIR"
 
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $STARTMENUDIR
 	Delete "$SMPROGRAMS\$STARTMENUDIR\${NAME}.lnk"
