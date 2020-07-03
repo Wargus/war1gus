@@ -40,7 +40,7 @@ DefineTileset("name", "Forest",
   -- Slots descriptions
   "slots",
 	{ "special", {		-- Can't be in pud
-    "top-one-tree", 90, "mid-one-tree", 91, "bot-one-tree", 92,
+    "top-one-tree", 0x5a, "mid-one-tree", 0x5b, "bot-one-tree", 0x5c,
     "removed-tree", 95 },
   "solid", { "unused",
     {}},								-- 000
@@ -57,7 +57,7 @@ DefineTileset("name", "Forest",
   "solid", { "dark-grass", "land",
     { 168 }},	-- 060
   "solid", { "forest", "land", "forest", "unpassable",
-    { 94 }},							-- 070
+    { 0x5e }},							-- 070
   "solid", { "bridge-horizontal", "land", "no-building",
     { 288, 287, 286, 285, 284, 278, 277 }},						-- 080
   "solid", { "bridge-vertical", "land", "no-building",
@@ -178,20 +178,21 @@ DefineTileset("name", "Forest",
     {},									-- 6E0
     {}},								-- 6F0
   "mixed", { "forest", "medium-grass", "land", "forest", "unpassable",
-    { 79 },							-- 700
-    { 71 },							-- 710
-    { 93 },							-- 720
-    { 76 },							-- 730
-    { 78 },							-- 740
-    { 83 },							-- 750
-    { 80 },							-- 760
-    { 73 },							-- 770
-    { 82 },							-- 780
-    { 72 },							-- 790
-    { 81 },							-- 7A0
-    { 75 },							-- 7B0
-    { 77 },							-- 7C0
-    { 74 },							-- 7D0
+             -- forest starts at 0x47 and goes through to 0x5f
+    { 0x4f },							-- 700
+    { 0x47 },							-- 710
+    { 0x5d },							-- 720
+    { 0x4c },							-- 730
+    { 0x4e, 0x55, 0x57 },							-- 740
+    { 0x53 },							-- 750
+    { 0x50 },							-- 760
+    { 0x49 },							-- 770
+    { 0x52 },							-- 780
+    { 0x48, 0x54, 0x56 },							-- 790
+    { 0x59 },							-- 7A0
+    { 0x4b },							-- 7B0
+    { 0x4d },							-- 7C0
+    { 0x4a, 0x58 },							-- 7D0
     {},									-- 7E0
     {}},								-- 7F0
   "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",

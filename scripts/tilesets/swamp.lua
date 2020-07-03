@@ -177,21 +177,21 @@ DefineTileset("name", "Swamp",
     { 0 },							-- 6D0
     {},									-- 6E0
     {}},								-- 6F0
-  "mixed", { "forest", "light-swamp", "land", "forest", "unpassable",
+  "mixed", { "forest", "medium-swamp", "land", "forest", "unpassable",
     { 0x50 },							-- 700
     { 0x48 },							-- 710
-    { 0x5d },							-- 720
+    { 0x5e },							-- 720
     { 0x4d },							-- 730
-    { 0x4f },							-- 740
-    { 0x47 },							-- 750
-    { 0x52 },							-- 760
+    { 0x4f, 0x56, 0x58 },							-- 740
+    { 0x54 },							-- 750
+    { 0x51 },							-- 760
     { 0x4a },							-- 770
-    { 0x47 },							-- 780
-    { 0x49 },							-- 790
-    { 0x54 },							-- 7A0
+    { 0x53 },							-- 780
+    { 0x49, 0x55, 0x57 },							-- 790
+    { 0x5a },							-- 7A0
     { 0x4c },							-- 7B0
-    { 0x53 },							-- 7C0
-    { 0x51 },							-- 7D0
+    { 0x4e },							-- 7C0
+    { 0x4b, 0x59 },							-- 7D0
     {},									-- 7E0
     {}},								-- 7F0
   "mixed", { "human-wall", "dark-swamp", "land", "human", "wall", "unpassable",
