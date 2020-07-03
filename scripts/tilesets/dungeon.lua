@@ -73,7 +73,7 @@ DefineTileset("name", "dungeon",
     {}},								-- 0E0
   "solid", { "unused",
     {}},								-- 0F0
-  "mixed", { "darkness", "dark-earth", "land", "unpassable", "no-building",
+  "mixed", { "dark-earth", "darkness", "land", "unpassable", "no-building",
     { 0x60 },							-- 100
     { 0x61 },							-- 110
     { 0x45 },							-- 120
@@ -107,7 +107,7 @@ DefineTileset("name", "dungeon",
     { 0xad },							-- 2D0
     {},									-- 2E0
     {}},								-- 2F0
-  "mixed", { "medium-earth", "light-earth", "land",
+  "mixed", { "light-earth", "medium-earth", "land",
     { 0xd5 },							-- 300
     { 0xd7 },							-- 310
     { 0xd6 },							-- 320
@@ -124,7 +124,7 @@ DefineTileset("name", "dungeon",
     { 0x100 },							-- 3D0
     {},									-- 3E0
     {}},								-- 3F0
-  "mixed", { "dark-earth", "stone-floor", "land", "no-building",
+  "mixed", { "stone-floor", "dark-earth", "land", "no-building",
     { 0x7d },							-- 400
     { 0x7b },							-- 410
     { 0x7c },							-- 420
@@ -193,7 +193,7 @@ DefineTileset("name", "dungeon",
     { 0x121 },							-- 7D0
     {},									-- 7E0
     {}},								-- 7F0
-  "mixed", { "human-wall", "dark-grass", "land", "human", "wall", "unpassable",
+  "mixed", { "human-wall", "dark-earth", "land", "human", "wall", "unpassable",
     {  21,   0,  23,   0,  0},						-- 800
 	  {  10,   0,  22,   0,  36},						-- 810
 	  {  17,   0,  29,   0,  33},						-- 820
@@ -210,7 +210,7 @@ DefineTileset("name", "dungeon",
 	  {  14,   0,  26,   0,  39},						-- 8D0
     {},									-- 8E0
     {}},								-- 8F0
-  "mixed", { "orc-wall", "dark-grass", "land", "wall", "unpassable",
+  "mixed", { "orc-wall", "dark-earth", "land", "wall", "unpassable",
     {  21,   0,  23,   0,  0},						-- 900
 	  {  10,   0,  22,   0,  36},						-- 910
 	  {  17,   0,  29,   0,  33},						-- 920
