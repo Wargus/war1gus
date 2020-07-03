@@ -64,12 +64,57 @@ DefineTileset("name", "Forest",
     { 291, 300, 282, 273 }},					-- 090
   "solid", { "unused",
     {}},					-- 0A0
-  "solid", { "unused",
-    {}},					-- 0B0
-  "solid", { "unused",
-    {}},					-- 0C0
-  "solid", { "unused",
-    {}},								-- 0D0
+  "solid", {
+     "non-mixed-tiles",
+     { 0xb8, {"decorative", "land"},
+       0xb9, {"decorative", "land"},
+       0xba, {"decorative", "land"},
+       0xbb, {"decorative", "land"},
+       0xbc, {"decorative", "land"},
+       0xbd, {"decorative", "land"},
+       0xbe, {"decorative", "land"},
+       0xbf, {"decorative", "land"},
+       0xc0, {"decorative", "land"},
+       0xc1, {"decorative", "land"},
+       0xc2, {"decorative", "land"},
+       0xc3, {"decorative", "land"},
+       0xc4, {"decorative", "land"},
+       0xc5, {"decorative", "land"}}},					-- 0B0
+  "solid", {
+     "non-mixed-tiles",
+     { 0xcb, {"decorative", "land"},
+       0xcc, {"decorative", "land"},
+       0xcd, {"decorative", "land"},
+       0xce, {"decorative", "land"},
+       0xcf, {"decorative", "land"},
+       0xd0, {"decorative", "land"},
+       0xd1, {"decorative", "land"},
+       0xd2, {"decorative", "land"},
+       0xd3, {"decorative", "land"},
+       0xd4, {"decorative", "land"},
+       0xd5, {"decorative", "land"},
+       0xd6, {"decorative", "land"},
+       0xd7, {"decorative", "land"},
+       0xd8, {"decorative", "land"},
+       0xd9, {"decorative", "land"}}},					-- 0C0
+  "solid", {
+     "non-mixed-tiles",
+     { 0xe1, {"decorative", "land"},
+       0xe2, {"decorative", "land"},
+       0xe3, {"decorative", "land"},
+       0xe4, {"decorative", "land"},
+       0xe5, {"decorative", "land"},
+       0xe6, {"decorative", "land"},
+       0xe7, {"decorative", "land"},
+       0xe8, {"decorative", "land"},
+       0xe9, {"decorative", "land"},
+       0xea, {"decorative", "land"},
+       0xeb, {"decorative", "land"},
+       0xec, {"decorative", "land"},
+       0xed, {"decorative", "land"},
+       0xee, {"decorative", "land"},
+       0xef, {"decorative", "land"},
+       0xf0, {"decorative", "land"}}},  -- 0D0
   "solid", { "unused",
     {}},								-- 0E0
   "solid", { "unused",
