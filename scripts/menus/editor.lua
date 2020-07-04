@@ -244,7 +244,7 @@ function RunEditorPlayerProperties()
       race = nil,
       ai = nil,
       gold = nil,
-      lumber = nil,
+      wood = nil,
     }
     local offy_i = 36 + 25 * (i + 1)
     local index = i -- use for local function
@@ -282,13 +282,13 @@ function RunEditorPlayerProperties()
 
   menu:addHalfButton("~!Ok", "o", 1 * (sizeX / 4) - 121 - 10, sizeY - 16 - 27,
     function()
-      for i = 0, 14 do
+       for i = 0, 14 do
         Map.Info.PlayerType[i] = playersProp[1 + i].type:getSelected() + 2
 		Players[i].Type = playersProp[1 + i].type:getSelected() + 2
         Players[i].Race = playersProp[1 + i].race:getSelected()
         Players[i].AiName = ais[1 + playersProp[1 + i].ai:getSelected()]
         Players[i].Resources[1] = playersProp[1 + i].gold:getText()
-        Players[i].Resources[2] = playersProp[1 + i].lumber:getText()
+        Players[i].Resources[2] = playersProp[1 + i].wood:getText()
       end
       menu:stop()
     end)
