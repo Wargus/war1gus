@@ -34,7 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "3.0.0.20200628" // Version of extractor wartool
+#define VERSION "3.0.0.20200704" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2015 by The Stratagus Project"
 
@@ -248,6 +248,7 @@ enum _archive_type_ {
 	U,						// Uncompressed Graphics		(name,pal,gfu)
 	TU, // Tileset unit (for walls and roads)
 	RP, // Tileset ruin parts (for destroyed buildings)
+	LM, // Tileset unit "mine entrance" (as a harvesting building for dungeons)
 	I,						// Image						(name,pal,img)
 	W,						// Wav							(name,wav)
 	M,						// XMI Midi Sound					(name,xmi)
@@ -301,7 +302,12 @@ RuinParts TilesetRuinParts[] = {
 	{ "dungeon-ruins1x1",{ 83 _15 } },
 	{ "forest-wall-construction",{ 34 _15 } },
 	{ "swamp-wall-construction",{ 34 _15 } },
-	{ "dungeon-wall-construction",{ 22 _15 } }
+	{ "dungeon-wall-construction",{ 22 _15 } },
+	{ "dungeon-entrance-4x4",
+	  {0xb5, 0xcd, 0xce, 0x8a,
+	   0x38, 0x49, 0x4a, 0x9f,
+	   0x47, 0x64, 0x65, 0x88,
+       0x61, 0x75, 0x76, 0x60} },
 };
 
 char* ArchiveDir;
@@ -650,6 +656,8 @@ Control Todo[] = {
 {RP,0,"forest/neutral/buildings/wall",190,12,1 _1 },
 {RP,0,"swamp/neutral/buildings/wall",193,13,1 _1 },
 {RP,0,"dungeon/neutral/buildings/wall",196,14,1 _1 },
+
+{LM,0,"dungeon/neutral/buildings/entrance",196,15,4 _1 },
 
 // Missiles
 {U,0,"missiles/fireball",									 217, 347 _2},
@@ -2383,7 +2391,6 @@ int ConvertTilesetUnit(const char* file, int index, int directions_idx)
 	return 0;
 }
 
-
 /**
 **  Convert one ore more tileset mini image to a separate unit png
 */
@@ -4116,6 +4123,7 @@ int main(int argc, char** argv)
 				ConvertTilesetUnit(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2);
 				break;
 			case RP:
+			case LM:
 				ConvertRuin(Todo[u].File, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
 				break;
 			case U:
