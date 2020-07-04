@@ -132,7 +132,12 @@ local units = {
         "wait-at-resource", 24,
         "wait-at-depot", 150,
         "lose-resources",
-        "terrain-harvester"}}},
+        "terrain-harvester"},
+       {"resource-id", "lumber", -- dungeon's harvest wood outside
+        "resource-capacity", 100,
+        "wait-at-resource", 150,
+        "wait-at-depot", 150,
+        "final-resource", "wood"}}},
    {Names = {orc = "Grunt", human = "Footman"},
     Costs = {"time", 60, "gold", 400},
     HitPoints = 60,

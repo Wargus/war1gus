@@ -37,14 +37,16 @@ end
 local townHallBuildingRules = nil
 if (preferences.AllowMultipleTownHalls) then
   townHallBuildingRules = {
-          { "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } } }
+     { "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" },
+       "distance", { Distance = 3, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
 else
   townHallBuildingRules = {
           { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
             "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
 	    "has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
 	    "has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
-            "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" } } }
+            "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" },
+            "distance", { Distance = 3, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
 end
 
 
@@ -135,7 +137,7 @@ local buildings = {
    {Names = {orc = "Town hall", human = "Town hall"},
     Costs = {"time", 100, "gold", 400, "wood", 400},
     HitPoints = 2500,
-    CanStore = {"wood", "gold"},
+    CanStore = {"wood", "gold", "lumber"},
     Supply = 5,
     RepairRange = InfiniteRepairRange,
     BuildingRules = townHallBuildingRules,
@@ -224,6 +226,7 @@ DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
   Type = "land",
   Building = true, VisibleUnderFog = true,
   GivesResource = "gold", CanHarvest = true,
+  MaxOnBoard = 5,
   Sounds = {
     "selected", "gold-mine-selected",
     "acknowledge", "gold-mine-acknowledge",
@@ -231,6 +234,36 @@ DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
     "help", "gold-mine-help",
     "dead", "building destroyed",
 --    "attack", "gold-mine-attack"
+}} )
+
+DefineUnitType(
+   "unit-dungeon-entrance",
+   { Name = "Exit to Forest",
+     Image = {"size", {128, 128},
+              "file", "graphics/tilesets/dungeon/neutral/buildings/entrance_4x4.png"},
+     Animations = "animations-building", Icon = "icon-gold-mine",
+     NeutralMinimapColor = {200, 200, 200},
+  Costs = {"time", 150},
+  Construction = "construction-none",
+--  Speed = 0,
+  HitPoints = 25500,
+  DrawLevel = 40,
+  TileSize = {4, 4}, BoxSize = {128, 128},
+  SightRange = 1,
+  Armor = 20, BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+  Priority = 0,
+  Corpse = "unit-destroyed-4x4-place",
+  ExplodeWhenKilled = "missile-explosion",
+  Type = "land",
+  Building = true, VisibleUnderFog = true,
+  GivesResource = "lumber", CanHarvest = true,
+  MaxOnBoard = 5,
+  Sounds = {
+    "selected", "gold-mine-selected",
+    "acknowledge", "gold-mine-acknowledge",
+    "ready", "gold-mine-ready",
+    "help", "gold-mine-help",
+    "dead", "building destroyed",
 }} )
 
 DefineUnitType(

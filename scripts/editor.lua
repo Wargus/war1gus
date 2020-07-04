@@ -91,6 +91,7 @@ local editor_types = {
   "unit-road",
   "unit-wall",
   "unit-gold-mine",
+  "unit-dungeon-entrance",
   "unit-brigand",
   "unit-daemon",
   "unit-fire-elemental",
