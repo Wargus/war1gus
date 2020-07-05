@@ -34,7 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "3.0.0.20200704" // Version of extractor wartool
+#define VERSION "3.0.0.20200705" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2015 by The Stratagus Project"
 
@@ -1687,7 +1687,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 	const char *to_video;
 	if (uncompressed) {
 		to_video =
-			"%s -y -r %d -pattern_type glob -i \"%s/%s/*.png\" -codec:v huffyuv "
+			"%s -y -r %d -i \"%s-%%04d.png\" -codec:v huffyuv "
 			"-vf scale=640:-1 \"%s\"";
 		output = (char *)calloc(strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(flc) + 1, sizeof(char));
 		sprintf(output, "%s/%s/%s", Dir, VIDEO_PATH, flc);
@@ -1696,7 +1696,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 		output[strlen(output) - 1] = 'i';
 	} else {
 		to_video =
-			"%s -y -r %d -pattern_type glob -i \"%s/%s/*.png\" -codec:v libtheora "
+			"%s -y -r %d -i \"%s-%%04d.png\" -codec:v libtheora "
 			"-qscale:v 10 -codec:a libvorbis -qscale:a 5 -pix_fmt yuv420p -vb 4000k "
 			"-vf scale=640:-1 \"%s\"";
 		output = (char *)calloc(strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(flc) + 1, sizeof(char));
@@ -1707,12 +1707,12 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 	}
 	CheckPath(output);
 
-	cmdlen = strlen(to_video) + 1 /*fps*/ + strlen(encoder) + strlen(Dir) +
+	cmdlen = strlen(to_video) + 1 /*fps*/ + strlen(encoder) + strlen(Dir) + strlen(flc) +
 		strlen(VIDEO_PATH) + strlen(output);
-	cmd = (char *)calloc(strlen(to_video) + strlen(encoder) + strlen(Dir) +
+	cmd = (char *)calloc(strlen(to_video) + strlen(encoder) + strlen(Dir) + strlen(flc) +
 						 strlen(output),
 						 sizeof(char));
-	snprintf(cmd, cmdlen, to_video, encoder, speed, Dir, VIDEO_PATH, output);
+	snprintf(cmd, cmdlen, to_video, encoder, speed, file->FLCFile, output);
 	printf("%s\n", cmd);
 	system(cmd);
 	free(cmd);
