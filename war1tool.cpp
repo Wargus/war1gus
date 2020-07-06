@@ -3882,7 +3882,7 @@ void copyArchive(const char* partialPath) {
 		return;
 	}
 
-	source = fopen(srcname, "r");
+	source = fopen(srcname, "rb");
 	if (source == NULL) {
 		fclose(target);
 		fprintf(stderr, "Cannot copy %s...\n", srcname);
