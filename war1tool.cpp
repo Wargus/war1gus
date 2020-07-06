@@ -355,7 +355,7 @@ Control Todo[] = {
 {FLC,0,"omap10.war",										 1 __},
 {FLC,0,"omap11.war",										 1 __},
 {FLC,0,"omap12.war",										 1 __},
-{FLC,0,"title.war",											 0,  1, 1, 0},
+{FLC,0,"title.war",											 40,  1, 1, 0},
 {FLC,0,"win1.war",											 0 __},
 {FLC,0,"win2.war",											 0 __},
 
@@ -1723,7 +1723,11 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 		FILE *in, *out;
 
 		pngname = (char *)calloc(strlen(file->FLCFile) + strlen("-0000.png") + 1, sizeof(char));
-		sprintf(pngname, "%s-0000.png", file->FLCFile);
+		if (stillImage > 1) {
+			sprintf(pngname, "%s-%04d.png", file->FLCFile, stillImage);
+		} else {
+			sprintf(pngname, "%s-0000.png", file->FLCFile);
+		}
 		in = fopen(pngname, "r");
 		free(pngname);
 

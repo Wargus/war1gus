@@ -337,7 +337,7 @@ else
    Preference.ShowOrders = 0
 end
 
-if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") and file_exists("videos", "cave.ogv") and file_exists("videos", "title.ogv") and preferences.PlayIntro then
+if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") and file_exists("videos", "cave.ogv") and file_exists("videos", "title.ogv") then
    SetTitleScreens(
       {Image = "ui/logo.png",
        Music = "sounds/logo.wav",
@@ -351,9 +351,7 @@ if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") a
       {Image = "videos/title.ogv",
        Iterations = 1}
    )
-   preferences.PlayIntro = false
-   SavePreferences()
-elseif file_exists("videos", "intro.ogv") and preferences.PlayIntro then
+elseif file_exists("videos", "intro.ogv") then
    SetTitleScreens(
       {Image = "ui/logo.png",
        Music = "sounds/logo.wav",
@@ -361,8 +359,6 @@ elseif file_exists("videos", "intro.ogv") and preferences.PlayIntro then
       {Image = "videos/intro.ogv",
        Iterations = 1}
    )
-   preferences.PlayIntro = false
-   SavePreferences()
 else
    SetTitleScreens(
       {Image = "ui/logo.png",
