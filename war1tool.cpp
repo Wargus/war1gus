@@ -1728,7 +1728,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 		} else {
 			sprintf(pngname, "%s-0000.png", file->FLCFile);
 		}
-		in = fopen(pngname, "r");
+		in = fopen(pngname, "rb");
 		free(pngname);
 
 		output = (char *)calloc(strlen(Dir) + 1 + strlen(GRAPHIC_PATH) + 1 +
@@ -1739,7 +1739,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 		output[strlen(output) - 2] = 'n';
 		output[strlen(output) - 1] = 'g';
 		CheckPath(output);
-		out = fopen(output, "w");
+		out = fopen(output, "wb");
 		free(output);
 
 		while (1) {
