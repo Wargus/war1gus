@@ -1932,10 +1932,10 @@ void MuxIntroVideos() {
 							 "intro_3.wav", "intro_door.wav",
 							 "intro_4.wav",
 							 "intro_5.wav"};
-	static const char* videos[] = {"hintro1.ogv", "hintro2.ogv",
-							 "ointro1.ogv", "ointro2.ogv", "ointro3.ogv",
-							 "cave1.ogv", "cave2.ogv", "cave3.ogv",
-							 "title.ogv"};
+	static const char* videos[] = {"hintro1.avi", "hintro2.avi",
+							 "ointro1.avi", "ointro2.avi", "ointro3.avi",
+							 "cave1.avi", "cave2.avi", "cave3.avi",
+							 "title.avi"};
 
 	int repeats[] = {1, 12,
 			 1, 18, 1,
@@ -4163,11 +4163,11 @@ int main(int argc, char** argv)
 	}
 
 	if (video) {
-// #ifdef WIN32
-// 	    MuxIntroVideos();
-// #else
+#ifdef WIN32
+	    MuxIntroVideos();
+#else
 	    MuxAllIntroVideos();
-// #endif
+#endif
 	}
 
 	CreateConfig(Dir, video, midi);
