@@ -634,7 +634,13 @@ Load("scripts/menus/results.lua")
 --[[
 --]]
 
-if false then -- Debugging
+if (Editor.Running == EditorCommandLine) then
+  if (CliMapName and CliMapName ~= "") then
+    StartEditor(CliMapName)
+  else
+    RunEditorMenu()
+  end
+elseif false then -- Debugging
   Load("scripts/campaigns.lua")
   race = "human"
   campaign = CreateCampaign(race)
