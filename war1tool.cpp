@@ -1877,191 +1877,40 @@ void ConvertFLC_Manual(const char* file, const char* flc, int keepStill, int iRe
 	free(filestruct.FLCImage);
 	free(filestruct.FLCImage2);
 }
-/**
-**  Convert FLC using ffmpeg resp. avconv. Manual conversion into PNGs (see git history) and
-**  then into ogv should produce better results. Until then,
-**  just convert directly, and live with the direct conversion bugs.
-*/
-void ConvertFLC(const char* file, const char* iflc)
-{
-	char* flc;
-	int ret;
-	int cmdlen;
-	char *cmd, *output, *outputPath;
-	const char *cmdprefix = "ffmpeg -y -i ";
-	const char *outputOptions = " -codec:v libtheora -qscale:v 31 -codec:a libvorbis -qscale:a 15 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
-
-	flc = strdup(iflc);
-	for (int i = 0; i < strlen(flc); i++) {
-		flc[i] = tolower(flc[i]);
-	}
-
-	output = (char*)calloc(sizeof(char), strlen(flc) + 1);
-	strcpy(output, flc);
-	output[strlen(output) - 3] = 'o';
-	output[strlen(output) - 2] = 'g';
-	output[strlen(output) - 1] = 'v';
-
-	outputPath = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(output) + 1);
-	sprintf(outputPath, "%s/%s/%s", Dir, VIDEO_PATH, output);
-	CheckPath(outputPath);
-
-	cmdlen = strlen(cmdprefix) + 2 + strlen(file) + strlen(outputOptions) + 3 + strlen(outputPath) + 4;
-	cmd = (char*)calloc(sizeof(char), cmdlen);
-	snprintf(cmd, cmdlen - 1, "%s \"%s\"%s\"%s\"", cmdprefix, file, outputOptions, outputPath);
-	ret = system(cmd);
-	if (ret != 0) { // try avconv
-		strncpy(cmd, "avconv", 6);
-		ret = system(cmd);
-	}
-
-	if (ret != 0) {
-		printf("Can't convert video %s to ogv format. Is ffmpeg/avconv installed in PATH?\n", file);
-		fflush(stdout);	
-	}
-	free(outputPath);
-	free(cmd);
-	free(output);
-}
-
-/**
-** Mux intro music and video using ffmpeg. TODO: find a way to do this inline
-*/
-void MuxIntroVideos() {
-	static const char* audios[] = {"intro_1.wav", "intro_2.wav",
-							 "intro_3.wav", "intro_door.wav",
-							 "intro_4.wav",
-							 "intro_5.wav"};
-	static const char* videos[] = {"hintro1.avi", "hintro2.avi",
-							 "ointro1.avi", "ointro2.avi", "ointro3.avi",
-							 "cave1.avi", "cave2.avi", "cave3.avi",
-							 "title.avi"};
-
-	int i, j, ret;
-	size_t readM;
-	char *cmd, *outputVideo, *outputAudio, *inputAudio, *outputIntro, *buf;
-	const char *cmdprefix = "ffmpeg -y -f concat -i ";
-	const char *cmdsuffixVideo = " -codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
-	const char *cmdsuffixAudio = " -codec:a libvorbis -qscale:a 15 ";
-	const char *encoderIntroOpts = " -codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
-	FILE* mylist;
-	char listfile[2048] = { '\0' };
-	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
-
-	// VIDEO
-	mylist = fopen(listfile, "w");
-	for (i = 0; i < 9; i++) {
-		fprintf(mylist, "file '%s'\n", videos[i]);
-	}
-	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
-	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixVideo) + strlen(outputVideo) + 4);
-	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixVideo, outputVideo);
-	fclose(mylist);
-	printf("%s\n\n", cmd);
-	fflush(stdout);
-	ret = system(cmd);
-	if (ret != 0) { // try avconv
-		strncpy(cmd, "avconv", 6);
-		ret = system(cmd);
-	}
-	if (ret != 0) {
-		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
-		fflush(stdout);
-		return;
-	}
-	free(cmd);
-	unlink(listfile);
-
-	// AUDIO
-	sprintf(listfile, "%s/%s/mylist.txt", Dir, SOUND_PATH);
-	mylist = fopen(listfile, "w");
-	for (i = 0; i < 6; i++) {
-		fprintf(mylist, "file '%s'\n", audios[i]);
-	}
-	outputAudio = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen("INTRO.ogg") + 2);
-	sprintf(outputAudio, "\"%s/%s/INTRO.ogg\"", Dir, SOUND_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + (strlen(listfile) + 2) + strlen(cmdsuffixAudio) + strlen(outputAudio) + 4);
-	sprintf(cmd, "%s \"%s\" %s %s", cmdprefix, listfile, cmdsuffixAudio, outputAudio);
-	fclose(mylist);
-	printf("%s\n\n", cmd);
-	fflush(stdout);
-	ret = system(cmd);
-	if (ret != 0) { // try avconv
-		strncpy(cmd, "avconv", 6);
-		ret = system(cmd);
-	}
-	if (ret != 0) {
-		printf("Can't concat intro videos. Is ffmpeg/avconv installed in PATH?\n");
-		fflush(stdout);
-		return;
-	}
-	free(cmd);
-	unlink(listfile);
-
-	// Mux
-	cmdprefix = "ffmpeg -y ";
-	outputIntro = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("intro.ogv") + 2);
-	sprintf(outputIntro, "\"%s/%s/intro.ogv\"", Dir, VIDEO_PATH);
-	cmd = (char*)calloc(sizeof(char), strlen(cmdprefix) + 1 +
- 			    strlen("-i") + 1 + strlen(outputVideo) + 1 +
-			    strlen("-i") + 1 + strlen(outputAudio) + 1 +
-			    1 + strlen(encoderIntroOpts) + 1 +
-			    1 + strlen(outputIntro) + 2);
-	sprintf(cmd, "%s -i %s -i %s %s %s", cmdprefix, outputVideo, outputAudio, encoderIntroOpts, outputIntro);
-	printf("%s\n", cmd);
- 	ret = system(cmd);
-	if (ret != 0) { // try avconv
-		strncpy(cmd, "avconv", 6);
-		ret = system(cmd);
-	}
- 	if (ret != 0) {
-		printf("Can't mux intro video and audio. Is ffmpeg/avconv installed in PATH?\n");
-		fflush(stdout);
-	}
-	free(outputIntro);
-	free(cmd);
-
-	// remove unneeded files
-	for (i = 0; i < 9; i++) {
-		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(videos[i]) + 1);
-		sprintf(buf, "%s/%s/%s", Dir, VIDEO_PATH, videos[i]);
-		unlink(buf);
-		free(buf);
-	}
-	for (i = 0; i < 6; i++) {
-		buf = (char*)calloc(sizeof(char), strlen(Dir) + 1 + strlen(SOUND_PATH) + 1 + strlen(audios[i]) + 1);
-		sprintf(buf, "%s/%s/%s", Dir, SOUND_PATH, audios[i]);
-		unlink(buf);
-		free(buf);
-	}
-
-	// remove quotes, then unlink
-	outputAudio[strlen(outputAudio) - 1] = '\0';
-	outputVideo[strlen(outputVideo) - 1] = '\0';
-	unlink(outputAudio + 1);
-	unlink(outputVideo + 1);
-	free(outputAudio);
-	free(outputVideo);
-}
 
 #define STATIC_CMD_SIZE 32768
 void MuxAllIntroVideos() {
 	struct dirent *ep;
 	DIR *dp;
-	char cmd[STATIC_CMD_SIZE] = {'\0'};	
+	char cmd[STATIC_CMD_SIZE] = {'\0'};
+
+	FILE* mylist;
+	char listfile[2048] = { '\0' };
+	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
 
 	// Castle sequence
-	const char* cmd1v = "ffmpeg -y -i %s/%s/hintro1.avi -i %s/%s/hintro2.avi "
-		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
-		"-map '[out]' -codec:v huffyuv %s/%s/hintro_v.avi";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	// const char* cmd1v = "ffmpeg -y -i %s/%s/hintro1.avi -i %s/%s/hintro2.avi "
+	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
+	// 	"-map '[out]' -codec:v huffyuv %s/%s/hintro_v.avi";
+	mylist = fopen(listfile, "w");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "hintro1.avi");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "hintro2.avi");
+	fclose(mylist);
+	const char* cmd1v = "ffmpeg -y -f concat -safe 0 -i %s "
+		"-codec:v huffyuv %s/%s/hintro_v.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd1a = "ffmpeg -y -i %s/%s/intro_1.wav -i %s/%s/intro_2.wav "
-		"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
-		"-map '[out]' %s/%s/hintro_a.wav";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, Dir, SOUND_PATH, Dir, SOUND_PATH, Dir, SOUND_PATH);
+	// const char* cmd1a = "ffmpeg -y -f concat -safe 0 -i -i %s/%s/intro_1.wav -i %s/%s/intro_2.wav "
+	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
+	// 	"-map '[out]' %s/%s/hintro_a.wav";
+	mylist = fopen(listfile, "w");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_1.wav");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_2.wav");
+	fclose(mylist);
+	const char* cmd1a = "ffmpeg -y -f concat -safe 0 -i %s "
+		" %s/%s/hintro_a.wav";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, listfile, Dir, SOUND_PATH);
 	system(cmd);
 
 	const char* cmd1 = "ffmpeg -y -i %s/%s/hintro_v.avi -i %s/%s/hintro_a.wav "
@@ -2070,10 +1919,16 @@ void MuxAllIntroVideos() {
 	system(cmd);
 
 	// Blackrock sequence
-	const char* cmd2v = "ffmpeg -y -i %s/%s/ointro1.avi -i %s/%s/ointro2.avi "
-		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
-		"-map '[out]' -codec:v huffyuv %s/%s/ointro_v.avi";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	// const char* cmd2v = "ffmpeg -y -i %s/%s/ointro1.avi -i %s/%s/ointro2.avi "
+	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
+	// 	"-map '[out]' -codec:v huffyuv %s/%s/ointro_v.avi";
+	mylist = fopen(listfile, "w");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "ointro1.avi");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "ointro2.avi");
+	fclose(mylist);
+	const char* cmd2v = "ffmpeg -y -f concat -safe 0 -i %s "
+		"-codec:v huffyuv %s/%s/ointro_v.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
 
 	const char* cmd2 = "ffmpeg -y -i %s/%s/ointro_v.avi -i %s/%s/intro_3.wav "
@@ -2082,16 +1937,29 @@ void MuxAllIntroVideos() {
 	system(cmd);
 
 	// Cave sequence
-	const char* cmd3v = "ffmpeg -y -i %s/%s/ointro3.avi -i %s/%s/cave1.avi -i %s/%s/cave2.avi "
-		"-filter_complex '[0:0][1:0][2:0]concat=n=3:v=1:a=0[out]' "
-		"-map '[out]' -codec:v huffyuv %s/%s/cave_v.avi";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	// const char* cmd3v = "ffmpeg -y -i %s/%s/ointro3.avi -i %s/%s/cave1.avi -i %s/%s/cave2.avi "
+	// 	"-filter_complex '[0:0][1:0][2:0]concat=n=3:v=1:a=0[out]' "
+	// 	"-map '[out]' -codec:v huffyuv %s/%s/cave_v.avi";
+	mylist = fopen(listfile, "w");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "ointro3.avi");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "cave1.avi");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "cave2.avi");
+	fclose(mylist);
+	const char* cmd3v = "ffmpeg -y -f concat -safe 0 -i %s "
+		"-codec:v huffyuv %s/%s/cave_v.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd3a = "ffmpeg -y -i %s/%s/intro_door.wav -i %s/%s/intro_4.wav "
-		"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
-		"-map '[out]' %s/%s/cave_a.wav";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, Dir, SOUND_PATH, Dir, SOUND_PATH, Dir, SOUND_PATH);
+	// const char* cmd3a = "ffmpeg -y -i %s/%s/intro_door.wav -i %s/%s/intro_4.wav "
+	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
+	// 	"-map '[out]' %s/%s/cave_a.wav";
+	mylist = fopen(listfile, "w");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_door.wav");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_4.wav");
+	fclose(mylist);
+	const char* cmd3a = "ffmpeg -y -f concat -safe 0 -i %s "
+		"%s/%s/cave_a.wav";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, listfile, Dir, SOUND_PATH);
 	system(cmd);
 
 	const char* cmd3 = "ffmpeg -y -i %s/%s/cave_v.avi -i %s/%s/cave_a.wav "
@@ -2105,16 +1973,24 @@ void MuxAllIntroVideos() {
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4t, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd4v = "ffmpeg -y -i %s/%s/cave3.avi -i %s/%s/title_s.avi "
-		"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
-		"-map '[out]' -codec:v huffyuv %s/%s/title_v.avi";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4v, Dir, VIDEO_PATH, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
+	// const char* cmd4v = "ffmpeg -y -i %s/%s/cave3.avi -i %s/%s/title_s.avi "
+	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
+	// 	"-map '[out]' -codec:v huffyuv %s/%s/title_v.avi";
+	mylist = fopen(listfile, "w");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "cave3.avi");
+	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "title_s.avi");
+	fclose(mylist);
+	const char* cmd4v = "ffmpeg -y -f concat -safe 0 -i %s "
+		"-codec:v huffyuv %s/%s/title_v.avi";
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
 
 	const char* cmd4 = "ffmpeg -y -i %s/%s/title_v.avi -i %s/%s/intro_5.wav "
 		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15  %s/%s/title.ogv";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
+
+	unlink(listfile);
 
 	// delete uncompressed videos
 	sprintf(cmd, "%s/%s", Dir, VIDEO_PATH);
@@ -4103,12 +3979,7 @@ int main(int argc, char** argv)
 				}
 				if (video) {
 					sprintf(buf, "%s/%s", ArchiveDir, todoFile);
-// #ifdef WIN32
-// 					// On Windows, manual conversion doesn't seem to work right
-// 					ConvertFLC(buf, todoFile);
-// #else
 					ConvertFLC_Manual(buf, todoFile, Todo[u].Arg1, Todo[u].Arg2, Todo[u].Arg3);
-// #endif
 				}
 				copyArchive(todoFile);
 				free(todoFile);
@@ -4156,11 +4027,7 @@ int main(int argc, char** argv)
 	}
 
 	if (video) {
-#ifdef WIN32
-	    MuxIntroVideos();
-#else
 	    MuxAllIntroVideos();
-#endif
 	}
 
 	CreateConfig(Dir, video, midi);
