@@ -34,7 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "3.0.0.20200705" // Version of extractor wartool
+#define VERSION "3.0.0.20200718" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2015 by The Stratagus Project"
 
@@ -1697,7 +1697,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 	} else {
 		to_video =
 			"%s -y -r %d -i \"%s-%%04d.png\" -codec:v libtheora "
-			"-qscale:v 10 -codec:a libvorbis -qscale:a 5 -pix_fmt yuv420p -vb 4000k "
+			"-qscale:v 31 -codec:a libvorbis -qscale:a 15 -pix_fmt yuv420p -vb 4000k "
 			"-vf scale=640:-1 \"%s\"";
 		output = (char *)calloc(strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(flc) + 1, sizeof(char));
 		sprintf(output, "%s/%s/%s", Dir, VIDEO_PATH, flc);
@@ -1937,18 +1937,13 @@ void MuxIntroVideos() {
 							 "cave1.avi", "cave2.avi", "cave3.avi",
 							 "title.avi"};
 
-	int repeats[] = {1, 12,
-			 1, 18, 1,
-			 1, 4, 1,
-			 1};
-
 	int i, j, ret;
 	size_t readM;
 	char *cmd, *outputVideo, *outputAudio, *inputAudio, *outputIntro, *buf;
 	const char *cmdprefix = "ffmpeg -y -f concat -i ";
-	const char *cmdsuffixVideo = " -c copy ";
-	const char *cmdsuffixAudio = " -acodec libvorbis";
-	const char *encoderIntroOpts = " -c copy ";
+	const char *cmdsuffixVideo = " -codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
+	const char *cmdsuffixAudio = " -codec:a libvorbis -qscale:a 15 ";
+	const char *encoderIntroOpts = " -codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -vf scale=640:-1 ";
 	FILE* mylist;
 	char listfile[2048] = { '\0' };
 	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
@@ -1956,9 +1951,7 @@ void MuxIntroVideos() {
 	// VIDEO
 	mylist = fopen(listfile, "w");
 	for (i = 0; i < 9; i++) {
-		for (j = 0; j < repeats[i]; j++) {
-			fprintf(mylist, "file '%s'\n", videos[i]);
-		}
+		fprintf(mylist, "file '%s'\n", videos[i]);
 	}
 	outputVideo = (char*)calloc(sizeof(char), 1 + strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen("INTRO.ogg") + 2);
 	sprintf(outputVideo, "\"%s/%s/INTRO.ogg\"", Dir, VIDEO_PATH);
@@ -2072,7 +2065,7 @@ void MuxAllIntroVideos() {
 	system(cmd);
 
 	const char* cmd1 = "ffmpeg -y -i %s/%s/hintro_v.avi -i %s/%s/hintro_a.wav "
-		"-codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 5 %s/%s/hintro.ogv";
+		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 %s/%s/hintro.ogv";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -2084,7 +2077,7 @@ void MuxAllIntroVideos() {
 	system(cmd);
 
 	const char* cmd2 = "ffmpeg -y -i %s/%s/ointro_v.avi -i %s/%s/intro_3.wav "
-		"-codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 5 %s/%s/ointro.ogv";
+		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 %s/%s/ointro.ogv";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -2102,7 +2095,7 @@ void MuxAllIntroVideos() {
 	system(cmd);
 
 	const char* cmd3 = "ffmpeg -y -i %s/%s/cave_v.avi -i %s/%s/cave_a.wav "
-		"-codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 5 %s/%s/cave.ogv";
+		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 %s/%s/cave.ogv";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -2119,7 +2112,7 @@ void MuxAllIntroVideos() {
 	system(cmd);
 
 	const char* cmd4 = "ffmpeg -y -i %s/%s/title_v.avi -i %s/%s/intro_5.wav "
-		"-codec:v libtheora -qscale:v 10 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 5  %s/%s/title.ogv";
+		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15  %s/%s/title.ogv";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
