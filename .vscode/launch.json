@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "War1tool",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Debug/war1tool.exe",
+            "args": ["-v", "${input:datadir}", "${env:APPDATA}/Stratagus/data.War1gus"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [{"name": "PATH", "value": "${workspaceFolder}\\..\\dependencies\\bin;${env:PATH}"}],
+            "externalConsole": true
+        }
+    ],
+    "inputs": [
+        {
+          "type": "promptString",
+          "id": "datadir",
+          "description": "Enter path to DATA folder"
+        },
+    ]
+}

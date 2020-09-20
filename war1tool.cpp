@@ -1887,14 +1887,21 @@ void MuxAllIntroVideos() {
 	FILE* mylist;
 	char listfile[2048] = { '\0' };
 	sprintf(listfile, "%s/%s/mylist.txt", Dir, VIDEO_PATH);
+	char listfileSound[2048] = { '\0' };
+	sprintf(listfileSound, "%s/%s/mylist.txt", Dir, SOUND_PATH);
 
 	// Castle sequence
 	// const char* cmd1v = "ffmpeg -y -i %s/%s/hintro1.avi -i %s/%s/hintro2.avi "
 	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
 	// 	"-map '[out]' -codec:v huffyuv %s/%s/hintro_v.avi";
 	mylist = fopen(listfile, "w");
+	#ifdef WIN32
+	fprintf(mylist, "file '%s'\n", "hintro1.avi");
+	fprintf(mylist, "file '%s'\n", "hintro2.avi");
+	#else
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "hintro1.avi");
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "hintro2.avi");
+	#endif
 	fclose(mylist);
 	const char* cmd1v = "ffmpeg -y -f concat -safe 0 -i %s "
 		"-codec:v huffyuv %s/%s/hintro_v.avi";
@@ -1904,13 +1911,18 @@ void MuxAllIntroVideos() {
 	// const char* cmd1a = "ffmpeg -y -f concat -safe 0 -i -i %s/%s/intro_1.wav -i %s/%s/intro_2.wav "
 	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
 	// 	"-map '[out]' %s/%s/hintro_a.wav";
-	mylist = fopen(listfile, "w");
+	mylist = fopen(listfileSound, "w");
+	#ifdef WIN32
+	fprintf(mylist, "file '%s'\n", "intro_1.wav");
+	fprintf(mylist, "file '%s'\n", "intro_2.wav");
+	#else
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_1.wav");
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_2.wav");
+	#endif
 	fclose(mylist);
 	const char* cmd1a = "ffmpeg -y -f concat -safe 0 -i %s "
 		" %s/%s/hintro_a.wav";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, listfile, Dir, SOUND_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, listfileSound, Dir, SOUND_PATH);
 	system(cmd);
 
 	const char* cmd1 = "ffmpeg -y -i %s/%s/hintro_v.avi -i %s/%s/hintro_a.wav "
@@ -1923,8 +1935,13 @@ void MuxAllIntroVideos() {
 	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
 	// 	"-map '[out]' -codec:v huffyuv %s/%s/ointro_v.avi";
 	mylist = fopen(listfile, "w");
+	#ifdef WIN32
+	fprintf(mylist, "file '%s'\n", "ointro1.avi");
+	fprintf(mylist, "file '%s'\n", "ointro2.avi");
+	#else
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "ointro1.avi");
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "ointro2.avi");
+	#endif
 	fclose(mylist);
 	const char* cmd2v = "ffmpeg -y -f concat -safe 0 -i %s "
 		"-codec:v huffyuv %s/%s/ointro_v.avi";
@@ -1941,9 +1958,15 @@ void MuxAllIntroVideos() {
 	// 	"-filter_complex '[0:0][1:0][2:0]concat=n=3:v=1:a=0[out]' "
 	// 	"-map '[out]' -codec:v huffyuv %s/%s/cave_v.avi";
 	mylist = fopen(listfile, "w");
+	#ifdef WIN32
+	fprintf(mylist, "file '%s'\n", "ointro3.avi");
+	fprintf(mylist, "file '%s'\n", "cave1.avi");
+	fprintf(mylist, "file '%s'\n", "cave2.avi");
+	#else
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "ointro3.avi");
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "cave1.avi");
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "cave2.avi");
+	#endif
 	fclose(mylist);
 	const char* cmd3v = "ffmpeg -y -f concat -safe 0 -i %s "
 		"-codec:v huffyuv %s/%s/cave_v.avi";
@@ -1953,13 +1976,18 @@ void MuxAllIntroVideos() {
 	// const char* cmd3a = "ffmpeg -y -i %s/%s/intro_door.wav -i %s/%s/intro_4.wav "
 	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=0:a=1[out]' "
 	// 	"-map '[out]' %s/%s/cave_a.wav";
-	mylist = fopen(listfile, "w");
+	mylist = fopen(listfileSound, "w");
+	#ifdef WIN32
+	fprintf(mylist, "file '%s'\n", "intro_door.wav");
+	fprintf(mylist, "file '%s'\n", "intro_4.wav");
+	#else
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_door.wav");
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_4.wav");
+	#endif
 	fclose(mylist);
 	const char* cmd3a = "ffmpeg -y -f concat -safe 0 -i %s "
 		"%s/%s/cave_a.wav";
-	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, listfile, Dir, SOUND_PATH);
+	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, listfileSound, Dir, SOUND_PATH);
 	system(cmd);
 
 	const char* cmd3 = "ffmpeg -y -i %s/%s/cave_v.avi -i %s/%s/cave_a.wav "
@@ -1968,8 +1996,13 @@ void MuxAllIntroVideos() {
 	system(cmd);
 
 	// Title sequence
+	#ifdef WIN32
+	const char* cmd4t = "ffmpeg -i %s/%s/title.avi -codec:v huffyuv "
+	    "%s/%s/title_s.avi"; // video filter crop not supported on windows
+	#else
 	const char* cmd4t = "ffmpeg -i %s/%s/title.avi -codec:v huffyuv "
 		"-vf 'crop=640:288:0:0' %s/%s/title_s.avi";
+	#endif
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4t, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -1977,8 +2010,13 @@ void MuxAllIntroVideos() {
 	// 	"-filter_complex '[0:0][1:0]concat=n=2:v=1:a=0[out]' "
 	// 	"-map '[out]' -codec:v huffyuv %s/%s/title_v.avi";
 	mylist = fopen(listfile, "w");
+	#ifdef WIN32
+	fprintf(mylist, "file '%s'\n", "cave3.avi");
+	fprintf(mylist, "file '%s'\n", "title_s.avi");
+	#else
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "cave3.avi");
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "title_s.avi");
+	#endif
 	fclose(mylist);
 	const char* cmd4v = "ffmpeg -y -f concat -safe 0 -i %s "
 		"-codec:v huffyuv %s/%s/title_v.avi";
@@ -1991,6 +2029,7 @@ void MuxAllIntroVideos() {
 	system(cmd);
 
 	unlink(listfile);
+	unlink(listfileSound);
 
 	// delete uncompressed videos
 	sprintf(cmd, "%s/%s", Dir, VIDEO_PATH);
@@ -3836,6 +3875,125 @@ destination-directory\tDirectory where the extracted files are placed (default: 
 	       DEFAULT_DATA_DIR);
 }
 
+#ifdef WIN32
+#include <tchar.h>
+#include <io.h>
+
+#define BUFSIZE 4096
+#define VARNAME TEXT("APPDATA")
+#define GAMEDIR TEXT("\\Stratagus")
+#define LOGFILE TEXT("\\war1tool.txt")
+
+static int stdoutTeeFds[3] = {0, 0, 0};
+static int stderrTeeFds[3] = {0, 0, 0};
+static int stdoutPipes[2] = {0, 0};
+static int stderrPipes[2] = {0, 0};
+static HANDLE threadStdout;
+static HANDLE threadStderr;\
+
+DWORD WINAPI ThreadFunc(void* data) {
+	int *fds = (int*) data;
+	int readPipe = fds[0];
+	int oldStd = fds[1];
+	int logfile = fds[2];
+	bool eof = false;
+
+	while (!eof) {
+		char c[256] = {'\0'};
+		int cnt = 0;
+		if ((cnt = _read(readPipe, c, 256)) > 0) {
+			_write(oldStd, c, cnt);
+			_lseek(logfile, 0, SEEK_END);
+			_write(logfile, c, cnt);
+		} else {
+			eof = true;
+		}
+	}
+	_commit(logfile);
+	return 0;
+}
+
+void teeStdout() {
+	int stdDuplicates[2] = {0, 0};
+	stdDuplicates[0] = _dup(1);
+	stdDuplicates[1] = _dup(2);
+	if (_pipe(stdoutPipes, 256, _O_BINARY) != 0) {
+		fprintf(stderr, "Pipe error!\n");
+		exit(1);
+	}
+	if (_pipe(stderrPipes, 256, _O_BINARY) != 0) {
+		fprintf(stderr, "Pipe error!\n");
+		exit(1);
+	}
+
+	LPTSTR appdataVal = (LPTSTR) malloc(BUFSIZE*sizeof(TCHAR));
+    if (appdataVal == NULL) {
+        printf("Out of memory\n");
+        exit(1);
+    }
+    DWORD dwRet = GetEnvironmentVariable(VARNAME, appdataVal, BUFSIZE);
+	if (dwRet > BUFSIZE) {
+		appdataVal = (LPTSTR) realloc(appdataVal, dwRet*sizeof(TCHAR));
+		GetEnvironmentVariable(VARNAME, appdataVal, BUFSIZE);
+	}
+	// assume that %APPDATA% exists
+	LPTSTR stdoutpath = (LPTSTR) calloc(dwRet + _tcslen(GAMEDIR) + _tcslen(LOGFILE) + 1, sizeof(TCHAR));
+	_tcscat(stdoutpath, appdataVal);
+	_tcscat(stdoutpath, GAMEDIR);
+	_tmkdir(stdoutpath);
+	_tcscat(stdoutpath, LOGFILE);
+	int logfilefd = _topen(stdoutpath, _O_WRONLY | _O_CREAT | _O_BINARY | _O_TRUNC, _S_IWRITE);
+
+    // make stdout/stderr write into the write ends of the pipes
+	_dup2(stdoutPipes[1], 1);
+	_dup2(stderrPipes[1], 2);
+	// start a thread to read from the read ends of those pipes, and write to the old stdout/stderr and to a logfile
+
+	stdoutTeeFds[0] = stdoutPipes[0];
+	stdoutTeeFds[1] = stdDuplicates[0];
+	stdoutTeeFds[2] = logfilefd;
+	threadStdout = CreateThread(NULL, 0, ThreadFunc, stdoutTeeFds, 0, NULL);
+	if (!threadStdout) {
+		fprintf(stderr, "Thread error!\n");
+		exit(1);
+	}
+
+	stderrTeeFds[0] = stderrPipes[0];
+	stderrTeeFds[1] = stdDuplicates[1];
+	stderrTeeFds[2] = logfilefd;
+	threadStderr = CreateThread(NULL, 0, ThreadFunc, stderrTeeFds, 0, NULL);
+	if (!threadStderr) {
+		fprintf(stderr, "Thread error!\n");
+		exit(1);
+	}
+}
+
+void endTee() {
+	// redirect stdout back to the original
+	_dup2(stdoutTeeFds[1], 1);
+	// close write end of pipe
+	_close(stdoutPipes[1]);
+	// redirect stderr back to the original
+	_dup2(stderrTeeFds[1], 2);
+	// close write end of pipe
+	_close(stderrPipes[1]);
+	// join threads
+	WaitForSingleObject(threadStdout, INFINITE);
+	WaitForSingleObject(threadStderr, INFINITE);
+
+	_close(stdoutPipes[0]);
+	_close(stderrPipes[0]);
+
+	CloseHandle(threadStdout);
+	CloseHandle(threadStderr);
+}
+#else
+void teeStdout() {
+}
+void endTee() {
+}
+#endif
+
 /**
 **  Main
 */
@@ -3850,6 +4008,9 @@ int main(int argc, char** argv)
 	struct stat st;
 	int midi, video;
 	const char* dirs[4] = {0x0};
+
+	teeStdout();
+
 	video = midi = 0;
 
 	a = 1;
@@ -4047,6 +4208,9 @@ int main(int argc, char** argv)
 	printf("War1gus data setup is now complete\n");
 	printf("Note: you do not need to run this again, unless the extractor version changes\n");
 	fflush(stdout);
+	fflush(stderr);
+
+	endTee();
 
 	return 0;
 }
