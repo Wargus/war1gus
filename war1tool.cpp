@@ -320,7 +320,7 @@ Control Todo[] = {
 #define _2  ,0,0,
 #define _1  ,0
 {FLC,0,"cave1.war",											 0,  1, 1, 0},
-{FLC,0,"cave2.war",											 0,  4, 1, 0},
+{FLC,0,"cave2.war",											 0,  6, 1, 0},
 {FLC,0,"cave3.war",											 0,  1, 1, 0},
 {FLC,0,"hfinale.war",										 0,  2, 0, 0},
 {FLC,0,"hintro1.war",										 0,  1, 1, 0},
