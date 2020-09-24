@@ -202,7 +202,8 @@ function HandleCheats(str)
   elseif (string.find(str, "eval") == 1) then
      local code = str:gsub("^eval%s", "")
      AddMessage("Running: " .. code)
-     local result = loadstring(code)
+     local result = loadstring("return " .. code)
+     result = result()
      AddMessage(" => " .. tostring(result))
   else
     return false
