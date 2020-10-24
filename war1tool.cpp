@@ -4009,8 +4009,6 @@ int main(int argc, char** argv)
 	int midi, video;
 	const char* dirs[4] = {0x0};
 
-	teeStdout();
-
 	video = midi = 0;
 
 	a = 1;
@@ -4047,6 +4045,8 @@ int main(int argc, char** argv)
 		Usage(argv[0]);
 		exit(-1);
 	}
+
+	teeStdout();
 
 	ArchiveDir = argv[a];
 	archive_dir = (char*)calloc(sizeof(char), strlen(ArchiveDir) + strlen("fdata") + 1);
