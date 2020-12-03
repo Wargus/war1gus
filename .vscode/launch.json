@@ -2,14 +2,20 @@
     "configurations": [
         {
             "name": "War1tool",
-            "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Debug/war1tool.exe",
-            "args": ["-v", "${input:datadir}", "${env:APPDATA}/Stratagus/data.War1gus"],
+            "type": "cppdbg",
+            "windows": {
+                "type": "cppvsdbg",
+                "program": "${workspaceFolder}/build/Debug/war1tool.exe",
+                "environment": [{"name": "PATH", "value": "${workspaceFolder}\\..\\dependencies\\bin;${env:PATH}"}],
+                "externalConsole": true
+            },
+            "linux": {
+                "program": "${workspaceRoot}/build/war1tool"
+            },
+            "args": ["-v", "${input:datadir}", "${workspaceFolder}/../data.war1gus"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [{"name": "PATH", "value": "${workspaceFolder}\\..\\dependencies\\bin;${env:PATH}"}],
-            "externalConsole": true
         }
     ],
     "inputs": [

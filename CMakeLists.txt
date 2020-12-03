@@ -19,6 +19,11 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+if(EXISTS ${WIN32_CMAKE_PREFIX_PATH})
+	list(APPEND CMAKE_PREFIX_PATH "${WIN32_CMAKE_PREFIX_PATH}")
+	message("Using prefix path ${CMAKE_PREFIX_PATH}")
+endif()
+
 file(GLOB war1tool_SRCS
   "scripts/*.lua"
   "scripts/**/*.lua"
