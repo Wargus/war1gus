@@ -3778,6 +3778,7 @@ int ConvertMap(const char* file, int txte, int mtxme)
 void copyArchive(const char* partialPath) {
 	FILE *source, *target;
 	char ch;
+	struct stat st;
 
 	char srcname[8192] = {'\0'};
 	char tgtname[8192] = {'\0'};
@@ -3790,8 +3791,10 @@ void copyArchive(const char* partialPath) {
 	strcat(srcname, SLASH);
 	strcat(srcname, partialPath);
 
-	if (!strcmp(realpath(srcname, NULL), realpath(tgtname, NULL))) {
-		return;
+	if (!stat(tgtname, &st)) {
+		if (!strcmp(realpath(srcname, NULL), realpath(tgtname, NULL))) {
+			return;
+		}
 	}
 
 	source = fopen(srcname, "rb");
