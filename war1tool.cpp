@@ -1377,8 +1377,7 @@ void ConvertFLC_SS2(flcfile *file, unsigned char* buf)
 
 	sprintf(pngbuf, "%s-%04d.png", file->FLCFile, file->FLCFrame++);
 	memcpy(file->FLCImage2, file->FLCImage, file->FLCWidth * file->FLCHeight);
-	ResizeImage(&(file->FLCImage2), file->FLCWidth, file->FLCHeight, 2 * file->FLCWidth, 2 * file->FLCHeight);
-	SavePNG(pngbuf, file->FLCImage2, 2 * file->FLCWidth, 2 * file->FLCHeight, file->FLCPalette, -1);
+	SavePNG(pngbuf, file->FLCImage2, file->FLCWidth, file->FLCHeight, file->FLCPalette, -1);
 }
 
 /**
@@ -1423,8 +1422,7 @@ void ConvertFLC_LC(flcfile *file, unsigned char* buf)
 
 	sprintf(pngbuf, "%s-%04d.png", file->FLCFile, file->FLCFrame++);
 	memcpy(file->FLCImage2, file->FLCImage, file->FLCWidth * file->FLCHeight);
-	ResizeImage(&(file->FLCImage2), file->FLCWidth, file->FLCHeight, 2 * file->FLCWidth, 2 * file->FLCHeight);
-	SavePNG(pngbuf, file->FLCImage2, 2 * file->FLCWidth, 2 * file->FLCHeight, file->FLCPalette, -1);
+	SavePNG(pngbuf, file->FLCImage2, file->FLCWidth, file->FLCHeight, file->FLCPalette, -1);
 }
 
 /**
@@ -1465,8 +1463,7 @@ void ConvertFLC_BRUN(flcfile *file, unsigned char* buf)
 
 	sprintf(pngbuf, "%s-%04d.png", file->FLCFile, file->FLCFrame++);
 	memcpy(file->FLCImage2, file->FLCImage, file->FLCWidth * file->FLCHeight);
-	ResizeImage(&(file->FLCImage2), file->FLCWidth, file->FLCHeight, 2 * file->FLCWidth, 2 * file->FLCHeight);
-	SavePNG(pngbuf, file->FLCImage2, 2 * file->FLCWidth, 2 * file->FLCHeight, file->FLCPalette, -1);
+	SavePNG(pngbuf, file->FLCImage2, file->FLCWidth, file->FLCHeight, file->FLCPalette, -1);
 }
 
 /**
@@ -1491,8 +1488,7 @@ void ConvertFLC_COPY(flcfile *file, unsigned char* buf)
 
 	sprintf(pngbuf, "%s-%04d.png", file->FLCFile, file->FLCFrame++);
 	memcpy(file->FLCImage2, file->FLCImage, file->FLCWidth * file->FLCHeight);
-	ResizeImage(&(file->FLCImage2), file->FLCWidth, file->FLCHeight, 2 * file->FLCWidth, 2 * file->FLCHeight);
-	SavePNG(pngbuf, file->FLCImage2, 2 * file->FLCWidth, 2 * file->FLCHeight, file->FLCPalette, -1);
+	SavePNG(pngbuf, file->FLCImage2, file->FLCWidth, file->FLCHeight, file->FLCPalette, -1);
 }
 
 /**
@@ -2187,19 +2183,18 @@ int ConvertTileset(const char* file,int index)
 
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
-	ResizeImage(&image, width, height, 2 * width, 2 * height);
-	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
+	SavePNG(buf, image, width, height, palp, 0);
 
 	for (y = 0; y < 32; ++y) {
-		for (x = 10 * 32; x < 16 * 32; ++x) {
-			image[y * 16 * 32 + x] = 0;
+		for (x = 10 * 16; x < 16 * 16; ++x) {
+			image[y * 16 * 16 + x] = 0;
 		}
 	}
 	sprintf(buf, "%s/%s/%s", Dir, TILESET_PATH, file);
 	*(strrchr(buf, '/') + 1) = '\0';
 	strcat(buf, "fog.png");
 	CheckPath(buf);
-	SavePNG(buf, image, 16 * 32, 32, palp, 0);
+	SavePNG(buf, image, 16 * 16, 16, palp, 0);
 
 	free(palp);
 	free(mini);
@@ -2293,8 +2288,7 @@ int ConvertTilesetUnit(const char* file, int index, int directions_idx)
 
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
-	ResizeImage(&image, width, height, 2 * width, 2 * height);
-	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
+	SavePNG(buf, image, width, height, palp, 0);
 
 	free(palp);
 	free(mini);
@@ -2381,8 +2375,7 @@ int ConvertRuin(const char* file, int index, int partsidx, int dimensions)
 	ConvertPalette(palp);
 	sprintf(buf, "%s/%s/%s_%dx%d.png", Dir, TILESET_PATH, file, dimensions, dimensions);
 	CheckPath(buf);
-	ResizeImage(&image, width, height, 2 * width, 2 * height);
-	SavePNG(buf, image, 2 * width, 2 * height, palp, 0);
+	SavePNG(buf, image, width, height, palp, 0);
 
 	free(palp);
 	free(mini);
@@ -2589,13 +2582,12 @@ int ConvertGfu(const char* file, int pale, int gfue)
 
 	sprintf(buf, "%s/%s/%s.png", Dir, UNIT_PATH, file);
 	CheckPath(buf);
-	ResizeImage(&image, w, h, 2 * w, 2 * h);
 
 	// force orc palette override. Forces Orc red to Human blue,
 	// and then we can use that palette for changing the faction color
 	if (strstr(file, "orc/") != NULL) {
 		unsigned char* p = image;
-		unsigned char* end = image + (2 * w * 2 * h);
+		unsigned char* end = image + (w * h);
 		while (p < end) {
 			if (*p >= 176 && *p <= 183) {
 				*p = *p + 24;
@@ -2605,7 +2597,7 @@ int ConvertGfu(const char* file, int pale, int gfue)
 	}
 	if (strstr(file, "neutral/") != NULL) {
 		unsigned char* p = image;
-		unsigned char* end = image + (2 * w * 2 * h);
+		unsigned char* end = image + (w * h);
 		while (p < end) {
 			if (*p >= 176 && *p <= 183) {
 				*p = *p + 24;
@@ -2615,7 +2607,7 @@ int ConvertGfu(const char* file, int pale, int gfue)
 	}
 	if (strstr(file, "spider") != NULL) {
 		unsigned char* p = image;
-		unsigned char* end = image + (2 * w * 2 * h);
+		unsigned char* end = image + (w * h);
 		while (p < end) {
 			if (*p >= 99 && *p <= 102) {
 				*p = *p + 104;
@@ -2624,7 +2616,7 @@ int ConvertGfu(const char* file, int pale, int gfue)
 		}
 	}
 
-	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
+	SavePNG(buf, image, w, h, palp, 0);
 
 	free(image);
 	free(palp);
@@ -2739,8 +2731,7 @@ int ConvertImage(const char* file, int pale, int imge)
 		}
 	}
 
-	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	SavePNG(buf, image, 2 * w, 2 * h, palp, -1);
+	SavePNG(buf, image, w, h, palp, -1);
 
 	free(image);
 	free(palp);
@@ -2788,8 +2779,7 @@ int ConvertCursor(const char* file, int pale, int cure)
 
 	sprintf(buf, "%s/%s/%s.png", Dir, CURSOR_PATH, file);
 	CheckPath(buf);
-	ResizeImage(&image, w, h, 2 * w, 2 * h);
-	SavePNG(buf, image, 2 * w, 2 * h, palp, 0);
+	SavePNG(buf, image, w, h, palp, 0);
 
 	free(curp);
 	free(image);
