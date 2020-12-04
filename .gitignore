@@ -1,8 +1,6 @@
 #Ignore Visual Studio project files
 build/
 .vscode/*
-!.vscode/launch.json
-!.vscode/settings.json
 CMakeFiles
 .clangd
 compile_commands.json
