@@ -36,7 +36,7 @@
 --
 DefineTileset("name", "forest_campaign",
   "image", "tilesets/forest/terrain.png",
-  "size", {32, 32},
+  "size", {32 / 2, 32 / 2},
   -- Slots descriptions
   "slots",
 	{

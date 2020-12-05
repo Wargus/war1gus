@@ -38,19 +38,19 @@ function RunResultsMenu()
   end
 
   local menu = WarMenu(nil, background)
-  local offx = (Video.Width - 640) / 2
-  local offy = (Video.Height - 480) / 2
-  local multx = Video.Width / 640
-  local multy = Video.Height / 400
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
+  local multx = Video.Width / 320
+  local multy = Video.Height / 200
 
   local names_font = Fonts["small-title"]
 
-  menu:addLabel(result, 125 * multx, 52 * multy, Fonts["small-title"])
+  menu:addLabel(result, 125 / 2 * multx, 52 / 2 * multy, Fonts["small-title"])
 
-  local movieW = math.ceil(368 * Video.Width / 640)
-  local movieH = math.ceil(224 * Video.Height / 400)
-  local movieX = 234 * Video.Width / 640
-  local movieY = 24 * Video.Height / 400
+  local movieW = math.ceil(368 / 2 * Video.Width / 320)
+  local movieH = math.ceil(224 / 2 * Video.Height / 200)
+  local movieX = 234 / 2 * Video.Width / 320
+  local movieY = 24 / 2 * Video.Height / 200
   local sceneg = CGraphic:New(scene)
   sceneg:Load()
   sceneg:Resize(movieW, movieH)
@@ -103,7 +103,7 @@ function RunResultsMenu()
     end
   end
   
-  local lineHeight = 17 * multy
+  local lineHeight = 17 / 2 * multy
 
   StopAllChannels()
   PlaySound(sound, true)
@@ -113,28 +113,29 @@ function RunResultsMenu()
      font = Fonts["small-title"]
   end
 
-  menu:addLabel(kills.you, 115 * multx, 280 * multy, font, true)
-  menu:addLabel(kills.enemy, 115 * multx, 280 * multy + lineHeight, font, true)
-  menu:addLabel(units.you, 115 * multx, 346 * multy, font, true)
-  menu:addLabel(units.enemy, 115 * multx, 346 * multy + lineHeight, font, true)
+  menu:addLabel(kills.you, 115 / 2 * multx, 280 / 2 * multy, font, true)
+  menu:addLabel(kills.enemy, 115 / 2 * multx, 280 / 2 * multy + lineHeight, font, true)
+  menu:addLabel(units.you, 115 / 2 * multx, 346 / 2 * multy, font, true)
+  menu:addLabel(units.enemy, 115 / 2 * multx, 346 / 2 * multy + lineHeight, font, true)
 
-  menu:addLabel(razings.you, 315 * multx, 280 * multy, font, true)
-  menu:addLabel(razings.enemy, 315 * multx, 280 * multy + lineHeight, font, true)
-  menu:addLabel(buildings.you, 315 * multx, 346 * multy, font, true)
-  menu:addLabel(buildings.enemy, 315 * multx, 346 * multy + lineHeight, font, true)
+  menu:addLabel(razings.you, 315 / 2 * multx, 280 / 2 * multy, font, true)
+  menu:addLabel(razings.enemy, 315 / 2 * multx, 280 / 2 * multy + lineHeight, font, true)
+  menu:addLabel(buildings.you, 315 / 2 * multx, 346 / 2 * multy, font, true)
+  menu:addLabel(buildings.enemy, 315 / 2 * multx, 346 / 2 * multy + lineHeight, font, true)
 
-  menu:addLabel(gold.you, 515 * multx, 280 * multy, font, true)
-  menu:addLabel(gold.enemy, 515 * multx, 280 * multy + lineHeight, font, true)
-  menu:addLabel(wood.you, 515 * multx, 346 * multy, font, true)
-  menu:addLabel(wood.enemy, 515 * multx, 346 * multy + lineHeight, font, true)
+  menu:addLabel(gold.you, 515 / 2 * multx, 280 / 2 * multy, font, true)
+  menu:addLabel(gold.enemy, 515 / 2 * multx, 280 / 2 * multy + lineHeight, font, true)
+  menu:addLabel(wood.you, 515 / 2 * multx, 346 / 2 * multy, font, true)
+  menu:addLabel(wood.enemy, 515 / 2 * multx, 346 / 2 * multy + lineHeight, font, true)
 
-  local btn = menu:addHalfButton("~!Save Replay", "s", 24 * multx, 180 * multy,
+  local btn = menu:addHalfButton("~!Save Replay", "s", 24 / 2 * multx, 180 / 2 * multy,
                                  function() RunSaveReplayMenu() end)
-  btn:setSize(190 * multx, 28)
+  btn:setSize(190 / 2 * multx, 28 / 2)
 
-  btn = menu:addHalfButton("~!Continue", "c", 24 * multx, 210 * multy,
+  btn = menu:addHalfButton("~!Continue", "c", 24 / 2 * multx, 210 / 2 * multy,
                            function() StopMusic(); menu:stop() end)
-  btn:setSize(190 * multx, 28)
+  btn:setSize(190 / 2 * multx, 28 / 2)
+  btn:requestFocus()
 
   menu:run()
 end

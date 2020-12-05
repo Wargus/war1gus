@@ -35,7 +35,7 @@
 --
 DefineTileset("name", "dungeon_campaign",
   "image", "tilesets/dungeon/terrain.png",
-  "size", {32, 32},
+  "size", {32 / 2, 32 / 2},
   -- Slots descriptions
   "slots",
 	{

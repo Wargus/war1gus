@@ -2,8 +2,8 @@
 
 function RunShowCreditsMenu()
   local menu = WarMenu(nil, "ui/title_screen.png")
-  local offx = (Video.Width - 640) / 2
-  local offy = (Video.Height - 480) / 2
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
 
   local credits = {
 	"Programmers",
@@ -109,15 +109,15 @@ function RunShowCreditsMenu()
 	"",
   }
 
-  local sw = ScrollingWidget(320, 275)
-  menu:add(sw, offx + 140, offy + 80)
+  local sw = ScrollingWidget(160, 137)
+  menu:add(sw, offx + 70, offy + 40)
   sw:setBackgroundColor(Color(0,0,0,0))
   sw:setActionCallback(function() sw:restart() end)
   for i,f in ipairs(credits) do
-    sw:add(Label(f), 0, 24 * (i - 1) + 275)
+    sw:add(Label(f), 0, 12 * (i - 1) + 137)
   end
 
-  menu:addHalfButton("~!Continue", "c", offx + 455, offy + 400,
+  menu:addHalfButton("~!Continue", "c", offx + 227, offy + 200,
     function() menu:stop() end)
 
   local speed = GetGameSpeed()

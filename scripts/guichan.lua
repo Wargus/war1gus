@@ -1,4 +1,4 @@
---      (c) Copyright 2010      by Pali Rohár
+--      (c) Copyright 2010      by Pali Rohï¿½r
 
 SetPlayerData(GetThisPlayer(), "RaceName", "orc")
 
@@ -12,35 +12,6 @@ bckground = CGraphic:New("ui/title_screen.png")
 bckground:Load()
 bckground:Resize(Video.Width, Video.Height)
 backgroundWidget = ImageWidget(bckground)
---[[
-g_hbln = CGraphic:New("ui/human/widgets/button-large-normal.png")
-g_hbln:Load()
-g_hblp = CGraphic:New("ui/human/widgets/button-large-pressed.png")
-g_hblp:Load()
-g_hblg = CGraphic:New("ui/human/widgets/button-large-grayed.png")
-g_hblg:Load()
-
-g_hbsn = CGraphic:New("ui/human/widgets/button-small-normal.png")
-g_hbsn:Load()
-g_hbsp = CGraphic:New("ui/human/widgets/button-small-pressed.png")
-g_hbsp:Load()
-g_hbsg = CGraphic:New("ui/human/widgets/button-small-grayed.png")
-g_hbsg:Load()
-
-g_obln = CGraphic:New("ui/orc/widgets/button-large-normal.png")
-g_obln:Load()
-g_oblp = CGraphic:New("ui/orc/widgets/button-large-pressed.png")
-g_oblp:Load()
-g_oblg = CGraphic:New("ui/orc/widgets/button-large-grayed.png")
-g_oblg:Load()
-
-g_obsn = CGraphic:New("ui/orc/widgets/button-small-normal.png")
-g_obsn:Load()
-g_obsp = CGraphic:New("ui/orc/widgets/button-small-pressed.png")
-g_obsp:Load()
-g_obsg = CGraphic:New("ui/orc/widgets/button-small-grayed.png")
-g_obsg:Load()
---]]
 local hpanels = {
   "ui/human/panel_1.png",
   "ui/human/panel_2.png"
@@ -91,7 +62,7 @@ function AddMenuHelpers(menu)
     local b = ButtonWidget(caption)
     b:setHotKey(hotkey)
     b:setActionCallback(callback)
-    if (size == nil) then size = {200, 24} end
+    if (size == nil) then size = {200 / 2, 24 / 2} end
     b:setSize(size[1], size[2])
     b:setBackgroundColor(dark)
     b:setBaseColor(dark)
@@ -109,13 +80,13 @@ function AddMenuHelpers(menu)
 
   function menu:addFullButton(caption, hotkey, x, y, callback)
     local b = self:addButton(caption, hotkey, x, y, callback)
-    b:setSize(254, 28)
+    b:setSize(127, 14)
     return b
   end
 
   function menu:addHalfButton(caption, hotkey, x, y, callback)
     local b = self:addButton(caption, hotkey, x, y, callback)
-    b:setSize(121, 28)
+    b:setSize(60, 14)
     return b
   end
 
@@ -296,8 +267,8 @@ function AddMenuHelpers(menu)
     b:setBaseColor(clear)
     b:setForegroundColor(clear)
     b:setBackgroundColor(dark)
-    if (w == nil) then w = 100 end
-    b:setSize(w, 18)
+    if (w == nil) then w = 50 end
+    b:setSize(w, 9)
     self:add(b, x, y)
     return b
   end
@@ -435,16 +406,16 @@ end
 function RunSelectScenarioMenu()
   buttonStatut = 0
   local menu = WarMenu(nil, panel(5), false)
-  menu:setSize(352, 352)
-  menu:setPosition((Video.Width - 352) / 2, (Video.Height - 352) / 2)
+  menu:setSize(176, 176)
+  menu:setPosition((Video.Width - 176) / 2, (Video.Height - 176) / 2)
   menu:setDrawMenusUnder(true)
 
-  menu:addLabel("Select scenario", 176, 8)
+  menu:addLabel("Select scenario", 88, 4)
 
   local browser = menu:addBrowser("maps/", "^.*%.smp%.?g?z?$",
-    24, 140, 300, 108, mapname)
+    12, 70, 150, 54, mapname)
 
-  local l = menu:addLabel(browser:getSelectedItem(), 24, 260, Fonts["game"], false)
+  local l = menu:addLabel(browser:getSelectedItem(), 12, 130, Fonts["game"], false)
 
   local function cb(s)
     l:setCaption(browser:getSelectedItem())
@@ -452,7 +423,7 @@ function RunSelectScenarioMenu()
   end
   browser:setActionCallback(cb)
 
-  menu:addHalfButton("~!OK", "o", 48, 318,
+  menu:addHalfButton("~!OK", "o", 24, 159,
     function()
       local cap = l:getCaption()
 
@@ -463,7 +434,7 @@ function RunSelectScenarioMenu()
       mapname = browser.path .. cap
       menu:stop()
     end)
-  menu:addHalfButton("~!Cancel", "c", 198, 318,
+  menu:addHalfButton("~!Cancel", "c", 99, 159,
     function() buttonStatut = 2; menu:stop() end)
 
   menu:run()
@@ -471,19 +442,19 @@ end
 
 function RunSinglePlayerSubMenu()
   local menu = WarMenu()
-  local offx = (Video.Width - 640) / 2
-  local offy = (Video.Height - 480) / 2
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
 
-  menu:addFullButton("~!Solo Game", "s", offx + 193, offy + 104 + 36*3,
+  menu:addFullButton("~!Solo Game", "s", offx + 193 / 2, offy + 104 / 2 + 36 / 2*3,
     function() RunSinglePlayerGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Campaign Game", "c", offx + 193, offy + 104 + 36*4,
+  menu:addFullButton("~!Campaign Game", "c", offx + 193 / 2, offy + 104 / 2 + 36 / 2*4,
     function() RunCampaignGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Load Game", "l", offx + 193, offy + 104 + 36*5,
+  menu:addFullButton("~!Load Game", "l", offx + 193 / 2, offy + 104 / 2 + 36 / 2*5,
     function() RunLoadGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Replay Game", "r", offx + 193, offy + 104 + 36*6,
+  menu:addFullButton("~!Replay Game", "r", offx + 193 / 2, offy + 104 / 2 + 36 / 2*6,
     function() RunReplayGameMenu(); menu:stop(1) end)
 
-  menu:addFullButton("~!Previous Menu", "p", offx + 193, offy + 104 + 36*8,
+  menu:addFullButton("~!Previous Menu", "p", offx + 193 / 2, offy + 104 / 2 + 36 / 2*8,
     function() menu:stop() end)
 
   return menu:run()
@@ -491,8 +462,8 @@ end
 
 function RunSinglePlayerGameMenu()
   local menu = WarMenu()
-  local offx = (Video.Width - 640) / 2
-  local offy = (Video.Height - 480) / 2
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
   local d
   local race
   local resources
@@ -502,12 +473,12 @@ function RunSinglePlayerGameMenu()
   local mapl
   local descriptionl
 
-  menu:addLabel("Scenario:", offx + 16, offy + 360, Fonts["game"], false)
-  mapl = menu:addLabel(string.sub(mapname, 6), offx + 16, offy + 360 + 24, Fonts["game"], false)
-  descriptionl = menu:addLabel("descriptionl", offx + 16 + 70, offy + 360, Fonts["game"], false)
+  menu:addLabel("Scenario:", offx + 16 / 2, offy + 360 / 2, Fonts["game"], false)
+  mapl = menu:addLabel(string.sub(mapname, 6), offx + 16 / 2, offy + 360 / 2 + 24 / 2, Fonts["game"], false)
+  descriptionl = menu:addLabel("descriptionl", offx + 16 / 2 + 70 / 2, offy + 360 / 2, Fonts["game"], false)
 
-  menu:addLabel("~<Single Player Game Setup~>", offx + 640/2 + 12, offy + 192)
-  menu:addFullButton("S~!elect Scenario", "e", offx + 640 - 239 - 16, offy + 360 + 36 * -1,
+  menu:addLabel("~<Single Player Game Setup~>", offx + 640 / 2/2 + 12 / 2, offy + 192 / 2)
+  menu:addFullButton("S~!elect Scenario", "e", offx + 640 / 2 - 239 / 2 - 16 / 2, offy + 360 / 2 + 36 / 2 * -1,
     function()
       local oldmapname = mapname
       RunSelectScenarioMenu()
@@ -516,7 +487,7 @@ function RunSinglePlayerGameMenu()
         MapChanged()
       end
     end)
-  menu:addFullButton("~!Start Game", "s", offx + 640 - 239 - 16, offy + 360 + 36*0,
+  menu:addFullButton("~!Start Game", "s", offx + 640 / 2 - 239 / 2 - 16 / 2, offy + 360 / 2 + 36 / 2*0,
     function()
       SetColorScheme()
       GameSettings.Presets[0].Race = race:getSelected()
@@ -528,30 +499,30 @@ function RunSinglePlayerGameMenu()
       RunMap(mapname, preferences.FogOfWar)
       menu:stop()
     end)
-  menu:addFullButton("~!Cancel Game", "c", offx + 640 - 239 - 16, offy + 360 + 36*1, function() RunSinglePlayerSubMenu(); menu:stop() end)
+  menu:addFullButton("~!Cancel Game", "c", offx + 640 / 2 - 239 / 2 - 16 / 2, offy + 360 / 2 + 36 / 2*1, function() RunSinglePlayerSubMenu(); menu:stop() end)
 
-  menu:addLabel("~<Your Race:~>", offx + 40, offy + (10 + 240) - 20, Fonts["game"], false)
-  race = menu:addDropDown({"Map Default", "Human", "Orc"}, offx + 40, offy + 10 + 240,
+  menu:addLabel("~<Your Race:~>", offx + 40, offy + (10 / 2 + 240 / 2) - 20 / 2, Fonts["game"], false)
+  race = menu:addDropDown({"Map Default", "Human", "Orc"}, offx + 40 / 2, offy + 10 / 2 + 240 / 2,
     function(dd) end)
-  race:setSize(152, 20)
+  race:setSize(152 / 2, 20 / 2)
 
-  menu:addLabel("~<Resources:~>", offx + 220, offy + (10 + 240) - 20, Fonts["game"], false)
-  resources = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, offx + 220, offy + 10 + 240,
+  menu:addLabel("~<Resources:~>", offx + 220 / 2, offy + (10 / 2 + 240 / 2) - 20 / 2, Fonts["game"], false)
+  resources = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, offx + 220 / 2, offy + 10 / 2 + 240 / 2,
     function(dd) end)
-  resources:setSize(152, 20)
+  resources:setSize(152 / 2, 20 / 2)
 
-  menu:addLabel("~<Units:~>", offx + 640 - 224 - 16, offy + (10 + 240) - 20, Fonts["game"], false)
-  numunits = menu:addDropDown({"Map Default", "One Peasant Only"}, offx + 640 - 224 - 16, offy + 10 + 240,
+  menu:addLabel("~<Units:~>", offx + 640 / 2 - 224 / 2 - 16 / 2, offy + (10 / 2 + 240 / 2) - 20 / 2, Fonts["game"], false)
+  numunits = menu:addDropDown({"Map Default", "One Peasant Only"}, offx + 640 / 2 - 224 / 2 - 16 / 2, offy + 10 / 2 + 240 / 2,
     function(dd) end)
-  numunits:setSize(190, 20)
+  numunits:setSize(190 / 2, 20 / 2)
 
   local opponents_list = {"Map Default", "1 Opponent", "2 Opponents",
     "3 Opponents", "4 Opponents", "5 Opponents", "6 Opponents", "7 Opponents"}
 
-  menu:addLabel("~<Opponents:~>", offx + 40, offy + (10 + 300) - 20, Fonts["game"], false)
-  opponents = menu:addDropDown(opponents_list, offx + 40, offy + 10 + 300,
+  menu:addLabel("~<Opponents:~>", offx + 40 / 2, offy + (10 / 2 + 300 / 2) - 20 / 2, Fonts["game"], false)
+  opponents = menu:addDropDown(opponents_list, offx + 40 / 2, offy + 10 / 2 + 300 / 2,
     function(dd) end)
-  opponents:setSize(152, 20)
+  opponents:setSize(152 / 2, 20 / 2)
 
   --menu:addLabel("~<Game Type:~>", offx + 220, offy + (10 + 300) - 20, Fonts["game"], false)
   --gametype = menu:addDropDown({"Use map settings", "Melee", "Free for all", "Top vs bottom", "Left vs right", "Man vs Machine"}, offx + 220, offy + 10 + 300,
@@ -583,19 +554,19 @@ function BuildProgramStartMenu()
   SetPlayerData(GetThisPlayer(), "RaceName", "orc")
 
   local menu = WarMenu()
-  local offx = (Video.Width - 640) / 2
-  local offy = (Video.Height - 480) / 2
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
 
-  menu:addLabel(war1gus.Name .. " V" .. war1gus.Version .. "  " .. war1gus.Homepage, offx + 440, offy + 390 + 10*3, Fonts["small"])
-  menu:addLabel("Stratagus V" .. GetStratagusVersion() .. "  " .. GetStratagusHomepage(), offx + 440, offy + 390 + 10*2, Fonts["small"])
-  menu:addLabel(war1gus.Copyright, offx + 440, offy + 390 + 10*4, Fonts["small"])
+  menu:addLabel(war1gus.Name .. " V" .. war1gus.Version .. "  " .. war1gus.Homepage, offx + 440 / 2, offy + 390 / 2 + 10 / 2*3, Fonts["small"])
+  menu:addLabel("Stratagus V" .. GetStratagusVersion() .. "  " .. GetStratagusHomepage(), offx + 440 / 2, offy + 390 / 2 + 10 / 2*2, Fonts["small"])
+  menu:addLabel(war1gus.Copyright, offx + 440 / 2, offy + 390 / 2 + 10 / 2*4, Fonts["small"])
 
-  menu:addFullButton("~!Single Player Game", "s", offx + 193, offy + 104 + 34*3, function() RunSinglePlayerSubMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Multi Player Game", "m", offx + 193, offy + 104 + 34*4, function() RunMultiPlayerGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Options", "o", offx + 193, offy + 104 + 34*5, function() RunOptionsMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Editor", "e", offx + 193, offy + 104 + 34*6, function() RunEditorMenu(); menu:stop(1) end)
-  menu:addFullButton("S~!how Credits", "h", offx + 193, offy + 104 + 34*7, RunShowCreditsMenu)
-  menu:addFullButton("E~!xit Program", "x", offx + 193, offy + 104 + 34*8, function() menu:stop() end)
+  menu:addFullButton("~!Single Player Game", "s", offx + 193 / 2, offy + 104 / 2 + 34 / 2*3, function() RunSinglePlayerSubMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Multi Player Game", "m", offx + 193 / 2, offy + 104 / 2 + 34 / 2*4, function() RunMultiPlayerGameMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Options", "o", offx + 193 / 2, offy + 104 / 2 + 34 / 2*5, function() RunOptionsMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Editor", "e", offx + 193 / 2, offy + 104 / 2 + 34 / 2*6, function() RunEditorMenu(); menu:stop(1) end)
+  menu:addFullButton("S~!how Credits", "h", offx + 193 / 2, offy + 104 / 2 + 34 / 2*7, RunShowCreditsMenu)
+  menu:addFullButton("E~!xit Program", "x", offx + 193 / 2, offy + 104 / 2 + 34 / 2*8, function() menu:stop() end)
 
   return menu:run()
 end
@@ -633,6 +604,8 @@ Load("scripts/menus/network.lua")
 Load("scripts/menus/results.lua")
 --[[
 --]]
+
+SetShader("xBRZ")
 
 if (Editor.Running == EditorCommandLine) then
   if (CliMapName and CliMapName ~= "") then

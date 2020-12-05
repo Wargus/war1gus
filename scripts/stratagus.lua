@@ -181,6 +181,7 @@ SetHoldClickDelay(1000)
 SetFogOfWar(false)
 -- SetFogOfWar(false)
 
+SetTileSize(16, 16)
 SetFogOfWarGraphics("tilesets/forest/fog.png")
 
 --  Choose your default for minimap with/without terrain.

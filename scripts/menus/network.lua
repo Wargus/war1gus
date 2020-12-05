@@ -19,23 +19,23 @@ end
 
 function ErrorMenu(errmsg)
   local menu = WarMenu(nil, panel(4), false)
-  menu:setSize(288, 128)
-  menu:setPosition((Video.Width - 288) / 2, (Video.Height - 128) / 2)
+  menu:setSize(288 / 2, 128 / 2)
+  menu:setPosition((Video.Width - 288 / 2) / 2, (Video.Height - 128 / 2) / 2)
   menu:setDrawMenusUnder(true)
 
-  menu:addLabel("Error:", 144, 11)
+  menu:addLabel("Error:", 144 / 2, 11 / 2)
 
   local l = MultiLineLabel(errmsg)
   l:setFont(Fonts["large"])
   l:setAlignment(MultiLineLabel.CENTER)
   l:setVerticalAlignment(MultiLineLabel.CENTER)
-  l:setLineWidth(270)
-  l:setWidth(270)
-  l:setHeight(41)
+  l:setLineWidth(270 / 2)
+  l:setWidth(270 / 2)
+  l:setHeight(41 / 2)
   l:setBackgroundColor(dark)
-  menu:add(l, 9, 38)
+  menu:add(l, 9 / 2, 38 / 2)
 
-  menu:addHalfButton("~!OK", "o", 83, 80, function() menu:stop() end)
+  menu:addHalfButton("~!OK", "o", 83 / 2, 80 / 2, function() menu:stop() end)
 
   menu:run()
 end
@@ -44,16 +44,16 @@ function addPlayersList(menu, numplayers)
   local i
   local players_name = {}
   local players_state = {}
-  local sx = Video.Width / 20
-  local sy = Video.Height / 20
+  local sx = Video.Width / 20 / 2
+  local sy = Video.Height / 20 / 2
   local numplayers_text
 
   menu:writeLargeText("Players", sx * 11, sy*3)
   for i=1,8 do
-    players_name[i] = menu:writeText("Player"..i, sx * 11, sy*4 + i*18)
-    players_state[i] = menu:writeText("Preparing", sx * 11 + 80, sy*4 + i*18)
+    players_name[i] = menu:writeText("Player"..i, sx * 11, sy*4 + i*18 / 2)
+    players_state[i] = menu:writeText("Preparing", sx * 11 + 80 / 2, sy*4 + i*18 / 2)
   end
-  numplayers_text = menu:writeText("Open slots : " .. numplayers - 1, sx *11, sy*4 + 144)
+  numplayers_text = menu:writeText("Open slots : " .. numplayers - 1, sx *11, sy*4 + 144 / 2)
 
   local function updatePlayers()
     local connected_players = 0
@@ -89,8 +89,8 @@ joincounter = 0
 function RunJoiningMapMenu(s)
   local menu
   local listener
-  local sx = Video.Width / 20
-  local sy = Video.Height / 20
+  local sx = Video.Width / 20 / 2
+  local sy = Video.Height / 20 / 2
   local numplayers = 3
   local state
   local d
@@ -98,39 +98,39 @@ function RunJoiningMapMenu(s)
   menu = WarMenu("Joining game: Map")
 
   menu:writeLargeText("Map", sx, sy*3)
-  menu:writeText("File:", sx, sy*3+30)
-  maptext = menu:writeText(NetworkMapName, sx+50, sy*3+30)
-  menu:writeText("Players:", sx, sy*3+50)
-  players = menu:writeText(numplayers, sx+70, sy*3+50)
-  menu:writeText("Description:", sx, sy*3+70)
-  descr = menu:writeText(description, sx+20, sy*3+90)
+  menu:writeText("File:", sx, sy*3+30 / 2)
+  maptext = menu:writeText(NetworkMapName, sx+50 / 2, sy*3+30 / 2)
+  menu:writeText("Players:", sx, sy*3+50 / 2)
+  players = menu:writeText(numplayers, sx+70 / 2, sy*3+50 / 2)
+  menu:writeText("Description:", sx, sy*3+70 / 2)
+  descr = menu:writeText(description, sx+20 / 2, sy*3+90 / 2)
 
-  local fow = menu:addCheckBox("Fog of war", sx, sy*3+120, function() end)
+  local fow = menu:addCheckBox("Fog of war", sx, sy*3+120 / 2, function() end)
   fow:setMarked(true)
   ServerSetupState.FogOfWar = 1
   fow:setEnabled(false)
-  local revealmap = menu:addCheckBox("Reveal map", sx, sy*3+150, function() end)
+  local revealmap = menu:addCheckBox("Reveal map", sx, sy*3+150 / 2, function() end)
   revealmap:setEnabled(false)
 
   menu:writeText("~<Your Race:~>", sx, sy*11)
-  local race = menu:addDropDown({"Map Default", "Human", "Orc"}, sx + 100, sy*11, function() end)
+  local race = menu:addDropDown({"Map Default", "Human", "Orc"}, sx + 100 / 2, sy*11, function() end)
   local raceCb = function(dd)
      GameSettings.Presets[NetLocalHostsSlot].Race = race:getSelected()
      LocalSetupState.Race[NetLocalHostsSlot] = race:getSelected()
   end
   race:setActionCallback(raceCb)
-  race:setSize(190, 20)
+  race:setSize(190 / 2, 20 / 2)
 
-  menu:writeText("Units:", sx, sy*11+25)
-  local units = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 100, sy*11+25,
+  menu:writeText("Units:", sx, sy*11+25 / 2)
+  local units = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 100 / 2, sy*11+25 / 2,
     function(dd) end)
-  units:setSize(190, 20)
+  units:setSize(190 / 2, 20 / 2)
   units:setEnabled(false)
 
-  menu:writeText("Resources:", sx, sy*11+50)
-  local resources = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 100, sy*11+50,
+  menu:writeText("Resources:", sx, sy*11+50 / 2)
+  local resources = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 100 / 2, sy*11+50 / 2,
     function(dd) end)
-  resources:setSize(190, 20)
+  resources:setSize(190 / 2, 20 / 2)
   resources:setEnabled(false)
 
   local OldPresentMap = PresentMap
@@ -188,7 +188,7 @@ function RunJoiningMapMenu(s)
   listener = LuaActionListener(listen)
   menu:addLogicCallback(listener)
 
-  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100, Video.Height - 100,
+  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100 / 2, Video.Height - 100 / 2,
     function() NetworkDetachFromServer(); menu:stop() end)
 
   menu:run()
@@ -196,18 +196,18 @@ end
 
 function RunJoiningGameMenu(s)
   local menu = WarMenu(nil, panel(4), false)
-  menu:setSize(288, 128)
-  menu:setPosition((Video.Width - 288) / 2, (Video.Height - 128) / 2)
+  menu:setSize(288 / 2, 128 / 2)
+  menu:setPosition((Video.Width - 288 / 2) / 2, (Video.Height - 128 / 2) / 2)
   menu:setDrawMenusUnder(true)
 
-  menu:addLabel("Connecting to server", 144, 11)
+  menu:addLabel("Connecting to server", 144 / 2, 11 / 2)
 
   local percent = 0
 
-  local sb = StatBoxWidget(258, 30)
+  local sb = StatBoxWidget(258 / 2, 30 / 2)
   sb:setCaption("Connecting...")
   sb:setPercent(percent)
-  menu:add(sb, 15, 38)
+  menu:add(sb, 15 / 2, 38 / 2)
   sb:setBackgroundColor(dark)
 
   local function checkconnection()
@@ -243,7 +243,7 @@ function RunJoiningGameMenu(s)
   local listener = LuaActionListener(checkconnection)
   menu:addLogicCallback(listener)
 
-  menu:addHalfButton("Cancel (~<Esc~>)", "escape", 83, 80,
+  menu:addHalfButton("Cancel (~<Esc~>)", "escape", 83 / 2, 80 / 2,
     function() menu:stop(1) end)
 
   menu:run()
@@ -251,14 +251,14 @@ end
 
 function RunJoinIpMenu()
   local menu = WarMenu(nil, panel(4), false)
-  menu:setSize(288, 128)
-  menu:setPosition((Video.Width - 288) / 2, (Video.Height - 128) / 2)
+  menu:setSize(288 / 2, 128 / 2)
+  menu:setPosition((Video.Width - 288 / 2) / 2, (Video.Height - 128 / 2) / 2)
   menu:setDrawMenusUnder(true)
 
-  menu:addLabel("Enter server IP-address:", 144, 11)
-  local server = menu:addTextInputField("localhost", 40, 38, 212)
+  menu:addLabel("Enter server IP-address:", 144 / 2, 11 / 2)
+  local server = menu:addTextInputField("localhost", 40 / 2, 38 / 2, 212 / 2)
 
-  menu:addHalfButton("~!OK", "o", 15, 80,
+  menu:addHalfButton("~!OK", "o", 15 / 2, 80 / 2,
     function(s)
       -- FIXME: allow port ("localhost:1234")
       if (NetworkSetupServerAddress(server:getText()) ~= 0) then
@@ -273,44 +273,44 @@ function RunJoinIpMenu()
       menu:stop()
     end
   )
-  menu:addHalfButton("~!Cancel", "c", 145, 80, function() menu:stop() end)
+  menu:addHalfButton("~!Cancel", "c", 145 / 2, 80 / 2, function() menu:stop() end)
 
   menu:run()
 end
 
 function RunServerMultiGameMenu(map, description, numplayers)
   local menu
-  local sx = Video.Width / 20
-  local sy = Video.Height / 20
+  local sx = Video.Width / 20 / 2
+  local sy = Video.Height / 20 / 2
   local startgame
   local d
 
   menu = WarMenu("Create MultiPlayer game")
 
   menu:writeLargeText("Map", sx, sy*3)
-  menu:writeText("File:", sx, sy*3+30)
-  maptext = menu:writeText(map, sx+50, sy*3+30)
-  menu:writeText("Players:", sx, sy*3+50)
-  players = menu:writeText(numplayers, sx+70, sy*3+50)
-  menu:writeText("Description:", sx, sy*3+70)
-  descr = menu:writeText("Unknown map", sx+20, sy*3+90)
+  menu:writeText("File:", sx, sy*3+30 / 2)
+  maptext = menu:writeText(map, sx+50 / 2, sy*3+30 / 2)
+  menu:writeText("Players:", sx, sy*3+50 / 2)
+  players = menu:writeText(numplayers, sx+70 / 2, sy*3+50 / 2)
+  menu:writeText("Description:", sx, sy*3+70 / 2)
+  descr = menu:writeText("Unknown map", sx+20 / 2, sy*3+90 / 2)
 
   local function fowCb(dd)
     ServerSetupState.FogOfWar = bool2int(dd:isMarked())
     NetworkServerResyncClients()
     GameSettings.NoFogOfWar = not dd:isMarked()
   end
-  local fow = menu:addCheckBox("Fog of war", sx, sy*3+120, fowCb)
+  local fow = menu:addCheckBox("Fog of war", sx, sy*3+120 / 2, fowCb)
   fow:setMarked(true)
   local function revealMapCb(dd)
     ServerSetupState.RevealMap = bool2int(dd:isMarked())
     NetworkServerResyncClients()
     GameSettings.RevealMap = bool2int(dd:isMarked())
   end
-  local revealmap = menu:addCheckBox("Reveal map", sx, sy*3+150, revealMapCb)
+  local revealmap = menu:addCheckBox("Reveal map", sx, sy*3+150 / 2, revealMapCb)
 
   menu:writeText("Race:", sx, sy*11)
-  local race = menu:addDropDown({"Map Default", "Human", "Orc"}, sx + 100, sy*11, function(dd) end)
+  local race = menu:addDropDown({"Map Default", "Human", "Orc"}, sx + 100 / 2, sy*11, function(dd) end)
   local raceCb = function(arg)
      GameSettings.Presets[0].Race = race:getSelected()
      ServerSetupState.Race[0] = race:getSelected()
@@ -318,19 +318,19 @@ function RunServerMultiGameMenu(map, description, numplayers)
      NetworkServerResyncClients()
   end
   race:setActionCallback(raceCb)
-  race:setSize(190, 20)
+  race:setSize(190 / 2, 20 / 2)
 
-  menu:writeText("Units:", sx, sy*11+25)
-  d = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 100, sy*11+25,
+  menu:writeText("Units:", sx, sy*11+25 / 2)
+  d = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 100 / 2, sy*11+25 / 2,
     function(dd)
       GameSettings.NumUnits = dd:getSelected()
       ServerSetupState.UnitsOption = GameSettings.NumUnits
       NetworkServerResyncClients()
     end)
-  d:setSize(190, 20)
+  d:setSize(190 / 2, 20 / 2)
 
-  menu:writeText("Resources:", sx, sy*11+50)
-  d = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 100, sy*11+50,
+  menu:writeText("Resources:", sx, sy*11+50 / 2)
+  d = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 100 / 2, sy*11+50 / 2,
     function(dd)
       GameSettings.Resources = dd:getSelected()
       ServerSetupState.ResourcesOption = GameSettings.Resources
@@ -366,7 +366,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
   local listener = LuaActionListener(function(s) updateStartButton(updatePlayers()) end)
   menu:addLogicCallback(listener)
 
-  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100, Video.Height - 100,
+  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 100 / 2, Video.Height - 100 / 2,
     function() menu:stop() end)
 
   menu:run()
@@ -378,17 +378,17 @@ function RunCreateMultiGameMenu(s)
   local description = "No map"
   local mapfile = "maps/forest1.smp.gz"
   local numplayers = 3
-  local sx = Video.Width / 20
-  local sy = Video.Height / 20
+  local sx = Video.Width / 20 / 2
+  local sy = Video.Height / 20 / 2
 
   menu = WarMenu("Create MultiPlayer game")
 
-  menu:writeText("File:", sx, sy*3+30)
-  maptext = menu:writeText(mapfile, sx+50, sy*3+30)
-  menu:writeText("Players:", sx, sy*3+50)
-  players = menu:writeText(numplayers, sx+70, sy*3+50)
-  menu:writeText("Description:", sx, sy*3+70)
-  descr = menu:writeText(description, sx+20, sy*3+90)
+  menu:writeText("File:", sx, sy*3+30 / 2)
+  maptext = menu:writeText(mapfile, sx+50 / 2, sy*3+30 / 2)
+  menu:writeText("Players:", sx, sy*3+50 / 2)
+  players = menu:writeText(numplayers, sx+70 / 2, sy*3+50 / 2)
+  menu:writeText("Description:", sx, sy*3+70 / 2)
+  descr = menu:writeText(description, sx+20 / 2, sy*3+90 / 2)
 
   local OldPresentMap = PresentMap
   PresentMap = function(desc, nplayers, w, h, id)
@@ -402,7 +402,7 @@ function RunCreateMultiGameMenu(s)
   end
 
   Load(mapfile)
-  local browser = menu:addBrowser("maps/", "^.*%.smp%.?g?z?$", sx*10, sy*2+20, sx*8, sy*11)
+  local browser = menu:addBrowser("maps/", "^.*%.smp%.?g?z?$", sx*10, sy*2+20 / 2, sx*8, sy*11)
   local function cb(s)
     mapfile = browser.path .. browser:getSelectedItem()
     Load(mapfile)
@@ -421,7 +421,7 @@ function RunCreateMultiGameMenu(s)
     end
   )
 
-  menu:addFullButton("Cancel (~<Esc~>)", "escape", sx,  sy*12+25,
+  menu:addFullButton("Cancel (~<Esc~>)", "escape", sx,  sy*12+25 / 2,
     function() menu:stop() end)
 
   menu:run()
@@ -430,17 +430,17 @@ end
 
 function RunMultiPlayerGameMenu(s)
   local menu = WarMenu()
-  local offx = (Video.Width - 640) / 2
-  local offy = (Video.Height - 480) / 2
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
   local nick
 
   InitGameSettings()
   InitNetwork1()
 
-  menu:writeText(_("Nickname :"), 208 + offx, 264 + offy)
-  nick = menu:addTextInputField(GetLocalPlayerName(), offx + 298, 260 + offy)
+  menu:writeText(_("Nickname :"), 208 / 2 + offx, 264 / 2 + offy)
+  nick = menu:addTextInputField(GetLocalPlayerName(), offx + 298 / 2, 260 / 2 + offy)
 
-  menu:addFullButton("~!Join Game", "j", 208 + offx, 320 + (36 * 0) + offy,
+  menu:addFullButton("~!Join Game", "j", 208 / 2 + offx, 320 / 2 + (36 / 2 * 0) + offy,
     function()
       if nick:getText() ~= GetLocalPlayerName() then
         SetLocalPlayerName(nick:getText())
@@ -450,7 +450,7 @@ function RunMultiPlayerGameMenu(s)
       RunJoinIpMenu()
       menu:stop()
     end)
-  menu:addFullButton("~!Create Game", "c", 208 + offx, 320 + (36 * 1) + offy,
+  menu:addFullButton("~!Create Game", "c", 208 / 2 + offx, 320 / 2 + (36 / 2 * 1) + offy,
     function()
       if nick:getText() ~= GetLocalPlayerName() then
         SetLocalPlayerName(nick:getText())
@@ -461,7 +461,7 @@ function RunMultiPlayerGameMenu(s)
       menu:stop()
     end)
 
-  menu:addFullButton("~!Previous Menu", "p", 208 + offx, 320 + (36 * 2) + offy,
+  menu:addFullButton("~!Previous Menu", "p", 208 / 2 + offx, 320 / 2 + (36 / 2 * 2) + offy,
     function() menu:stop() end)
 
   menu:run()

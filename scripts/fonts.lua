@@ -34,29 +34,6 @@ CFont:New("large", CGraphic:New("contrib/fonts/large.png", 14, 14))
 CFont:New("small-title", CGraphic:New("contrib/fonts/small_episode_titles.png", 32, 35))
 CFont:New("large-title", CGraphic:New("contrib/fonts/large_episode_titles.png", 52, 50))
 
---[[
-DefineFont({
-  Name = "small",
-  File = "ui/fonts/small.png",
-  Size = {8, 8}})
-DefineFont({
-  Name = "game",
-  File = "ui/fonts/game.png",
-  Size = {12, 12}})
-DefineFont({
-  Name = "large",
-  File = "ui/fonts/large.png",
-  Size = {14, 14}})
-DefineFont({
-  Name = "small-title",
-  File = "ui/fonts/small_episode_titles.png",
-  Size = {32, 35}})
-DefineFont({
-  Name = "large-title",
-  File = "ui/fonts/large_episode_titles.png",
-  Size = {52, 50}})
-]]
-
 --	FIXME: only yellow, white, and grey are correct.
 
 function DefineFontColor(id, t)

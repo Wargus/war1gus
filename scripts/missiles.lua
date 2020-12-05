@@ -30,67 +30,67 @@
 --      $Id$
 
 DefineMissileType("missile-arrow",
-  { File = "missiles/arrow.png", Size = {64, 64}, Frames = 5, NumDirections = 9,
+  { File = "missiles/arrow.png", Size = {64 / 2, 64 / 2}, Frames = 5, NumDirections = 9,
   DrawLevel = 50, ImpactSound = "bow hit",
   Class = "missile-class-point-to-point", Sleep = 1, Speed = 32, Range = 0 } )
 
 DefineMissileType("missile-catapult-rock",
-  { File = "missiles/catapult_projectile.png", Size = {64, 64}, Frames = 15, NumDirections = 9,
+  { File = "missiles/catapult_projectile.png", Size = {64 / 2, 64 / 2}, Frames = 15, NumDirections = 9,
   ImpactSound = "explosion",
   DrawLevel = 50, Class = "missile-class-parabolic", Sleep = 1, Speed = 3, Range = 2,
   ImpactMissile = "missile-explosion", SplashFactor = 4 } )
 
 DefineMissileType("missile-small-fire",
-  { File = "missiles/small_fire.png", Size = {32, 64}, Frames = 4, NumDirections = 1,
+  { File = "missiles/small_fire.png", Size = {32 / 2, 64 / 2}, Frames = 4, NumDirections = 1,
   DrawLevel = 245, Class = "missile-class-fire", Sleep = 8, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-big-fire",
-  { File = "missiles/large_fire.png", Size = {32, 64}, Frames = 4, NumDirections = 1,
+  { File = "missiles/large_fire.png", Size = {32 / 2, 64 / 2}, Frames = 4, NumDirections = 1,
   DrawLevel = 245, Class = "missile-class-fire", Sleep = 8, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-explosion",
-  { File = "missiles/explosion.png", Size = {96, 96}, Frames = 6, NumDirections = 1,
+  { File = "missiles/explosion.png", Size = {96 / 2, 96 / 2}, Frames = 6, NumDirections = 1,
   DrawLevel = 50, Class = "missile-class-stay", Sleep = 1, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-normal-spell",
-  { File = "missiles/healing.png", Size = {32, 32}, Frames = 6, NumDirections = 1,
+  { File = "missiles/healing.png", Size = {32 / 2, 32 / 2}, Frames = 6, NumDirections = 1,
     DrawLevel = 50, Class = "missile-class-stay", Sleep = 5, Speed = 0, Range = 1 } )
 
 DefineMissileType("missile-magic-fireball",
-  { File = "missiles/fireball.png", Size = {64, 64}, Frames = 25, NumDirections = 9,
+  { File = "missiles/fireball.png", Size = {64 / 2, 64 / 2}, Frames = 25, NumDirections = 9,
     DrawLevel = 200, ImpactSound = "fireball attack",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
 
 DefineMissileType("missile-fireball",
-  { File = "missiles/fireball_2.png", Size = {64, 64}, Frames = 10, NumDirections = 9,
+  { File = "missiles/fireball_2.png", Size = {64 / 2, 64 / 2}, Frames = 10, NumDirections = 9,
     DrawLevel = 50, ImpactSound = "bow hit",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
 
 DefineMissileType("missile-water",
-  { File = "missiles/water_elemental_projectile.png", Size = {64, 64}, Frames = 10, NumDirections = 9,
+  { File = "missiles/water_elemental_projectile.png", Size = {64 / 2, 64 / 2}, Frames = 10, NumDirections = 9,
     DrawLevel = 50, ImpactSound = "fireball attack",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
 
 DefineMissileType("missile-rain-of-fire",
-  { File = "missiles/rain_of_fire.png", Size = {32, 32}, Frames = 7, NumDirections = 1,
+  { File = "missiles/rain_of_fire.png", Size = {32 / 2, 32 / 2}, Frames = 7, NumDirections = 1,
   Class = "missile-class-point-to-point-with-hit", Sleep = 2, Speed = 8, Range = 1,
   DrawLevel = 100 } )
 
 DefineMissileType("missile-poison-cloud",
-  { File = "missiles/poison_cloud.png", Size = {128, 128}, Frames = 4, NumDirections = 1,
+  { File = "missiles/poison_cloud.png", Size = {128 / 2, 128 / 2}, Frames = 4, NumDirections = 1,
   Class = "missile-class-point-to-point-with-hit", Sleep = 2, Speed = 8, Range = 1,
   DrawLevel = 100 } )
 
 DefineMissileType("missile-none",
-  { Size = {32, 32}, DrawLevel = 50,
+  { Size = {32 / 2, 32 / 2}, DrawLevel = 50,
   Class = "missile-class-none", Sleep = 1, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-hit",
-  { Size = {15, 15}, DrawLevel = 150,
+  { Size = {15 / 2, 15 / 2}, DrawLevel = 150,
   Class = "missile-class-hit", Sleep = 1, Speed = 1, Range = 16 } )
 
 DefineMissileType("missile-building-collapse",
-  { File = "missiles/building_collapse.png", Size = {96, 128}, Frames = 17, NumDirections = 1,
+  { File = "missiles/building_collapse.png", Size = {96 / 2, 128 / 2}, Frames = 17, NumDirections = 1,
   DrawLevel = 50, Class = "missile-class-stay", Sleep = 2, Speed = 1, Range = 1 } )
 
 DefineBurningBuilding(

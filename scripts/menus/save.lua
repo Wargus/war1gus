@@ -1,12 +1,12 @@
 function RunConfirmErase(name,menu)
   local confirm = WarGameMenu(panel(3))
 
-  confirm:resize(300,120)
+  confirm:resize(300 / 2,120 / 2)
 
-  confirm:addLabel(name, 300 / 2, 11)
-  confirm:addLabel("File exists, are you sure ?", 300 / 2, 31)
+  confirm:addLabel(name, 300 / 2 / 2, 11 / 2)
+  confirm:addLabel("File exists, are you sure ?", 300 / 2 / 2, 31 / 2)
 
-  confirm:addHalfButton("~!Yes", "y", 1 * (300 / 3) - 99, 120 - 16 - 27,
+  confirm:addHalfButton("~!Yes", "y", 1 * (300 / 2 / 3) - 99 / 2, 120 / 2 - 16 / 2 - 27 / 2,
     function()
         SaveGame(name)
         UI.StatusLine:Set("Saved game to: " .. name)
@@ -14,7 +14,7 @@ function RunConfirmErase(name,menu)
         menu:stop()
     end)
 
-  confirm:addHalfButton("~!No", "n", 3 * (300 / 3) - 121 - 10, 120 - 16 - 27,
+  confirm:addHalfButton("~!No", "n", 3 * (300 / 2 / 3) - 121 / 2 - 10 / 2, 120 / 2 - 16 / 2 - 27 / 2,
     function() confirm:stop() end)
 
   confirm:run(false)
@@ -22,21 +22,21 @@ end
 
 function RunSaveMenu()
   local menu = WarGameMenu(panel(3))
-  menu:resize(384, 256)
+  menu:resize(384 / 2, 256 / 2)
 
-  menu:addLabel("Save Game", 384 / 2, 11)
+  menu:addLabel("Save Game", 384 / 2 / 2, 11 / 2)
 
   local t = menu:addTextInputField("game.sav",
-    (384 - 300 - 18) / 2, 11 + 36, 318)
+    (384 / 2 - 300 / 2 - 18 / 2) / 2, 11 / 2 + 36 / 2, 318 / 2)
 
   local browser = menu:addBrowser("~save", ".sav.gz$",
-    (384 - 300 - 18) / 2, 11 + 36 + 22, 318, 126)
+    (384 / 2 - 300 / 2 - 18 / 2) / 2, 11 / 2 + 36 / 2 + 22 / 2, 318 / 2, 126 / 2)
   local function cb(s)
     t:setText(browser:getSelectedItem())
   end
   browser:setActionCallback(cb)
 
-  menu:addHalfButton("~!Save", "s", 1 * (384 / 3) - 121 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Save", "s", 1 * (384 / 2 / 3) - 121 / 2 - 10 / 2, 256 / 2 - 16 / 2 - 27 / 2,
     function()
       local name = t:getText()
       -- check for an empty string
@@ -64,7 +64,7 @@ function RunSaveMenu()
       end
     end)
 
-  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 3) - 121 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 2 / 3) - 121 / 2 - 10 / 2, 256 / 2 - 16 / 2 - 27 / 2,
     function() menu:stop() end)
 
   menu:run(false)

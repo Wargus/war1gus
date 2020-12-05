@@ -36,6 +36,7 @@
 DefineTileset(--"tileset-swamp", "class", "swamp",
   "name", "swamp_campaign",
   "image", "tilesets/swamp/terrain.png",
+  "size", {32 / 2, 32 / 2},
   -- Slots descriptions
   "slots",
 	{

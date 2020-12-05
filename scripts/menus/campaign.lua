@@ -2,8 +2,8 @@
 
 function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, pauseFrameCnt, speedScale, menu)
    local g = CGraphic:New(filename)
-   local headW = math.ceil(w / framecntX * (Video.Width / 640) + 0.5)
-   local headH = math.ceil(h / framecntY * (Video.Height / 400) + 0.5)
+   local headW = math.ceil(w / framecntX * (Video.Width / 320) + 0.5)
+   local headH = math.ceil(h / framecntY * (Video.Height / 200) + 0.5)
    g:Load()
    g:Resize(headW * framecntX, headH * framecntY)
    local head = ImageWidget(g)
@@ -13,7 +13,7 @@ function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, p
    headClip:setWidth(headW)
    headClip:setHeight(headH)
    headClip:add(head, 0, 0)
-   menu:add(headClip, x * Video.Width / 640, y * Video.Height / 400)
+   menu:add(headClip, x * Video.Width / 320, y * Video.Height / 200)
 
    local animTable = {}
 
@@ -92,10 +92,10 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
     PlayMusic(HumanBriefingMusic)
     LoadUI("human", Video.Width, Video.Height)
 
-    animations[1] = SetupAnimation("graphics/428.png", 240, 48, 166, 74, 5, 1, false, 20, 2, menu)
-    animations[2] = SetupAnimation("graphics/429.png", 134, 84 * 21, 414, 59, 1, 21, false, 0, 2, menu)
-    animations[3] = SetupAnimation("graphics/430.png", 48, 1008, 42, 35, 1, 21, true, 0, 0, menu)
-    animations[4] = SetupAnimation("graphics/431.png", 40, 924, 550, 32, 1, 21, true, 0, 0, menu)
+    animations[1] = SetupAnimation("graphics/428.png", 120, 24, 83, 37, 5, 1, false, 20, 2, menu)
+    animations[2] = SetupAnimation("graphics/429.png", 67, 42 * 21, 207, 29, 1, 21, false, 0, 2, menu)
+    animations[3] = SetupAnimation("graphics/430.png", 24, 504, 21, 17, 1, 21, true, 0, 0, menu)
+    animations[4] = SetupAnimation("graphics/431.png", 20, 462, 275, 16, 1, 21, true, 0, 0, menu)
 
     bg1:SetPaletteColor(255, 48, 56, 56)
     -- -- color cycle the shadow pixels to give a sense of flickering light
@@ -114,9 +114,9 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
     PlayMusic(OrcBriefingMusic)
     LoadUI("orc", Video.Width, Video.Height)
 
-    animations[1] = SetupAnimation("graphics/426.png", 560, 134, 36, 135, 5, 1, true, 20, 2, menu)
-    animations[2] = SetupAnimation("graphics/427.png", 690, 116, 404, 105, 5, 1, true, 0, 2, menu)
-    animations[3] = SetupAnimation("graphics/425.png", 100, 2046, 290, 140, 1, 31, false, 0, 0, menu)
+    animations[1] = SetupAnimation("graphics/426.png", 280, 67, 18, 67, 5, 1, true, 20, 2, menu)
+    animations[2] = SetupAnimation("graphics/427.png", 345, 58, 202, 52, 5, 1, true, 0, 2, menu)
+    animations[3] = SetupAnimation("graphics/425.png", 50, 1023, 145, 70, 1, 31, false, 0, 0, menu)
   else
     StopMusic()
   end
@@ -145,7 +145,7 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
   end
 
   local t = LoadBuffer(text)
-  local sw = ScrollingWidget(0.7 * 640, 0.6 * 480)
+  local sw = ScrollingWidget(0.7 * 320, 0.6 * 200)
   sw:setBackgroundColor(Color(0,0,0,0))
   sw:setSpeed(0.28)
 
@@ -154,9 +154,9 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
   l:setFont(Fonts["large"])
   l:setAlignment(MultiLineLabel.CENTER)
   l:setVerticalAlignment(MultiLineLabel.CENTER)
-  l:setLineWidth(0.7 * 640)
+  l:setLineWidth(0.7 * 320)
   l:adjustSize()
-  l:setHeight(0.9 * 480)
+  l:setHeight(0.9 * 200)
   sw:add(l, 0, 0)
   menu:add(sw, 0.15 * Video.Width, 0.2 * Video.Height)
 
@@ -208,6 +208,7 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
   overall:setActionCallback(function()
         currentAction()
   end)
+  overall:setHotKey("return")
 
   l:setActionCallback(action2)
   sw:setActionCallback(action2)
@@ -253,7 +254,7 @@ function CreateEndingStep(bg, text, voice, video)
 
           if currentRace == "orc" then
              -- there's animations here
-             local animation = SetupAnimation("graphics/460.png", 306, 1302, 178, 0, 1, 31, true, 0, 2, menu)
+             local animation = SetupAnimation("graphics/460.png", 153, 1302 / 2, 178 / 2, 0, 1, 31, true, 0, 2, menu)
              local frameTime = 0
              local function animateHeads()
                 frameTime = frameTime + 1
@@ -267,19 +268,19 @@ function CreateEndingStep(bg, text, voice, video)
           
 	  local t = LoadBuffer(text)
 	  t = "\n\n\n\n\n\n\n\n\n\n" .. t .. "\n\n\n\n\n\n\n\n\n\n\n\n\n"
-	  local sw = ScrollingWidget(320, 170 * Video.Height / 480)
+	  local sw = ScrollingWidget(160, 85 * Video.Height / 200)
 	  sw:setBackgroundColor(Color(0,0,0,80))
 	  sw:setSpeed(0.12)
 	  local l = MultiLineLabel(t)
 	  l:setFont(Fonts["large"])
 	  l:setAlignment(MultiLineLabel.LEFT)
 	  l:setVerticalAlignment(MultiLineLabel.CENTER)
-	  l:setLineWidth(320)
+	  l:setLineWidth(160)
 	  l:adjustSize()
 	  sw:add(l, 0, 0)
-	  menu:add(sw, 70 * Video.Width / 640, 80 * Video.Height / 480)
+	  menu:add(sw, 35 * Video.Width / 320, 40 * Video.Height / 200)
 	  local channel = -1
-	  menu:addHalfButton("~!Continue", "c", 455 * Video.Width / 640, 440 * Video.Height / 480,
+	  menu:addHalfButton("~!Continue", "c", 227 * Video.Width / 320, 220 * Video.Height / 200,
 		function()
 		  if (channel ~= -1) then
 			StopChannel(channel)
@@ -298,11 +299,11 @@ function CreatePictureStep(bg, sound, title, text)
     SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
     PlayMusic(sound)
     local menu = WarMenu(nil, bg)
-    local offx = (Video.Width - 640) / 2
-    local offy  = (Video.Height - 480) / 2
-    menu:addLabel(title, offx + 320, offy + 240 - 67, Fonts["large-title"], true)
-    menu:addLabel(text, offx + 320, offy + 240 - 25, Fonts["small-title"], true)
-    menu:addHalfButton("~!Continue", "c", 455 * Video.Width / 640, 440 * Video.Height / 480,
+    local offx = (Video.Width - 320) / 2
+    local offy  = (Video.Height - 200) / 2
+    menu:addLabel(title, offx + 160, offy + 120 - 33, Fonts["large-title"], true)
+    menu:addLabel(text, offx + 160, offy + 120 - 12, Fonts["small-title"], true)
+    menu:addHalfButton("~!Continue", "c", 227 * Video.Width / 320, 220 * Video.Height / 200,
       function() menu:stop() end)
     menu:run()
     GameResult = GameVictory
@@ -376,21 +377,21 @@ function RunCampaignSubmenu(race)
   SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
 
   local menu = WarMenu()
-  local offx = (Video.Width - 640) / 2
-  local offy = (Video.Height - 480) / 2
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
 
   local show_buttons = GetCampaignState(race)
   local half = math.ceil(show_buttons/2)
 
   for i=1,half do
-    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 63, offy + 64 + (36 * i), CampaignButtonFunction(campaign, race, i, menu))
+    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 31, offy + 32 + (18 * i), CampaignButtonFunction(campaign, race, i, menu))
   end
 
   for i=1+half,show_buttons do
-    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 329, offy + 64 + (36 * (i - half)), CampaignButtonFunction(campaign, race, i, menu))
+    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 164, offy + 32 + (18 * (i - half)), CampaignButtonFunction(campaign, race, i, menu))
   end
 
-  menu:addFullButton("~!Previous Menu", "p", offx + 193, offy + 212 + (36 * 5),
+  menu:addFullButton("~!Previous Menu", "p", offx + 96, offy + 106 + (18 * 5),
     function() menu:stop(); currentCampaign = nil; currentRace = nil; currentState = nil; RunCampaignGameMenu() end)
   menu:run()
 
@@ -424,15 +425,15 @@ end
 
 function RunCampaignGameMenu()
   local menu = WarMenu()
-  local offx = (Video.Width - 640) / 2
-  local offy = (Video.Height - 480) / 2
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
 
-  menu:addFullButton("~!Orc campaign", "o", offx + 193, offy + 212 + (36 * 0),
+  menu:addFullButton("~!Orc campaign", "o", offx + 96, offy + 106 + (18 * 0),
     function() RunCampaignSubmenu("orc"); menu:stop() end)
-  menu:addFullButton("~!Human campaign", "h", offx + 193, offy + 212 + (36 * 1),
+  menu:addFullButton("~!Human campaign", "h", offx + 96, offy + 106 + (18 * 1),
     function() RunCampaignSubmenu("human"); menu:stop() end)
 
-  menu:addFullButton("~!Previous Menu", "p", offx + 193, offy + 212 + (36 * 5),
+  menu:addFullButton("~!Previous Menu", "p", offx + 96, offy + 106 + (18 * 5),
     function() RunSinglePlayerSubMenu(); menu:stop() end)
 
   menu:run()
