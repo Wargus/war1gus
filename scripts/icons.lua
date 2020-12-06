@@ -144,42 +144,42 @@ for i = 1,table.getn(icons) do
   DefineIcon({
     Name = icons[i][1],
     Tileset = "tileset-forest",
-    Size = {54 / 2, 38 / 2},
+    Size = {27, 19},
     File = "tilesets/forest/portrait_icons.png",
     Frame = icons[i][2],})
 
   DefineIcon({
     Name = icons[i][1],
     Tileset = "tileset-forest_campaign",
-    Size = {54 / 2, 38 / 2},
+    Size = {27, 19},
     File = "tilesets/forest/portrait_icons.png",
     Frame = icons[i][2],})
 
   DefineIcon({
     Name = icons[i][1],
     Tileset = "tileset-swamp",
-    Size = {54 / 2, 38 / 2},
+    Size = {27, 19},
     File = "tilesets/swamp/portrait_icons.png",
     Frame = icons[i][2],})
 
   DefineIcon({
     Name = icons[i][1],
     Tileset = "tileset-swamp_campaign",
-    Size = {54 / 2, 38 / 2},
+    Size = {27, 19},
     File = "tilesets/swamp/portrait_icons.png",
     Frame = icons[i][2],})
 
   DefineIcon({
     Name = icons[i][1],
     Tileset = "tileset-dungeon",
-    Size = {54 / 2, 38 / 2},
+    Size = {27, 19},
     File = "tilesets/dungeon/portrait_icons.png",
     Frame = icons[i][2],})
 
   DefineIcon({
     Name = icons[i][1],
     Tileset = "tileset-dungeon_campaign",
-    Size = {54 / 2, 38 / 2},
+    Size = {27, 19},
     File = "tilesets/dungeon/portrait_icons.png",
     Frame = icons[i][2],})
 end

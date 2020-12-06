@@ -1,12 +1,12 @@
 function RunHelpMenu()
   local menu = WarGameMenu(panel(1))
 
-  menu:addLabel("Help Menu", 128 / 2, 11 / 2)
-  menu:addFullButton("Keystroke ~!Help", "h", 25 / 2, 40 / 2 + 36 / 2*0,
+  menu:addLabel("Help Menu", 64, 5)
+  menu:addFullButton("Keystroke ~!Help", "h", 12, 20 + 18*0,
     function() RunKeystrokeHelpMenu() end)
-  menu:addFullButton("~!Tips", "t", 25 / 2, 40 / 2 + 36 / 2*1,
+  menu:addFullButton("~!Tips", "t", 12, 20 + 18*1,
     function() RunTipsMenu() end)
-  menu:addFullButton("Previous (~<Esc~>)", "escape", 25 / 2, 228 / 2,
+  menu:addFullButton("Previous (~<Esc~>)", "escape", 12, 114,
     function() menu:stop() end)
 
   menu:run(false)
@@ -56,7 +56,7 @@ local keystrokes = {
 
 function RunKeystrokeHelpMenu()
   local menu = WarGameMenu(panel(5))
-  menu:resize(352 / 2, 352 / 2)
+  menu:resize(176, 176)
 
   local c = Container()
   c:setOpaque(false)
@@ -65,25 +65,25 @@ function RunKeystrokeHelpMenu()
     local l = Label(keystrokes[i][1])
     l:setFont(Fonts["game"])
     l:adjustSize()
-    c:add(l, 0, 20 / 2 * (i - 1))
+    c:add(l, 0, 10 * (i - 1))
     local l = Label(keystrokes[i][2])
     l:setFont(Fonts["game"])
     l:adjustSize()
-    c:add(l, 80 / 2, 20 / 2 * (i - 1))
+    c:add(l, 40, 10 * (i - 1))
   end
 
   local s = ScrollArea()
-  c:setSize(320 / 2 - s:getScrollbarWidth(), 20 / 2 * table.getn(keystrokes))
+  c:setSize(160 - s:getScrollbarWidth(), 10 * table.getn(keystrokes))
   s:setBaseColor(dark)
   s:setBackgroundColor(dark)
   s:setForegroundColor(clear)
-  s:setSize(320 / 2, 216 / 2)
+  s:setSize(160, 108)
   s:setContent(c)
-  menu:add(s, 16 / 2, 60 / 2)
+  menu:add(s, 8, 30)
 
-  menu:addLabel("Keystroke Help Menu", 352 / 2 / 2, 11 / 2)
+  menu:addLabel("Keystroke Help Menu", 88, 5)
   menu:addFullButton("Previous (~<Esc~>)", "escape",
-    (352 / 2 / 2) - (254 / 2 / 2), 352 / 2 - 40 / 2, function() menu:stop() end)
+    (88) - (63), 176 - 20, function() menu:stop() end)
 
   menu:run(false)
 end
@@ -112,15 +112,15 @@ local tips = {
 
 function RunTipsMenu()
   local menu = WarGameMenu(panel(1))
-  menu:resize(304 / 2, 242 / 2)
+  menu:resize(152, 121)
 
-  menu:addLabel("Tips", 144 / 2, 11 / 2)
+  menu:addLabel("Tips", 72, 5)
 
   local l = MultiLineLabel()
   l:setFont(Fonts["game"])
-  l:setSize(260 / 2, 128 / 2)
-  l:setLineWidth(260 / 2)
-  menu:add(l, 14 / 2, 35 / 2)
+  l:setSize(130, 64)
+  l:setLineWidth(130)
+  menu:add(l, 7, 17)
 
   function l:prevTip()
     preferences.TipNumber = preferences.TipNumber - 1
@@ -146,16 +146,16 @@ function RunTipsMenu()
   l:updateCaption()
 
   local showtips = {}
-  showtips = menu:addCheckBox("Show tips at startup", 14 / 2, 256 / 2 - 75 / 2,
+  showtips = menu:addCheckBox("Show tips at startup", 7, 128 - 37,
     function()
       preferences.ShowTips = showtips:isMarked()
       SavePreferences()
     end)
   showtips:setMarked(preferences.ShowTips)
 
-  menu:addHalfButton("~!Next Tip", "n", 5 / 2, 256 / 2 - 40 / 2,
+  menu:addHalfButton("~!Next Tip", "n", 2, 128 - 20,
     function() l:nextTip(); l:updateCaption() end)
-  menu:addHalfButton("~!Close", "c", 159 / 2, 256 / 2 - 40 / 2,
+  menu:addHalfButton("~!Close", "c", 79, 128 - 20,
     function() l:nextTip(); menu:stop() end)
 
   menu:run(false)

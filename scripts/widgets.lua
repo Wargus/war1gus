@@ -30,7 +30,7 @@
 
 
 DefineButtonStyle("menu", {
-  Size = {130 / 2, 24 / 2},
+  Size = {65, 12},
   Font = "game",
   Default = { File = "ui/menu_button_1.png"},
   Clicked = { File = "ui/menu_button_2.png"},
@@ -52,7 +52,7 @@ DefineButtonStyle("main", {
 })
 
 DefineButtonStyle("network", {
-  Size = {80 / 2, 20 / 2},
+  Size = {40, 10},
   Font = "game",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
@@ -66,13 +66,13 @@ DefineButtonStyle("network", {
 })
 
 DefineButtonStyle("gm-half", {
-  Size = {106 / 2, 28 / 2},
+  Size = {53, 14},
   Font = "large",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Center",
   TextPos = {26, 3},
-  Default = { File = "ui/buttons_1.png", Size = {300 / 2, 144 / 2}, Frame = 10},
+  Default = { File = "ui/buttons_1.png", Size = {150, 72}, Frame = 10},
   Hover = { TextNormalColor = "white" },
   Clicked = {
     TextNormalColor = "white",
@@ -81,13 +81,13 @@ DefineButtonStyle("gm-half", {
 })
 
 DefineButtonStyle("gm-full", {
-  Size = {224 / 2, 28 / 2},
+  Size = {112, 14},
   Font = "large",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Center",
   TextPos = {56, 3},
-  Default = { File = "ui/buttons_1.png", Size = {300 / 2, 144 / 2}, Frame = 16},
+  Default = { File = "ui/buttons_1.png", Size = {150, 72}, Frame = 16},
   Hover = { TextNormalColor = "white" },
   Clicked = {
     TextNormalColor = "white",
@@ -96,7 +96,7 @@ DefineButtonStyle("gm-full", {
 })
 
 DefineButtonStyle("folder", {
-  Size = {39 / 2, 22 / 2},
+  Size = {19, 11},
   Font = "large",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
@@ -109,7 +109,7 @@ DefineButtonStyle("folder", {
 })
 
 DefineButtonStyle("icon", {
-  Size = {54 / 2, 38 / 2},
+  Size = {27, 19},
   Font = "game",
   TextNormalColor = "yellow",
   TextReverseColor = "white",

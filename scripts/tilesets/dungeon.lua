@@ -212,7 +212,7 @@ local slots = {
 
 DefineTileset("name", "dungeon",
   "image", "tilesets/dungeon/terrain.png",
-  "size", {32 / 2, 32 / 2},
+  "size", {16, 16},
   -- Slots descriptions
   "slots", slots)
 

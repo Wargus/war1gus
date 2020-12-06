@@ -254,7 +254,7 @@ function CreateEndingStep(bg, text, voice, video)
 
           if currentRace == "orc" then
              -- there's animations here
-             local animation = SetupAnimation("graphics/460.png", 153, 1302 / 2, 178 / 2, 0, 1, 31, true, 0, 2, menu)
+             local animation = SetupAnimation("graphics/460.png", 153, 651, 89, 0, 1, 31, true, 0, 2, menu)
              local frameTime = 0
              local function animateHeads()
                 frameTime = frameTime + 1

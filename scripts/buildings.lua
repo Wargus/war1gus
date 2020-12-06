@@ -131,7 +131,7 @@ local buildings = {
     Costs = {"time", 100, "gold", 500, "wood", 300},
     HitPoints = 400,
     Supply = 5,
-    Size = {96 / 2, 96 / 2},
+    Size = {48, 48},
     Corpse = "unit-destroyed-2x2-place"},
 
    {Names = {orc = "Town hall", human = "Town hall"},
@@ -142,30 +142,30 @@ local buildings = {
     RepairRange = InfiniteRepairRange,
     BuildingRules = townHallBuildingRules,
     AiBuildingRules = townHallBuildingRules,
-    Size = {128 / 2, 128 / 2}},
+    Size = {64, 64}},
 
    {Names = {orc = "Barracks", human = "Barracks"},
     Costs = {"time", 150, "gold", 600, "wood", 500},
     HitPoints = 800,
 	AnnoyComputerFactor = 50,
-    Size = {128 / 2, 128 / 2}},
+    Size = {64, 64}},
 
    {Names = {orc = "Lumber Mill", human = "Lumber Mill"},
     Costs = {"time", 150, "gold", 600, "wood", 500},
     HitPoints = 600,
     CanStore = {"wood"},
-    Size = {128 / 2, 128 / 2}},
+    Size = {64, 64}},
 
    {Names = {orc = "Kennel", human = "Stable"},
     Costs = {"time", 150, "gold", 1000, "wood", 400},
     HitPoints = 500,
-    Size = {orc = {128 / 2, 96 / 2}, human = {128 / 2, 128 / 2}},
+    Size = {orc = {64, 48}, human = {64, 64}},
     Dependency = {human = "lumber-mill", orc = "lumber-mill"}},
 
    {Names = {orc = "Blacksmith", human = "Blacksmith"},
     Costs = {"time", 150, "gold", 900, "wood", 400},
     HitPoints = 800,
-    Size = {96 / 2, 96 / 2},
+    Size = {48, 48},
     Dependency = {orc = "lumber-mill", human = "lumber-mill"},
     Corpse = "unit-destroyed-2x2-place"},
 
@@ -173,21 +173,21 @@ local buildings = {
     Costs = {"time", 200, "gold", 800, "wood", 500},
     HitPoints = 700,
 	AnnoyComputerFactor = 60,
-    Size = {128 / 2, 128 / 2},
+    Size = {64, 64},
     Dependency = {orc = "lumber-mill", human = "lumber-mill"}},
 
    {Names = {orc = "Tower", human = "Tower"},
     Costs = {"time", 200, "gold", 1400, "wood", 300},
     HitPoints = 900,
 	AnnoyComputerFactor = 60,
-    Size = {96 / 2, 96 / 2},
+    Size = {48, 48},
     Dependency = {orc = "blacksmith", human = "blacksmith"},
     Corpse = "unit-destroyed-2x2-place"},
 
    {Names = {human = "Stormwind keep", orc = "Blackrock spire"},
     Costs = {"time", 100, "gold", 500, "wood", 250},
     HitPoints = 5000,
-    Size = {160 / 2, 160 / 2},
+    Size = {80, 80},
     CanStore = {"wood", "gold"},
     Supply = 5,
     RepairRange = InfiniteRepairRange,
@@ -387,7 +387,7 @@ local wallconstructionfiles = {
      dungeon_campaign = "tilesets/dungeon/neutral/buildings/wall_1x1.png" }
 DefineConstruction(
    "construction-wall",
-   {Files = { File = wallconstructionfiles[war1gus.tileset], Size = {32 / 2, 32 / 2} },
+   {Files = { File = wallconstructionfiles[war1gus.tileset], Size = {16, 16} },
               Constructions = {{Percent = 0, File = "construction", Frame = 0}} })
 DefineUnitType(
    "unit-wall",

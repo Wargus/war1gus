@@ -1,17 +1,17 @@
 function RunReplayGameMenu()
   local menu = WarMenu(nil, panel(5), false)
-  menu:setSize(352 / 2, 352 / 2)
-  menu:setPosition((Video.Width - 352 / 2) / 2, (Video.Height - 352 / 2) / 2)
+  menu:setSize(176, 176)
+  menu:setPosition((Video.Width - 176) / 2, (Video.Height - 176) / 2)
   menu:setDrawMenusUnder(true)
 
-  menu:addLabel("Select Game", 352 / 2 / 2, 11 / 2)
+  menu:addLabel("Select Game", 88, 5)
 
   local browser = menu:addBrowser("~logs/", "%.log%.?g?z?$",
-    (352 / 2 - 18 / 2 - 288 / 2) / 2, 11 / 2 + 98 / 2, 306 / 2, 108 / 2)
+    (176 - 9 - 144) / 2, 5 + 49, 153, 54)
 
-  local reveal = menu:addCheckBox("Reveal Map", 23 / 2, 264 / 2, function() end)
+  local reveal = menu:addCheckBox("Reveal Map", 11, 132, function() end)
 
-  menu:addHalfButton("~!OK", "o", 39 / 2, 308 / 2,
+  menu:addHalfButton("~!OK", "o", 19, 154,
     function()
       if (browser:getSelected() < 0) then
         return
@@ -29,22 +29,22 @@ end
 
 function RunSaveReplayMenu()
   local menu = WarGameMenu(panel(3))
-  menu:setSize(384 / 2, 256 / 2)
-  menu:setPosition((Video.Width - 384 / 2) / 2, (Video.Height - 256 / 2) / 2)
+  menu:setSize(192, 128)
+  menu:setPosition((Video.Width - 192) / 2, (Video.Height - 128) / 2)
 
-  menu:addLabel("Save Replay", 384 / 2 / 2, 11 / 2)
+  menu:addLabel("Save Replay", 96, 5)
 
   local t = menu:addTextInputField("game.log",
-    (384 / 2 - 300 / 2 - 18 / 2) / 2, 11 / 2 + 36 / 2, 318 / 2)
+    (192 - 150 - 9) / 2, 5 + 18, 159)
 
   local browser = menu:addBrowser("~logs", ".log$",
-    (384 / 2 - 300 / 2 - 18 / 2) / 2, 11 / 2 + 36 / 2 + 22 / 2, 318 / 2, 126 / 2)
+    (192 - 150 - 9) / 2, 5 + 18 + 11, 159, 63)
   local function cb(s)
     t:setText(browser:getSelectedItem())
   end
   browser:setActionCallback(cb)
 
-  menu:addHalfButton("~!Save", "s", 1 * (384 / 2 / 3) - 121 / 2 - 10 / 2, 256 / 2 - 16 / 2 - 27 / 2,
+  menu:addHalfButton("~!Save", "s", 1 * (192 / 3) - 60 - 5, 128 - 8 - 13,
     -- FIXME: use a confirm menu if the file exists already
     function()
       local name = t:getText()
@@ -64,7 +64,7 @@ function RunSaveReplayMenu()
       menu:stop()
     end)
 
-  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 2 / 3) - 121 / 2 - 10 / 2, 256 / 2 - 16 / 2 - 27 / 2,
+  menu:addHalfButton("~!Cancel", "c", 3 * (192 / 3) - 60 - 5, 128 - 8 - 13,
     function() menu:stop() end)
 
   menu:run()

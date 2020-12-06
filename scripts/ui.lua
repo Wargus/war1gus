@@ -178,91 +178,91 @@ DefineCursor({
       Race = "any",
       File = "ui/cursors/arrow.png",
       HotSpot = {0, 0},
-      Size = {14 / 2, 22 / 2}})
+      Size = {7, 11}})
 DefineCursor({
       Name = "cursor-glass",
       Race = "any",
       File = "ui/cursors/magnifying_glass.png",
       HotSpot = {5, 5},
-      Size = {28 / 2, 28 / 2}})
+      Size = {14, 14}})
 DefineCursor({
       Name = "cursor-green-hair",
       Race = "any",
       File = "ui/cursors/small_green_crosshair.png",
       HotSpot = {4, 4},
-      Size = {18 / 2, 18 / 2}})
+      Size = {9, 9}})
 DefineCursor({
       Name = "cursor-yellow-hair",
       Race = "any",
       File = "ui/cursors/yellow_crosshair.png",
       HotSpot = {7, 5},
-      Size = {30 / 2, 22 / 2}})
+      Size = {15, 11}})
 DefineCursor({
       Name = "cursor-red-hair",
       Race = "any",
       File = "ui/cursors/red_crosshair.png",
       HotSpot = {7, 5},
-      Size = {30 / 2, 22 / 2}})
+      Size = {15, 11}})
 DefineCursor({
       Name = "cursor-cross",
       Race = "any",
       File = "ui/cursors/small_green_crosshair.png",
       HotSpot = { 4,  4},
-      Size = {18 / 2, 18 / 2}})
+      Size = {9, 9}})
 DefineCursor({
       Name = "cursor-scroll", -- Not present for wc1
       Race = "any",
       File = "ui/cursors/small_green_crosshair.png",
       HotSpot = { 4,  4},
-      Size = {18 / 2, 18 / 2}})
+      Size = {9, 9}})
 DefineCursor({
       Name = "cursor-arrow-e",
       Race = "any",
       File = "ui/cursors/right_arrow.png",
       HotSpot = {11, 5},
-      Size = {32 / 2, 32 / 2}})
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-ne",
       Race = "any",
       File = "ui/cursors/upper_right_arrow.png",
       HotSpot = {10,  1},
-      Size = {32 / 2, 32 / 2}})
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-n",
       Race = "any",
       File = "ui/cursors/up_arrow.png",
       HotSpot = {6,  1},
-      Size = {32 / 2, 32 / 2}})
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-nw",
       Race = "any",
       File = "ui/cursors/upper_left_arrow.png",
       HotSpot = { 1,  1},
-      Size = {32 / 2, 32 / 2}})
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-w",
       Race = "any",
       File = "ui/cursors/left_arrow.png",
       HotSpot = { 2, 5},
-      Size = {32 / 2, 32 / 2}})
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-s",
       Race = "any",
       File = "ui/cursors/down_arrow.png",
       HotSpot = {6, 11},
-      Size = {32 / 2, 32 / 2}})
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-sw",
       Race = "any",
       File = "ui/cursors/lower_left_arrow.png",
       HotSpot = { 1, 9},
-      Size = {32 / 2, 32 / 2}})
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-se",
       Race = "any",
       File = "ui/cursors/lower_right_arrow.png",
       HotSpot = {10, 9},
-      Size = {32 / 2, 32 / 2}})
+      Size = {16, 16}})
 
 local function AddFiller(file, x, y, resize_x, resize_y)
    if CanAccessFile(file) == true then

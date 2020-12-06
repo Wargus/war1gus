@@ -36,7 +36,7 @@
 --
 DefineTileset("name", "Swamp",
   "image", "tilesets/swamp/terrain.png",
-  "size", {32 / 2, 32 / 2},
+  "size", {16, 16},
   -- Slots descriptions
   "slots",
 	{ "special", {		-- Can't be in pud
