@@ -431,7 +431,7 @@ end
 function RunMultiPlayerGameMenu(s)
   local menu = WarMenu()
   local offx = (Video.Width - 320) / 2
-  local offy = (Video.Height - 200) / 2
+  local offy = (Video.Height - 200) / 2 - 30
   local nick
 
   InitGameSettings()

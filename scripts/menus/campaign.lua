@@ -384,14 +384,14 @@ function RunCampaignSubmenu(race)
   local half = math.ceil(show_buttons/2)
 
   for i=1,half do
-    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 31, offy + 32 + (18 * i), CampaignButtonFunction(campaign, race, i, menu))
+    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 31, offy + 32 + (18 * (i - 1)), CampaignButtonFunction(campaign, race, i, menu))
   end
 
   for i=1+half,show_buttons do
-    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 164, offy + 32 + (18 * (i - half)), CampaignButtonFunction(campaign, race, i, menu))
+    menu:addFullButton(CampaignButtonTitle(race, i), ".", offx + 164, offy + 32 + (18 * (i - 1 - half)), CampaignButtonFunction(campaign, race, i, menu))
   end
 
-  menu:addFullButton("~!Previous Menu", "p", offx + 96, offy + 106 + (18 * 5),
+  menu:addFullButton("~!Previous Menu", "p", offx + 96, offy + 106 + (18 * 4),
     function() menu:stop(); currentCampaign = nil; currentRace = nil; currentState = nil; RunCampaignGameMenu() end)
   menu:run()
 
@@ -433,7 +433,7 @@ function RunCampaignGameMenu()
   menu:addFullButton("~!Human campaign", "h", offx + 96, offy + 106 + (18 * 1),
     function() RunCampaignSubmenu("human"); menu:stop() end)
 
-  menu:addFullButton("~!Previous Menu", "p", offx + 96, offy + 106 + (18 * 5),
+  menu:addFullButton("~!Previous Menu", "p", offx + 96, offy + 106 + (18 * 4),
     function() RunSinglePlayerSubMenu(); menu:stop() end)
 
   menu:run()

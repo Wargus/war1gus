@@ -22,7 +22,7 @@ function RunReplayGameMenu()
       SetPlayerData(GetThisPlayer(), "RaceName", "orc")
       menu:stop()
     end)
-  menu:addHalfButton("~!Cancel", "c", 189, 308, function() RunSinglePlayerSubMenu(); menu:stop() end)
+  menu:addHalfButton("~!Cancel", "c", 94, 154, function() RunSinglePlayerSubMenu(); menu:stop() end)
 
   menu:run()
 end

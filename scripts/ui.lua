@@ -56,9 +56,9 @@ UI.InfoPanel.Y = info_panel_y
 local life_bar_off_x = 36
 local info_text_off_x = 3
 
-local first_line = {info_text_off_x, 36}
+local first_line = {info_text_off_x, 35}
 local second_line = {info_text_off_x, 41}
-local third_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 36}
+local third_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 35}
 local fourth_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 41}
 
 local function MakeCompleteBar(condition, variable)

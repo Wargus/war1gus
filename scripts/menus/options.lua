@@ -237,7 +237,7 @@ function BuildOptionsMenu()
 	end
   end
 
-  b = menu:addCheckBox("Full Screen", offx + 8, offy + top + 7,
+  b = menu:addCheckBox("Full Screen", offx + 8, offy + top + 10,
     function()
       ToggleFullScreen()
       preferences.VideoFullScreen = Video.FullScreen
@@ -246,7 +246,7 @@ function BuildOptionsMenu()
     end)
   b:setMarked(Video.FullScreen)
 
-  b = menu:addCheckBox("Allow Training Queue", offx + 8, offy + top + 7 * 4,
+  b = menu:addCheckBox("Allow Training Queue", offx + 8, offy + top + 10 * 4,
     function()
 	  preferences.TrainingQueue = not preferences.TrainingQueue
 	  SetTrainingQueue(not not preferences.TrainingQueue)
@@ -254,9 +254,9 @@ function BuildOptionsMenu()
     end)
   b:setMarked(preferences.TrainingQueue)
 
-  menu:addLabel("Max Unit Selection", offx + 8, offy + top + 7 * 5, Fonts["game"], false)
+  menu:addLabel("Max Unit Selection", offx + 8, offy + top + 10 * 5, Fonts["game"], false)
   local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
-  maxselection = menu:addDropDown(maxselections, offx + 8 + 125, offy + top + 7 * 5,
+  maxselection = menu:addDropDown(maxselections, offx + 8 + 125, offy + top + 10 * 5,
     function(dd)
 	  local selected = maxselections[maxselection:getSelected() + 1]
 	  local count = tonumber(string.gmatch(selected, "%d+")())
@@ -274,7 +274,7 @@ function BuildOptionsMenu()
 	end
   end
   
-  b = menu:addCheckBox("Allow multiple Town Halls", offx + 8, offy + top + 7 * 6,
+  b = menu:addCheckBox("Allow multiple Town Halls", offx + 8, offy + top + 10 * 6,
     function()
       preferences.AllowMultipleTownHalls = not preferences.AllowMultipleTownHalls
       Load("scripts/buttons.lua")
@@ -283,7 +283,7 @@ function BuildOptionsMenu()
     end)
   b:setMarked(preferences.AllowMultipleTownHalls)
 
-  b = menu:addCheckBox("Use simplified color scheme", offx + 8, offy + top + 7 * 7,
+  b = menu:addCheckBox("Use simplified color scheme", offx + 8, offy + top + 10 * 7,
     function()
 	  preferences.MultiColoredCampaigns = not preferences.MultiColoredCampaigns
 	  SetColorScheme()
@@ -291,7 +291,7 @@ function BuildOptionsMenu()
 	end)
   b:setMarked(not preferences.MultiColoredCampaigns)
 
-  menu:addHalfButton("~!OK", "o", offx + 61, offy + top + 7 * 9,
+  menu:addHalfButton("~!OK", "o", offx + 61, offy + top + 10 * 9,
     function()
 	  menu:stop()
 	end)

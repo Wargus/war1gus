@@ -117,8 +117,9 @@ function RunShowCreditsMenu()
     sw:add(Label(f), 0, 12 * (i - 1) + 137)
   end
 
-  menu:addHalfButton("~!Continue", "c", offx + 227, offy + 200,
-    function() menu:stop() end)
+  local btn = menu:addHalfButton("~!Continue", "c", offx + 227, offy + 170,
+	function() menu:stop() end)
+  btn:requestFocus()
 
   local speed = GetGameSpeed()
   SetGameSpeed(30)
