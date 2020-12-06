@@ -605,7 +605,7 @@ Load("scripts/menus/results.lua")
 --[[
 --]]
 
-SetShader("xBRZ")
+-- SetShader("xBRZ")
 
 if (Editor.Running == EditorCommandLine) then
   if (CliMapName and CliMapName ~= "") then

@@ -28,11 +28,13 @@
 --
 --      $Id$
 
-CFont:New("small", CGraphic:New("contrib/fonts/small.png", 8, 8))
-CFont:New("game", CGraphic:New("contrib/fonts/game.png", 12, 12))
-CFont:New("large", CGraphic:New("contrib/fonts/large.png", 14, 14))
-CFont:New("small-title", CGraphic:New("contrib/fonts/small_episode_titles.png", 32, 35))
-CFont:New("large-title", CGraphic:New("contrib/fonts/large_episode_titles.png", 52, 50))
+CFont:New("small", CGraphic:New("contrib/fonts/3x5.png", 4, 6))
+CFont:New("game", CGraphic:New("contrib/fonts/5x8.png", 5, 8))
+CFont:New("large", CGraphic:New("contrib/fonts/6x8_espruino.png", 6, 8))
+CFont:New("small-title", CGraphic:New("contrib/fonts/6x12_espruino.png", 6, 12))
+CFont:New("title", CGraphic:New("contrib/fonts/7x17_espruino.png", 8, 17))
+CFont:New("large-title", CGraphic:New("contrib/fonts/large.png", 14, 14))
+-- CFont:New("huge-title", CGraphic:New("contrib/fonts/large_episode_titles.png", 52, 50))
 
 --	FIXME: only yellow, white, and grey are correct.
 
