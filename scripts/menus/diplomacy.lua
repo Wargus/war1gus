@@ -1,6 +1,6 @@
 function RunDiplomacyMenu()
   local menu = WarGameMenu(panel(5))
-  menu:resize(352, 352)
+  menu:resize(352 / 2, 352 / 2)
 
   menu:addLabel("Diplomacy", 88, 5)
 
