@@ -311,10 +311,11 @@ DefaultPreference("ShowOrders", true)
 
 wc1.preferences = preferences
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
+local pixelScale = 1.2
 if preferences.VideoWidth < 640 then
-   SetWindowSize(preferences.VideoWidth * 2, preferences.VideoHeight * 2)
+   SetWindowSize(preferences.VideoWidth * 2, preferences.VideoHeight * 2 * pixelScale)
 end
-SetVerticalPixelSize(1.2) -- WC1 uses non-square pixels: graphics are 320x200, but rendered 320x240
+SetVerticalPixelSize(pixelScale) -- WC1 uses non-square pixels: graphics are 320x200, but rendered 320x240
 SetVideoFullScreen(preferences.VideoFullScreen)
 SetLocalPlayerName(preferences.PlayerName)
 SetFogOfWar(preferences.FogOfWar)

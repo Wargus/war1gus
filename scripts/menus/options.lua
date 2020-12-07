@@ -265,27 +265,36 @@ function BuildOptionsMenu()
 
   menu:addLabel("Video Resolution", offx + 8, offy + top, Fonts["game"], false)
   local resolutions = {
-     "320x200",
-     "480x300",
-     "640x400",
-     "800x500",
-     "960x600",
-     "1280x800"
+     "320x200 (1x)",
+     "400x250 (1.25x)",
+     "480x300 (1.5x)",
+     "640x400 (2x)",
+     "800x500 (2.5x)",
+     "960x600 (3x)",
+     "1280x800 (4x)",
+     "480x270 (1.5x wide)",
+     "640x360 (2x wide)",
+     "960x540 (3x wide)"
   }
   resolution = menu:addDropDown(resolutions, offx + 8 + 125, offy + top,
     function(dd)
-	  local selected = resolutions[resolution:getSelected() + 1]
-	  local x = tonumber(string.gmatch(selected, "%d+")())
-	  local y = tonumber(string.gmatch(selected, "%d+$")())
-	  SetVideoSize(x, y)
-	  menu:stop()
-	  RunOptionsMenu()
+    local selected = resolutions[resolution:getSelected() + 1]
+    for x, y in string.gmatch(selected, "(%d+)x(%d+)") do
+      SetVideoSize(tonumber(x), tonumber(y))
+    end
+    menu:stop()
+    RunOptionsMenu()
 	end)
   for idx,str in ipairs(resolutions) do
-    local x = tonumber(string.gmatch(str, "%d+")())
-	  local y = tonumber(string.gmatch(str, "%d+$")())
-    if Video.Width == x and Video.Height == y then
-      resolution:setSelected(idx - 1)
+    local found = false
+    for x, y in string.gmatch(str, "(%d+)x(%d+)") do
+      if Video.Width == tonumber(x) and Video.Height == tonumber(y) then
+        resolution:setSelected(idx - 1)
+        found = true
+        break
+      end
+    end
+    if found then
       break
     end
   end
