@@ -123,11 +123,11 @@ DefinePanelContents(
            More = {"Text", {Text = "RNG:", Variable = "AttackRange" , Stat = true}}
          },
          -- Mana
-         { Pos = {35, 9}, Condition = {Mana = "only"},
-           More = {"LifeBar", {Variable = "Mana", Height = 6, Width = 54, Border = false, Colors = {{0, "light-blue"}}}}
+         { Pos = {36, 10}, Condition = {Mana = "only"},
+           More = {"LifeBar", {Variable = "Mana", Height = 3, Width = 27, Border = false, Colors = {{0, "light-blue"}}}}
          },
          -- Summoned units
-         { Pos = {35, 9},
+         { Pos = {36, 10},
            More = {"LifeBar", {
                       Variable = {
                          Max = 100,
@@ -335,8 +335,9 @@ UI.LifeBarColorNames:push_back("green")
 UI.LifeBarColorNames:push_back("yellow")
 UI.LifeBarColorNames:push_back("orange")
 UI.LifeBarColorNames:push_back("red")
-UI.LifeBarYOffset = -2
+UI.LifeBarYOffset = -3
 UI.LifeBarBorder = false
+UI.LifeBarPadding = 2
 
 UI.MaxSelectedFont = Fonts["game"]
 UI.MaxSelectedTextX = info_panel_x + 5
@@ -487,7 +488,7 @@ if (wc1.preferences.ShowButtonPopups) then
                 More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
             },
             { 	Condition = {ButtonAction = "repair"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-                More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-repair of damaged buildings."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+                More = {"Text", {Text = _("~<CTRL~>-click to toggle auto-repair of damaged buildings."), MaxWidth = Video.Width / 5, Font = PopupFont}}
             },
             -- buildings, units, upgrades
             { 	Condition = {ButtonAction = "build"},
@@ -510,14 +511,14 @@ if (wc1.preferences.ShowButtonPopups) then
                 More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
             },
             { 	Condition = {ButtonAction = "build"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-                More = {"Text", {Text = _("~<SHIFT~>-click could be used to make a building queue."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+                More = {"Text", {Text = _("~<SHIFT~>-click to create a building queue."), MaxWidth = Video.Width / 5, Font = PopupFont}}
             },
             -- Auto-cast hint
             { 	Margin = {1, 1}, Condition = {ButtonAction = "cast-spell"},
                 More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
             },
             { 	Condition = {ButtonAction = "cast-spell"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-                More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-cast ability."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+                More = {"Text", {Text = _("~<CTRL~>-click to toggle auto-cast ability."), MaxWidth = Video.Width / 5, Font = PopupFont}}
             },
             -- Description
             { 	Margin = {1, 1}, Condition = {HasDescription = true},
