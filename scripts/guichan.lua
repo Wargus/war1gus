@@ -23,7 +23,7 @@ local opanels = {
 }
 
 function panel(n)
-  if (GetPlayerData(GetThisPlayer(), "RaceName") == "human") then
+  if (GetPlayerData(GetThisPlayer(), "RaceName") == "human") or GameCycle == 0 then
     return hpanels[n]
   else
     return opanels[n]
@@ -564,7 +564,7 @@ function BuildProgramStartMenu()
 
   menu:addFullButton("~!Single Player Game", "s", offx + 96, offy + 52 + 17*2, function() RunSinglePlayerSubMenu(); menu:stop(1) end)
   menu:addFullButton("~!Multi Player Game", "m", offx + 96, offy + 52 + 17*3, function() RunMultiPlayerGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Options", "o", offx + 96, offy + 52 + 17*4, function() RunOptionsMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Options", "o", offx + 96, offy + 52 + 17*4, function() RunGameOptionsMenu(); menu:stop(1) end)
   menu:addFullButton("~!Editor", "e", offx + 96, offy + 52 + 17*5, function() RunEditorMenu(); menu:stop(1) end)
   menu:addFullButton("S~!how Credits", "h", offx + 96, offy + 52 + 17*6, RunShowCreditsMenu)
   menu:addFullButton("E~!xit Program", "x", offx + 96, offy + 52 + 17*7, function() menu:stop() end)
