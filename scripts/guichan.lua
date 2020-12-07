@@ -606,7 +606,9 @@ Load("scripts/menus/results.lua")
 --[[
 --]]
 
--- SetShader("xBRZ")
+if SetShader then
+  SetShader(wc1.preferences.VideoShader)
+end
 
 if (Editor.Running == EditorCommandLine) then
   if (CliMapName and CliMapName ~= "") then
