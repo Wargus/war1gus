@@ -109,7 +109,7 @@ DefineButtonStyle("folder", {
 })
 
 DefineButtonStyle("icon", {
-  Size = {27, 19},
+  Size = {27, 21},
   Font = "game",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
