@@ -108,8 +108,14 @@ DefineButtonStyle("folder", {
   },
 })
 
+local iconSize
+if currentRace == "human" then
+  iconSize = {27, 19}
+else
+  iconSize = {27, 20}
+end
 DefineButtonStyle("icon", {
-  Size = {27, 21},
+  Size = iconSize,
   Font = "game",
   TextNormalColor = "yellow",
   TextReverseColor = "white",

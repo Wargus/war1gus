@@ -425,6 +425,8 @@ UI.NetworkDiplomacyButton.Style = FindButtonStyle("network")
 UI.NetworkDiplomacyButton:SetCallback(function() RunDiplomacyMenu() end)
 
 function LoadUI(race, screen_width, screen_height)
+   currentRace = race
+   Load("scripts/widgets.lua")
    UI.Fillers:clear()
    AddFiller("ui/" .. race .. "/minimap.png", 0, 0, 72, 72)
    AddFiller("ui/" .. race .. "/left_panel.png", 0, 72, 72, Video.Height - (200 - 128))
