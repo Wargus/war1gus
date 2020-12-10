@@ -365,9 +365,14 @@ function RunServerMultiGameMenu(map, description, numplayers)
 
   local listener = LuaActionListener(function(s) updateStartButton(updatePlayers()) end)
   menu:addLogicCallback(listener)
+  OnlineService.startadvertising()
 
   menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 50, Video.Height - 50,
-    function() menu:stop() end)
+    function()
+      InitGameSettings()
+      OnlineService.stopadvertising()
+      menu:stop()
+    end)
 
   menu:run()
 end
@@ -432,15 +437,48 @@ function RunMultiPlayerGameMenu(s)
   local menu = WarMenu()
   local offx = (Video.Width - 320) / 2
   local offy = (Video.Height - 200) / 2 - 30
-  local nick
 
   InitGameSettings()
   InitNetwork1()
 
-  menu:writeText(_("Nickname :"), 104 + offx, 132 + offy)
-  nick = menu:addTextInputField(GetLocalPlayerName(), offx + 149, 130 + offy)
+  menu:writeText(_("Nickname :"), 104 + offx, 131 + offy)
+  local nick = menu:addTextInputField(GetLocalPlayerName(), offx + 149, 130 + offy)
+  menu:writeText(_("Password :"), 104 + offx, 131 + offy + 18)
+  local pass = menu:addTextInputField("", offx + 149, 130 + offy + 18)
 
-  menu:addFullButton("~!Join Game", "j", 104 + offx, 160 + (18 * 0) + offy,
+  local loginBtn = menu:addHalfButton(_("Go ~!Online"), "o", 104 + offx, 160 + (18 * 0) + offy,
+    function()
+      if nick:getText() ~= GetLocalPlayerName() then
+        SetLocalPlayerName(nick:getText())
+        wc1.preferences.PlayerName = nick:getText()
+        SavePreferences()
+      end
+      OnlineService.setup({ ShowError = ErrorMenu })
+      OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
+      OnlineService.login(nick:getText(), pass:getText())
+      RunOnlineMenu()
+  end)
+  local signupLabel = menu:addLabel(
+     _("Sign up"),
+     loginBtn:getWidth() + loginBtn:getX() + loginBtn:getWidth() / 2,
+     loginBtn:getY() + loginBtn:getHeight() / 4)
+  local signUpCb = function(evt, btn, cnt)
+     if evt == "mouseClick" then
+        if nick:getText() ~= GetLocalPlayerName() then
+           SetLocalPlayerName(nick:getText())
+           wc1.preferences.PlayerName = nick:getText()
+           SavePreferences()
+        end
+        OnlineService.setup({ ShowError = ErrorMenu })
+        OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
+        OnlineService.signup(nick:getText(), pass:getText())
+        RunOnlineMenu()
+     end
+  end
+  local signUpListener = LuaActionListener(signUpCb)
+  signupLabel:addMouseListener(signUpListener)
+
+  menu:addFullButton("~!Join Game", "j", 104 + offx, 160 + (18 * 1) + offy,
     function()
       if nick:getText() ~= GetLocalPlayerName() then
         SetLocalPlayerName(nick:getText())
@@ -450,7 +488,7 @@ function RunMultiPlayerGameMenu(s)
       RunJoinIpMenu()
       menu:stop()
     end)
-  menu:addFullButton("~!Create Game", "c", 104 + offx, 160 + (18 * 1) + offy,
+  menu:addFullButton("~!Create Game", "c", 104 + offx, 160 + (18 * 2) + offy,
     function()
       if nick:getText() ~= GetLocalPlayerName() then
         SetLocalPlayerName(nick:getText())
@@ -461,7 +499,7 @@ function RunMultiPlayerGameMenu(s)
       menu:stop()
     end)
 
-  menu:addFullButton("~!Previous Menu", "p", 104 + offx, 160 + (18 * 2) + offy,
+  menu:addFullButton("~!Previous Menu", "p", 104 + offx, 160 + (18 * 3) + offy,
     function() menu:stop() end)
 
   menu:run()
@@ -469,3 +507,260 @@ function RunMultiPlayerGameMenu(s)
   ExitNetwork1()
 end
 
+function RunOnlineMenu()
+  local counter = 0
+
+  local menu = WarMenu("Online")
+
+  local margin = 5
+  local btnHeight = 19
+  local listWidth = 65
+
+  local userLabel = menu:addLabel(_("Users"), margin, margin, nil, false)
+  local userList = {}
+  local users = menu:addListBox(
+     userLabel:getX(),
+     userLabel:getY() + userLabel:getHeight(),
+     listWidth,
+     Video.Height / 4,
+     userList
+  )
+
+  local friendLabel = menu:addLabel(_("Friends"), margin, users:getY() + users:getHeight() + margin, nil, false)
+  local friends = menu:addListBox(
+     friendLabel:getX(),
+     friendLabel:getY() + friendLabel:getHeight(),
+     users:getWidth(),
+     users:getHeight(),
+     {}
+  )
+
+  local channelLabel = menu:addLabel(_("Channels"), margin, friends:getY() + friends:getHeight() + margin, nil, false)
+  local channelList = {}
+  local selectedChannelIdx = -1
+  local channels = menu:addListBox(
+     channelLabel:getX(),
+     channelLabel:getY() + channelLabel:getHeight(),
+     users:getWidth(),
+     users:getHeight(),
+     channelList
+  )
+  local channelSelectCb = function()
+     OnlineService.joinchannel(channelList[channels:getSelected() + 1])
+  end
+  channels:setActionCallback(channelSelectCb)
+
+  local gamesLabel = menu:addLabel(_("Games"), users:getX() + users:getWidth() + margin, userLabel:getY(), nil, false)
+  local gamesObjectList = {}
+  local gamesList = {}
+  local games = menu:addListBox(
+     gamesLabel:getX(),
+     gamesLabel:getY() + gamesLabel:getHeight(),
+     Video.Width - (users:getX() + users:getWidth() + margin) - margin,
+     Video.Height / 6,
+     gamesList
+  )
+
+  local messageLabel = menu:addLabel(_("Chat"), games:getX(), games:getY() + games:getHeight() + margin, nil, false)
+  local messageList = {}
+  local messages = menu:addListBox(
+     messageLabel:getX(),
+     messageLabel:getY() + messageLabel:getHeight(),
+     games:getWidth(),
+     Video.Height - (margin + messageLabel:getY() + messageLabel:getHeight()) - (btnHeight * 2) - (margin * 2),
+     messageList
+  )
+
+  local input = menu:addTextInputField(
+     "",
+     messages:getX(),
+     messages:getY() + messages:getHeight() + margin,
+     messages:getWidth()
+  )
+  input:setActionCallback(function()
+        counter = 1
+        OnlineService.sendmessage(input:getText())
+        input:setText("")
+  end)
+  local createGame = menu:addHalfButton(
+     _("~!Create Game"),
+     "c",
+     input:getX(),
+     input:getY() + btnHeight,
+     function()
+        RunCreateMultiGameMenu()
+     end
+  )
+  createGame:setWidth((Video.Width - margin * 4 - listWidth) / 3)
+  local joinGame = menu:addHalfButton(
+     _("~!Join Game"),
+     "j",
+     createGame:getX() + createGame:getWidth() + margin,
+     createGame:getY(),
+     function()
+        local selectedGame = gamesObjectList[games:getSelected() + 1]
+        if selectedGame then
+           local ip, port
+           for k, v in string.gmatch(selectedGame.Host, "([0-9\.]+):(%d+)") do
+              ip = k
+              port = tonumber(v)
+           end
+           print("Attempting to join " .. ip .. ":" .. port)
+           NetworkSetupServerAddress(ip, port)
+           NetworkInitClientConnect()
+           OnlineService.punchNAT(selectedGame.Creator)
+           if (RunJoiningGameMenu() ~= 0) then
+              -- connect failed, don't leave this menu
+              return
+           end
+        else
+           ErrorMenu(_("No game selected"))
+        end
+     end
+  )
+  joinGame:setWidth(createGame:getWidth())
+  local prevMenuBtn = menu:addHalfButton(
+     _("~!Previous Menu"),
+     "p",
+     joinGame:getX() + joinGame:getWidth() + margin,
+     joinGame:getY(),
+     function()
+        OnlineService.disconnect()
+        menu:stop()
+     end
+  )
+  prevMenuBtn:setWidth(createGame:getWidth())
+
+  local AddUser = function(name)
+     table.insert(userList, name)
+     users:setList(userList)
+  end
+
+  local ClearUsers = function()
+     for i,v in ipairs(userList) do
+        table.remove(userList, i)
+     end
+     users:setList(userList)
+  end
+
+  local RemoveUser = function(name)
+     for i,v in ipairs(userList) do
+        if v == name then
+           table.remove(userList, i)
+        end
+     end
+     users:setList(userList)
+  end
+
+  local SetFriends = function(...)
+     friendsList = {}
+     for i,v in ipairs(arg) do
+        table.insert(friendsList, v.Name .. "|" .. v.Product .. "(" .. v.Status .. ")")
+     end
+     friends:setList(friendsList)
+  end
+
+  local SetGames = function(...)
+     gamesList = {}
+     gamesObjectList = {}
+     for i,game in ipairs(arg) do
+        table.insert(gamesList, game.Map .. " " .. game.Creator .. ", type: " .. game.Type .. game.Settings .. ", slots: " .. game.MaxPlayers)
+        table.insert(gamesObjectList, game)
+     end
+     games:setList(gamesList)
+  end
+
+  local SetChannels = function(...)
+     channelList = {}
+     for i,v in ipairs(arg) do
+        table.insert(channelList, v)
+     end
+     channels:setList(channelList)
+     channels:setSelected(selectedChannelIdx)
+  end
+
+  local SetActiveChannel = function(name)
+     ClearUsers()
+     local index = {}
+     for k,v in pairs(channelList) do
+        if v == name then
+           selectedChannelIdx = k - 1
+           return
+        end
+     end
+     selectedChannelIdx = -1
+  end
+
+  local AddMessage = function(str, pre, suf)
+     for line in string.gmatch(str, "([^".. string.char(10) .."]+)") do
+       if pre and suf then
+         table.insert(messageList, pre .. line .. suf)
+       else
+         table.insert(messageList, line)
+       end
+     end
+     messages:setList(messageList)
+     messages:scrollToBottom()
+  end
+
+  local ShowInfo = function(errmsg)
+     AddMessage(errmsg, "~<", "~>")
+  end
+
+  local lastError = nil
+  local ShowError = function(errmsg)
+     AddMessage(errmsg, "~red~", "~>")
+     lastError = errmsg
+  end
+
+  local ShowUserInfo = function(info)
+     local s = {"UserInfo", string.char(10)}
+     for k, v in pairs(info) do
+        s[#s+1] = string.char(10)
+        s[#s+1] = k
+        s[#s+1] = ": "
+        s[#s+1] = v
+     end
+     s = table.concat(s)
+     ShowError(s)
+  end
+
+  OnlineService.setup({
+        AddUser = AddUser,
+        RemoveUser = RemoveUser,
+        SetFriends = SetFriends,
+        SetGames = SetGames,
+        SetChannels = SetChannels,
+        SetActiveChannel = SetActiveChannel,
+        ShowChat = AddMessage,
+        ShowInfo = ShowInfo,
+        ShowError = ShowError,
+        ShowUserInfo = ShowUserInfo
+  })
+
+  -- check if we're connected, exit this menu if connection fails
+  local goonline = true
+  local timer = 10
+  function checkLogin()
+     if goonline then
+        if timer > 0 then
+           timer = timer - 1
+        else
+           timer = 10
+           result = OnlineService.status()
+           if result == "connected" then
+              goonline = false
+           elseif result ~= "connecting" then
+              if lastError then
+                 ErrorMenu(lastError)
+              end
+              menu:stop()
+           end
+        end
+     end
+ end
+ local listener = LuaActionListener(function(s) checkLogin() end)
+ menu:addLogicCallback(listener)
+
+ menu:run()
+end
