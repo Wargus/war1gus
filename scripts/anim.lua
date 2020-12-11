@@ -32,7 +32,7 @@
 DefineAnimations(
    "animations-todo", 
    {Still = {"frame 0", "wait 4"},
-    Move = {"frame 0", "move 32", "wait 4"},
+    Move = {"frame 0", "move 16", "wait 4"},
     Attack = {"frame 0", "attack", "wait 4"},
     Death = {"frame 0", "wait 4"}}
 )
@@ -42,7 +42,7 @@ local function DefaultStillAnimation()
 end
 
 local function BuildMoveAnimation(frames, waittime)
-   local tilesizeinpixel = 32
+   local tilesizeinpixel = 16
    local fractional_counter = 0
    local halfIndex, waittime_fraction
    waittime, waittime_fraction = math.modf(waittime or 6)
@@ -53,70 +53,70 @@ local function BuildMoveAnimation(frames, waittime)
       halfIndex = (#frames + 1) / 2
    end
    local res = {"unbreakable begin"}
-   while (tilesizeinpixel > 4) do
+   while (tilesizeinpixel > 2) do
       for i = 1, halfIndex do
 	 res[1 + #res] = "frame " .. frames[i]
-	 res[1 + #res] = "move 4"
+	 res[1 + #res] = "move 2"
 	 res[1 + #res] = "wait " .. waittime
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
             res[1 + #res] = "wait 1"
          end
-	 tilesizeinpixel = tilesizeinpixel - 4;
+	 tilesizeinpixel = tilesizeinpixel - 2;
       end
       for i = 1, halfIndex - 1  do
 	 res[1 + #res] = "frame " .. frames[halfIndex - i]
-	 res[1 + #res] = "move 4"
+	 res[1 + #res] = "move 2"
 	 res[1 + #res] = "wait " .. waittime
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
             res[1 + #res] = "wait 1"
          end
-	 tilesizeinpixel = tilesizeinpixel - 4;
+	 tilesizeinpixel = tilesizeinpixel - 2;
       end
       res[1 + #res] = "frame 0"
-      res[1 + #res] = "move 4"
+      res[1 + #res] = "move 2"
       res[1 + #res] = "wait " .. waittime
       fractional_counter = fractional_counter + waittime_fraction
       if fractional_counter > 1 then
          fractional_counter = fractional_counter - 1
          res[1 + #res] = "wait 1"
       end
-      tilesizeinpixel = tilesizeinpixel - 4;
+      tilesizeinpixel = tilesizeinpixel - 2;
       
       for i = 1, halfIndex do
 	 res[1 + #res] = "frame " .. frames[1 + #frames - i]
-	 res[1 + #res] = "move 4"
+	 res[1 + #res] = "move 2"
 	 res[1 + #res] = "wait " .. waittime
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
             res[1 + #res] = "wait 1"
          end
-	 tilesizeinpixel = tilesizeinpixel - 4;
+	 tilesizeinpixel = tilesizeinpixel - 2;
       end
       for i = (2 + #frames - halfIndex), #frames do
 	 res[1 + #res] = "frame " .. frames[i]
-	 res[1 + #res] = "move 4"
+	 res[1 + #res] = "move 2"
 	 res[1 + #res] = "wait " .. waittime
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
             res[1 + #res] = "wait 1"
          end
-	 tilesizeinpixel = tilesizeinpixel - 4;
+	 tilesizeinpixel = tilesizeinpixel - 2;
       end
       res[1 + #res] = "frame 0"
-      res[1 + #res] = "move 4"
+      res[1 + #res] = "move 2"
       res[1 + #res] = "wait " .. waittime
       fractional_counter = fractional_counter + waittime_fraction
       if fractional_counter > 1 then
          fractional_counter = fractional_counter - 1
          res[1 + #res] = "wait 1"
       end
-      tilesizeinpixel = tilesizeinpixel - 4;
+      tilesizeinpixel = tilesizeinpixel - 2;
    end	
    res[1 + #res] = "unbreakable end"
    res[1 + #res] = "frame 0"

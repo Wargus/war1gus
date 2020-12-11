@@ -35,9 +35,9 @@ UI.MessageScrollSpeed = 5
 
 Load("scripts/widgets.lua")
 
-local info_panel_x = 4
-local info_panel_y = 140
-local info_panel_w = 128
+local info_panel_x = 2
+local info_panel_y = 70
+local info_panel_w = 64
 
 local min_damage = Div(ActiveUnitVar("PiercingDamage"), 2)
 local max_damage = Add(ActiveUnitVar("PiercingDamage"), ActiveUnitVar("BasicDamage"))
@@ -53,17 +53,17 @@ end
 UI.InfoPanel.X = info_panel_x
 UI.InfoPanel.Y = info_panel_y
 
-local life_bar_off_x = 71
-local info_text_off_x = 6
+local life_bar_off_x = 36
+local info_text_off_x = 3
 
-local first_line = {info_text_off_x, 72}
-local second_line = {info_text_off_x, 82}
-local third_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 72}
-local fourth_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 82}
+local first_line = {info_text_off_x, 35}
+local second_line = {info_text_off_x, 41}
+local third_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 35}
+local fourth_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 41}
 
 local function MakeCompleteBar(condition, variable)
-   return { Pos = {2, 72}, Condition = condition,
-            More = {"CompleteBar", {Variable = variable, Width = 124, Height = 14, Color = "green", Border = true}}
+   return { Pos = {1, 36}, Condition = condition,
+            More = {"CompleteBar", {Variable = variable, Width = 62, Height = 7, Color = "green", Border = true}}
    }
 end
 
@@ -73,12 +73,12 @@ DefinePanelContents(
       Ident = "panel-general-contents",
       Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
       Contents = {
-         { Pos = {life_bar_off_x, 41}, Condition = {ShowOpponent = false, HideNeutral = true},
-           More = {"LifeBar", {Variable = "HitPoints", Height = 6, Width = 54, Border = false,
+         { Pos = {life_bar_off_x, 21}, Condition = {ShowOpponent = false, HideNeutral = true},
+           More = {"LifeBar", {Variable = "HitPoints", Height = 3, Width = 27, Border = false,
                                Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
            }
          },
-         { Pos = {info_text_off_x, 52}, More = {"Text", {Text = Line(1, UnitName("Active"), 90, "small"), Font = "game", Centered = false}} },
+         { Pos = {info_text_off_x, 26}, More = {"Text", {Text = Line(1, UnitName("Active"), 90, "small"), Font = "game", Centered = false}} },
          -- Ressource Left
          { Pos = first_line, Condition = {ShowOpponent = false, GiveResource = "only"},
            More = {"FormattedText2", {Format = "%s: %d", Variable = "GiveResource", Component1 = "Name", Component2 = "Value"}}
@@ -123,17 +123,17 @@ DefinePanelContents(
            More = {"Text", {Text = "RNG:", Variable = "AttackRange" , Stat = true}}
          },
          -- Mana
-         { Pos = {71, 19}, Condition = {Mana = "only"},
-           More = {"LifeBar", {Variable = "Mana", Height = 6, Width = 54, Border = false, Colors = {{0, "light-blue"}}}}
+         { Pos = {36, 10}, Condition = {Mana = "only"},
+           More = {"LifeBar", {Variable = "Mana", Height = 3, Width = 27, Border = false, Colors = {{0, "light-blue"}}}}
          },
          -- Summoned units
-         { Pos = {71, 19},
+         { Pos = {36, 10},
            More = {"LifeBar", {
                       Variable = {
                          Max = 100,
                          Value = ttlpercent
                       },
-                      Height = 6, Width = 54, Border = false,
+                      Height = 3, Width = 27, Border = false,
                       Colors = {{0, "light-blue"}}}}
          },
          -- Resource Carry
@@ -161,7 +161,7 @@ DefineDecorations({
       Index = "Invisible", ShowOpponent = false,
       Offset = {0, 0},
       Method = {
-         "frame", {Thickness = 4, ColorName = "blue"}
+         "frame", {Thickness = 2, ColorName = "blue"}
       }
 })
 
@@ -169,7 +169,7 @@ DefineDecorations({
       Index = "UnholyArmor", ShowOpponent = false,
       Offset = {0, 0},
       Method = {
-         "frame", {Thickness = 4, ColorName = "red"}
+         "frame", {Thickness = 2, ColorName = "red"}
       }
 })
 
@@ -178,91 +178,91 @@ DefineCursor({
       Race = "any",
       File = "ui/cursors/arrow.png",
       HotSpot = {0, 0},
-      Size = {14, 22}})
+      Size = {7, 11}})
 DefineCursor({
       Name = "cursor-glass",
       Race = "any",
       File = "ui/cursors/magnifying_glass.png",
-      HotSpot = {11, 11},
-      Size = {28, 28}})
+      HotSpot = {5, 5},
+      Size = {14, 14}})
 DefineCursor({
       Name = "cursor-green-hair",
       Race = "any",
       File = "ui/cursors/small_green_crosshair.png",
-      HotSpot = {8, 8},
-      Size = {18, 18}})
+      HotSpot = {4, 4},
+      Size = {9, 9}})
 DefineCursor({
       Name = "cursor-yellow-hair",
       Race = "any",
       File = "ui/cursors/yellow_crosshair.png",
-      HotSpot = {14, 10},
-      Size = {30, 22}})
+      HotSpot = {7, 5},
+      Size = {15, 11}})
 DefineCursor({
       Name = "cursor-red-hair",
       Race = "any",
       File = "ui/cursors/red_crosshair.png",
-      HotSpot = {14, 10},
-      Size = {30, 22}})
+      HotSpot = {7, 5},
+      Size = {15, 11}})
 DefineCursor({
       Name = "cursor-cross",
       Race = "any",
       File = "ui/cursors/small_green_crosshair.png",
-      HotSpot = { 8,  8},
-      Size = {18, 18}})
+      HotSpot = { 4,  4},
+      Size = {9, 9}})
 DefineCursor({
       Name = "cursor-scroll", -- Not present for wc1
       Race = "any",
       File = "ui/cursors/small_green_crosshair.png",
-      HotSpot = { 8,  8},
-      Size = {18, 18}})
+      HotSpot = { 4,  4},
+      Size = {9, 9}})
 DefineCursor({
       Name = "cursor-arrow-e",
       Race = "any",
       File = "ui/cursors/right_arrow.png",
-      HotSpot = {23, 10},
-      Size = {32, 32}})
+      HotSpot = {11, 5},
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-ne",
       Race = "any",
       File = "ui/cursors/upper_right_arrow.png",
-      HotSpot = {21,  2},
-      Size = {32, 32}})
+      HotSpot = {10,  1},
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-n",
       Race = "any",
       File = "ui/cursors/up_arrow.png",
-      HotSpot = {12,  2},
-      Size = {32, 32}})
+      HotSpot = {6,  1},
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-nw",
       Race = "any",
       File = "ui/cursors/upper_left_arrow.png",
-      HotSpot = { 2,  2},
-      Size = {32, 32}})
+      HotSpot = { 1,  1},
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-w",
       Race = "any",
       File = "ui/cursors/left_arrow.png",
-      HotSpot = { 4, 10},
-      Size = {32, 32}})
+      HotSpot = { 2, 5},
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-s",
       Race = "any",
       File = "ui/cursors/down_arrow.png",
-      HotSpot = {12, 23},
-      Size = {32, 32}})
+      HotSpot = {6, 11},
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-sw",
       Race = "any",
       File = "ui/cursors/lower_left_arrow.png",
-      HotSpot = { 2, 19},
-      Size = {32, 32}})
+      HotSpot = { 1, 9},
+      Size = {16, 16}})
 DefineCursor({
       Name = "cursor-arrow-se",
       Race = "any",
       File = "ui/cursors/lower_right_arrow.png",
-      HotSpot = {21, 19},
-      Size = {32, 32}})
+      HotSpot = {10, 9},
+      Size = {16, 16}})
 
 local function AddFiller(file, x, y, resize_x, resize_y)
    if CanAccessFile(file) == true then
@@ -288,44 +288,44 @@ UI.NormalFontColor = "white";
 UI.ReverseFontColor = "yellow";
 
 -- gold
-UI.Resources[1].G = CGraphic:New("ui/gold_icon_1.png", 26, 12)
+UI.Resources[1].G = CGraphic:New("ui/gold_icon_1.png", 13, 6)
 UI.Resources[1].IconFrame = 0
-UI.Resources[1].IconX = Video.Width - 66 - 26
+UI.Resources[1].IconX = Video.Width - 33 - 13
 UI.Resources[1].IconY = 1
-UI.Resources[1].TextX = Video.Width - 66 - 26 - 80
+UI.Resources[1].TextX = Video.Width - 33 - 13 - 40
 UI.Resources[1].TextY = 1
 UI.Resources[1].Font = Fonts["game"]
 
 -- wood
-UI.Resources[2].G = CGraphic:New("ui/lumber_icon_1.png", 18, 18)
+UI.Resources[2].G = CGraphic:New("ui/lumber_icon_1.png", 9, 9)
 UI.Resources[2].IconFrame = 0
-UI.Resources[2].IconX = Video.Width - 274 - 18
+UI.Resources[2].IconX = Video.Width - 137 - 9
 UI.Resources[2].IconY = 0
-UI.Resources[2].TextX = Video.Width - 258 - 18 - 80
+UI.Resources[2].TextX = Video.Width - 129 - 9 - 40
 UI.Resources[2].TextY = 1
 UI.Resources[2].Font = Fonts["game"]
 
 -- mana -- no good icon, but we need this for the info bar
-UI.Resources[ManaResCost].G = CGraphic:New("missiles/healing.png", 32, 32)
+UI.Resources[ManaResCost].G = CGraphic:New("missiles/healing.png", 16, 16)
 UI.Resources[ManaResCost].IconFrame = 0
-UI.Resources[ManaResCost].IconX = -100
-UI.Resources[ManaResCost].IconY = -100
+UI.Resources[ManaResCost].IconX = -50
+UI.Resources[ManaResCost].IconY = -50
 UI.Resources[ManaResCost].TextX = UI.Resources[2].TextX
 UI.Resources[ManaResCost].TextY = UI.Resources[2].TextY
 
-UI.SingleSelectedButton = MakeButton(info_panel_x + 8, info_panel_y + 9)
+UI.SingleSelectedButton = MakeButton(info_panel_x + 4, info_panel_y + 4)
 
 UI.SelectedButtons:clear()
 for i = 1,4,1 do
-   local x = 9
+   local x = 4
    if i % 2 == 0 then
-      x = 75
+      x = 37
    end
-   local y = 140
+   local y = 70
    if i <= 2 then
-      y = y + 6
+      y = y + 3
    else
-      y = y + 52
+      y = y + 26
    end
    UI.SelectedButtons:push_back(MakeButton(x, y))
 end
@@ -335,24 +335,25 @@ UI.LifeBarColorNames:push_back("green")
 UI.LifeBarColorNames:push_back("yellow")
 UI.LifeBarColorNames:push_back("orange")
 UI.LifeBarColorNames:push_back("red")
-UI.LifeBarYOffset = -4
+UI.LifeBarYOffset = -3
 UI.LifeBarBorder = false
+UI.LifeBarPadding = 2
 
 UI.MaxSelectedFont = Fonts["game"]
-UI.MaxSelectedTextX = info_panel_x + 10
-UI.MaxSelectedTextY = info_panel_y + 10
+UI.MaxSelectedTextX = info_panel_x + 5
+UI.MaxSelectedTextY = info_panel_y + 5
 
 --
 
-local button_panel_off_x_1 = 9
-local button_panel_off_x_2 = 75
-local button_panel_off_y_1 = 240 + 47 * 0
-local button_panel_off_y_2 = 240 + 47 * 1
-local button_panel_off_y_3 = 240 + 47 * 2
-local button_panel_off_y_4 = 240 + 47 * 3
+local button_panel_off_x_1 = 4
+local button_panel_off_x_2 = 37
+local button_panel_off_y_1 = 120 + 23 * 0
+local button_panel_off_y_2 = 120 + 23 * 1
+local button_panel_off_y_3 = 120 + 23 * 2
+local button_panel_off_y_4 = 120 + 23 * 3
 
 local function MakeBuildingButton(index)
-   return MakeButton(button_panel_off_x_1 + (index * 10), button_panel_off_y_4)
+   return MakeButton(button_panel_off_x_1 + (index * 5), button_panel_off_y_4)
 end
 
 UI.SingleTrainingButton = MakeBuildingButton(0)
@@ -371,35 +372,35 @@ UI.CompletedBarShadow = true
 
 UI.ButtonPanel.Buttons:clear()
 for i = 0,5,1 do
-   local x = 9
+   local x = 4
    if (i + 1) % 2 == 0 then
-      x = 75
+      x = 37
    end
-   local y = 240 + (47 * math.floor(i / 2))
+   local y = 120 + (23 * math.floor(i / 2))
    UI.ButtonPanel.Buttons:push_back(MakeButton(x, y))
 end
 
 UI.ButtonPanel.X = 0
-UI.ButtonPanel.Y = 300
+UI.ButtonPanel.Y = 150
 UI.ButtonPanel.AutoCastBorderColorRGB = CColor(0, 0, 252)
 
-UI.MapArea.X = 144
-UI.MapArea.Y = 16
-UI.MapArea.EndX = Video.Width - 16 - 1
-UI.MapArea.EndY = Video.Height - 16 - 1
+UI.MapArea.X = 72
+UI.MapArea.Y = 8
+UI.MapArea.EndX = Video.Width - 8 - 1
+UI.MapArea.EndY = Video.Height - 8 - 1
 
-UI.Minimap.X = 6
-UI.Minimap.Y = 12
-UI.Minimap.W = 128
-UI.Minimap.H = 128
+UI.Minimap.X = 3
+UI.Minimap.Y = 6
+UI.Minimap.W = 64
+UI.Minimap.H = 64
 
-UI.StatusLine.TextX = 2 + 176
-UI.StatusLine.TextY = Video.Height + 2 - 16
-UI.StatusLine.Width = Video.Width - 16 - 2 - 176
+UI.StatusLine.TextX = 1 + 88
+UI.StatusLine.TextY = Video.Height + 1 - 8
+UI.StatusLine.Width = Video.Width - 8 - 1 - 88
 UI.StatusLine.Font = Fonts["game"]
 
-UI.MenuButton.X = 6
-UI.MenuButton.Y = Video.Height - math.floor(32 * (Video.Height - UI.Minimap.H) / (480 - UI.Minimap.H))
+UI.MenuButton.X = 3
+UI.MenuButton.Y = Video.Height - math.floor(16 * (Video.Height - UI.Minimap.H) / (240 - UI.Minimap.H))
 UI.MenuButton.Text = "            "
 UI.MenuButton.Style = FindButtonStyle("main")
 UI.MenuButton:SetCallback(
@@ -411,30 +412,32 @@ UI.MenuButton:SetCallback(
       end
 end)
 
-UI.NetworkMenuButton.X = 6
-UI.NetworkMenuButton.Y = 2
+UI.NetworkMenuButton.X = 3
+UI.NetworkMenuButton.Y = 1
 UI.NetworkMenuButton.Text = "Menu"
 UI.NetworkMenuButton.Style = FindButtonStyle("network")
 UI.NetworkMenuButton:SetCallback(function() RunGameMenu() end)
 
-UI.NetworkDiplomacyButton.X = 90
-UI.NetworkDiplomacyButton.Y = 2
+UI.NetworkDiplomacyButton.X = 45
+UI.NetworkDiplomacyButton.Y = 1
 UI.NetworkDiplomacyButton.Text = "Diplomacy"
 UI.NetworkDiplomacyButton.Style = FindButtonStyle("network")
 UI.NetworkDiplomacyButton:SetCallback(function() RunDiplomacyMenu() end)
 
 function LoadUI(race, screen_width, screen_height)
+   currentRace = race
+   Load("scripts/widgets.lua")
    UI.Fillers:clear()
-   AddFiller("ui/" .. race .. "/minimap.png", 0, 0, 144, 144)
-   AddFiller("ui/" .. race .. "/left_panel.png", 0, 144, 144, Video.Height - (400 - 256))
-   AddFiller("ui/" .. race .. "/top_resource_bar.png", 144, 0, Video.Width - (640 - 480), 24)
-   AddFiller("ui/" .. race .. "/right_panel.png", Video.Width - 16, 0, 16, Video.Height)
-   AddFiller("ui/" .. race .. "/bottom_panel.png", 144, Video.Height - 24, Video.Width - (640 - 480), 24)
+   AddFiller("ui/" .. race .. "/minimap.png", 0, 0, 72, 72)
+   AddFiller("ui/" .. race .. "/left_panel.png", 0, 72, 72, Video.Height - (200 - 128))
+   AddFiller("ui/" .. race .. "/top_resource_bar.png", 72, 0, Video.Width - (320 - 240), 12)
+   AddFiller("ui/" .. race .. "/right_panel.png", Video.Width - 8, 0, 8, Video.Height)
+   AddFiller("ui/" .. race .. "/bottom_panel.png", 72, Video.Height - 12, Video.Width - (320 - 240), 12)
 
-   UI.InfoPanel.G = CGraphic:New("ui/" .. race .. "/icon_selection_boxes.png", 132, 92)
+   UI.InfoPanel.G = CGraphic:New("ui/" .. race .. "/icon_selection_boxes.png", 66, 46)
    
-   Preference.IconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
-   Preference.PressedIconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 62, 48)
+   Preference.IconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 31, 24)
+   Preference.PressedIconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 31, 24)
 
    local ui = {
       "info-panel", {
@@ -487,7 +490,7 @@ if (wc1.preferences.ShowButtonPopups) then
                 More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
             },
             { 	Condition = {ButtonAction = "repair"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-                More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-repair of damaged buildings."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+                More = {"Text", {Text = _("~<CTRL~>-click to toggle auto-repair of damaged buildings."), MaxWidth = Video.Width / 5, Font = PopupFont}}
             },
             -- buildings, units, upgrades
             { 	Condition = {ButtonAction = "build"},
@@ -510,14 +513,14 @@ if (wc1.preferences.ShowButtonPopups) then
                 More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
             },
             { 	Condition = {ButtonAction = "build"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-                More = {"Text", {Text = _("~<SHIFT~>-click could be used to make a building queue."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+                More = {"Text", {Text = _("~<SHIFT~>-click to create a building queue."), MaxWidth = Video.Width / 5, Font = PopupFont}}
             },
             -- Auto-cast hint
             { 	Margin = {1, 1}, Condition = {ButtonAction = "cast-spell"},
                 More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
             },
             { 	Condition = {ButtonAction = "cast-spell"}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
-                More = {"Text", {Text = _("~<CTRL~>-click on button enables/disables auto-cast ability."), MaxWidth = Video.Width / 5, Font = PopupFont}}
+                More = {"Text", {Text = _("~<CTRL~>-click to toggle auto-cast ability."), MaxWidth = Video.Width / 5, Font = PopupFont}}
             },
             -- Description
             { 	Margin = {1, 1}, Condition = {HasDescription = true},

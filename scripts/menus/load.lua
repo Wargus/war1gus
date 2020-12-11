@@ -36,11 +36,11 @@ function LoadGame(s)
 end
 
 function AddLoadGameItems(menu)
-  menu:addLabel("Load Game", 384 / 2, 11)
+  menu:addLabel("Load Game", 96, 5)
   local browser = menu:addBrowser("~save", "^.*%.sav%.?g?z?$",
-    (384 - 300 - 18) / 2, 11 + (36 * 1.5), 318, 126)
+    (192 - 150 - 9) / 2, 5 + (18 * 1.5), 159, 63)
 
-  menu:addHalfButton("~!Load", "l", (384 - 300 - 18) / 2, 256 - 16 - 27,
+  menu:addHalfButton("~!Load", "l", (192 - 150 - 9) / 2, 128 - 8 - 13,
     function()
       if (browser:getSelected() < 0) then
         return
@@ -53,7 +53,7 @@ function AddLoadGameItems(menu)
         menu:stop()
       end
     end)
-  menu:addHalfButton("~!Cancel", "c", 384 - ((384 - 300 - 18) / 2) - 121, 256 - 16 - 27,
+  menu:addHalfButton("~!Cancel", "c", 192 - ((192 - 150 - 9) / 2) - 60, 128 - 8 - 13,
                      function()
                         if not menu.ingame then
                            RunSinglePlayerSubMenu();
@@ -64,8 +64,8 @@ end
 
 function RunLoadGameMenu()
   local menu = WarMenu(nil, panel(3), false)
-  menu:setSize(384, 256)
-  menu:setPosition((Video.Width - 384) / 2, (Video.Height - 256) / 2)
+  menu:setSize(192, 128)
+  menu:setPosition((Video.Width - 192) / 2, (Video.Height - 128) / 2)
   menu:setDrawMenusUnder(true)
 
   AddLoadGameItems(menu)
@@ -76,7 +76,7 @@ end
 
 function RunGameLoadGameMenu()
   local menu = WarGameMenu(panel(3))
-  menu:resize(384, 256)
+  menu:resize(192, 128)
   menu:setDrawMenusUnder(true)
 
   AddLoadGameItems(menu)

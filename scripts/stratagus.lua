@@ -181,6 +181,7 @@ SetHoldClickDelay(1000)
 SetFogOfWar(false)
 -- SetFogOfWar(false)
 
+SetTileSize(16, 16)
 SetFogOfWarGraphics("tilesets/forest/fog.png")
 
 --  Choose your default for minimap with/without terrain.
@@ -278,9 +279,9 @@ local DefaultPreference = function(name, value)
         preferences[name] = value
     end
 end
-DefaultPreference("VideoWidth", 1024)
-DefaultPreference("VideoHeight", 768)
-DefaultPreference("OriginalScale", "640x480")
+DefaultPreference("VideoWidth", 480)
+DefaultPreference("VideoHeight", 300)
+DefaultPreference("VideoShader", "CRT")
 DefaultPreference("VideoFullScreen", false)
 DefaultPreference("PlayerName", "Player")
 DefaultPreference("FogOfWar", false)
@@ -310,6 +311,11 @@ DefaultPreference("ShowOrders", true)
 
 wc1.preferences = preferences
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
+local pixelScale = 1.2
+if preferences.VideoWidth < 640 then
+   SetWindowSize(preferences.VideoWidth * 2, preferences.VideoHeight * 2 * pixelScale)
+end
+SetVerticalPixelSize(pixelScale) -- WC1 uses non-square pixels: graphics are 320x200, but rendered 320x240
 SetVideoFullScreen(preferences.VideoFullScreen)
 SetLocalPlayerName(preferences.PlayerName)
 SetFogOfWar(preferences.FogOfWar)

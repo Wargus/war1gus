@@ -1,12 +1,12 @@
 function RunConfirmErase(name,menu)
   local confirm = WarGameMenu(panel(3))
 
-  confirm:resize(300,120)
+  confirm:resize(150,60)
 
-  confirm:addLabel(name, 300 / 2, 11)
-  confirm:addLabel("File exists, are you sure ?", 300 / 2, 31)
+  confirm:addLabel(name, 75, 5)
+  confirm:addLabel("File exists, are you sure ?", 75, 15)
 
-  confirm:addHalfButton("~!Yes", "y", 1 * (300 / 3) - 99, 120 - 16 - 27,
+  confirm:addHalfButton("~!Yes", "y", 1 * (150 / 3) - 49, 60 - 8 - 13,
     function()
         SaveGame(name)
         UI.StatusLine:Set("Saved game to: " .. name)
@@ -14,7 +14,7 @@ function RunConfirmErase(name,menu)
         menu:stop()
     end)
 
-  confirm:addHalfButton("~!No", "n", 3 * (300 / 3) - 121 - 10, 120 - 16 - 27,
+  confirm:addHalfButton("~!No", "n", 3 * (150 / 3) - 60 - 5, 60 - 8 - 13,
     function() confirm:stop() end)
 
   confirm:run(false)
@@ -22,21 +22,21 @@ end
 
 function RunSaveMenu()
   local menu = WarGameMenu(panel(3))
-  menu:resize(384, 256)
+  menu:resize(192, 128)
 
-  menu:addLabel("Save Game", 384 / 2, 11)
+  menu:addLabel("Save Game", 96, 5)
 
   local t = menu:addTextInputField("game.sav",
-    (384 - 300 - 18) / 2, 11 + 36, 318)
+    (192 - 150 - 9) / 2, 5 + 18, 159)
 
   local browser = menu:addBrowser("~save", ".sav.gz$",
-    (384 - 300 - 18) / 2, 11 + 36 + 22, 318, 126)
+    (192 - 150 - 9) / 2, 5 + 18 + 11, 159, 63)
   local function cb(s)
     t:setText(browser:getSelectedItem())
   end
   browser:setActionCallback(cb)
 
-  menu:addHalfButton("~!Save", "s", 1 * (384 / 3) - 121 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Save", "s", 1 * (192 / 3) - 60 - 5, 128 - 8 - 13,
     function()
       local name = t:getText()
       -- check for an empty string
@@ -64,7 +64,7 @@ function RunSaveMenu()
       end
     end)
 
-  menu:addHalfButton("~!Cancel", "c", 3 * (384 / 3) - 121 - 10, 256 - 16 - 27,
+  menu:addHalfButton("~!Cancel", "c", 3 * (192 / 3) - 60 - 5, 128 - 8 - 13,
     function() menu:stop() end)
 
   menu:run(false)

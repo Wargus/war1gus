@@ -122,8 +122,8 @@ function DefineBuildingFromSpec(building)
             Construction = "construction-" .. fullname,
             HitPoints = building.HitPoints,
             DrawLevel = 20,
-            TileSize = { size[1] / 32 - 1, size[2] / 32 - 1 },
-            BoxSize = { size[1] -33, size[2] -33 },
+            TileSize = { size[1] / 16 - 1, size[2] / 16 - 1 },
+            BoxSize = { size[1] -16, size[2] -16 },
             SightRange = 1,
             Armor = 20,
             BasicDamage = 0,
@@ -220,7 +220,7 @@ function DefineUnitFromSpec(unit)
         if race == "human" then humanident = unitname end
         if race == "orc" then orcident = unitname end
 
-        local size = { 64, 64 }
+        local size = { 32, 32 }
         if unit.Size and unit.Size[race] then
             size = unit.Size[race]
         end
@@ -239,7 +239,7 @@ function DefineUnitFromSpec(unit)
             DrawLevel = 60,
             MaxAttackRange = 1,
             TileSize = { 1, 1 },
-            BoxSize = { 31, 31 },
+            BoxSize = { 15, 15 },
             SightRange = 3,
             Speed = 9,
             organic = true,

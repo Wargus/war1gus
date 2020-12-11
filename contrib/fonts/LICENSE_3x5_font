@@ -1,0 +1,39 @@
+3x5 font taken from Robey Pointer's modification of the Brian Swetland
+4x6 font for a Palm Pilot VT100 emulator. Brian's font (as part of the
+emulator) was licensed under the MIT license (reproduced below), Robey
+kept the same license applies here. Brian has authorized this font to be
+released under the CC0 or CC-BY 3.0 license. Therefore, this font may
+also be used under either CC0 or CC-BY 3.0 license.
+
+The font files were retrieved from
+    https://robey.lag.net/2010/01/23/tiny-monospace-font.html
+on Dec 6, 2020.
+
+VT100 Terminal for Pilot Font License below
+
+Copyright 1999 Brian J. Swetland
+Copyright 1999 Vassilii Khachaturov
+Copyright 2010 Robey Pointer <robeypointer@gmail.com>
+Portions (of vt100.c/vt100.h) copyright Dan Marks
+
+All rights reserved.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions, and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+3. The name of the authors may not be used to endorse or promote products
+   derived from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

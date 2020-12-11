@@ -3,19 +3,19 @@
 function AddSoundOptions(menu, offx, offy, centerx, bottom)
   local b
 
-  b = menu:addLabel("Sound Options", 176, 11)
+  b = menu:addLabel("Sound Options", 88, 5)
 
   local makeSlider = function(getvalue, setvalue, isenabled, setenabled, title, offstart)
      local b = Label(title)
      b:setFont(CFont:Get("game"))
      b:adjustSize();
-     menu:add(b, 16, offy + 36 * offstart)
+     menu:add(b, 8, offy + 18 * offstart)
 
-     local slider = Slider(0, 255)
+     local slider = Slider(0, 127)
      slider:setValue(getvalue())
      slider:setActionCallback(function() setvalue(slider:getValue()) end)
-     slider:setWidth(198)
-     slider:setHeight(18)
+     slider:setWidth(99)
+     slider:setHeight(9)
      slider:setBaseColor(dark)
      slider:setForegroundColor(clear)
      slider:setBackgroundColor(clear)
@@ -23,7 +23,7 @@ function AddSoundOptions(menu, offx, offy, centerx, bottom)
      local effectscheckbox = {}
      effectscheckbox = menu:addCheckBox(
 	"Enabled",
-	offx + 16, offy + 36 * (offstart + 0.5),
+	offx + 8, offy + 18 * (offstart + 0.5),
 	function()
 	   slider:setEnabled(effectscheckbox:isMarked())
 	   setenabled(effectscheckbox:isMarked())
@@ -31,17 +31,17 @@ function AddSoundOptions(menu, offx, offy, centerx, bottom)
      )
      effectscheckbox:setMarked(isenabled())
      effectscheckbox:adjustSize()
-     menu:add(slider, offx + 20, offy + 36 * (offstart + 1))
+     menu:add(slider, offx + 10, offy + 18 * (offstart + 1))
      
      b = Label("min")
      b:setFont(CFont:Get("game"))
      b:adjustSize();
-     menu:addCentered(b, offx + 44, offy + 36 * (offstart + 1.5) + 6)
+     menu:addCentered(b, offx + 22, offy + 18 * (offstart + 1.5) + 3)
      
      b = Label("max")
      b:setFont(CFont:Get("game"))
      b:adjustSize();
-     menu:addCentered(b, offx + 218, offy + 36 * (offstart + 1.5) + 6)
+     menu:addCentered(b, offx + 109, offy + 18 * (offstart + 1.5) + 3)
   end
 
 
@@ -61,9 +61,9 @@ function AddSoundOptions(menu, offx, offy, centerx, bottom)
 	MusicStopped()
      end,
      "Music",
-     3.5)
+     3.2)
  
-  b = menu:addFullButton("~!OK", "o", centerx, bottom - 11 - 27,
+  b = menu:addFullButton("~!OK", "o", centerx, bottom - 5 - 13,
     function()
       preferences.EffectsVolume = GetEffectsVolume()
       preferences.EffectsEnabled = IsEffectsEnabled()
@@ -77,15 +77,19 @@ end
 function RunGameSoundOptionsMenu()
   local menu = WarGameMenu(panel(1))
 
-  AddSoundOptions(menu, 28, 0, 25, 272)
+  AddSoundOptions(menu, 14, 0, 12, 136)
 
-  menu:run(false)
+  if (GameCycle > 0) then
+    menu:run(false)
+  else
+    menu:run()
+  end
 end
 
 function RunPreferencesMenu()
   local menu = WarGameMenu(panel(1))
 
-  menu:addFullButton("~!OK", "o", 25, 288 - 60,
+  menu:addFullButton("~!OK", "o", 12, 144 - 30,
     function()
       preferences.FogOfWar = GetFogOfWar()
       preferences.ShowCommandKey = UI.ButtonPanel.ShowCommandKey
@@ -94,11 +98,11 @@ function RunPreferencesMenu()
       menu:stop()
     end)
   
-  menu:addLabel("Preferences", 128, 11)
+  menu:addLabel("Preferences", 64, 5)
 
   -- fog of war
   local fog = {}
-  fog = menu:addCheckBox("Fog of War", 16, 40 + 36 * 0,
+  fog = menu:addCheckBox("Fog of War", 8, 20 + 18 * 0,
     function()
 	  SetFogOfWar(fog:isMarked())
 	  preferences.FogOfWar = fog:isMarked()
@@ -111,39 +115,48 @@ function RunPreferencesMenu()
 
   -- Command keys
   local ckey = {}
-  ckey = menu:addCheckBox("Show command keys", 16, 40 + 36 * 0.5,
+  ckey = menu:addCheckBox("Show cmd keys", menu:getWidth() / 2 - 8, 20 + 18 * 0,
     function() UI.ButtonPanel.ShowCommandKey = ckey:isMarked() end)
   ckey:setMarked(UI.ButtonPanel.ShowCommandKey)
 
-  -- Game speed
-  menu:addLabel("Game Speed", 16, 40 + 36 * 1, Fonts["game"], false)
-  local gamespeed = {}
-  gamespeed = menu:addSlider(15, 75, 208, 18, 32, 40 + 36 * 1.5,
-    function() SetGameSpeed(gamespeed:getValue()) end)
-  gamespeed:setValue(GetGameSpeed())
-  menu:addLabel("slow", 34, 40 + (36 * 2) + 6, Fonts["small"], false)
-  local l = Label("fast")
-  l:setFont(Fonts["small"])
-  l:adjustSize()
-  menu:add(l, 230 - l:getWidth(), 40 + (36 * 2) + 6)
+  if GameCycle == 0 then
+    b = menu:addCheckBox("Allow multiple Town Halls", 8, 20 + 18 * 0.5,
+      function()
+        preferences.AllowMultipleTownHalls = not preferences.AllowMultipleTownHalls
+        Load("scripts/buttons.lua")
+        Load("scripts/buildings.lua")
+        SavePreferences()
+      end)
+    b:setMarked(preferences.AllowMultipleTownHalls)
 
-  local b = menu:addCheckBox("Full Screen", 16, 40 + 36 * 2.5,
+    b = menu:addCheckBox("Use simplified color scheme", 8, 20 + 18 * 1.0,
+      function()
+      preferences.MultiColoredCampaigns = not preferences.MultiColoredCampaigns
+      SetColorScheme()
+      SavePreferences()
+    end)
+    b:setMarked(not preferences.MultiColoredCampaigns)
+  else
+    menu:addLabel("Game Speed", 8, 20 + 18 * 0.5, Fonts["game"], false)
+    local gamespeed = {}
+    gamespeed = menu:addSlider(15, 75, 104, 9, 16, 20 + 18 * 1.0,
+      function() SetGameSpeed(gamespeed:getValue()) end)
+    gamespeed:setValue(GetGameSpeed())
+    menu:addLabel("slow", 17, 20 + (18 * 1.5) + 3, Fonts["small"], false)
+    local l = Label("fast")
+    l:setFont(Fonts["small"])
+    l:adjustSize()
+    menu:add(l, 115 - l:getWidth(), 20 + (18 * 1.5) + 3)
+  end
+
+  local b = menu:addCheckBox("Fullscreen", 8, 20 + 18 * 2.0,
     function()
       ToggleFullScreen()
       preferences.VideoFullScreen = Video.FullScreen
-      SavePreferences()
     end)
   b:setMarked(Video.FullScreen)
 
-  b = menu:addCheckBox("Allow Training Queue", 16, 40 + 36 * 3,
-    function()
-	  preferences.TrainingQueue = not preferences.TrainingQueue
-	  SetTrainingQueue(not not preferences.TrainingQueue)
-      SavePreferences()
-    end)
-  b:setMarked(preferences.TrainingQueue)
-
-  b = menu:addCheckBox("Show Orders", 16, 40 + 36 * 3.5,
+  b = menu:addCheckBox("Show Orders", menu:getWidth() / 2, 20 + 18 * 2.0,
     function()
        preferences.ShowOrders = not preferences.ShowOrders
        if preferences.ShowOrders then
@@ -155,7 +168,15 @@ function RunPreferencesMenu()
     end)
   b:setMarked(preferences.ShowOrders)
 
-  b = menu:addCheckBox("Show Damage", 16, 40 + 36 * 4,
+  b = menu:addCheckBox("Train Queue", 8, 20 + 18 * 2.5,
+    function()
+	  preferences.TrainingQueue = not preferences.TrainingQueue
+	  SetTrainingQueue(not not preferences.TrainingQueue)
+      SavePreferences()
+    end)
+  b:setMarked(preferences.TrainingQueue)
+
+  b = menu:addCheckBox("Show Damage", menu:getWidth() / 2, 20 + 18 * 2.5,
     function()
        preferences.ShowDamage = not preferences.ShowDamage
        if preferences.ShowDamage then
@@ -167,9 +188,9 @@ function RunPreferencesMenu()
     end)
   b:setMarked(preferences.ShowOrders)
 
-  menu:addLabel("Max Selection", 16, 40 + 36 * 4.5, Fonts["game"], false)
+  menu:addLabel("Max Selection", 8, 20 + 18 * 3.5, Fonts["game"], false)
   local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
-  maxselection = menu:addDropDown(maxselections, 16 + 150, 40 + 36 * 4.5,
+  maxselection = menu:addDropDown(maxselections, 8, 20 + 18 * 4.0,
     function(dd)
 	  local selected = maxselections[maxselection:getSelected() + 1]
 	  local count = tonumber(string.gmatch(selected, "%d+")())
@@ -184,8 +205,38 @@ function RunPreferencesMenu()
   	  break
   	end
   end
+  maxselection:setSize(50, maxselection:getHeight())
 
+  if GetShaderNames then
+    local shaderNames = GetShaderNames()
+    if #shaderNames > 0 then
+       menu:addLabel(_("Shader"), menu:getWidth() / 2, 20 + 18 * 3.5, Fonts["game"], false)
+       local shaderName = menu:addDropDown(shaderNames, 8 + 75, 20 + 18 * 4.0, function(dd) end)
+       local function getCurrentShaderIndex()
+          local currentShader = GetShader()
+          for idx,name in pairs(shaderNames) do
+             if name == currentShader then
+                return idx
+             end
+          end
+       end
+       shaderName:setSelected(getCurrentShaderIndex() - 1)
+       shaderName:setActionCallback(function()
+             local newShader = shaderNames[shaderName:getSelected() + 1];
+             if SetShader(newShader) then
+                Preference.VideoShader = newShader
+                wc1.preferences.VideoShader = newShader
+             end
+       end)
+       shaderName:setSize(50, shaderName:getHeight())
+    end
+ end
+
+ if (GameCycle > 0) then
   menu:run(false)
+ else
+   menu:run()
+ end
 end
 
 function SetVideoSize(width, height)
@@ -202,103 +253,51 @@ end
 
 function BuildOptionsMenu()
   local menu = WarMenu()
-  local offx = (Video.Width - 352) / 2
-  local offy = (Video.Height - 352) / 2
+  local offx = (Video.Width - 176) / 2
+  local offy = (Video.Height - 176) / 2
   local checkTexture
   local b
   local resolution
   local maxselection
-  local top = 140 * Video.Height / 400
+  local top = 120 * Video.Height / 200
 
-  menu:addLabel("Video Resolution", offx + 16, offy + top, Fonts["game"], false)
+  menu:addLabel("Video Resolution", offx + 8, offy + top, Fonts["game"], false)
   local resolutions = {
-     "640x400",
-     "640x480",
-     "800x480",
-     "800x600",
-     "1024x640",
-     "1024x768",
-     "1280x720",
-     "1280x800",
-     "1280x920",
-     "1280x1024",
-     "1440x900",
-     "1680x1050",
-     "1920x1080",
+     "320x200 (1x)",
+     "400x250 (1.25x)",
+     "480x300 (1.5x)",
+     "640x400 (2x)",
+     "800x500 (2.5x)",
+     "960x600 (3x)",
+     "1280x800 (4x)",
+     "480x270 (1.5x wide)",
+     "640x360 (2x wide)",
+     "960x540 (3x wide)"
   }
-  resolution = menu:addDropDown(resolutions, offx + 16 + 250, offy + top,
+  resolution = menu:addDropDown(resolutions, offx + 8 + 125, offy + top,
     function(dd)
-	  local selected = resolutions[resolution:getSelected() + 1]
-	  local x = tonumber(string.gmatch(selected, "%d+")())
-	  local y = tonumber(string.gmatch(selected, "%d+$")())
-	  SetVideoSize(x, y)
-	  menu:stop()
-	  RunOptionsMenu()
+    local selected = resolutions[resolution:getSelected() + 1]
+    for x, y in string.gmatch(selected, "(%d+)x(%d+)") do
+      SetVideoSize(tonumber(x), tonumber(y))
+    end
+    menu:stop()
+    RunOptionsMenu()
 	end)
   for idx,str in ipairs(resolutions) do
-    local x = tonumber(string.gmatch(str, "%d+")())
-	local y = tonumber(string.gmatch(str, "%d+$")())
-	if Video.Width == x and Video.Height == y then
-	  resolution:setSelected(idx - 1)
-	  break
-	end
+    local found = false
+    for x, y in string.gmatch(str, "(%d+)x(%d+)") do
+      if Video.Width == tonumber(x) and Video.Height == tonumber(y) then
+        resolution:setSelected(idx - 1)
+        found = true
+        break
+      end
+    end
+    if found then
+      break
+    end
   end
 
-  b = menu:addCheckBox("Full Screen", offx + 16, offy + top + 15,
-    function()
-      ToggleFullScreen()
-      preferences.VideoFullScreen = Video.FullScreen
-      SavePreferences()
-      menu:stop(1)
-    end)
-  b:setMarked(Video.FullScreen)
-
-  b = menu:addCheckBox("Allow Training Queue", offx + 16, offy + top + 15 * 4,
-    function()
-	  preferences.TrainingQueue = not preferences.TrainingQueue
-	  SetTrainingQueue(not not preferences.TrainingQueue)
-      SavePreferences()
-    end)
-  b:setMarked(preferences.TrainingQueue)
-
-  menu:addLabel("Max Unit Selection", offx + 16, offy + top + 15 * 5, Fonts["game"], false)
-  local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
-  maxselection = menu:addDropDown(maxselections, offx + 16 + 250, offy + top + 15 * 5,
-    function(dd)
-	  local selected = maxselections[maxselection:getSelected() + 1]
-	  local count = tonumber(string.gmatch(selected, "%d+")())
-	  preferences.MaxSelection = count
-	  SavePreferences()
-	  SetMaxSelectable(count)
-	  menu:stop()
-	  RunOptionsMenu()
-	end)
-  for idx,str in ipairs(maxselections) do
-    local count = tonumber(string.gmatch(str, "%d+")())
-	if preferences.MaxSelection == count then
-	  maxselection:setSelected(idx - 1)
-	  break
-	end
-  end
-  
-  b = menu:addCheckBox("Allow multiple Town Halls", offx + 16, offy + top + 15 * 6,
-    function()
-      preferences.AllowMultipleTownHalls = not preferences.AllowMultipleTownHalls
-      Load("scripts/buttons.lua")
-      Load("scripts/buildings.lua")
-      SavePreferences()
-    end)
-  b:setMarked(preferences.AllowMultipleTownHalls)
-
-  b = menu:addCheckBox("Use simplified color scheme", offx + 16, offy + top + 15 * 7,
-    function()
-	  preferences.MultiColoredCampaigns = not preferences.MultiColoredCampaigns
-	  SetColorScheme()
-	  SavePreferences()
-	end)
-  b:setMarked(not preferences.MultiColoredCampaigns)
-
-  menu:addHalfButton("~!OK", "o", offx + 123, offy + top + 15 * 9,
+  menu:addHalfButton("~!OK", "o", offx + 61, offy + top + 10 * 3,
     function()
 	  menu:stop()
 	end)
@@ -306,24 +305,32 @@ function BuildOptionsMenu()
 end
 
 function RunOptionsMenu()
-  local continue = 1
-  while (continue == 1) do
-    continue = BuildOptionsMenu()
-  end
+  BuildOptionsMenu()
 end
 
 function RunGameOptionsMenu()
   local menu = WarGameMenu(panel(1))
 
-  menu:addLabel("Game Options", 128, 11)
-  menu:addFullButton("Sound (~<F7~>)", "f7", 25, 40 + 36*0,
+  menu:addLabel("Game Options", 64, 5)
+  menu:addFullButton("Sound (~<F7~>)", "f7", 12, 20 + 18*0,
     function() RunGameSoundOptionsMenu() end)
-  menu:addFullButton("Preferences (~<F8~>)", "f8", 25, 40 + 36*1,
-    function() RunPreferencesMenu() end)
-  menu:addFullButton("Diplomacy (~<F9~>)", "f9", 25, 40 + 36*2,
-    function() RunDiplomacyMenu() end)
-  menu:addFullButton("Previous (~<Esc~>)", "escape", 25, 288 - 60,
+  menu:addFullButton("Preferences (~<F8~>)", "f8", 12, 20 + 18*1,
+    function()
+      RunPreferencesMenu()
+    end)
+  if (GameCycle > 0) then
+    menu:addFullButton("Diplomacy (~<F9~>)", "f9", 12, 20 + 18*2,
+      function() RunDiplomacyMenu() end)
+  else
+    menu:addFullButton(_("Video (~<F9~>)"), "f9", 12, 20 + 18*2,
+      function() RunOptionsMenu(); menu:stopAll(1) end)
+  end  
+  menu:addFullButton("Previous (~<Esc~>)", "escape", 12, 144 - 30,
     function() menu:stop() end)
 
-  menu:run(false)
+  if (GameCycle > 0) then
+    menu:run(false)
+  else
+    menu:run()
+  end
 end

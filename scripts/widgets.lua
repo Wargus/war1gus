@@ -30,7 +30,7 @@
 
 
 DefineButtonStyle("menu", {
-  Size = {130, 24},
+  Size = {65, 12},
   Font = "game",
   Default = { File = "ui/menu_button_1.png"},
   Clicked = { File = "ui/menu_button_2.png"},
@@ -38,83 +38,89 @@ DefineButtonStyle("menu", {
 
 
 DefineButtonStyle("main", {
-  Size = {128, math.floor(32 * (Video.Height - UI.Minimap.H) / (480 - UI.Minimap.H))},
+  Size = {128, math.floor(16 * (Video.Height - UI.Minimap.H) / (240 - UI.Minimap.H))},
   Font = "game",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Center",
-  TextPos = {64, 4},
+  TextPos = {32, 2},
   Hover = { TextNormalColor = "white" },
   Clicked = {
     TextNormalColor = "white",
-    TextPos = {66, 6},
+    TextPos = {33, 3},
   },
 })
 
 DefineButtonStyle("network", {
-  Size = {80, 20},
+  Size = {40, 10},
   Font = "game",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Center",
-  TextPos = {40, 4},
+  TextPos = {20, 2},
   Hover = { TextNormalColor = "white" },
   Clicked = {
     TextNormalColor = "white",
-    TextPos = {42, 6},
+    TextPos = {21, 3},
   },
 })
 
 DefineButtonStyle("gm-half", {
-  Size = {106, 28},
+  Size = {53, 14},
   Font = "large",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Center",
-  TextPos = {53, 7},
-  Default = { File = "ui/buttons_1.png", Size = {300, 144}, Frame = 10},
+  TextPos = {26, 3},
+  Default = { File = "ui/buttons_1.png", Size = {150, 72}, Frame = 10},
   Hover = { TextNormalColor = "white" },
   Clicked = {
     TextNormalColor = "white",
-    TextPos = {55, 9},
+    TextPos = {27, 4},
   },
 })
 
 DefineButtonStyle("gm-full", {
-  Size = {224, 28},
+  Size = {112, 14},
   Font = "large",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Center",
-  TextPos = {112, 7},
-  Default = { File = "ui/buttons_1.png", Size = {300, 144}, Frame = 16},
+  TextPos = {56, 3},
+  Default = { File = "ui/buttons_1.png", Size = {150, 72}, Frame = 16},
   Hover = { TextNormalColor = "white" },
   Clicked = {
     TextNormalColor = "white",
-    TextPos = {114, 9},
+    TextPos = {57, 4},
   },
 })
 
 DefineButtonStyle("folder", {
-  Size = {39, 22},
+  Size = {19, 11},
   Font = "large",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Left",
-  TextPos = {44, 6},
+  TextPos = {22, 3},
   Hover = { TextNormalColor = "white" },
   Clicked = {
     TextNormalColor = "white",
   },
 })
 
+local iconSize
+if currentRace == "human" then
+  iconSize = {27, 19}
+else
+  iconSize = {27, 20}
+end
 DefineButtonStyle("icon", {
-  Size = {54, 38},
+  Size = iconSize,
   Font = "game",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Right",
-  TextPos = {54, 26},
+  TextPos = {27, 13},
   Default = {
     Border = {
       Color = {0, 0, 0}, Size = 1,

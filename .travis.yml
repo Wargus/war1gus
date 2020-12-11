@@ -3,7 +3,8 @@ compiler:
   - gcc
 os:
   - linux
-  - osx
+  # - osx
+osx_image: xcode12
 addons:
   apt:
     packages:

@@ -1,12 +1,12 @@
 function RunDiplomacyMenu()
   local menu = WarGameMenu(panel(5))
-  menu:resize(352, 352)
+  menu:resize(352 / 2, 352 / 2)
 
-  menu:addLabel("Diplomacy", 176, 11)
+  menu:addLabel("Diplomacy", 88, 5)
 
-  menu:addLabel("Allied", 136, 30, Fonts["game"])
-  menu:addLabel("Enemy", 196, 30, Fonts["game"])
-  menu:addLabel("Shared Vision", 286, 30, Fonts["game"])
+  menu:addLabel("Allied", 68, 15, Fonts["game"])
+  menu:addLabel("Enemy", 98, 15, Fonts["game"])
+  menu:addLabel("Shared Vision", 143, 15, Fonts["game"])
 
   local allied = {}
   local enemy = {}
@@ -20,7 +20,7 @@ function RunDiplomacyMenu()
       local l = Label(Players[i].Name)
       l:setFont(Fonts["game"])
       l:adjustSize()
-      menu:add(l, 16, (18 * j) + 26)
+      menu:add(l, 8, (9 * j) + 13)
 
       -- FIXME: disable checkboxes in replays or if on the same team
 
@@ -28,7 +28,7 @@ function RunDiplomacyMenu()
       local enemycb = {}
       local sharedvisioncb = {}
 
-      alliedcb = menu:addCheckBox("", 126, (18 * j) + 23,
+      alliedcb = menu:addCheckBox("", 63, (9 * j) + 11,
         function()
           if (alliedcb:isMarked() and enemycb:isMarked()) then
             enemycb:setMarked(false)
@@ -38,7 +38,7 @@ function RunDiplomacyMenu()
       allied[j] = alliedcb
       allied[j].index = i
 
-      enemycb = menu:addCheckBox("", 186, (18 * j) + 23,
+      enemycb = menu:addCheckBox("", 93, (9 * j) + 11,
         function()
           if (alliedcb:isMarked() and enemycb:isMarked()) then
             alliedcb:setMarked(false)
@@ -47,14 +47,14 @@ function RunDiplomacyMenu()
       enemycb:setMarked(ThisPlayer:IsEnemy(Players[i]))
       enemy[j] = enemycb
 
-      sharedvisioncb = menu:addCheckBox("", 276, (18 * j) + 23,
+      sharedvisioncb = menu:addCheckBox("", 138, (9 * j) + 11,
         function() end)
       sharedvisioncb:setMarked(ThisPlayer:HasSharedVisionWith(Players[i]))
       sharedvision[j] = sharedvisioncb
     end
   end
 
-  menu:addHalfButton("~!OK", "o", 66, 352 - 40,
+  menu:addHalfButton("~!OK", "o", 33, 176 - 20,
     function()
       for j=1,table.getn(allied) do
         local i = allied[j].index
@@ -104,7 +104,7 @@ function RunDiplomacyMenu()
       end
       menu:stop()
     end)
-  menu:addHalfButton("~!Cancel", "c", 186, 352 - 40, function() menu:stop() end)
+  menu:addHalfButton("~!Cancel", "c", 93, 176 - 20, function() menu:stop() end)
 
   menu:run(false)
 end
