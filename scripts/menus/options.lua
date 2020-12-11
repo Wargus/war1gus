@@ -153,7 +153,6 @@ function RunPreferencesMenu()
     function()
       ToggleFullScreen()
       preferences.VideoFullScreen = Video.FullScreen
-      SavePreferences()
     end)
   b:setMarked(Video.FullScreen)
 
@@ -227,7 +226,6 @@ function RunPreferencesMenu()
              if SetShader(newShader) then
                 Preference.VideoShader = newShader
                 wc1.preferences.VideoShader = newShader
-                SavePreferences()
              end
        end)
        shaderName:setSize(50, shaderName:getHeight())
