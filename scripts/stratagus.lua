@@ -308,6 +308,8 @@ DefaultPreference("MultiColoredCampaigns", true)
 DefaultPreference("ShowButtonPopups", true)
 DefaultPreference("ShowDamage", true)
 DefaultPreference("ShowOrders", true)
+DefaultPreference("OnlineServer", "network.stratagus.de")
+DefaultPreference("OnlinePort", 6112)
 
 wc1.preferences = preferences
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
