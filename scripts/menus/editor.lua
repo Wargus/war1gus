@@ -1,38 +1,3 @@
-local function AddButtonPanelButton(x, y)
-   b = CUIButton:new_local()
-   b.X = x
-   b.Y = y
-   b.Style = FindButtonStyle("icon")
-   UI.ButtonPanel.Buttons:push_back(b)
-end
-
-local function HackEditorUI()
-  LoadUI("orc", Video.Width, Video.Height)
-  DefinePlayerColors(wc1.HumanMultiColors)
-   -- hack the coordinates for editor tools
-   local btny = UI.InfoPanel.Y + 2 + 5 + 19 + 10 + 9 + 2 + 12
-   UI.ButtonPanel.Y = UI.ButtonPanel.Y + 12
-   UI.ButtonPanel.Buttons:clear()
-   AddButtonPanelButton(0, btny + 23 * 0)
-   AddButtonPanelButton(30, btny + 23 * 0)
-   AddButtonPanelButton(60, btny + 23 * 0)
-   if (Video.Height >= 300) then
-      -- let's add another row of units
-      UI.ButtonPanel.Y = UI.ButtonPanel.Y + 23
-      AddButtonPanelButton(0, btny + 23 * 1)
-      AddButtonPanelButton(30, btny + 23 * 1)
-      AddButtonPanelButton(60, btny + 23 * 1)
-   end
-   if (Video.Height >= 768) then
-      -- let's add another row of units
-      UI.ButtonPanel.Y = UI.ButtonPanel.Y + 23
-      AddButtonPanelButton(0, btny + 23 * 2)
-      AddButtonPanelButton(30, btny + 23 * 2)
-      AddButtonPanelButton(60, btny + 23 * 2)
-   end
-   -- end of hack
-end
-
 --  Menu for new map to edit
 local function RunEditorNewMapMenu()
   local menu = WarMenu()
@@ -62,7 +27,6 @@ local function RunEditorNewMapMenu()
       LoadTileModels("scripts/tilesets/" .. tilesets[1 + dropDownTileset:getSelected()] .. ".lua")
 --	  Load("scripts/tilesets/" .. tilesets[1 + dropDownTileset:getSelected()] .. ".lua")
       menu:stop()
-      HackEditorUI()
       StartEditor(nil)
     end)
   menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() menu:stop(1) end)
@@ -109,7 +73,7 @@ local function RunEditorLoadMapMenu()
       end
     end)
 
-  menu:addFullButton("~!Edit map", "e", offx + 96, offy + 52 + 18 * 5, function() menu:stop(); HackEditorUI(); StartEditor(mapname);  end)
+  menu:addFullButton("~!Edit map", "e", offx + 96, offy + 52 + 18 * 5, function() menu:stop(); StartEditor(mapname);  end)
   menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() menu:stop(1) end)
 
   GetMapInfo(mapname)
