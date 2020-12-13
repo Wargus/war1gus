@@ -3,7 +3,7 @@ local function RunEditorNewMapMenu()
   local menu = WarMenu()
   local offx = (Video.Width - 320) / 2
   local offy = (Video.Height - 200) / 2
-  local tilesets = { "forest", "swamp", "dungeon" }
+  local tilesets = { "forest", "swamp", "dungeon", "forest_campaign", "swamp_campaign", "dungeon_campaign" }
   local mapSizes = {"32", "64", "96", "128", "256"}
 
   menu:addLabel("Map description :", offx + 104, offy + 52 + 16 * 0, Fonts["game"], false)
@@ -24,8 +24,28 @@ local function RunEditorNewMapMenu()
       Map.Info.Description = mapDescription:getText()
       Map.Info.MapWidth = mapSizes[1 + mapSizex:getSelected()]
       Map.Info.MapHeight = mapSizes[1 + mapSizey:getSelected()]
-      LoadTileModels("scripts/tilesets/" .. tilesets[1 + dropDownTileset:getSelected()] .. ".lua")
+      local tileset = tilesets[1 + dropDownTileset:getSelected()]
+      LoadTileModels("scripts/tilesets/" .. tileset .. ".lua")
 --	  Load("scripts/tilesets/" .. tilesets[1 + dropDownTileset:getSelected()] .. ".lua")
+      if dropDownTileset:getSelected() > 2 then
+        local infoMenu = WarMenu(nil, panel(1), false)
+        infoMenu:setSize(152, 136)
+        infoMenu:setPosition((Video.Width - infoMenu:getWidth()) / 2, (Video.Height - infoMenu:getHeight()) / 2)
+        infoMenu:setDrawMenusUnder(true)
+        infoMenu:addLabel("IMPORTANT", infoMenu:getWidth() / 2, 5)
+        local l = MultiLineLabel("THIS TILESET CAN ONLY BE USED WITH THE 'Manual' TILE TOOL!")
+        l:setFont(Fonts["large"])
+        l:setAlignment(MultiLineLabel.CENTER)
+        l:setVerticalAlignment(MultiLineLabel.CENTER)
+        l:setLineWidth(infoMenu:getWidth() * 0.7)
+        l:setWidth(infoMenu:getWidth() * 0.8)
+        l:setHeight(infoMenu:getHeight() * 0.8)
+        l:setBackgroundColor(dark)
+        infoMenu:add(l, infoMenu:getWidth() * 0.1, infoMenu:getHeight() * 0.1)
+        local btn = infoMenu:addHalfButton("~!OK", "o", 41, infoMenu:getHeight() * 0.8, function() infoMenu:stop() end)
+        btn:setX((infoMenu:getWidth() - btn:getWidth()) / 2)
+        infoMenu:run()
+      end
       menu:stop()
       StartEditor(nil)
     end)
