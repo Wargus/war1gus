@@ -250,18 +250,52 @@ function RunJoiningGameMenu(s)
 end
 
 function RunJoinIpMenu()
-  local menu = WarMenu(nil, panel(4), false)
-  menu:setSize(144, 64)
-  menu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
-  menu:setDrawMenusUnder(true)
+  local menu = WarMenu()
+  local offx = Video.Width / 2
+  local offy = Video.Height / 2 - 30
+  local padding = 4
 
-  menu:addLabel("Enter server IP-address:", 72, 5)
-  local server = menu:addTextInputField("localhost", 20, 19, 106)
+  InitGameSettings()
+  InitNetwork1()
 
-  menu:addHalfButton("~!OK", "o", 7, 40,
+  local connectLabel = menu:writeText("Connect to IP:", offx, offy)
+  connectLabel:setX(offx - connectLabel:getWidth() - padding) -- place left of center
+  local server = menu:addTextInputField("", offx + padding, offy) -- place right of connectLabel
+
+  local serverLabel = menu:addLabel(_("Discovered servers"), offx, offy + server:getHeight() + padding)
+  local servers = {}
+  local serverlist = menu:addListBox(offx - 50, serverLabel:getY() + serverLabel:getHeight() + padding, 100, 50, servers)
+  local function ServerListUpdate()
+    servers = NetworkDiscoverServers(true)
+    serverlist:setList(servers)
+  end
+  ServerListUpdate()
+  local counter = 30
+  local listener = LuaActionListener(function(s)
+        if counter == 0 then
+           counter = 300
+           ServerListUpdate()
+        else
+           counter = counter - 1
+        end
+  end)
+  menu:addLogicCallback(listener)
+
+  local okBtn = menu:addHalfButton("~!Connect", "c", offx, serverlist:getY() + serverlist:getHeight() + padding * 4,
     function(s)
-      -- FIXME: allow port ("localhost:1234")
-      if (NetworkSetupServerAddress(server:getText()) ~= 0) then
+      local serverText = server:getText()
+      if #serverText == 0 then
+        local idx = serverlist:getSelected() + 1
+        if idx > 0 then
+          serverText = servers[idx]
+        end
+      end
+      local ip, port
+      for k, v in string.gmatch(selectedGame.Host, "([0-9\.]+):(%d+)") do
+        ip = k
+        port = tonumber(v)
+      end
+      if (NetworkSetupServerAddress(ip, port) ~= 0) then
         ErrorMenu("Invalid server name")
         return
       end
@@ -273,7 +307,9 @@ function RunJoinIpMenu()
       menu:stop()
     end
   )
-  menu:addHalfButton("~!Cancel", "c", 72, 40, function() menu:stop() end)
+  okBtn:setX(offx - okBtn:getWidth() - padding)
+
+  menu:addHalfButton("~!Previous Menu", "p", offx + padding, okBtn:getY(), function() menu:stop() end)
 
   menu:run()
 end
