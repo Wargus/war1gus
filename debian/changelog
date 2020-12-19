@@ -1,10 +1,32 @@
-war1gus (3.0.0-1) UNRELEASED; urgency=medium
+war1gus (3.0.0-1) focal; urgency=medium
 
   * Migrate to SDL2
   * Fix menu button click target when stretched in higher resolutions
   * Fix human work complete sound
+  * Log extraction to a file on Windows
+  * Fix quality of movies on Windows
+  * Fix trees in swamp and forest tilesets
+  * Fix dungeon tileset unpassable tiles
+  * Add "dungeon entrance" building to collect lumber in dungeon maps
+  * Add decorative tiles to forest, swamp, and dungeon tilesets for the editor
+  * Fix directions for all spells and missiles
+  * Do not allow alliance with AI
+  * Fix catapult rock animation
+  * Attack faster on the second level
+  * Allow toggling AllowMultipleTownhalls at runtime
+  * Add Alt+F to toggle fullscreen
+  * Add F10 and other F-shortcuts for game menus
+  * Add preferences to show orders, damage, and select shaders
+  * Use default damage formula again
+  * Add animations to briefing and end mission screens
+  * Copy data files during extraction for in-place re-extraction without
+    needing the CD again
+  * Do not scale the assets to 640x400
+  * Reveal players that have lost their town hall
+  * Fix menu button click target height
+  * Add online game menu
 
- -- Tim Felgentreff <timfelgentreff@gmail.com>  Tue, 09 Jun 2020 07:31:07 +0200
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Sat, 19 Dec 2020 11:00:42 +0100
 
 war1gus (2.4.3-1) eoan; urgency=medium
 
