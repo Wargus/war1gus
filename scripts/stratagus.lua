@@ -281,7 +281,7 @@ local DefaultPreference = function(name, value)
 end
 DefaultPreference("VideoWidth", 480)
 DefaultPreference("VideoHeight", 300)
-DefaultPreference("VideoShader", "CRT")
+DefaultPreference("VideoShader", "none")
 DefaultPreference("VideoFullScreen", false)
 DefaultPreference("PlayerName", "Player")
 DefaultPreference("FogOfWar", false)
