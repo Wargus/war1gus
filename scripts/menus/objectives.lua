@@ -5,7 +5,13 @@ function RunObjectivesMenu()
   --local objectives = ""
   --table.foreachi(Objectives, function(k,v) objectives = objectives .. v .. "\n" end)
 
-  local l = MultiLineLabel(objectives[1])
+  local l;
+  if (objectives == nil) then
+    l = MultiLineLabel("Destroy enemy!")
+  else
+    l = MultiLineLabel(objectives[1])
+  end
+
   l:setFont(Fonts["large"])
   l:setAlignment(MultiLineLabel.LEFT)
   l:setLineWidth(114)
