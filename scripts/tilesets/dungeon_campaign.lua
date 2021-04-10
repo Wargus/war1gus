@@ -311,3 +311,7 @@ function SetTile(oldidx, x, y, oldvalue)
     end
     return OldSetTile(idx, x, y, 100)
 end
+
+-- Enable shadow-casting type of field of view - walls and doors will block the unit's sight
+-- Legacy type of FOW doesn't work with shadow casting, so "enhanced" FOW will be activated automaticaly
+SetFieldOfViewType("shadow-casting")
