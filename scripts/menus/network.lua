@@ -112,8 +112,8 @@ function RunJoiningMapMenu(s)
   local revealmap = menu:addCheckBox("Reveal map", sx, sy*3+75, function() end)
   revealmap:setEnabled(false)
 
-  menu:writeText("~<Your Race:~>", sx, sy*11)
-  local race = menu:addDropDown({"Map Default", "Human", "Orc"}, sx + 50, sy*11, function() end)
+  menu:writeText("~<Your Race:~>", sx, sy*6)
+  local race = menu:addDropDown({"Map Default", "Human", "Orc"}, sx + 50, sy*6, function() end)
   local raceCb = function(dd)
      GameSettings.Presets[NetLocalHostsSlot].Race = race:getSelected()
      LocalSetupState.Race[NetLocalHostsSlot] = race:getSelected()
@@ -121,14 +121,14 @@ function RunJoiningMapMenu(s)
   race:setActionCallback(raceCb)
   race:setSize(95, 10)
 
-  menu:writeText("Units:", sx, sy*11+12)
-  local units = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 50, sy*11+12,
+  menu:writeText("Units:", sx, sy*6+12)
+  local units = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 50, sy*6+12,
     function(dd) end)
   units:setSize(95, 10)
   units:setEnabled(false)
 
-  menu:writeText("Resources:", sx, sy*11+25)
-  local resources = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 50, sy*11+25,
+  menu:writeText("Resources:", sx, sy*6+25)
+  local resources = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 50, sy*6+25,
     function(dd) end)
   resources:setSize(95, 10)
   resources:setEnabled(false)
@@ -148,7 +148,7 @@ function RunJoiningMapMenu(s)
   local function readycb(dd)
      LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(dd:isMarked())
   end
-  menu:addCheckBox("~!Ready", sx*11,  sy*14, readycb)
+  menu:addCheckBox("~!Ready", sx*6,  sy*7, readycb)
 
   local updatePlayersList = addPlayersList(menu, numplayers)
 
@@ -290,12 +290,8 @@ function RunJoinIpMenu()
           serverText = servers[idx]
         end
       end
-      local ip, port
-      for k, v in string.gmatch(selectedGame.Host, "([0-9\.]+):(%d+)") do
-        ip = k
-        port = tonumber(v)
-      end
-      if (NetworkSetupServerAddress(ip, port) ~= 0) then
+      local ip = string.match(serverText, "[0-9\.]+")
+      if (NetworkSetupServerAddress(ip) ~= 0) then
         ErrorMenu("Invalid server name")
         return
       end
@@ -345,7 +341,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
   end
   local revealmap = menu:addCheckBox("Reveal map", sx, sy*3+75, revealMapCb)
 
-  menu:writeText("Race:", sx, sy*11)
+  menu:writeText("Race:", sx, sy*6)
   local race = menu:addDropDown({"Map Default", "Human", "Orc"}, sx + 50, sy*11, function(dd) end)
   local raceCb = function(arg)
      GameSettings.Presets[0].Race = race:getSelected()
@@ -356,8 +352,8 @@ function RunServerMultiGameMenu(map, description, numplayers)
   race:setActionCallback(raceCb)
   race:setSize(95, 10)
 
-  menu:writeText("Units:", sx, sy*11+12)
-  d = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 50, sy*11+12,
+  menu:writeText("Units:", sx, sy*6+12)
+  d = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 50, sy*6+12,
     function(dd)
       GameSettings.NumUnits = dd:getSelected()
       ServerSetupState.UnitsOption = GameSettings.NumUnits
@@ -365,21 +361,21 @@ function RunServerMultiGameMenu(map, description, numplayers)
     end)
   d:setSize(95, 10)
 
-  menu:writeText("Resources:", sx, sy*11+25)
-  d = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 50, sy*11+25,
+  menu:writeText("Resources:", sx, sy*6+25)
+  d = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 50, sy*6+25,
     function(dd)
       GameSettings.Resources = dd:getSelected()
       ServerSetupState.ResourcesOption = GameSettings.Resources
       NetworkServerResyncClients()
     end)
-  d:setSize(190, 20)
+  d:setSize(95, 10)
 
   local updatePlayers = addPlayersList(menu, numplayers)
 
   NetworkMapName = map
   NetworkInitServerConnect(numplayers)
   ServerSetupState.FogOfWar = 1
-  startgame = menu:addFullButton("~!Start Game", "s", sx * 11,  sy*14,
+  startgame = menu:addFullButton("~!Start Game", "s", sx * 6,  sy*7,
     function(s)
       SetFogOfWar(fow:isMarked())
       if revealmap:isMarked() == true then
@@ -393,7 +389,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
     end
   )
   startgame:setVisible(false)
-  local waitingtext = menu:writeText("Waiting for players", sx*11, sy*14)
+  local waitingtext = menu:writeText("Waiting for players", sx*6, sy*7)
   local function updateStartButton(ready)
     startgame:setVisible(ready)
     waitingtext:setVisible(not ready)
@@ -443,7 +439,7 @@ function RunCreateMultiGameMenu(s)
   end
 
   Load(mapfile)
-  local browser = menu:addBrowser("maps/", "^.*%.smp%.?g?z?$", sx*10, sy*2+10, sx*8, sy*11)
+  local browser = menu:addBrowser("maps/", "^.*%.smp%.?g?z?$", sx*5, sy*2+10, sx*8, sy*5)
   local function cb(s)
     mapfile = browser.path .. browser:getSelectedItem()
     Load(mapfile)
@@ -452,7 +448,7 @@ function RunCreateMultiGameMenu(s)
   end
   browser:setActionCallback(cb)
 
-  menu:addFullButton("~!Create Game", "c", sx,  sy*11,
+  menu:addFullButton("~!Create Game", "c", sx,  sy*6,
     function(s)
       if (browser:getSelected() < 0) then
         return
@@ -462,7 +458,7 @@ function RunCreateMultiGameMenu(s)
     end
   )
 
-  menu:addFullButton("Cancel (~<Esc~>)", "escape", sx,  sy*12+12,
+  menu:addFullButton("Cancel (~<Esc~>)", "escape", sx,  sy*7+12,
     function() menu:stop() end)
 
   menu:run()
