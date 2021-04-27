@@ -118,9 +118,6 @@ SetRevealAttacker(true)
 --SetRevelationType("buildings-only")
 SetRevelationType("all-units")
 
--- Load default settings for field of view
-Load("scripts/fov.lua")
-
 SetFogOfWarBlur(2.0, 1.5, 3) -- radiuses for simple and bilinear FOW postprocessing, number of blur iterations
 
 -------------------------------------------------------------------------------
@@ -317,6 +314,8 @@ DefaultPreference("OnlineServer", "network.stratagus.de")
 DefaultPreference("OnlinePort", 6112)
 DefaultPreference("FogOfWarType", "enhanced")      -- "enhanced" or "legacy". Legacy type of FOW doesn't work with shadow casting FOV.
 DefaultPreference("FogOfWarBilinear", false)       -- Enable/Disable bilinear filtration for fog of war
+DefaultPreference("DungeonSightBlocking", true)    -- Enable/Disable sight blocking in the dungeons
+DefaultPreference("FieldOfViewType", "simple-radial")    -- default field of view type (possibe values: "simple-radial" and "shadow-casting" )
 
 wc1.preferences = preferences
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
@@ -351,6 +350,7 @@ if preferences.ShowOrders == true then
 else
    Preference.ShowOrders = 0
 end
+SetFieldOfViewType(preferences.FieldOfViewType)
 SetFogOfWarType(preferences.FogOfWarType)
 SetFogOfWarBilinear(preferences.FogOfWarBilinear)
 
