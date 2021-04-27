@@ -3,7 +3,8 @@
 function AddSoundOptions(menu, offx, offy, centerx, bottom)
   local b
 
-  b = menu:addLabel("Sound Options", 88, 5)
+  local titleLabel = Label("Sound Options")
+  b = menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
 
   local makeSlider = function(getvalue, setvalue, isenabled, setenabled, title, offstart)
      local b = Label(title)
@@ -355,7 +356,8 @@ end
 function RunGameOptionsMenu()
   local menu = WarGameMenu(panel(1))
 
-  menu:addLabel("Game Options", 64, 5)
+  local titleLabel = Label("Game Options")
+  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
   menu:addFullButton("Sound (~<F7~>)", "f7", 12, 20 + 18*0,
     function() RunGameSoundOptionsMenu() end)
   menu:addFullButton("Preferences (~<F8~>)", "f8", 12, 20 + 18*1,

@@ -1,7 +1,8 @@
 function RunObjectivesMenu()
   local menu = WarGameMenu(panel(1))
-
-  menu:addLabel("Objectives", 64, 5, Fonts["large"], true)
+  local titleLabel = Label("Objectives")
+  titleLabel:setFont(Fonts["large"])
+  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
   --local objectives = ""
   --table.foreachi(Objectives, function(k,v) objectives = objectives .. v .. "\n" end)
 

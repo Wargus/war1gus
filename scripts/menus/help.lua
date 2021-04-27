@@ -1,7 +1,9 @@
 function RunHelpMenu()
   local menu = WarGameMenu(panel(1))
 
-  menu:addLabel("Help Menu", 64, 5)
+  local titleLabel = Label("Help Menu")
+  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
+
   menu:addFullButton("Keystroke ~!Help", "h", 12, 20 + 18*0,
     function() RunKeystrokeHelpMenu() end)
   menu:addFullButton("~!Tips", "t", 12, 20 + 18*1,
