@@ -87,9 +87,9 @@ function RunGameSoundOptionsMenu()
 end
 
 function RunPreferencesMenu()
-  local menu = WarGameMenu(panel(1))
-
-  menu:addFullButton("~!OK", "o", 12, 144 - 30,
+  local menu = WarGameMenu(panel(1), 152, 180)
+ 
+  menu:addFullButton("~!OK", "o", 12, menu:getHeight() - 30,
     function()
       preferences.FogOfWar = GetFogOfWar()
       preferences.ShowCommandKey = UI.ButtonPanel.ShowCommandKey
@@ -97,8 +97,9 @@ function RunPreferencesMenu()
       SavePreferences()
       menu:stop()
     end)
-  
-  menu:addLabel("Preferences", 64, 5)
+    
+  local titleLabel = Label("Preferences")
+  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
 
   -- fog of war
   local fog = {}
@@ -115,7 +116,7 @@ function RunPreferencesMenu()
 
   -- Command keys
   local ckey = {}
-  ckey = menu:addCheckBox("Show cmd keys", menu:getWidth() / 2 - 8, 20 + 18 * 0,
+  ckey = menu:addCheckBox("Show cmd keys", menu:getWidth() / 2, 20 + 18 * 0,
     function() UI.ButtonPanel.ShowCommandKey = ckey:isMarked() end)
   ckey:setMarked(UI.ButtonPanel.ShowCommandKey)
 
@@ -139,14 +140,14 @@ function RunPreferencesMenu()
   else
     menu:addLabel("Game Speed", 8, 20 + 18 * 0.5, Fonts["game"], false)
     local gamespeed = {}
-    gamespeed = menu:addSlider(15, 75, 104, 9, 16, 20 + 18 * 1.0,
+    gamespeed = menu:addSlider(15, 75, menu:getWidth() - 16 * 2, 9, 16, 20 + 18 * 1.0,
       function() SetGameSpeed(gamespeed:getValue()) end)
     gamespeed:setValue(GetGameSpeed())
-    menu:addLabel("slow", 17, 20 + (18 * 1.5) + 3, Fonts["small"], false)
+    menu:addLabel("slow", 17, 20 + (18 * 1.5), Fonts["small"], false)
     local l = Label("fast")
     l:setFont(Fonts["small"])
     l:adjustSize()
-    menu:add(l, 115 - l:getWidth(), 20 + (18 * 1.5) + 3)
+    menu:add(l, menu:getWidth() - l:getWidth() - 17, 20 + (18 * 1.5))
   end
 
   local b = menu:addCheckBox("Fullscreen", 8, 20 + 18 * 2.0,
@@ -188,9 +189,50 @@ function RunPreferencesMenu()
     end)
   b:setMarked(preferences.ShowOrders)
 
-  menu:addLabel("Max Selection", 8, 20 + 18 * 3.5, Fonts["game"], false)
+  local sightBlocking = menu:addCheckBox(_("Block sight in dungeons"), 8, 20 + 18 * 3.0 + 5, function()end)
+  sightBlocking:setMarked(preferences.DungeonSightBlocking)
+  sightBlocking:setActionCallback(
+    function()
+        preferences.DungeonSightBlocking = sightBlocking:isMarked()
+        if GameSettings.Inside then
+          if preferences.DungeonSightBlocking then
+            SetFieldOfViewType("shadow-casting")
+          else
+            SetFieldOfViewType("simple-radial")
+          end
+        end
+        SavePreferences()
+  end)
+
+  menu:addLabel("Fog of war type:", 8, 20 + 18 * 4.0, Fonts["game"], false)
+  local fogOfWarTypes    = {"legacy", "enhanced"}
+  local fogOfWarTypeList = {_("legacy"), _("enhanced")}
+  local fogOfWarType = menu:addDropDown(fogOfWarTypeList, 8, 20 + 18 * 4.5, function(dd)end)
+  fogOfWarType:setSelected(GetFogOfWarType())
+  fogOfWarType:setActionCallback(
+    function()
+      preferences.FogOfWarType = fogOfWarTypes[fogOfWarType:getSelected() + 1]
+      SetFogOfWarType(preferences.FogOfWarType)
+      if (preferences.FogOfWarType == "legacy" and GameSettings.Inside) then -- legacy fog doesn't work with shadow caster fov
+        preferences.DungeonSightBlocking = false;
+        sightBlocking:setMarked(preferences.DungeonSightBlocking)
+      end
+      SavePreferences()
+  end)
+  fogOfWarType:setSize(50, fogOfWarType:getHeight())
+
+  local fowBilinear = menu:addCheckBox(_("Bilinear int."), menu:getWidth() / 2, 20 + 18 * 4.5, function()end)
+  fowBilinear:setMarked(GetIsFogOfWarBilinear())
+  fowBilinear:setActionCallback(
+    function()
+        preferences.FogOfWarBilinear = fowBilinear:isMarked()
+        SetFogOfWarBilinear(preferences.FogOfWarBilinear)
+        SavePreferences()
+  end)
+
+  menu:addLabel("Max Selection", 8, 20 + 18 * 5.5, Fonts["game"], false)
   local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
-  maxselection = menu:addDropDown(maxselections, 8, 20 + 18 * 4.0,
+  maxselection = menu:addDropDown(maxselections, 8, 20 + 18 * 6.0,
     function(dd)
 	  local selected = maxselections[maxselection:getSelected() + 1]
 	  local count = tonumber(string.gmatch(selected, "%d+")())
@@ -205,13 +247,13 @@ function RunPreferencesMenu()
   	  break
   	end
   end
-  maxselection:setSize(50, maxselection:getHeight())
+  maxselection:setSize(60, maxselection:getHeight())
 
   if GetShaderNames then
     local shaderNames = GetShaderNames()
     if #shaderNames > 0 then
-       menu:addLabel(_("Shader"), menu:getWidth() / 2, 20 + 18 * 3.5, Fonts["game"], false)
-       local shaderName = menu:addDropDown(shaderNames, 8 + 75, 20 + 18 * 4.0, function(dd) end)
+       menu:addLabel(_("Shader"), menu:getWidth() / 2 + 5, 20 + 18 * 5.5, Fonts["game"], false)
+       local shaderName = menu:addDropDown(shaderNames, 8 + 75, 20 + 18 * 6.0, function(dd) end)
        local function getCurrentShaderIndex()
           local currentShader = GetShader()
           for idx,name in pairs(shaderNames) do
@@ -228,15 +270,17 @@ function RunPreferencesMenu()
                 wc1.preferences.VideoShader = newShader
              end
        end)
-       shaderName:setSize(50, shaderName:getHeight())
+       shaderName:setSize(60, shaderName:getHeight())
     end
- end
+  end
 
- if (GameCycle > 0) then
-  menu:run(false)
- else
-   menu:run()
- end
+
+
+  if (GameCycle > 0) then
+    menu:run(false)
+  else
+    menu:run()
+  end
 end
 
 function SetVideoSize(width, height)
