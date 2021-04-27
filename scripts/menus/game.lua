@@ -1,12 +1,16 @@
-function WarGameMenu(background)
-  local menu = MenuScreen()
+function WarGameMenu(background, width, height)
+  width = width or 152 -- default values
+  height = height or 136 -- default values
 
+  local menu = MenuScreen()
+  
   if (background == nil) then
     menu:setOpaque(true)
     menu:setBaseColor(dark)
   else
     local bgg = CGraphic:New(background)
     bgg:Load()
+    bgg:Resize(width, height)
     local bg = ImageWidget(bgg)
     menu:add(bg, 0, 0)
   end
@@ -22,7 +26,7 @@ function WarGameMenu(background)
     end
   end
 
-  menu:resize(152, 136)
+  menu:resize(width, height)
   menu:setBorderSize(0)
   menu:setDrawMenusUnder(true)
 
