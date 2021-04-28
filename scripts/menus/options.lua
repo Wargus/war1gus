@@ -90,7 +90,7 @@ end
 function RunPreferencesMenu()
   local menu = WarGameMenu(panel(1), 152, 180)
  
-  menu:addFullButton("~!OK", "o", 12, menu:getHeight() - 30,
+  menu:addFullButton("~!OK", "o", 12, menu:getHeight() - 8 - 13,
     function()
       preferences.FogOfWar = GetFogOfWar()
       preferences.ShowCommandKey = UI.ButtonPanel.ShowCommandKey
@@ -190,7 +190,19 @@ function RunPreferencesMenu()
     end)
   b:setMarked(preferences.ShowOrders)
 
-  local sightBlocking = menu:addCheckBox(_("Block sight in dungeons"), 8, 20 + 18 * 3.0 + 5, function()end)
+  local simplifiedAutoTargeting
+  if (not IsNetworkGame()) then
+     simplifiedAutoTargeting = menu:addCheckBox(_("Simplified auto targeting"), 8, 20 + 18 * 3.0 + 5, function()end)
+     simplifiedAutoTargeting:setMarked(Preference.SimplifiedAutoTargeting)
+     simplifiedAutoTargeting:setActionCallback(
+       function()
+          Preference.SimplifiedAutoTargeting = simplifiedAutoTargeting:isMarked()
+          preferences.SimplifiedAutoTargeting = Preference.SimplifiedAutoTargeting
+          SavePreferences()
+     end)
+  end
+
+  local sightBlocking = menu:addCheckBox(_("Block sight in dungeons"), 8, 20 + 18 * 3.5 + 5, function()end)
   sightBlocking:setMarked(preferences.DungeonSightBlocking)
   sightBlocking:setActionCallback(
     function()
@@ -205,10 +217,10 @@ function RunPreferencesMenu()
         SavePreferences()
   end)
 
-  menu:addLabel("Fog of war type:", 8, 20 + 18 * 4.0, Fonts["game"], false)
+  menu:addLabel("Fog of war type:", 8, 20 + 18 * 4.5, Fonts["game"], false)
   local fogOfWarTypes    = {"legacy", "enhanced"}
   local fogOfWarTypeList = {_("legacy"), _("enhanced")}
-  local fogOfWarType = menu:addDropDown(fogOfWarTypeList, 8, 20 + 18 * 4.5, function(dd)end)
+  local fogOfWarType = menu:addDropDown(fogOfWarTypeList, 8, 20 + 18 * 5.0, function(dd)end)
   fogOfWarType:setSelected(GetFogOfWarType())
   fogOfWarType:setActionCallback(
     function()
@@ -222,7 +234,7 @@ function RunPreferencesMenu()
   end)
   fogOfWarType:setSize(60, fogOfWarType:getHeight())
 
-  local fowBilinear = menu:addCheckBox(_("Bilinear int."), menu:getWidth() / 2, 20 + 18 * 4.5, function()end)
+  local fowBilinear = menu:addCheckBox(_("Bilinear int."), menu:getWidth() / 2, 20 + 18 * 5.0, function()end)
   fowBilinear:setMarked(GetIsFogOfWarBilinear())
   fowBilinear:setActionCallback(
     function()
@@ -231,9 +243,9 @@ function RunPreferencesMenu()
         SavePreferences()
   end)
 
-  menu:addLabel("Max Selection", 8, 20 + 18 * 5.5, Fonts["game"], false)
+  menu:addLabel("Max Selection", 8, 20 + 18 * 6.0, Fonts["game"], false)
   local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
-  maxselection = menu:addDropDown(maxselections, 8, 20 + 18 * 6.0,
+  maxselection = menu:addDropDown(maxselections, 8, 20 + 18 * 6.5,
     function(dd)
 	  local selected = maxselections[maxselection:getSelected() + 1]
 	  local count = tonumber(string.gmatch(selected, "%d+")())
@@ -253,8 +265,8 @@ function RunPreferencesMenu()
   if GetShaderNames then
     local shaderNames = GetShaderNames()
     if #shaderNames > 0 then
-       menu:addLabel(_("Shader"), menu:getWidth() / 2 + 5, 20 + 18 * 5.5, Fonts["game"], false)
-       local shaderName = menu:addDropDown(shaderNames, 8 + 75, 20 + 18 * 6.0, function(dd) end)
+       menu:addLabel(_("Shader"), menu:getWidth() / 2 + 5, 20 + 18 * 6.0, Fonts["game"], false)
+       local shaderName = menu:addDropDown(shaderNames, 8 + 75, 20 + 18 * 6.5, function(dd) end)
        local function getCurrentShaderIndex()
           local currentShader = GetShader()
           for idx,name in pairs(shaderNames) do

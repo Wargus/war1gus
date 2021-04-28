@@ -312,6 +312,7 @@ DefaultPreference("ShowDamage", true)
 DefaultPreference("ShowOrders", true)
 DefaultPreference("OnlineServer", "network.stratagus.de")
 DefaultPreference("OnlinePort", 6112)
+DefaultPreference("SimplifiedAutoTargeting", true)
 DefaultPreference("FogOfWarType", "enhanced")      -- "enhanced" or "legacy". Legacy type of FOW doesn't work with shadow casting FOV.
 DefaultPreference("FogOfWarBilinear", false)       -- Enable/Disable bilinear filtration for fog of war
 DefaultPreference("DungeonSightBlocking", true)    -- Enable/Disable sight blocking in the dungeons
@@ -350,6 +351,7 @@ if preferences.ShowOrders == true then
 else
    Preference.ShowOrders = 0
 end
+Preference.SimplifiedAutoTargeting = preferences.SimplifiedAutoTargeting
 SetFieldOfViewType(preferences.FieldOfViewType)
 SetFogOfWarType(preferences.FogOfWarType)
 SetFogOfWarBilinear(preferences.FogOfWarBilinear)
