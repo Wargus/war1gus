@@ -220,7 +220,7 @@ function RunPreferencesMenu()
       end
       SavePreferences()
   end)
-  fogOfWarType:setSize(50, fogOfWarType:getHeight())
+  fogOfWarType:setSize(60, fogOfWarType:getHeight())
 
   local fowBilinear = menu:addCheckBox(_("Bilinear int."), menu:getWidth() / 2, 20 + 18 * 4.5, function()end)
   fowBilinear:setMarked(GetIsFogOfWarBilinear())

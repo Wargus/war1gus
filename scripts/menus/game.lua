@@ -40,8 +40,9 @@ end
 function RunGameMenu()
   local menu = WarGameMenu(panel(1))
 
-  menu:addLabel("Game Menu", 64, 5)
-
+  local titleLabel = Label("Game Menu")
+  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
+  
   menu:addHalfButton("Save (~<F11~>)", "f11", 12, 20,
     function() RunSaveMenu() end)
   menu:addHalfButton("Load (~<F12~>)", "f12", 12 + 6 + 60, 20,

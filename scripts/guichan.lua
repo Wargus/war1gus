@@ -282,6 +282,12 @@ function WarMenu(title, background, resize)
   local bgg
 
   menu = MenuScreen()
+  
+  function menu:resize(w, h)
+    menu:setSize(w, h)
+    menu:setPosition((Video.Width - menu:getWidth()) / 2,
+      (Video.Height - menu:getHeight()) / 2)
+  end
 
   if background == nil then
     bg = backgroundWidget
@@ -290,6 +296,9 @@ function WarMenu(title, background, resize)
     bgg:Load()
     if (resize == nil or resize == true) then
       bgg:Resize(Video.Width, Video.Height)
+    elseif type(resize) == "table" then
+      bgg:Resize(resize[1], resize[2])
+      menu:resize(resize[1], resize[2])
     end
     bg = ImageWidget(bgg)
   end

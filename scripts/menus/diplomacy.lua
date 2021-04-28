@@ -1,8 +1,8 @@
 function RunDiplomacyMenu()
-  local menu = WarGameMenu(panel(5))
-  menu:resize(352 / 2, 352 / 2)
+  local menu = WarGameMenu(panel(1), 352 / 2, 352 / 2)
 
-  menu:addLabel("Diplomacy", 88, 5)
+  local titleLabel = Label("Diplomacy")
+  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
 
   menu:addLabel("Allied", 68, 15, Fonts["game"])
   menu:addLabel("Enemy", 98, 15, Fonts["game"])
@@ -54,7 +54,7 @@ function RunDiplomacyMenu()
     end
   end
 
-  menu:addHalfButton("~!OK", "o", 33, 176 - 20,
+  menu:addHalfButton("~!OK", "o", 9, 176 - 20,
     function()
       for j=1,table.getn(allied) do
         local i = allied[j].index
@@ -104,7 +104,7 @@ function RunDiplomacyMenu()
       end
       menu:stop()
     end)
-  menu:addHalfButton("~!Cancel", "c", 93, 176 - 20, function() menu:stop() end)
+  menu:addHalfButton("~!Cancel", "c", menu:getWidth() - 60 - 9, 176 - 20, function() menu:stop() end)
 
   menu:run(false)
 end

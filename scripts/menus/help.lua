@@ -57,8 +57,7 @@ local keystrokes = {
 }
 
 function RunKeystrokeHelpMenu()
-  local menu = WarGameMenu(panel(5))
-  menu:resize(176, 176)
+  local menu = WarGameMenu(panel(1), 176, 176)
 
   local c = Container()
   c:setOpaque(false)
