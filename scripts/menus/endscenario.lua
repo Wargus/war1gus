@@ -4,7 +4,7 @@ function RunEndScenarioMenu()
   local titleLabel = Label("End Scenario")
   menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
 
-local b = menu:addFullButton("~!Restart Scenario", "r", 12, 20 + (18 * 0),
+  local b = menu:addFullButton("~!Restart Scenario", "r", 12, 20 + (18 * 0),
     function() RunRestartConfirmMenu() end)
   if (IsNetworkGame()) then
     b:setEnabled(false)
@@ -26,7 +26,7 @@ function RunRestartConfirmMenu()
   local title =  { "Are you sure you",
                    "want to restart", 
                    "the scenario?"    }
-  for row, value in pairs(title) do
+  for row, value in ipairs(title) do
     local label = Label(value)
     menu:add(label, menu:getWidth() / 2 - label:getWidth() / 2, 5 + (12 * (row -1)))
   end
@@ -44,7 +44,7 @@ function RunSurrenderConfirmMenu()
   local title =  { "Are you sure you",
                    "want to surrender", 
                    "to your enemies?"   }
-  for row, value in pairs(title) do
+  for row, value in ipairs(title) do
     local label = Label(value)
     menu:add(label, menu:getWidth() / 2 - label:getWidth() / 2, 5 + (12 * (row -1)))
   end
@@ -62,7 +62,7 @@ function RunQuitToMenuConfirmMenu()
   local title =  { "Are you sure you",
                    "want to quit to", 
                    "the main menu?"   }
-  for row, value in pairs(title) do
+  for row, value in ipairs(title) do
     local label = Label(value)
     menu:add(label, menu:getWidth() / 2 - label:getWidth() / 2, 5 + (12 * (row -1)))
   end
@@ -80,7 +80,7 @@ function RunExitConfirmMenu()
   local title =  { "Are you sure you",
                    "want to exit", 
                    "Stratagus?"       }
-  for row, value in pairs(title) do
+  for row, value in ipairs(title) do
     local label = Label(value)
     menu:add(label, menu:getWidth() / 2 - label:getWidth() / 2, 5 + (12 * (row -1)))
   end
