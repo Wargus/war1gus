@@ -113,7 +113,6 @@ local tips = {
 
 function RunTipsMenu()
   local menu = WarGameMenu(panel(1))
-  menu:resize(152, 121)
 
   menu:addLabel("Tips", 72, 5)
 
@@ -147,16 +146,16 @@ function RunTipsMenu()
   l:updateCaption()
 
   local showtips = {}
-  showtips = menu:addCheckBox("Show tips at startup", 7, 128 - 37,
+  showtips = menu:addCheckBox("Show tips at startup", 7, menu:getHeight() - 37,
     function()
       preferences.ShowTips = showtips:isMarked()
       SavePreferences()
     end)
   showtips:setMarked(preferences.ShowTips)
 
-  menu:addHalfButton("~!Next Tip", "n", 2, 128 - 20,
+  menu:addHalfButton("~!Next Tip", "n", 9, menu:getHeight() - 20,
     function() l:nextTip(); l:updateCaption() end)
-  menu:addHalfButton("~!Close", "c", 79, 128 - 20,
+  menu:addHalfButton("~!Close", "c", menu:getWidth() - 60 - 9, menu:getHeight() - 20,
     function() l:nextTip(); menu:stop() end)
 
   menu:run(false)
