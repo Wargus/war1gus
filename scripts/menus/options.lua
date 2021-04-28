@@ -64,7 +64,7 @@ function AddSoundOptions(menu, offx, offy, centerx, bottom)
      "Music",
      3.2)
  
-  b = menu:addFullButton("~!OK", "o", centerx, bottom - 5 - 13,
+  b = menu:addFullButton("~!OK", "o", centerx, menu:getHeight() - 8 - 13,
     function()
       preferences.EffectsVolume = GetEffectsVolume()
       preferences.EffectsEnabled = IsEffectsEnabled()
@@ -379,4 +379,22 @@ function RunGameOptionsMenu()
   else
     menu:run()
   end
+end
+
+function RunOptionsSubMenu()
+  local menu = WarMenu()
+  local offx = (Video.Width - 320) / 2
+  local offy = (Video.Height - 200) / 2
+
+  menu:addFullButton("Sound (~<F7~>)", "f7", offx + 96, offy + 52 + 18*2,
+    function() RunGameSoundOptionsMenu() end)
+  menu:addFullButton("Preferences (~<F8~>)", "f8", offx + 96, offy + 52 + 18*3,
+    function() RunPreferencesMenu() end)
+  menu:addFullButton("Video (~<F9~>)", "f9", offx + 96, offy + 52 + 18*4,
+    function() RunOptionsMenu() end)
+  
+  menu:addFullButton("~!Previous Menu", "p", offx + 96, offy + 52 + 18*7,
+    function() menu:stop() end)
+
+  return menu:run()
 end
