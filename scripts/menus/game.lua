@@ -8,7 +8,7 @@ function WarGameMenu(background, width, height)
     menu:setOpaque(true)
     menu:setBaseColor(dark)
   else
-    local bgg = CGraphic:New(background)
+    local bgg = CGraphic:ForceNew(background)
     bgg:Load()
     bgg:Resize(width, height)
     local bg = ImageWidget(bgg)
@@ -39,7 +39,7 @@ end
 
 function RunGameMenu()
   local menu = WarGameMenu(panel(1))
-
+  
   local titleLabel = Label("Game Menu")
   menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
   

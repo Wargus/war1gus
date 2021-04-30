@@ -292,7 +292,7 @@ function WarMenu(title, background, resize)
   if background == nil then
     bg = backgroundWidget
   else
-    bgg = CGraphic:New(background)
+    bgg = CGraphic:ForceNew(background)
     bgg:Load()
     if (resize == nil or resize == true) then
       bgg:Resize(Video.Width, Video.Height)

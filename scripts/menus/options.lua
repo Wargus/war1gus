@@ -316,9 +316,9 @@ function BuildOptionsMenu()
   local b
   local resolution
   local maxselection
-  local top = 120 * Video.Height / 200
+  local top = 70
 
-  menu:addLabel("Video Resolution", offx + 8, offy + top, Fonts["game"], false)
+  menu:addLabel("Video Resolution", offx, offy + top, Fonts["game"], false)
   local resolutions = {
      "320x200 (1x)",
      "400x250 (1.25x)",
@@ -331,7 +331,7 @@ function BuildOptionsMenu()
      "640x360 (2x wide)",
      "960x540 (3x wide)"
   }
-  resolution = menu:addDropDown(resolutions, offx + 8 + 125, offy + top,
+  resolution = menu:addDropDown(resolutions, offx + 125, offy + top,
     function(dd)
     local selected = resolutions[resolution:getSelected() + 1]
     for x, y in string.gmatch(selected, "(%d+)x(%d+)") do
@@ -354,7 +354,7 @@ function BuildOptionsMenu()
     end
   end
 
-  menu:addHalfButton("~!OK", "o", offx + 61, offy + top + 10 * 3,
+  menu:addHalfButton("~!OK", "o", Video.Width / 2 - 20, offy + top + 100,
     function()
 	  menu:stop()
 	end)
@@ -367,7 +367,8 @@ end
 
 function RunGameOptionsMenu()
   local menu = WarGameMenu(panel(1))
-
+  menu:setDrawMenusUnder(true)
+  
   local titleLabel = Label("Game Options")
   menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
   menu:addFullButton("Sound (~<F7~>)", "f7", 12, 20 + 18*0,
