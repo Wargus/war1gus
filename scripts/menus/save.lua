@@ -20,8 +20,7 @@ end
 
 function RunSaveMenu()
   local menu = WarGameMenu(panel(1), 192, 128)
-  menu:setDrawMenusUnder(true)
-
+  
   local titleLabel = Label("Save Game")
   menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
 
