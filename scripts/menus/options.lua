@@ -308,7 +308,7 @@ function SetVideoSize(width, height)
   SavePreferences()
 end
 
-function BuildOptionsMenu()
+function BuildVideoOptionsMenu()
   local menu = WarMenu()
   local offx = (Video.Width - 176) / 2
   local offy = (Video.Height - 176) / 2
@@ -338,7 +338,7 @@ function BuildOptionsMenu()
       SetVideoSize(tonumber(x), tonumber(y))
     end
     menu:stop()
-    RunOptionsMenu()
+    RunVideoOptionsMenu()
 	end)
   for idx,str in ipairs(resolutions) do
     local found = false
@@ -361,8 +361,8 @@ function BuildOptionsMenu()
   return menu:run()
 end
 
-function RunOptionsMenu()
-  BuildOptionsMenu()
+function RunVideoOptionsMenu()
+  BuildVideoOptionsMenu()
 end
 
 function RunGameOptionsMenu()
@@ -382,7 +382,7 @@ function RunGameOptionsMenu()
       function() RunDiplomacyMenu() end)
   else
     menu:addFullButton(_("Video (~<F9~>)"), "f9", 12, 20 + 18*2,
-      function() RunOptionsMenu(); menu:stopAll(1) end)
+      function() RunVideoOptionsMenu(); menu:stopAll(1) end)
   end  
   menu:addFullButton("Previous (~<Esc~>)", "escape", 12, 144 - 30,
     function() menu:stop() end)
@@ -404,7 +404,7 @@ function RunOptionsSubMenu()
   menu:addFullButton("Preferences (~<F8~>)", "f8", offx + 96, offy + 52 + 18*3,
     function() RunPreferencesMenu() end)
   menu:addFullButton("Video (~<F9~>)", "f9", offx + 96, offy + 52 + 18*4,
-    function() RunOptionsMenu() end)
+    function() RunVideoOptionsMenu() end)
   
   menu:addFullButton("~!Previous Menu", "p", offx + 96, offy + 52 + 18*7,
     function() menu:stop() end)
