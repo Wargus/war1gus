@@ -485,10 +485,14 @@ function RunMultiPlayerGameMenu(s)
         wc1.preferences.PlayerName = nick:getText()
         SavePreferences()
       end
-      OnlineService.setup({ ShowError = ErrorMenu })
-      OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
-      OnlineService.login(nick:getText(), pass:getText())
-      RunOnlineMenu()
+      if string.len(pass:getText()) == 0 then
+         ErrorMenu("Please enter your password")
+      else
+         OnlineService.setup({ ShowError = ErrorMenu })
+         OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
+         OnlineService.login(nick:getText(), pass:getText())
+         RunOnlineMenu()
+      end
   end)
   local signupLabel = menu:addLabel(
      _("Sign up"),
@@ -501,10 +505,14 @@ function RunMultiPlayerGameMenu(s)
            wc1.preferences.PlayerName = nick:getText()
            SavePreferences()
         end
-        OnlineService.setup({ ShowError = ErrorMenu })
-        OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
-        OnlineService.signup(nick:getText(), pass:getText())
-        RunOnlineMenu()
+        if string.len(pass:getText()) == 0 then
+           ErrorMenu("Please choose a password for the new account")
+        else
+           OnlineService.setup({ ShowError = ErrorMenu })
+           OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
+           OnlineService.signup(nick:getText(), pass:getText())
+           RunOnlineMenu()
+        end
      end
   end
   local signUpListener = LuaActionListener(signUpCb)
@@ -785,6 +793,8 @@ function RunOnlineMenu()
            elseif result ~= "connecting" then
               if lastError then
                  ErrorMenu(lastError)
+              else
+                 ErrorMenu(result)
               end
               menu:stop()
            end
