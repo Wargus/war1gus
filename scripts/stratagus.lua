@@ -310,7 +310,7 @@ DefaultPreference("MultiColoredCampaigns", true)
 DefaultPreference("ShowButtonPopups", true)
 DefaultPreference("ShowDamage", true)
 DefaultPreference("ShowOrders", true)
-DefaultPreference("OnlineServer", "pvpgn.pro")
+DefaultPreference("OnlineServer", "network.stratagus.de")
 DefaultPreference("OnlinePort", 6112)
 DefaultPreference("SimplifiedAutoTargeting", true)
 DefaultPreference("FogOfWarType", "enhanced")      -- "enhanced" or "legacy". Legacy type of FOW doesn't work with shadow casting FOV.
