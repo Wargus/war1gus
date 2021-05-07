@@ -118,6 +118,8 @@ SetRevealAttacker(true)
 --SetRevelationType("buildings-only")
 SetRevelationType("all-units")
 
+SetFogOfWarBlur(2.0, 1.5, 3) -- radiuses for simple and bilinear FOW postprocessing, number of blur iterations
+
 -------------------------------------------------------------------------------
 
 --  If you prefer fighters are attacking by right clicking empty space
@@ -178,7 +180,7 @@ SetHoldClickDelay(1000)
 
 --  Choose your default fog of war state (enabled #t/disabled #f).
 --    disabled is a C&C like fog of war.
-SetFogOfWar(false)
+SetFogOfWar(true)
 -- SetFogOfWar(false)
 
 SetTileSize(16, 16)
@@ -310,6 +312,11 @@ DefaultPreference("ShowDamage", true)
 DefaultPreference("ShowOrders", true)
 DefaultPreference("OnlineServer", "network.stratagus.de")
 DefaultPreference("OnlinePort", 6112)
+DefaultPreference("SimplifiedAutoTargeting", true)
+DefaultPreference("FogOfWarType", "enhanced")      -- "enhanced" or "legacy". Legacy type of FOW doesn't work with shadow casting FOV.
+DefaultPreference("FogOfWarBilinear", false)       -- Enable/Disable bilinear filtration for fog of war
+DefaultPreference("DungeonSightBlocking", true)    -- Enable/Disable sight blocking in the dungeons
+DefaultPreference("FieldOfViewType", "simple-radial")    -- default field of view type (possibe values: "simple-radial" and "shadow-casting" )
 
 wc1.preferences = preferences
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
@@ -344,6 +351,10 @@ if preferences.ShowOrders == true then
 else
    Preference.ShowOrders = 0
 end
+Preference.SimplifiedAutoTargeting = preferences.SimplifiedAutoTargeting
+SetFieldOfViewType(preferences.FieldOfViewType)
+SetFogOfWarType(preferences.FogOfWarType)
+SetFogOfWarBilinear(preferences.FogOfWarBilinear)
 
 if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") and file_exists("videos", "cave.ogv") and file_exists("videos", "title.ogv") then
    SetTitleScreens(

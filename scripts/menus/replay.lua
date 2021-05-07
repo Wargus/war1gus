@@ -1,7 +1,5 @@
 function RunReplayGameMenu()
-  local menu = WarMenu(nil, panel(5), false)
-  menu:setSize(176, 176)
-  menu:setPosition((Video.Width - 176) / 2, (Video.Height - 176) / 2)
+  local menu = WarMenu(nil, panel(1), {176, 176})
   menu:setDrawMenusUnder(true)
 
   menu:addLabel("Select Game", 88, 5)
@@ -28,12 +26,12 @@ function RunReplayGameMenu()
 end
 
 function RunSaveReplayMenu()
-  local menu = WarGameMenu(panel(3))
-  menu:setSize(192, 128)
-  menu:setPosition((Video.Width - 192) / 2, (Video.Height - 128) / 2)
+  local menu = WarGameMenu(panel(1), 192, 128)
 
-  menu:addLabel("Save Replay", 96, 5)
-
+--  menu:setPosition((Video.Width - 192) / 2, (Video.Height - 128) / 2)
+  local titleLabel = Label("Save Replay")
+  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
+  
   local t = menu:addTextInputField("game.log",
     (192 - 150 - 9) / 2, 5 + 18, 159)
 

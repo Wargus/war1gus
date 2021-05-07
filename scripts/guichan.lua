@@ -282,14 +282,23 @@ function WarMenu(title, background, resize)
   local bgg
 
   menu = MenuScreen()
+  
+  function menu:resize(w, h)
+    menu:setSize(w, h)
+    menu:setPosition((Video.Width - menu:getWidth()) / 2,
+      (Video.Height - menu:getHeight()) / 2)
+  end
 
   if background == nil then
     bg = backgroundWidget
   else
-    bgg = CGraphic:New(background)
+    bgg = CGraphic:ForceNew(background)
     bgg:Load()
     if (resize == nil or resize == true) then
       bgg:Resize(Video.Width, Video.Height)
+    elseif type(resize) == "table" then
+      bgg:Resize(resize[1], resize[2])
+      menu:resize(resize[1], resize[2])
     end
     bg = ImageWidget(bgg)
   end
@@ -328,6 +337,8 @@ function InitGameSettings()
   GameSettings.GameType = -1
   GameSettings.NoFogOfWar = false
   GameSettings.RevealMap = 0
+  SetFieldOfViewType(preferences.FieldOfViewType) -- Reload Default FOV settings because some maps|tilesets could change it
+  SetFogOfWarType(preferences.FogOfWarType) -- Reload default FOW type because changing fov type may cause to change it too
 end
 InitGameSettings()
 
@@ -564,7 +575,7 @@ function BuildProgramStartMenu()
 
   menu:addFullButton("~!Single Player Game", "s", offx + 96, offy + 52 + 17*2, function() RunSinglePlayerSubMenu(); menu:stop(1) end)
   menu:addFullButton("~!Multi Player Game", "m", offx + 96, offy + 52 + 17*3, function() RunMultiPlayerGameMenu(); menu:stop(1) end)
-  menu:addFullButton("~!Options", "o", offx + 96, offy + 52 + 17*4, function() RunGameOptionsMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Options", "o", offx + 96, offy + 52 + 17*4, function() RunOptionsSubMenu(); menu:stop(1) end)
   menu:addFullButton("~!Editor", "e", offx + 96, offy + 52 + 17*5, function() RunEditorMenu(); menu:stop(1) end)
   menu:addFullButton("S~!how Credits", "h", offx + 96, offy + 52 + 17*6, RunShowCreditsMenu)
   menu:addFullButton("E~!xit Program", "x", offx + 96, offy + 52 + 17*7, function() menu:stop() end)

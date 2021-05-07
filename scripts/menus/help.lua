@@ -1,7 +1,9 @@
 function RunHelpMenu()
   local menu = WarGameMenu(panel(1))
 
-  menu:addLabel("Help Menu", 64, 5)
+  local titleLabel = Label("Help Menu")
+  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
+
   menu:addFullButton("Keystroke ~!Help", "h", 12, 20 + 18*0,
     function() RunKeystrokeHelpMenu() end)
   menu:addFullButton("~!Tips", "t", 12, 20 + 18*1,
@@ -55,8 +57,7 @@ local keystrokes = {
 }
 
 function RunKeystrokeHelpMenu()
-  local menu = WarGameMenu(panel(5))
-  menu:resize(176, 176)
+  local menu = WarGameMenu(panel(1), 176, 176)
 
   local c = Container()
   c:setOpaque(false)
@@ -112,7 +113,6 @@ local tips = {
 
 function RunTipsMenu()
   local menu = WarGameMenu(panel(1))
-  menu:resize(152, 121)
 
   menu:addLabel("Tips", 72, 5)
 
@@ -146,16 +146,16 @@ function RunTipsMenu()
   l:updateCaption()
 
   local showtips = {}
-  showtips = menu:addCheckBox("Show tips at startup", 7, 128 - 37,
+  showtips = menu:addCheckBox("Show tips at startup", 7, menu:getHeight() - 37,
     function()
       preferences.ShowTips = showtips:isMarked()
       SavePreferences()
     end)
   showtips:setMarked(preferences.ShowTips)
 
-  menu:addHalfButton("~!Next Tip", "n", 2, 128 - 20,
+  menu:addHalfButton("~!Next Tip", "n", 9, menu:getHeight() - 20,
     function() l:nextTip(); l:updateCaption() end)
-  menu:addHalfButton("~!Close", "c", 79, 128 - 20,
+  menu:addHalfButton("~!Close", "c", menu:getWidth() - 60 - 9, menu:getHeight() - 20,
     function() l:nextTip(); menu:stop() end)
 
   menu:run(false)
