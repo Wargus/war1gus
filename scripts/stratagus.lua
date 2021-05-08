@@ -319,6 +319,15 @@ DefaultPreference("DungeonSightBlocking", true)    -- Enable/Disable sight block
 DefaultPreference("FieldOfViewType", "simple-radial")    -- default field of view type (possibe values: "simple-radial" and "shadow-casting" )
 
 wc1.preferences = preferences
+
+-- TEMP:
+preferences.AllowMultipleTownHalls = true
+preferences.AllowTownHallUpgrade = false
+preferences.FogOfWarType = "legacy"
+preferences.FieldOfViewType = "simple-radial"
+preferences.SimplifiedAutoTargeting = true
+--
+
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
 local pixelScale = 1.2
 if preferences.VideoWidth < 640 then
@@ -410,5 +419,7 @@ Load("scripts/ai.lua")
 Load("scripts/cheats.lua")
 Load("scripts/colors.lua")
 Load("scripts/commands.lua")
+
+Load("scripts/balancing.lua")
 
 print("... ready!\n")
