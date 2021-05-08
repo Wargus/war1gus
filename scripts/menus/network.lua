@@ -501,7 +501,7 @@ function RunMultiPlayerGameMenu(s)
   local signUpCb = function(evt, btn, cnt)
      if evt == "mouseClick" then
 
-        local signUpMenu = WarMenuWithLayout(nil, panel(1), VBox({
+        local signUpMenu = WarMenuWithLayout(panel(1), VBox({
               LFiller(),
 
               VBox({

@@ -41,7 +41,8 @@ end
 Box = class(Element,
             function(instance, children)
                Element.init(instance)
-               instance.padding = 0
+               instance.paddingX = 0
+               instance.paddingY = 0
                instance.children = children
                for i,child in ipairs(children) do
                   -- convenience...
@@ -53,7 +54,13 @@ Box = class(Element,
 )
 
 function Box:withPadding(p)
-   self.padding = p
+   if type(p) == "number" then
+      self.paddingX = p
+      self.paddingY = p
+   else
+      self.paddingX = p[1]
+      self.paddingY = p[2]
+   end
    return self
 end
 
@@ -87,7 +94,7 @@ function Box:calculateMinExtent()
       local cw = child:getWidth()
       if type(cw) == "number" then
          if horiz then
-            w = w + cw + self.padding
+            w = w + cw + self.paddingX
          else
             w = math.max(w, cw)
          end
@@ -97,26 +104,28 @@ function Box:calculateMinExtent()
          if horiz then
             h = math.max(h, ch)
          else
-            h = h + ch + self.padding
+            h = h + ch + self.paddingY
          end
       end
    end
    self.x = 0
    self.y = 0
-   self.width = w + (self.padding * 2)
-   self.height = h + (self.padding * 2)
-   -- print("Min: " .. self.width .. " x " .. self.height)
+   self.width = w + (self.paddingX * 2)
+   self.height = h + (self.paddingY * 2)
+   print("Min: " .. self.width .. " x " .. self.height)
 end
 
 function Box:layout()
-   -- print("XY: " .. self.x .. " - " .. self.y)
+   print("XY: " .. self.x .. " - " .. self.y)
    local horiz = self.direction == Box.DIRECTION_HORIZONTAL
 
-   local padding = self.padding
+   local padding
    local totalSpace
    if horiz then
+      padding = self.paddingX
       totalSpace = self.width - padding * 2
    else
+      padding = self.paddingY
       totalSpace = self.height - padding * 2
    end
 
@@ -150,14 +159,14 @@ function Box:layout()
       end
    end
 
-   local childW = self.width - padding * 2
-   local childH = self.height - padding * 2
+   local childW = self.width - self.paddingX * 2
+   local childH = self.height - self.paddingY * 2
    local expandingChildrenS = 0
    if expandingChildren > 0 then
       expandingChildrenS = availableSpace / expandingChildren
    end
-   local xOff = self.x + self.padding
-   local yOff = self.y + self.padding
+   local xOff = self.x + self.paddingX
+   local yOff = self.y + self.paddingY
 
    for i,child in ipairs(self.children) do
       local s
@@ -194,7 +203,7 @@ function Box:layout()
          end
       end
 
-      -- print(xOff, yOff, childW, childH)
+      print(xOff, yOff, childW, childH)
       child.x = xOff
       child.y = yOff
       child.width = childW
@@ -205,7 +214,7 @@ function Box:layout()
          yOff = yOff + childH + padding
       end
    end
-   -- print("done")
+   print("done")
 end
 
 function Box:addWidgetTo(container, sizeFromContainer)
@@ -214,7 +223,7 @@ function Box:addWidgetTo(container, sizeFromContainer)
       self.y = 0
       self.width = container:getWidth()
       self.height = container:getHeight()
-      -- print("startsize:" .. self.width .. "x" .. self.height .. "+" .. self.x .. "+" .. self.y)
+      print("startsize:" .. self.width .. "x" .. self.height .. "+" .. self.x .. "+" .. self.y)
    end
    self:layout()
    for i,child in ipairs(self.children) do
@@ -223,15 +232,15 @@ function Box:addWidgetTo(container, sizeFromContainer)
 end
 
 HBox = class(Box,
-             function(instance, fit, padding)
-                Box.init(instance, fit, padding)
+             function(instance, children)
+                Box.init(instance, children)
                 instance.direction = Box.DIRECTION_HORIZONTAL
              end
 )
 
 VBox = class(Box,
-             function(instance, fit, padding)
-                Box.init(instance, fit, padding)
+             function(instance, children)
+                Box.init(instance, children)
                 instance.direction = Box.DIRECTION_VERTICAL
              end
 )
@@ -372,6 +381,11 @@ function LSlider:getHeight()
    return nil
 end
 
+function LSlider:setValue(val)
+   self.s:setValue(val)
+   return self
+end
+
 function LSlider:addWidgetTo(container)
    self.s:setSize(self.width, self.height)
    container:add(self.s, self.x, self.y)
@@ -417,16 +431,23 @@ LCheckBox = class(Element,
 )
 
 function LCheckBox:getWidth()
+   print("cb" .. self.b:getWidth())
    return self.b:getWidth()
 end
 
 function LCheckBox:getHeight()
+   print("cb" .. self.b:getHeight())
    return self.b:getHeight()
 end
 
 function LCheckBox:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
    container:add(self.b, self.x, self.y)
+end
+
+function LCheckBox:setMarked(flag)
+   self.b:setMarked(flag)
+   return self
 end
 
 LTextInputField = class(Element,

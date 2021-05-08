@@ -617,7 +617,7 @@ Load("scripts/menus/results.lua")
 
 Load("scripts/lib/layouts.lua")
 
-function WarMenuWithLayout(title, background, box)
+function WarMenuWithLayout(background, box)
    box:calculateMinExtent()
    local menu = WarMenu(title, background, {box.width, box.height})
    menu:setSize(box.width, box.height)
