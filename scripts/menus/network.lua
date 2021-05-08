@@ -500,19 +500,59 @@ function RunMultiPlayerGameMenu(s)
      loginBtn:getY() + loginBtn:getHeight() / 4)
   local signUpCb = function(evt, btn, cnt)
      if evt == "mouseClick" then
-        if nick:getText() ~= GetLocalPlayerName() then
-           SetLocalPlayerName(nick:getText())
-           wc1.preferences.PlayerName = nick:getText()
-           SavePreferences()
-        end
-        if string.len(pass:getText()) == 0 then
-           ErrorMenu("Please choose a password for the new account")
-        else
-           OnlineService.setup({ ShowError = ErrorMenu })
-           OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
-           OnlineService.signup(nick:getText(), pass:getText())
-           RunOnlineMenu()
-        end
+
+        local vbox = VBox({
+              LFiller(),
+
+              VBox({
+                    LFiller(),
+                    LLabel("Choose a username and password to sign up to"),
+                    LLabel(wc1.preferences.OnlineServer, Fonts["large"], true),
+                    LLabel("Don't choose a password you are using elsewhere."),
+                    LLabel("The password is sent to the server using the same"),
+                    LLabel("method that the original Battle.net clients used,"),
+                    LLabel("which can be broken. The server will store your"),
+                    LLabel("username, password hash, last login time, last IP,"),
+                    LLabel("and game stats (wins/losses/draws). By signing up,"),
+                    LLabel("you agree to this data storage."),
+                    LFiller(),
+              }),
+
+              HBox({
+                    LLabel("Username:"),
+                    LTextInputField(""):expanding(),
+              }):withPadding(5),
+
+              HBox({
+                    LLabel("Password:"),
+                    LTextInputField(""):expanding(),
+              }):withPadding(5),
+
+              HBox({
+                    LFiller(),
+                    LButton("~!OK", "o", function()
+                               ErrorMenu("ok")
+                               menu:stop()
+                    end),
+                    LButton("~!Cancel", "c", function()
+                               ErrorMenu("cancel")
+                               menu:stop()
+                    end),
+                    LFiller()
+              }):withPadding(5),
+
+              LFiller(),
+
+        }):withPadding(5)
+
+        vbox:calculateMinExtent()
+        local signupMenu = WarMenu(nil, panel(1), {vbox.width, vbox.height})
+        signupMenu:setSize(vbox.width, vbox.height)
+        signupMenu:setPosition((Video.Width - signupMenu:getWidth()) / 2, (Video.Height - signupMenu:getHeight()) / 2)
+        signupMenu:setDrawMenusUnder(true)
+        vbox:addWidgetTo(signupMenu)
+
+        signupMenu:run()
      end
   end
   local signUpListener = LuaActionListener(signUpCb)
