@@ -617,6 +617,16 @@ Load("scripts/menus/results.lua")
 
 Load("scripts/lib/layouts.lua")
 
+function WarMenuWithLayout(title, background, box)
+   box:calculateMinExtent()
+   local menu = WarMenu(title, background, {box.width, box.height})
+   menu:setSize(box.width, box.height)
+   menu:setPosition((Video.Width - menu:getWidth()) / 2, (Video.Height - menu:getHeight()) / 2)
+   menu:setDrawMenusUnder(true)
+   box:addWidgetTo(menu)
+   return menu
+end
+
 --[[
 --]]
 

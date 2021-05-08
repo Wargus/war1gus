@@ -501,7 +501,7 @@ function RunMultiPlayerGameMenu(s)
   local signUpCb = function(evt, btn, cnt)
      if evt == "mouseClick" then
 
-        local vbox = VBox({
+        local signUpMenu = WarMenuWithLayout(nil, panel(1), VBox({
               LFiller(),
 
               VBox({
@@ -543,14 +543,7 @@ function RunMultiPlayerGameMenu(s)
 
               LFiller(),
 
-        }):withPadding(5)
-
-        vbox:calculateMinExtent()
-        local signupMenu = WarMenu(nil, panel(1), {vbox.width, vbox.height})
-        signupMenu:setSize(vbox.width, vbox.height)
-        signupMenu:setPosition((Video.Width - signupMenu:getWidth()) / 2, (Video.Height - signupMenu:getHeight()) / 2)
-        signupMenu:setDrawMenusUnder(true)
-        vbox:addWidgetTo(signupMenu)
+        }):withPadding(5))
 
         signupMenu:run()
      end
