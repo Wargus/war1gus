@@ -506,25 +506,25 @@ function RunMultiPlayerGameMenu(s)
 
               VBox({
                     LFiller(),
-                    LLabel("Choose a username and password to sign up to"),
-                    LLabel(wc1.preferences.OnlineServer, Fonts["large"], true),
-                    LLabel("Don't choose a password you are using elsewhere."),
-                    LLabel("The password is sent to the server using the same"),
-                    LLabel("method that the original Battle.net clients used,"),
-                    LLabel("which can be broken. The server will store your"),
-                    LLabel("username, password hash, last login time, last IP,"),
-                    LLabel("and game stats (wins/losses/draws). By signing up,"),
-                    LLabel("you agree to this data storage."),
+                    "Choose a username and password to sign up to",
+                    wc1.preferences.OnlineServer,
+                    "Don't choose a password you are using elsewhere.",
+                    "The password is sent to the server using the same",
+                    "method that the original Battle.net clients used,",
+                    "which can be broken. The server will store your",
+                    "username, password hash, last login time, last IP,",
+                    "and game stats (wins/losses/draws. By signing up,",
+                    "you agree to this data storage.",
                     LFiller(),
               }),
 
               HBox({
-                    LLabel("Username:"),
+                    "Username:",
                     LTextInputField(""):expanding(),
               }):withPadding(5),
 
               HBox({
-                    LLabel("Password:"),
+                    "Password:",
                     LTextInputField(""):expanding(),
               }):withPadding(5),
 

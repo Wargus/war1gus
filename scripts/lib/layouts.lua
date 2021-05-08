@@ -43,6 +43,12 @@ Box = class(Element,
                Element.init(instance)
                instance.padding = 0
                instance.children = children
+               for i,child in ipairs(children) do
+                  -- convenience...
+                  if type(child) == "string" then
+                     children[i] = LLabel(child)
+                  end
+               end
             end
 )
 
