@@ -112,11 +112,11 @@ function Box:calculateMinExtent()
    self.y = 0
    self.width = w + (self.paddingX * 2)
    self.height = h + (self.paddingY * 2)
-   print("Min: " .. self.width .. " x " .. self.height)
+   -- print("Min: " .. self.width .. " x " .. self.height)
 end
 
 function Box:layout()
-   print("XY: " .. self.x .. " - " .. self.y)
+   -- print("XY: " .. self.x .. " - " .. self.y)
    local horiz = self.direction == Box.DIRECTION_HORIZONTAL
 
    local padding
@@ -203,7 +203,7 @@ function Box:layout()
          end
       end
 
-      print(xOff, yOff, childW, childH)
+      -- print(xOff, yOff, childW, childH)
       child.x = xOff
       child.y = yOff
       child.width = childW
@@ -214,7 +214,6 @@ function Box:layout()
          yOff = yOff + childH + padding
       end
    end
-   print("done")
 end
 
 function Box:addWidgetTo(container, sizeFromContainer)
@@ -223,7 +222,7 @@ function Box:addWidgetTo(container, sizeFromContainer)
       self.y = 0
       self.width = container:getWidth()
       self.height = container:getHeight()
-      print("startsize:" .. self.width .. "x" .. self.height .. "+" .. self.x .. "+" .. self.y)
+      -- print("startsize:" .. self.width .. "x" .. self.height .. "+" .. self.x .. "+" .. self.y)
    end
    self:layout()
    for i,child in ipairs(self.children) do
@@ -431,12 +430,10 @@ LCheckBox = class(Element,
 )
 
 function LCheckBox:getWidth()
-   print("cb" .. self.b:getWidth())
    return self.b:getWidth()
 end
 
 function LCheckBox:getHeight()
-   print("cb" .. self.b:getHeight())
    return self.b:getHeight()
 end
 
