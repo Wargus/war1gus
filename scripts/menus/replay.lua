@@ -14,6 +14,7 @@ function RunReplayGameMenu()
       if (browser:getSelected() < 0) then
         return
       end
+      war1gus.InCampaign = false
       InitGameVariables()
       StartReplay("~logs/" .. browser:getSelectedItem(), reveal:isMarked())
       InitGameSettings()
