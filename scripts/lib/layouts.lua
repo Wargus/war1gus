@@ -469,6 +469,11 @@ function LTextInputField:getHeight()
    return nil
 end
 
+function LTextInputField:doWidget(cb)
+   cb(self.b)
+   return self
+end
+
 function LTextInputField:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
    container:add(self.b, self.x, self.y)

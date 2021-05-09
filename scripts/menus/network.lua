@@ -501,7 +501,10 @@ function RunMultiPlayerGameMenu(s)
   local signUpCb = function(evt, btn, cnt)
      if evt == "mouseClick" then
 
-        local signUpMenu = WarMenuWithLayout(panel(1), VBox({
+        local newnick
+        local newpass
+        local signUpMenu
+        signUpMenu = WarMenuWithLayout(panel(1), VBox({
               LFiller(),
 
               VBox({
@@ -520,23 +523,35 @@ function RunMultiPlayerGameMenu(s)
 
               HBox({
                     "Username:",
-                    LTextInputField(""):expanding(),
+                    LTextInputField(""):expanding():doWidget(function(w) newnick = w end),
               }):withPadding(5),
 
               HBox({
                     "Password:",
-                    LTextInputField(""):expanding(),
+                    LTextInputField(""):expanding():doWidget(function(w) newpass = w end),
               }):withPadding(5),
 
               HBox({
                     LFiller(),
                     LButton("~!OK", "o", function()
-                               ErrorMenu("ok")
-                               menu:stop()
+                               if string.len(newpass:getText()) == 0 then
+                                  ErrorMenu("Please choose a password for the new account")
+                               else
+                                  if newnick:getText() ~= GetLocalPlayerName() then
+                                     SetLocalPlayerName(newnick:getText())
+                                     nick:setText(newnick:getText())
+                                     wc1.preferences.PlayerName = newnick:getText()
+                                     SavePreferences()
+                                  end
+                                  OnlineService.setup({ ShowError = ErrorMenu })
+                                  OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
+                                  OnlineService.signup(newnick:getText(), newpass:getText())
+                                  RunOnlineMenu()
+                               end
+                               signUpMenu:stop()
                     end),
                     LButton("~!Cancel", "c", function()
-                               ErrorMenu("cancel")
-                               menu:stop()
+                               signUpMenu:stop()
                     end),
                     LFiller()
               }):withPadding(5),
@@ -545,7 +560,7 @@ function RunMultiPlayerGameMenu(s)
 
         }):withPadding(5))
 
-        signupMenu:run()
+        signUpMenu:run()
      end
   end
   local signUpListener = LuaActionListener(signUpCb)
