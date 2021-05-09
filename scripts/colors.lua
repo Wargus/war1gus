@@ -98,3 +98,7 @@ function SetColorScheme()
     DefinePlayerColors(wc1.HumanCampaignColors)
   end end end
 end
+
+InitFuncs:add(function()
+      SetColorScheme()
+end)
