@@ -8,18 +8,27 @@
 
 Load("scripts/lib/classes.lua")
 
+function dbgPrint(x)
+   print(x)
+end
+
 -- dark = Color(38, 38, 78)
 -- clear = Color(200, 200, 120)
 -- black = Color(0, 0, 0)
 
 Element = class(function(instance)
-      instance.parent = nil
+      instance.id = nil
       instance.expands = false
       instance.x = nil
       instance.y = nil
       instance.width = nil
       instance.height = nil
 end)
+
+function Element:id(name)
+   self.id = name
+   return self
+end
 
 function Element:expanding()
    self.expands = true
@@ -112,11 +121,11 @@ function Box:calculateMinExtent()
    self.y = 0
    self.width = w + (self.paddingX * 2)
    self.height = h + (self.paddingY * 2)
-   -- print("Min: " .. self.width .. " x " .. self.height)
+   dbgPrint("Min: " .. self.width .. " x " .. self.height)
 end
 
 function Box:layout()
-   -- print("XY: " .. self.x .. " - " .. self.y)
+   dbgPrint("XY: " .. self.x .. " - " .. self.y)
    local horiz = self.direction == Box.DIRECTION_HORIZONTAL
 
    local padding
@@ -176,8 +185,9 @@ function Box:layout()
          s = child:getHeight()
       end
       if type(s) == "string" then
-         local pct = string.match(w, "[0-9]+")
+         local pct = string.match(s, "[0-9]+")
          local newS = totalSpace * (pct / 100)
+         print(s .. " -> " .. newS)
          if child.expands then
             newS = newS + expandingChildrenS
          end
@@ -203,11 +213,12 @@ function Box:layout()
          end
       end
 
-      -- print(xOff, yOff, childW, childH)
+      dbgPrint(xOff, yOff, childW, childH)
       child.x = xOff
       child.y = yOff
       child.width = childW
       child.height = childH
+      dbgPrint("child: " .. child.width .. "x" .. child.height .. "+" .. child.x .. "+" .. child.y)
       if horiz then
          xOff = xOff + childW + padding
       else
@@ -222,7 +233,7 @@ function Box:addWidgetTo(container, sizeFromContainer)
       self.y = 0
       self.width = container:getWidth()
       self.height = container:getHeight()
-      -- print("startsize:" .. self.width .. "x" .. self.height .. "+" .. self.x .. "+" .. self.y)
+      dbgPrint("startsize:" .. self.width .. "x" .. self.height .. "+" .. self.x .. "+" .. self.y)
    end
    self:layout()
    for i,child in ipairs(self.children) do
@@ -274,6 +285,9 @@ end
 
 function LLabel:addWidgetTo(container)
    self:layout()
+   if self.id then
+      container[self.id] = self.label
+   end
    container:add(self.label, self.x, self.y)
 end
 
@@ -322,6 +336,9 @@ end
 
 function LButton:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
+   if self.id then
+      container[self.id] = self.b
+   end
    container:add(self.b, self.x, self.y)
 end
 
@@ -346,6 +363,9 @@ end
 
 function LImageButton:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
+   if self.id then
+      container[self.id] = self.b
+   end
    container:add(self.b, self.x, self.y)
 end
 
@@ -387,31 +407,41 @@ end
 
 function LSlider:addWidgetTo(container)
    self.s:setSize(self.width, self.height)
+   if self.id then
+      container[self.id] = self.s
+   end
    container:add(self.s, self.x, self.y)
 end
 
 LListBox = class(Element,
-                 function(instance, list)
+                 function(instance, w, h, list)
                     Element.init(instance)
                     instance.bq = ListBoxWidget(60, 60)
+                    instance.bq:setList(list)
                     instance.bq:setBaseColor(black)
                     instance.bq:setForegroundColor(clear)
                     instance.bq:setBackgroundColor(dark)
                     instance.bq:setFont(Fonts["game"])
+                    list = list or {}
                     instance.bq.itemslist = list
+                    instance.width = w
+                    instance.height = h
                  end
 )
 
 function LListBox:getWidth()
-   return nil
+   return self.width
 end
 
 function LListBox:getHeight()
-   return nil
+   return self.height
 end
 
 function LListBox:addWidgetTo(container)
    self.bq:setSize(self.width, self.height)
+   if self.id then
+      container[self.id] = self.bq
+   end
    container:add(self.bq, self.x, self.y)
 end
 
@@ -439,6 +469,9 @@ end
 
 function LCheckBox:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
+   if self.id then
+      container[self.id] = self.b
+   end
    container:add(self.b, self.x, self.y)
 end
 
@@ -469,12 +502,10 @@ function LTextInputField:getHeight()
    return nil
 end
 
-function LTextInputField:doWidget(cb)
-   cb(self.b)
-   return self
-end
-
 function LTextInputField:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
+   if self.id then
+      container[self.id] = self.b
+   end
    container:add(self.b, self.x, self.y)
 end
