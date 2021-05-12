@@ -509,3 +509,34 @@ function LTextInputField:addWidgetTo(container)
    end
    container:add(self.b, self.x, self.y)
 end
+
+LDropDown = class(Element,
+                  function(instance, list, callback)
+                     Element.init(instance)
+                     local dd = DropDownWidget()
+                     dd:setFont(Fonts["game"])
+                     dd:setList(list)
+                     dd:setActionCallback(function(s) callback(dd, s) end)
+                     dd.callback = callback
+                     dd:setBaseColor(dark)
+                     dd:setForegroundColor(clear)
+                     dd:setBackgroundColor(dark)
+                     instance.dd = dd
+                  end
+)
+
+function LDropDown:getWidth()
+   return 127
+end
+
+function LDropDown:getHeight()
+   return 10
+end
+
+function LDropDown:addWidgetTo(container)
+   self.dd:setSize(self.width, self.height)
+   if self.id then
+      container[self.id] = self.dd
+   end
+   container:add(self.dd, self.x, self.y)
+end
