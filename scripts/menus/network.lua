@@ -890,7 +890,23 @@ function RunOnlineMenu()
            end
         end
      else
-        messageLabel:setCaption("Chat")
+        if timer < 239 then
+           timer = timer + 1
+        else
+           timer = 0
+        end
+        local mod = timer % 60
+        local div = timer / 60
+        if mod == 0 then
+           local timer
+           local cap = "~<Chat"
+           for i=1,div,1 do
+              cap = cap .. "."
+           end
+           print(cap)
+           messageLabel:setCaption(cap)
+           messageLabel:adjustSize()
+        end
      end
  end
  local listener = LuaActionListener(function(s) checkLogin() end)
