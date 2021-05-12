@@ -120,10 +120,8 @@ function RunJoiningMapMenu(s)
                           "Number of units",
                           "Reveal map",
                           "Auto targeting",
-                          "Ally deposits allowed",
                           "Allow multiple townhalls",
                           "Allow townhall upgrads",
-                          "Rebalanced unit stats"
                     }):withPadding(5),
                     VBox({
                           LCheckBox(""):id("fow"),
@@ -131,10 +129,8 @@ function RunJoiningMapMenu(s)
                           LLabel("Map default"):id("numunits"),
                           LCheckBox(""):id("revealmap"),
                           LCheckBox(""):id("autotarget"),
-                          LCheckBox(""):id("allydepo"),
                           LCheckBox(""):id("multitown"),
                           LCheckBox(""):id("towncastle"),
-                          LCheckBox(""):id("balancing"),
                     }):withPadding(5)
               }),
               LFiller()
@@ -169,10 +165,8 @@ function RunJoiningMapMenu(s)
   menu.fow:setEnabled(false)
   menu.revealmap:setEnabled(false)
   menu.autotarget:setEnabled(false)
-  menu.allydepo:setEnabled(false)
   menu.multitown:setEnabled(false)
   menu.towncastle:setEnabled(false)
-  menu.balancing:setEnabled(false)
 
   local OldPresentMap = PresentMap
   PresentMap = function(desc, nplayers, w, h, id)
@@ -210,6 +204,13 @@ function RunJoiningMapMenu(s)
        menu.resources:setCaption("Level " .. ServerSetupState.ResourcesOption)
     end
     GameSettings.Resources = ServerSetupState.ResourcesOption
+
+    GameSettings.MapRichness = ServerSetupState.MapRichness
+    RestoreSharedSettingsFromBits(ServerSetupState.MapRichness)
+    menu.autotarget:setMarked(preferences.SimplifiedAutoTargeting)
+    menu.multitown:setMarked(preferences.AllowMultipleTownHalls)
+    menu.towncastle:setMarked(preferences.AllowTownHallUpgrade)
+
     updatePlayersList()
     state = GetNetworkState()
     -- FIXME: don't use numbers
@@ -371,6 +372,11 @@ function RunServerMultiGameMenu(map, description, numplayers)
   menu:writeText("Description:", sx, sy*3+35)
   descr = menu:writeText("Unknown map", sx+10, sy*3+45)
 
+  local sharedSettings = StoreSharedSettingsInBits()
+  ServerSetupState.MapRichness = sharedSettings
+  LocalSetupState.MapRichness = sharedSettings
+  GameSettings.MapRichness = sharedSettings
+
   local function fowCb(dd)
     ServerSetupState.FogOfWar = bool2int(dd:isMarked())
     NetworkServerResyncClients()
@@ -418,6 +424,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
 
   NetworkMapName = map
   NetworkInitServerConnect(numplayers)
+  ServerSetupState.MapRichness = StoreSharedSettingsInBits()
   ServerSetupState.FogOfWar = 1
   startgame = menu:addFullButton("~!Start Game", "s", sx * 6,  sy*7,
     function(s)

@@ -16,7 +16,14 @@ function RunReplayGameMenu()
       end
       war1gus.InCampaign = false
       InitGameVariables()
+      local OldReplayLog = ReplayLog
+      function ReplayLog(tbl)
+         local MapRichness = tbl.MapRichness
+         RestoreSharedSettingsFromBits(MapRichness)
+         return OldReplayLog(tbl)
+      end
       StartReplay("~logs/" .. browser:getSelectedItem(), reveal:isMarked())
+      ReplayLog = OldReplayLog
       InitGameSettings()
       SetPlayerData(GetThisPlayer(), "RaceName", "orc")
       menu:stop()
