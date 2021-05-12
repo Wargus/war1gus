@@ -296,5 +296,6 @@ AddColorCyclingRange(114, 118) -- water coast boundry
 AddColorCyclingRange(121, 126) -- water
 
 war1gus.tileset = "forest_campaign"
+SetFogOfWarGraphics("tilesets/forest/fog.png")
 Load("scripts/scripts.lua")
 

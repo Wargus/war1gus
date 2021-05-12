@@ -272,6 +272,7 @@ DefineTileset("name", "dungeon_campaign",
 
 BuildTilesetTables() -- needs proper wall definitions
 war1gus.tileset = "dungeon_campaign"
+SetFogOfWarGraphics("tilesets/dungeon/fog.png")
 Load("scripts/scripts.lua")
 
 local wallTileMapping = {}

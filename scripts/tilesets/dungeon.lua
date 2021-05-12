@@ -219,4 +219,5 @@ DefineTileset("name", "dungeon",
 BuildTilesetTables()
 
 war1gus.tileset = "dungeon"
+SetFogOfWarGraphics("tilesets/dungeon/fog.png")
 Load("scripts/scripts.lua")

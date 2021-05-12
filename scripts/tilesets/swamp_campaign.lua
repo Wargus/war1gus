@@ -313,4 +313,5 @@ AddColorCyclingRange(114, 118) -- water coast boundry
 AddColorCyclingRange(121, 126) -- water
 
 war1gus.tileset = "swamp_campaign"
+SetFogOfWarGraphics("tilesets/swamp/fog.png")
 Load("scripts/scripts.lua")
