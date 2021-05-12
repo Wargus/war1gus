@@ -707,11 +707,11 @@ function RunOnlineMenu()
      messages:getY() + messages:getHeight() + margin,
      messages:getWidth()
   )
-  input:setActionCallback(function()
-        counter = 1
+  function inputActionCb()
         OnlineService.sendmessage(input:getText())
         input:setText("")
-  end)
+  end
+  input:setActionCallback(inputActionCb)
   local createGame = menu:addHalfButton(
      _("~!Create Game"),
      "c",
