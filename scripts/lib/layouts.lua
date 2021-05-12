@@ -9,7 +9,7 @@
 Load("scripts/lib/classes.lua")
 
 function dbgPrint(x)
-   print(x)
+   -- print(x)
 end
 
 -- dark = Color(38, 38, 78)
