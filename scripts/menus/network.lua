@@ -847,6 +847,8 @@ function RunOnlineMenu()
               menu:stop()
            end
         end
+     else
+        messageLabel:setCaption("Chat")
      end
  end
  local listener = LuaActionListener(function(s) checkLogin() end)
