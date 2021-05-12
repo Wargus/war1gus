@@ -96,72 +96,119 @@ function RunJoiningMapMenu(s)
   local d
 
   menu = WarMenu("Joining game: Map")
+  
+  local menubox = HBox({
+        LFiller(),
+        VBox({
+              LFiller(),
+              HBox({
+                    "~<File: ",
+                    LLabel("~<" .. NetworkMapName):id("maptext")
+              }):withPadding(5),
+              HBox({
+                    "~<Players: ",
+                    LLabel("~<" .. numplayers):id("players")
+              }):withPadding(5),
+              HBox({
+                    "~<Description: ",
+                    LLabel(description):id("description")
+              }):withPadding(5),
+              HBox({
+                    VBox({
+                          "Fog of war",
+                          "Resources",
+                          "Number of units",
+                          "Reveal map",
+                          "Auto targeting",
+                          "Ally deposits allowed",
+                          "Allow multiple townhalls",
+                          "Allow townhall upgrads",
+                          "Rebalanced unit stats"
+                    }):withPadding(5),
+                    VBox({
+                          LCheckBox(""):id("fow"),
+                          LLabel("Map default"):id("resources"),
+                          LLabel("Map default"):id("numunits"),
+                          LCheckBox(""):id("revealmap"),
+                          LCheckBox(""):id("autotarget"),
+                          LCheckBox(""):id("allydepo"),
+                          LCheckBox(""):id("multitown"),
+                          LCheckBox(""):id("towncastle"),
+                          LCheckBox(""):id("balancing"),
+                    }):withPadding(5)
+              }),
+              LFiller()
+        }):withPadding(5),
+        LFiller(),
+        VBox({
+              LFiller(),
+              LListBox(Video.Width / 3, "30%"),
+              HBox({
+                    "~<Your Race:~>",
+                    LDropDown({"Map Default", "Human", "Orc"}, function(dd)
+                          GameSettings.Presets[NetLocalHostsSlot].Race = race:getSelected()
+                          LocalSetupState.Race[NetLocalHostsSlot] = race:getSelected()
+                    end)
+              }),
+              LCheckBox("Ready", function(dd)
+                           LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(dd:isMarked())
+              end),
+              LButton("~!Cancel", "c", function() NetworkDetachFromServer(); menu:stop() end),
+              LFiller()
+        }):withPadding(10),
+        LFiller()
+  }):withPadding(5)
 
-  menu:writeLargeText("Map", sx, sy*3)
-  menu:writeText("File:", sx, sy*3+15)
-  maptext = menu:writeText(NetworkMapName, sx+25, sy*3+15)
-  menu:writeText("Players:", sx, sy*3+25)
-  players = menu:writeText(numplayers, sx+35, sy*3+25)
-  menu:writeText("Description:", sx, sy*3+35)
-  descr = menu:writeText(description, sx+10, sy*3+45)
 
-  local fow = menu:addCheckBox("Fog of war", sx, sy*3+60, function() end)
-  fow:setMarked(true)
-  ServerSetupState.FogOfWar = 1
-  fow:setEnabled(false)
-  local revealmap = menu:addCheckBox("Reveal map", sx, sy*3+75, function() end)
-  revealmap:setEnabled(false)
+  menubox.width = Video.Width
+  menubox.height = Video.Height
+  menubox.x = 0
+  menubox.y = 0
+  menubox:addWidgetTo(menu)
 
-  menu:writeText("~<Your Race:~>", sx, sy*6)
-  local race = menu:addDropDown({"Map Default", "Human", "Orc"}, sx + 50, sy*6, function() end)
-  local raceCb = function(dd)
-     GameSettings.Presets[NetLocalHostsSlot].Race = race:getSelected()
-     LocalSetupState.Race[NetLocalHostsSlot] = race:getSelected()
-  end
-  race:setActionCallback(raceCb)
-  race:setSize(95, 10)
-
-  menu:writeText("Units:", sx, sy*6+12)
-  local units = menu:addDropDown({"Map Default", "One Peasant Only"}, sx + 50, sy*6+12,
-    function(dd) end)
-  units:setSize(95, 10)
-  units:setEnabled(false)
-
-  menu:writeText("Resources:", sx, sy*6+25)
-  local resources = menu:addDropDown({"Map Default", "Low", "Medium", "High"}, sx + 50, sy*6+25,
-    function(dd) end)
-  resources:setSize(95, 10)
-  resources:setEnabled(false)
+  menu.fow:setEnabled(false)
+  menu.revealmap:setEnabled(false)
+  menu.autotarget:setEnabled(false)
+  menu.allydepo:setEnabled(false)
+  menu.multitown:setEnabled(false)
+  menu.towncastle:setEnabled(false)
+  menu.balancing:setEnabled(false)
 
   local OldPresentMap = PresentMap
   PresentMap = function(desc, nplayers, w, h, id)
     numplayers = nplayers
-    players:setCaption(""..nplayers)
-    players:adjustSize()
-    descr:setCaption(desc)
-    descr:adjustSize()
+    menu.players:setCaption("~<"..nplayers)
+    menu.players:adjustSize()
+    menu.description:setCaption("~<" .. desc)
+    menu.description:adjustSize()
     OldPresentMap(desc, nplayers, w, h, id)
   end
 
   -- Security: The map name is checked by the stratagus engine.
   Load(NetworkMapName)
-  local function readycb(dd)
-     LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(dd:isMarked())
-  end
-  menu:addCheckBox("~!Ready", sx*6,  sy*7, readycb)
 
   local updatePlayersList = addPlayersList(menu, numplayers)
 
   joincounter = 0
   local function listen()
     NetworkProcessClientRequest()
-    fow:setMarked(int2bool(ServerSetupState.FogOfWar))
+    menu.fow:setMarked(int2bool(ServerSetupState.FogOfWar))
     GameSettings.NoFogOfWar = not int2bool(ServerSetupState.FogOfWar)
-    revealmap:setMarked(int2bool(ServerSetupState.RevealMap))
+    menu.revealmap:setMarked(int2bool(ServerSetupState.RevealMap))
     GameSettings.RevealMap = ServerSetupState.RevealMap
-    units:setSelected(ServerSetupState.UnitsOption)
+    if ServerSetupState.UnitsOption == 0 then
+       menu.numunits:setCaption("Map default")
+    elseif ServerSetupState.UnitsOption == 1 then
+       menu.numunits:setCaption("Only 1 peasant")
+    else
+       menu.numunits:setCaption("Only " .. ServerSetupState.UnitsOption .. " peasants")
+    end
     GameSettings.NumUnits = ServerSetupState.UnitsOption
-    resources:setSelected(ServerSetupState.ResourcesOption)
+    if ServerSetupState.ResourcesOption == 0 then
+       menu.resources:setCaption("Map default")
+    else
+       menu.resources:setCaption("Level " .. ServerSetupState.ResourcesOption)
+    end
     GameSettings.Resources = ServerSetupState.ResourcesOption
     updatePlayersList()
     state = GetNetworkState()
@@ -170,13 +217,13 @@ function RunJoiningMapMenu(s)
       SetThisPlayer(1)
       joincounter = joincounter + 1
       if (joincounter == 30) then
-        SetFogOfWar(fow:isMarked())
-        if revealmap:isMarked() == true then
+        SetFogOfWar(menu.fow:isMarked())
+        if menu.revealmap:isMarked() == true then
           RevealMap()
         end
         NetworkGamePrepareGameSettings()
         war1gus.InCampaign = false
-        RunMap(NetworkMapName, fow:isMarked())
+        RunMap(NetworkMapName, menu.fow:isMarked())
         PresentMap = OldPresentMap
         menu:stop()
       end
@@ -187,9 +234,6 @@ function RunJoiningMapMenu(s)
   end
   listener = LuaActionListener(listen)
   menu:addLogicCallback(listener)
-
-  menu:addFullButton("~!Cancel", "c", Video.Width / 2 - 50, Video.Height - 50,
-    function() NetworkDetachFromServer(); menu:stop() end)
 
   menu:run()
 end
@@ -501,8 +545,6 @@ function RunMultiPlayerGameMenu(s)
   local signUpCb = function(evt, btn, cnt)
      if evt == "mouseClick" then
 
-        local newnick
-        local newpass
         local signUpMenu
         signUpMenu = WarMenuWithLayout(panel(1), VBox({
               LFiller(),
@@ -523,29 +565,29 @@ function RunMultiPlayerGameMenu(s)
 
               HBox({
                     "Username:",
-                    LTextInputField(""):expanding():doWidget(function(w) newnick = w end),
+                    LTextInputField(""):expanding():id("newnick"),
               }):withPadding(5),
 
               HBox({
                     "Password:",
-                    LTextInputField(""):expanding():doWidget(function(w) newpass = w end),
+                    LTextInputField(""):expanding():id("newpass"),
               }):withPadding(5),
 
               HBox({
                     LFiller(),
                     LButton("~!OK", "o", function()
-                               if string.len(newpass:getText()) == 0 then
+                               if string.len(signUpMenu.newpass:getText()) == 0 then
                                   ErrorMenu("Please choose a password for the new account")
                                else
-                                  if newnick:getText() ~= GetLocalPlayerName() then
-                                     SetLocalPlayerName(newnick:getText())
-                                     nick:setText(newnick:getText())
-                                     wc1.preferences.PlayerName = newnick:getText()
+                                  if signUpMenu.newnick:getText() ~= GetLocalPlayerName() then
+                                     SetLocalPlayerName(signUpMenu.newnick:getText())
+                                     nick:setText(signUpMenu.newnick:getText())
+                                     wc1.preferences.PlayerName = signUpMenu.newnick:getText()
                                      SavePreferences()
                                   end
                                   OnlineService.setup({ ShowError = ErrorMenu })
                                   OnlineService.connect(wc1.preferences.OnlineServer, wc1.preferences.OnlinePort)
-                                  OnlineService.signup(newnick:getText(), newpass:getText())
+                                  OnlineService.signup(signUpMenu.newnick:getText(), signUpMenu.newpass:getText())
                                   RunOnlineMenu()
                                end
                                signUpMenu:stop()
