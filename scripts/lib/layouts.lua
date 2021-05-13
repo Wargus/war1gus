@@ -499,7 +499,7 @@ function LTextInputField:getWidth()
 end
 
 function LTextInputField:getHeight()
-   return nil
+   return 10
 end
 
 function LTextInputField:addWidgetTo(container)
