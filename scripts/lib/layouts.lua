@@ -187,7 +187,6 @@ function Box:layout()
       if type(s) == "string" then
          local pct = string.match(s, "[0-9]+")
          local newS = totalSpace * (pct / 100)
-         print(s .. " -> " .. newS)
          if child.expands then
             newS = newS + expandingChildrenS
          end
