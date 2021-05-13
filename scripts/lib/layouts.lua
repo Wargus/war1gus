@@ -530,7 +530,7 @@ function LDropDown:getWidth()
 end
 
 function LDropDown:getHeight()
-   return 10
+   return 8
 end
 
 function LDropDown:addWidgetTo(container)
