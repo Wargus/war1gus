@@ -55,32 +55,6 @@ function addPlayersList(menu, numplayers)
   end
   numplayers_text = menu:writeText("Open slots : " .. numplayers - 1, sx *11, sy*4 + 72)
 
-  local function updatePlayers()
-    local connected_players = 0
-    local ready_players = 0
-    players_state[1]:setCaption("Creator")
-    players_name[1]:setCaption(Hosts[0].PlyName)
-    for i=2,8 do
-      if Hosts[i-1].PlyName == "" then
-        players_name[i]:setCaption("")
-        players_state[i]:setCaption("")
-      else
-        connected_players = connected_players + 1
-        if ServerSetupState.Ready[i-1] == 1 then
-          ready_players = ready_players + 1
-          players_state[i]:setCaption("Ready")
-        else
-          players_state[i]:setCaption("Preparing")
-        end
-        players_name[i]:setCaption(Hosts[i-1].PlyName)
-     end
-    end
-    numplayers_text:setCaption("Open slots : " .. numplayers - 1 - connected_players)
-    numplayers_text:adjustSize()
-    return (connected_players > 0 and ready_players == connected_players)
-  end
-
-  return updatePlayers
 end
 
 
@@ -106,12 +80,30 @@ function RunJoiningMapMenu(s)
                     LLabel("~<" .. NetworkMapName):id("maptext")
               }):withPadding(5),
               HBox({
-                    "~<Players: ",
-                    LLabel("~<" .. numplayers):id("players")
-              }):withPadding(5),
-              HBox({
                     "~<Description: ",
                     LLabel(description):id("description")
+              }):withPadding(5),
+              VBox({
+                    HBox({
+                          LDropDown(""):id("player1"),
+                          LDropDown(""):id("playerRace1"),
+                          LDropDown(""):id("playerTeam1"),
+                    }),
+                    HBox({
+                          LDropDown(""):id("player2"),
+                          LDropDown(""):id("playerRace2"),
+                          LDropDown(""):id("playerTeam2"),
+                    }),
+                    HBox({
+                          LDropDown(""):id("player3"),
+                          LDropDown(""):id("playerRace3"),
+                          LDropDown(""):id("playerTeam3"),
+                    }),
+                    HBox({
+                          LDropDown(""):id("player4"),
+                          LDropDown(""):id("playerRace4"),
+                          LDropDown(""):id("playerTeam4"),
+                    }),
               }):withPadding(5),
               HBox({
                     VBox({
@@ -183,8 +175,8 @@ function RunJoiningMapMenu(s)
   local OldPresentMap = PresentMap
   PresentMap = function(desc, nplayers, w, h, id)
     numplayers = nplayers
-    menu.players:setCaption("~<"..nplayers)
-    menu.players:adjustSize()
+    -- menu.players:setCaption("~<"..nplayers)
+    -- menu.players:adjustSize()
     menu.description:setCaption("~<" .. desc)
     menu.description:adjustSize()
     OldPresentMap(desc, nplayers, w, h, id)
@@ -193,7 +185,7 @@ function RunJoiningMapMenu(s)
   -- Security: The map name is checked by the stratagus engine.
   Load(NetworkMapName)
 
-  local updatePlayersList = addPlayersList(menu, numplayers)
+  -- local updatePlayersList = addPlayersList(menu, numplayers)
 
   joincounter = 0
   local function listen()
@@ -230,7 +222,7 @@ function RunJoiningMapMenu(s)
     end
     menu.fieldofviewtype:adjustSize()
 
-    updatePlayersList()
+    -- updatePlayersList()
     state = GetNetworkState()
     -- FIXME: don't use numbers
     if (state == 15) then -- ccs_started, server started the game
@@ -383,142 +375,158 @@ function RunServerMultiGameMenu(map, description, numplayers)
 
   menu = WarMenu("Create MultiPlayer game")
 
-  local menubox = HBox({
-        LFiller(),
-        VBox({
-              LFiller(),
-              HBox({
-                    "~<File: ",
-                    LLabel("~<" .. map):id("maptext")
-              }):withPadding(5),
-              HBox({
-                    "~<Players: ",
-                    LLabel("~<" .. numplayers):id("players")
-              }):withPadding(5),
-              HBox({
-                    "~<Description: ",
-                    LLabel(description):id("description")
-              }):withPadding(5),
-              HBox({
-                    VBox({
-                          "Fog of war",
-                          "Resources",
-                          "Number of units",
-                          "Reveal map",
-                          "Auto targeting",
-                          "Allow multiple townhalls",
-                          "Allow townhall upgrades",
-                          "Enable training queue",
-                          "Unit vision",
-                    }):withPadding(5),
-                    VBox({
-                          LCheckBox("", function(dd)
-                                       ServerSetupState.FogOfWar = bool2int(dd:isMarked())
-                                       NetworkServerResyncClients()
-                                       GameSettings.NoFogOfWar = not dd:isMarked()
-                          end
-                          ):id("fow"),
-                          LDropDown({"Map Default", "Low", "Medium", "High"}, function(dd)
-                                GameSettings.Resources = dd:getSelected()
-                                ServerSetupState.ResourcesOption = GameSettings.Resources
-                                NetworkServerResyncClients()
-                          end):id("resources"),
-                          LDropDown({"Map Default", "One Peasant Only"}, function(dd)
-                                GameSettings.NumUnits = dd:getSelected()
-                                ServerSetupState.UnitsOption = GameSettings.NumUnits
-                                NetworkServerResyncClients()
-                          end):id("numunits"),
-                          LCheckBox("", function(dd)
-                                       ServerSetupState.RevealMap = bool2int(dd:isMarked())
-                                       NetworkServerResyncClients()
-                                       GameSettings.RevealMap = bool2int(dd:isMarked())
-                          end):id("revealmap"),
-                          LCheckBox("", function(dd)
-                                       preferences.SimplifiedAutoTargeting = dd:isMarked()
-                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                       NetworkServerResyncClients()
-                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("autotarget"),
-                          LCheckBox("", function(dd)
-                                       preferences.AllowMultipleTownHalls = dd:isMarked()
-                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                       NetworkServerResyncClients()
-                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("multitown"),
-                          LCheckBox("", function(dd)
-                                       preferences.AllowTownHallUpgrade = dd:isMarked()
-                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                       NetworkServerResyncClients()
-                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("towncastle"),
-                          LCheckBox("", function(dd)
-                                       preferences.TrainingQueue = dd:isMarked()
-                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                       NetworkServerResyncClients()
-                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("trainingqueue"),
-                          LDropDown({"Radial", "Shadow Casting"}, function(dd)
-                                if dd:getSelected() == 0 then
-                                   preferences.FieldOfViewType = "simple-radial"
-                                   preferences.DungeonSightBlocking = false
-                                else
-                                   preferences.FieldOfViewType = "shadow-casting"
-                                   preferences.DungeonSightBlocking = true
-                                end
-                                ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                NetworkServerResyncClients()
-                                RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("fieldofviewtype"),
-                    }):withPadding(5)
-              }),
-              LFiller()
-        }):withPadding(5),
-        LFiller(),
-        VBox({
+  local menubox = VBox({
+        HBox({
               LFiller(),
               VBox({
-                    LListBox(Video.Width / 3, Video.Height / 3):id("chat"),
+                    LFiller(),
                     HBox({
-                          "Chat: ",
-                          LTextInputField("", function()
-                          end):id("chatinput")
-                    })
-              }):withPadding(1),
-              HBox({
-                    "~<Your Race:~> ",
-                    LDropDown({"Map Default", "Human", "Orc"}, function(dd)
-                          GameSettings.Presets[0].Race = race:getSelected()
-                          ServerSetupState.Race[0] = race:getSelected()
-                          LocalSetupState.Race[0] = race:getSelected()
-                          NetworkServerResyncClients()
-                    end)
-              }),
-              LButton("~!Start Game", "s", function(s)
-                         SetFogOfWar(menu.fow:isMarked())
-                         if menu.revealmap:isMarked() == true then
-                            RevealMap()
-                         end
-                         NetworkServerStartGame()
-                         NetworkGamePrepareGameSettings()
-                         war1gus.InCampaign = false
-                         RunMap(map, menu.fow:isMarked())
-                         menu:stop()
-              end):id("startgame"),
-              LLabel("Waiting for players"):id("waitingtext"),
-              LButton("~!Cancel", "c", function()
-                         InitGameSettings()
-                         OnlineService.stopadvertising()
-                         menu:stop()
-              end),
+                          "~<File: ",
+                          LLabel("~<" .. map):id("maptext")
+                    }):withPadding(5),
+                    HBox({
+                          "~<Description: ",
+                          LLabel(description):id("description")
+                    }):withPadding(5),
+                    HBox({
+                          VBox({
+                                "Fog of war",
+                                "Resources",
+                                "Number of units",
+                                "Reveal map",
+                                "Auto targeting",
+                                "Allow multiple townhalls",
+                                "Allow townhall upgrades",
+                                "Enable training queue",
+                                "Unit vision",
+                          }):withPadding(5),
+                          VBox({
+                                LCheckBox("", function(dd)
+                                             ServerSetupState.FogOfWar = bool2int(dd:isMarked())
+                                             NetworkServerResyncClients()
+                                             GameSettings.NoFogOfWar = not dd:isMarked()
+                                end
+                                ):id("fow"),
+                                LDropDown({"Map Default", "Low", "Medium", "High"}, function(dd)
+                                      GameSettings.Resources = dd:getSelected()
+                                      ServerSetupState.ResourcesOption = GameSettings.Resources
+                                      NetworkServerResyncClients()
+                                end):id("resources"),
+                                LDropDown({"Map Default", "One Peasant Only"}, function(dd)
+                                      GameSettings.NumUnits = dd:getSelected()
+                                      ServerSetupState.UnitsOption = GameSettings.NumUnits
+                                      NetworkServerResyncClients()
+                                end):id("numunits"),
+                                LCheckBox("", function(dd)
+                                             ServerSetupState.RevealMap = bool2int(dd:isMarked())
+                                             NetworkServerResyncClients()
+                                             GameSettings.RevealMap = bool2int(dd:isMarked())
+                                end):id("revealmap"),
+                                LCheckBox("", function(dd)
+                                             preferences.SimplifiedAutoTargeting = dd:isMarked()
+                                             ServerSetupState.MapRichness = StoreSharedSettingsInBits()
+                                             GameSettings.MapRichness = StoreSharedSettingsInBits()
+                                             NetworkServerResyncClients()
+                                             RestoreSharedSettingsFromBits(GameSettings.MapRichness)
+                                end):id("autotarget"),
+                                LCheckBox("", function(dd)
+                                             preferences.AllowMultipleTownHalls = dd:isMarked()
+                                             ServerSetupState.MapRichness = StoreSharedSettingsInBits()
+                                             GameSettings.MapRichness = StoreSharedSettingsInBits()
+                                             NetworkServerResyncClients()
+                                             RestoreSharedSettingsFromBits(GameSettings.MapRichness)
+                                end):id("multitown"),
+                                LCheckBox("", function(dd)
+                                             preferences.AllowTownHallUpgrade = dd:isMarked()
+                                             ServerSetupState.MapRichness = StoreSharedSettingsInBits()
+                                             GameSettings.MapRichness = StoreSharedSettingsInBits()
+                                             NetworkServerResyncClients()
+                                             RestoreSharedSettingsFromBits(GameSettings.MapRichness)
+                                end):id("towncastle"),
+                                LCheckBox("", function(dd)
+                                             preferences.TrainingQueue = dd:isMarked()
+                                             ServerSetupState.MapRichness = StoreSharedSettingsInBits()
+                                             GameSettings.MapRichness = StoreSharedSettingsInBits()
+                                             NetworkServerResyncClients()
+                                             RestoreSharedSettingsFromBits(GameSettings.MapRichness)
+                                end):id("trainingqueue"),
+                                LDropDown({"Radial", "Shadow Casting"}, function(dd)
+                                      if dd:getSelected() == 0 then
+                                         preferences.FieldOfViewType = "simple-radial"
+                                         preferences.DungeonSightBlocking = false
+                                      else
+                                         preferences.FieldOfViewType = "shadow-casting"
+                                         preferences.DungeonSightBlocking = true
+                                      end
+                                      ServerSetupState.MapRichness = StoreSharedSettingsInBits()
+                                      GameSettings.MapRichness = StoreSharedSettingsInBits()
+                                      NetworkServerResyncClients()
+                                      RestoreSharedSettingsFromBits(GameSettings.MapRichness)
+                                end):id("fieldofviewtype"),
+                          }):withPadding(5)
+                    }),
+                    LFiller()
+              }):withPadding(5),
+              LFiller(),
+              VBox({
+                    LFiller(),
+                    VBox({
+                          HBox({
+                                LLabel("Player"):expanding(),
+                                LLabel("Race"):expanding(),
+                                LLabel("Team"):expanding()
+                          }),
+                          HBox({
+                                LDropDown({GetLocalPlayerName()}):id("player[1]"),
+                                LDropDown({"Map default", "Orc", "Human"}):id("playerRace[1]"),
+                                LDropDown({"1", "2", "3", "4", "5", "6", "7", "8"}):id("playerTeam[1]"),
+                          }),
+                          HBox({
+                                LDropDown({"Open", "Computer", "Closed"}):id("player[2]"),
+                                LDropDown({"Map default", "Orc", "Human"}):id("playerRace[2]"),
+                                LDropDown({"1", "2", "3", "4", "5", "6", "7", "8"}):id("playerTeam[2]"),
+                          }),
+                          HBox({
+                                LDropDown({"Open", "Computer", "Closed"}):id("player[3]"),
+                                LDropDown({"Map default", "Orc", "Human"}):id("playerRace[3]"),
+                                LDropDown({"1", "2", "3", "4", "5", "6", "7", "8"}):id("playerTeam[3]"),
+                          }),
+                          HBox({
+                                LDropDown({"Open", "Computer", "Closed"}):id("player[4]"),
+                                LDropDown({"Map default", "Orc", "Human"}):id("playerRace[4]"),
+                                LDropDown({"1", "2", "3", "4", "5", "6", "7", "8"}):id("playerTeam[4]"),
+                          }),
+                    }):withPadding(2),
+                    LButton("~!Start Game", "s", function(s)
+                               SetFogOfWar(menu.fow:isMarked())
+                               if menu.revealmap:isMarked() == true then
+                                  RevealMap()
+                               end
+                               NetworkServerStartGame()
+                               NetworkGamePrepareGameSettings()
+                               war1gus.InCampaign = false
+                               RunMap(map, menu.fow:isMarked())
+                               menu:stop()
+                    end):id("startgame"),
+                    LLabel("Waiting for players"):id("waitingtext"),
+                    LButton("~!Cancel", "c", function()
+                               InitGameSettings()
+                               OnlineService.stopadvertising()
+                               menu:stop()
+                    end),
+                    LFiller()
+              }):withPadding(10),
               LFiller()
-        }):withPadding(10),
-        LFiller()
-  }):withPadding(5)
+        }):withPadding(5),
+        VBox({
+              LListBox(Video.Width / 3, Video.Height / 5):id("chat"),
+              HBox({
+                    "Chat: ",
+                    LTextInputField("", function()
+                    end):id("chatinput")
+              })
+        }):withPadding(1),
+  })
 
 
   menubox.width = Video.Width
@@ -530,7 +538,47 @@ function RunServerMultiGameMenu(map, description, numplayers)
   menu.fow:setMarked(true)
   menu.startgame:setVisible(false)
 
-  local updatePlayers = addPlayersList(menu, numplayers)
+  -- prepare player list
+  for i,w in ipairs(menu.player) do
+     if numplayers < i then
+        w:setVisible(false)
+        menu.playerRace[i]:setVisible(false)
+        menu.playerTeam[i]:setVisible(false)
+     end
+     w:setEnabled(false)
+     menu.player[i]:setEnabled(true)
+     menu.playerRace[i]:setEnabled(true)
+     menu.playerTeam[i]:setEnabled(true)
+     menu.playerTeam[i]:setSelected(i - 1)
+  end
+
+  local function updatePlayers()
+     local connected_players = 0
+     local ready_players = 0
+
+     for i=1,4 do
+        if Hosts[i-1].PlyName == "" then
+           if NetLocalHostsSlot == 0 then
+              -- server can change open slots
+              menu.player[i]:setEnabled(true)
+           end
+           menu.player[i].list[1] = "Open"
+           menu.player[i]:setList(menu.player[i].list)
+           menu.player[i]:setSelected(0)
+        else
+           menu.player[i]:setEnabled(false)
+           menu.player[i].list[1] = Hosts[i-1].PlyName
+           menu.player[i]:setList(menu.player[i].list)
+           if i > 1 then
+              connected_players = connected_players + 1
+              if ServerSetupState.Ready[i-1] == 1 then
+                 ready_players = ready_players + 1
+              end
+           end
+        end
+     end
+     return (connected_players > 0 and ready_players == connected_players)
+  end
 
   NetworkMapName = map
   NetworkInitServerConnect(numplayers)
