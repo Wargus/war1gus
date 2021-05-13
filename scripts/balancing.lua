@@ -140,7 +140,7 @@ DefineAnimations("animations-conjurer-summoning",
                      }})
 
 DefineUnitType("unit-conjurer-during-summoning",
-               { Name = "Conjurer",
+               { Name = "Element Summoner",
                  Image = {"file", "human/units/conjurer.png", "size", {32, 32}},
                  Icon = "icon-conjurer",
                  DrawLevel = 60,
@@ -229,7 +229,7 @@ DefineAnimations("animations-warlock-summoning",
                      }})
 
 DefineUnitType("unit-warlock-during-summoning",
-               { Name = "Warlock",
+               { Name = "Demon Summoner",
                  Image = {"file", "orc/units/warlock.png", "size", {32, 32}},
                  Icon = "icon-warlock",
                  DrawLevel = 60,
