@@ -123,6 +123,7 @@ function RunJoiningMapMenu(s)
                           "Allow multiple townhalls",
                           "Allow townhall upgrades",
                           "Enable training queue",
+                          "Unit vision",
                     }):withPadding(5),
                     VBox({
                           LCheckBox(""):id("fow"),
@@ -133,6 +134,7 @@ function RunJoiningMapMenu(s)
                           LCheckBox(""):id("multitown"),
                           LCheckBox(""):id("towncastle"),
                           LCheckBox(""):id("trainingqueue"),
+                          LLabel(""):id("fieldofviewtype")
                     }):withPadding(5)
               }),
               LFiller()
@@ -221,6 +223,12 @@ function RunJoiningMapMenu(s)
     menu.multitown:setMarked(preferences.AllowMultipleTownHalls)
     menu.towncastle:setMarked(preferences.AllowTownHallUpgrade)
     menu.trainingqueue:setMarked(preferences.TrainingQueue)
+    if preferences.FieldOfViewType == "simple-radial" then
+       menu.fieldofviewtype:setCaption("Radial")
+    else
+       menu.fieldofviewtype:setCaption("Shadow Casting")
+    end
+    menu.fieldofviewtype:adjustSize()
 
     updatePlayersList()
     state = GetNetworkState()
@@ -401,6 +409,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
                           "Allow multiple townhalls",
                           "Allow townhall upgrades",
                           "Enable training queue",
+                          "Unit vision",
                     }):withPadding(5),
                     VBox({
                           LCheckBox("", function(dd)
@@ -452,6 +461,19 @@ function RunServerMultiGameMenu(map, description, numplayers)
                                        NetworkServerResyncClients()
                                        RestoreSharedSettingsFromBits(GameSettings.MapRichness)
                           end):id("trainingqueue"),
+                          LDropDown({"Radial", "Shadow Casting"}, function(dd)
+                                if dd:getSelected() == 0 then
+                                   preferences.FieldOfViewType = "simple-radial"
+                                   preferences.DungeonSightBlocking = false
+                                else
+                                   preferences.FieldOfViewType = "shadow-casting"
+                                   preferences.DungeonSightBlocking = true
+                                end
+                                ServerSetupState.MapRichness = StoreSharedSettingsInBits()
+                                GameSettings.MapRichness = StoreSharedSettingsInBits()
+                                NetworkServerResyncClients()
+                                RestoreSharedSettingsFromBits(GameSettings.MapRichness)
+                          end):id("fieldofviewtype"),
                     }):withPadding(5)
               }),
               LFiller()
@@ -515,6 +537,16 @@ function RunServerMultiGameMenu(map, description, numplayers)
   ServerSetupState.MapRichness = StoreSharedSettingsInBits()
   GameSettings.MapRichness = StoreSharedSettingsInBits()
   ServerSetupState.FogOfWar = 1
+
+  menu.autotarget:setMarked(preferences.SimplifiedAutoTargeting)
+  menu.multitown:setMarked(preferences.AllowMultipleTownHalls)
+  menu.towncastle:setMarked(preferences.AllowTownHallUpgrade)
+  menu.trainingqueue:setMarked(preferences.TrainingQueue)
+  if preferences.FieldOfViewType == "simple-radial" then
+     menu.fieldofviewtype:setSelected(0)
+  else
+     menu.fieldofviewtype:setSelected(1)
+  end
 
   local function updateStartButton(ready)
      menu.startgame:setVisible(ready)

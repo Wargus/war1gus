@@ -320,14 +320,6 @@ DefaultPreference("FieldOfViewType", "simple-radial")    -- default field of vie
 
 wc1.preferences = preferences
 
--- TEMP:
-preferences.AllowMultipleTownHalls = true
-preferences.AllowTownHallUpgrade = false
-preferences.FogOfWarType = "legacy"
-preferences.FieldOfViewType = "simple-radial"
-preferences.SimplifiedAutoTargeting = true
---
-
 function StoreSharedSettingsInBits()
    local bits = 0
    if preferences.AllowMultipleTownHalls then
@@ -352,7 +344,7 @@ function StoreSharedSettingsInBits()
 end
 
 function RestoreSharedSettingsFromBits(bits)
-   if (bits / 32) > 1 then
+   if bits >= 32 then
       preferences.TrainingQueue = true
       SetTrainingQueue(true)
       bits = bits - 32
@@ -360,13 +352,13 @@ function RestoreSharedSettingsFromBits(bits)
       preferences.TrainingQueue = false
       SetTrainingQueue(false)
    end
-   if (bits / 16) > 1 then
+   if bits >= 16 then
       preferences.DungeonSightBlocking = true
       bits = bits - 16
    else
       preferences.DungeonSightBlocking = false
    end
-   if (bits / 8) > 1 then
+   if bits >= 8 then
       -- bit 3 is set
       preferences.SimplifiedAutoTargeting = true
       Preference.SimplifiedAutoTargeting = true
@@ -375,7 +367,7 @@ function RestoreSharedSettingsFromBits(bits)
       preferences.SimplifiedAutoTargeting = false
       Preference.SimplifiedAutoTargeting = false
    end
-   if (bits / 4) > 1 then
+   if bits >= 4 then
       if preferences.FieldOfViewType ~= "simple-radial" then
          preferences.FieldOfViewType = "simple-radial"
          SetFieldOfViewType("simple-radial")
@@ -387,13 +379,13 @@ function RestoreSharedSettingsFromBits(bits)
          SetFieldOfViewType("shadow-casting")
       end
    end
-   if (bits / 2) > 1 then
+   if bits >= 2 then
       preferences.AllowTownHallUpgrade = true
       bits = bits - 2
    else
       preferences.AllowTownHallUpgrade = false
    end
-   if (bits / 1) == 1 then
+   if bits >= 1 then
       if not preferences.AllowMultipleTownHalls then
          preferences.AllowMultipleTownHalls = true
          Load("scripts/buttons.lua")
