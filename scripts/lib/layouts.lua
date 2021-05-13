@@ -17,7 +17,7 @@ end
 -- black = Color(0, 0, 0)
 
 Element = class(function(instance)
-      instance.id = nil
+      instance._id = nil
       instance.expands = false
       instance.x = nil
       instance.y = nil
@@ -26,8 +26,21 @@ Element = class(function(instance)
 end)
 
 function Element:id(name)
-   self.id = name
+   self._id = name
    return self
+end
+
+function Element:setId(container, widget)
+   if self._id then
+      field,idx = string.match(self._id, "(.+)%[(%d+)%]")
+      if field and idx then
+         local tbl = container[field] or {}
+         tbl[tonumber(idx)] = widget
+         container[field] = tbl
+      else
+         container[self._id] = widget
+      end
+   end
 end
 
 function Element:expanding()
@@ -284,9 +297,7 @@ end
 
 function LLabel:addWidgetTo(container)
    self:layout()
-   if self.id then
-      container[self.id] = self.label
-   end
+   self:setId(container, self.label)
    container:add(self.label, self.x, self.y)
 end
 
@@ -335,9 +346,7 @@ end
 
 function LButton:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
-   if self.id then
-      container[self.id] = self.b
-   end
+   self:setId(container, self.b)
    container:add(self.b, self.x, self.y)
 end
 
@@ -362,9 +371,7 @@ end
 
 function LImageButton:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
-   if self.id then
-      container[self.id] = self.b
-   end
+   self.setId(container, self.b)
    container:add(self.b, self.x, self.y)
 end
 
@@ -406,9 +413,7 @@ end
 
 function LSlider:addWidgetTo(container)
    self.s:setSize(self.width, self.height)
-   if self.id then
-      container[self.id] = self.s
-   end
+   self:setId(container, self.s)
    container:add(self.s, self.x, self.y)
 end
 
@@ -438,9 +443,7 @@ end
 
 function LListBox:addWidgetTo(container)
    self.bq:setSize(self.width, self.height)
-   if self.id then
-      container[self.id] = self.bq
-   end
+   self:setId(container, self.bq)
    container:add(self.bq, self.x, self.y)
 end
 
@@ -468,9 +471,7 @@ end
 
 function LCheckBox:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
-   if self.id then
-      container[self.id] = self.b
-   end
+   self:setId(container, self.b)
    container:add(self.b, self.x, self.y)
 end
 
@@ -503,9 +504,7 @@ end
 
 function LTextInputField:addWidgetTo(container)
    self.b:setSize(self.width, self.height)
-   if self.id then
-      container[self.id] = self.b
-   end
+   self:setId(container, self.b)
    container:add(self.b, self.x, self.y)
 end
 
@@ -515,6 +514,7 @@ LDropDown = class(Element,
                      local dd = DropDownWidget()
                      dd:setFont(Fonts["game"])
                      dd:setList(list)
+                     dd.list = list
                      dd:setActionCallback(function(s) callback(dd, s) end)
                      dd.callback = callback
                      dd:setBaseColor(dark)
@@ -525,7 +525,7 @@ LDropDown = class(Element,
 )
 
 function LDropDown:getWidth()
-   return 127
+   return 60
 end
 
 function LDropDown:getHeight()
@@ -534,8 +534,6 @@ end
 
 function LDropDown:addWidgetTo(container)
    self.dd:setSize(self.width, self.height)
-   if self.id then
-      container[self.id] = self.dd
-   end
+   self:setId(container, self.dd)
    container:add(self.dd, self.x, self.y)
 end
