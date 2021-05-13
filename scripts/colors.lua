@@ -100,5 +100,7 @@ function SetColorScheme()
 end
 
 InitFuncs:add(function()
-      SetColorScheme()
+      if not war1gus.InCampaign then
+         SetColorScheme()
+      end
 end)

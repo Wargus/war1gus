@@ -119,7 +119,9 @@ DefineAllowHumanUnits = CreateAllowanceFunction("human")
 DefineAllowHumanUnits("AAAAAAAAAAAAAAAA")
 
 InitFuncs:add(function()
-      DefineAllowOrcUnits("AAAAAAAAAAAAAAAA")
-      DefineAllowHumanUnits("AAAAAAAAAAAAAAAA")
-      DefineAllowExtraUnits()
+      if not war1gus.InCampaign then
+         DefineAllowOrcUnits("AAAAAAAAAAAAAAAA")
+         DefineAllowHumanUnits("AAAAAAAAAAAAAAAA")
+         DefineAllowExtraUnits()
+      end
 end)
