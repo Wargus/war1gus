@@ -122,6 +122,7 @@ function RunJoiningMapMenu(s)
                           "Auto targeting",
                           "Allow multiple townhalls",
                           "Allow townhall upgrades",
+                          "Enable training queue",
                     }):withPadding(5),
                     VBox({
                           LCheckBox(""):id("fow"),
@@ -131,6 +132,7 @@ function RunJoiningMapMenu(s)
                           LCheckBox(""):id("autotarget"),
                           LCheckBox(""):id("multitown"),
                           LCheckBox(""):id("towncastle"),
+                          LCheckBox(""):id("trainingqueue"),
                     }):withPadding(5)
               }),
               LFiller()
@@ -147,7 +149,7 @@ function RunJoiningMapMenu(s)
                     })
               }):withPadding(1),
               HBox({
-                    "~<Your Race:~>",
+                    "~<Your Race:~> ",
                     LDropDown({"Map Default", "Human", "Orc"}, function(dd)
                           GameSettings.Presets[NetLocalHostsSlot].Race = race:getSelected()
                           LocalSetupState.Race[NetLocalHostsSlot] = race:getSelected()
@@ -174,6 +176,7 @@ function RunJoiningMapMenu(s)
   menu.autotarget:setEnabled(false)
   menu.multitown:setEnabled(false)
   menu.towncastle:setEnabled(false)
+  menu.trainingqueue:setEnabled(false)
 
   local OldPresentMap = PresentMap
   PresentMap = function(desc, nplayers, w, h, id)
@@ -217,6 +220,7 @@ function RunJoiningMapMenu(s)
     menu.autotarget:setMarked(preferences.SimplifiedAutoTargeting)
     menu.multitown:setMarked(preferences.AllowMultipleTownHalls)
     menu.towncastle:setMarked(preferences.AllowTownHallUpgrade)
+    menu.trainingqueue:setMarked(preferences.TrainingQueue)
 
     updatePlayersList()
     state = GetNetworkState()
@@ -396,6 +400,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
                           "Auto targeting",
                           "Allow multiple townhalls",
                           "Allow townhall upgrades",
+                          "Enable training queue",
                     }):withPadding(5),
                     VBox({
                           LCheckBox("", function(dd)
@@ -440,6 +445,13 @@ function RunServerMultiGameMenu(map, description, numplayers)
                                        NetworkServerResyncClients()
                                        RestoreSharedSettingsFromBits(GameSettings.MapRichness)
                           end):id("towncastle"),
+                          LCheckBox("", function(dd)
+                                       preferences.TrainingQueue = dd:isMarked()
+                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
+                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
+                                       NetworkServerResyncClients()
+                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
+                          end):id("trainingqueue"),
                     }):withPadding(5)
               }),
               LFiller()
@@ -456,7 +468,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
                     })
               }):withPadding(1),
               HBox({
-                    "~<Your Race:~>",
+                    "~<Your Race:~> ",
                     LDropDown({"Map Default", "Human", "Orc"}, function(dd)
                           GameSettings.Presets[0].Race = race:getSelected()
                           ServerSetupState.Race[0] = race:getSelected()
