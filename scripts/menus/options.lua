@@ -138,6 +138,33 @@ function RunPreferencesMenu()
       SavePreferences()
     end)
     b:setMarked(not preferences.MultiColoredCampaigns)
+
+    b = menu:addCheckBox("Rebalanced Unit Stats", 8, 20 + 18 * 1.5,
+      function()
+        if preferences.RebalancedStats then
+          preferences.RebalancedStats = false
+          local menu = WarMenu(nil, panel(4), false)
+          menu:setSize(144, 64)
+          menu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
+          menu:setDrawMenusUnder(true)
+          local l = MultiLineLabel("You must restart the game to change to original game stats.")
+          l:setFont(Fonts["large"])
+          l:setAlignment(MultiLineLabel.CENTER)
+          l:setVerticalAlignment(MultiLineLabel.CENTER)
+          l:setLineWidth(135)
+          l:setWidth(135)
+          l:setHeight(20)
+          l:setBackgroundColor(dark)
+          menu:add(l, 4, 19)
+          menu:addHalfButton("~!OK", "o", 41, 40, function() menu:stop() end)
+          menu:run()
+        else
+          Load("scripts/balancing.lua")
+          preferences.RebalancedStats = true
+        end
+        SavePreferences()
+      end)
+    b:setMarked(preferences.RebalancedStats)
   else
     menu:addLabel("Game Speed", 8, 20 + 18 * 0.5, Fonts["game"], false)
     local gamespeed = {}
@@ -170,13 +197,15 @@ function RunPreferencesMenu()
     end)
   b:setMarked(preferences.ShowOrders)
 
-  b = menu:addCheckBox("Train Queue", 8, 20 + 18 * 2.5,
-    function()
-	  preferences.TrainingQueue = not preferences.TrainingQueue
-	  SetTrainingQueue(not not preferences.TrainingQueue)
-      SavePreferences()
-    end)
-  b:setMarked(preferences.TrainingQueue)
+  if GameCycle == 0 then
+    b = menu:addCheckBox("Train Queue", 8, 20 + 18 * 2.5,
+      function()
+      preferences.TrainingQueue = not preferences.TrainingQueue
+      SetTrainingQueue(not not preferences.TrainingQueue)
+        SavePreferences()
+      end)
+    b:setMarked(preferences.TrainingQueue)
+  end
 
   b = menu:addCheckBox("Show Damage", menu:getWidth() / 2, 20 + 18 * 2.5,
     function()
