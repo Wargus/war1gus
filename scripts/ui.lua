@@ -276,7 +276,7 @@ local function AddFiller(file, x, y, resize_x, resize_y)
    end
 end
 
-local function MakeButton(x, y)
+function MakeButton(x, y)
    local b = CUIButton:new()
    b.X = x
    b.Y = y
