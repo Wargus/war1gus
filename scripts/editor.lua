@@ -113,3 +113,53 @@ Editor.UnitTypes:clear()
 for key,value in ipairs(editor_types) do
   Editor.UnitTypes:push_back(value)
 end
+
+local keystrokes = {
+  {"Ctrl-f", "toggle full screen"},
+  {"Ctrl-m", "cycle mirror editing"},
+  {"Ctrl-x", "exit"},
+  {"Ctrl-q", "quit to previous menu"},
+  {"Ctrl-z", "undo"},
+  {"Ctrl-y", "redo"},
+  {"backspace/delete", "remove unit under cursor"},
+  {"0", "assign unit under cursor to last player (neutral)"},
+  {"1-9", "assign unit under cursor to player 1 - 9"},
+  {"F5", "Map properties"},
+  {"F6", "Player properties"},
+  {"F11", "Save map"},
+  {"F12", "Load map"},
+  {"Right mouse click", "Deselect current tile/unit. In selection mode, edit unit under cursor"}
+}
+
+function RunEditorHelpMenu()
+  local menu = WarGameMenu(panel(1), 176, 176)
+
+  local c = Container()
+  c:setOpaque(false)
+
+  for i=1,table.getn(keystrokes) do
+    local l = Label(keystrokes[i][1])
+    l:setFont(Fonts["game"])
+    l:adjustSize()
+    c:add(l, 0, 10 * (i - 1))
+    local l = Label(keystrokes[i][2])
+    l:setFont(Fonts["game"])
+    l:adjustSize()
+    c:add(l, 40, 10 * (i - 1))
+  end
+
+  local s = ScrollArea()
+  c:setSize(160 - s:getScrollbarWidth(), 10 * table.getn(keystrokes))
+  s:setBaseColor(dark)
+  s:setBackgroundColor(dark)
+  s:setForegroundColor(clear)
+  s:setSize(160, 108)
+  s:setContent(c)
+  menu:add(s, 8, 30)
+
+  menu:addLabel("Keystroke Help Menu", 88, 5)
+  menu:addFullButton("Previous (~<Esc~>)", "escape",
+    (88) - (63), 176 - 20, function() menu:stop() end)
+
+  menu:run(false)
+end
