@@ -636,6 +636,7 @@ end
 
 CStartEditor = StartEditor
 function StartEditor(mapname)
+  SetColorScheme()
   -- extend the button area all the way to the menu button to use available space 
   local i = 6 -- usually there are buttons 0 - 5
   local x = 4 -- same as in ui.lua
