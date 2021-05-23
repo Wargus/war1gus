@@ -115,20 +115,23 @@ for key,value in ipairs(editor_types) do
 end
 
 local keystrokes = {
+  {"Ctrl-t", "cycle active tool"},
   {"Ctrl-f", "toggle full screen"},
   {"Ctrl-m", "cycle mirror editing"},
   {"Ctrl-x", "exit"},
-  {"Ctrl-q", "quit to previous menu"},
+  {"Ctrl-q", "quit to menu"},
   {"Ctrl-z", "undo"},
   {"Ctrl-y", "redo"},
-  {"backspace/delete", "remove unit under cursor"},
-  {"0", "assign unit under cursor to last player (neutral)"},
-  {"1-9", "assign unit under cursor to player 1 - 9"},
+  {"backspace", "remove unit under cursor"},
+  {"0", "unit under cursor to last player (neutral)"},
+  {"1-9", "unit under cursor to player 1-9"},
   {"F5", "Map properties"},
   {"F6", "Player properties"},
   {"F11", "Save map"},
   {"F12", "Load map"},
-  {"Right mouse click", "Deselect current tile/unit. In selection mode, edit unit under cursor"}
+  {"Right mouse", "Tile mode: Deselect current tile"},
+  {"Right mouse", "Unit mode: Deselect current unit"},
+  {"Right mouse", "Select mode: Edit unit under cursor"},
 }
 
 function RunEditorHelpMenu()
@@ -136,6 +139,8 @@ function RunEditorHelpMenu()
 
   local c = Container()
   c:setOpaque(false)
+
+  local xWidth = 0
 
   for i=1,table.getn(keystrokes) do
     local l = Label(keystrokes[i][1])
@@ -145,11 +150,12 @@ function RunEditorHelpMenu()
     local l = Label(keystrokes[i][2])
     l:setFont(Fonts["game"])
     l:adjustSize()
-    c:add(l, 40, 10 * (i - 1))
+    c:add(l, 60, 10 * (i - 1))
+    xWidth = math.max(l:getWidth(), xWidth)
   end
 
   local s = ScrollArea()
-  c:setSize(160 - s:getScrollbarWidth(), 10 * table.getn(keystrokes))
+  c:setSize(xWidth * 2, 10 * table.getn(keystrokes))
   s:setBaseColor(dark)
   s:setBackgroundColor(dark)
   s:setForegroundColor(clear)
