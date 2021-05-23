@@ -412,6 +412,7 @@ UI.MenuButton:SetCallback(
       end
 end)
 
+
 UI.NetworkMenuButton.X = 3
 UI.NetworkMenuButton.Y = 1
 UI.NetworkMenuButton.Text = "Menu"
@@ -423,6 +424,16 @@ UI.NetworkDiplomacyButton.Y = 1
 UI.NetworkDiplomacyButton.Text = "Diplomacy"
 UI.NetworkDiplomacyButton.Style = FindButtonStyle("network")
 UI.NetworkDiplomacyButton:SetCallback(function() RunDiplomacyMenu() end)
+
+UI.EditorSettingsAreaTopLeft.x = UI.InfoPanel.X
+UI.EditorSettingsAreaTopLeft.y = UI.InfoPanel.Y
+UI.EditorSettingsAreaBottomRight.x = UI.MapArea.X
+UI.EditorSettingsAreaBottomRight.y = UI.ButtonPanel.Y
+
+UI.EditorButtonAreaTopLeft.x = UI.ButtonPanel.X
+UI.EditorButtonAreaTopLeft.y = UI.ButtonPanel.Y
+UI.EditorButtonAreaBottomRight.x = UI.MapArea.X
+UI.EditorButtonAreaBottomRight.y = UI.MenuButton.Y
 
 function LoadUI(race, screen_width, screen_height)
    currentRace = race

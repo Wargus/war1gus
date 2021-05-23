@@ -14,9 +14,11 @@ local function RunEditorNewMapMenu()
   menu:addLabel("Size :", offx + 104, offy + 52 + 16 * 3, Fonts["game"], false)
   local mapSizex = menu:addDropDown(mapSizes, offx + 104 + 25, offy + 52 + 16 * 3, function() end)
   mapSizex:setWidth(25)
+  mapSizex:setSelected(3)
   menu:addLabel("x", offx + 104 + 55, offy + 52 + 16 * 3, Fonts["game"], false)
   local mapSizey = menu:addDropDown(mapSizes, offx + 104 + 62, offy + 52 + 16 * 3, function() end)
   mapSizey:setWidth(25)
+  mapSizey:setSelected(3)
 
   menu:addFullButton("~!New map", "n", offx + 96, offy + 52 + 18 * 5,
     function()
