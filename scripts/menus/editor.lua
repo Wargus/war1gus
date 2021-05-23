@@ -117,6 +117,7 @@ end
 --
 --  Save map from the editor
 --
+editorMapName = "game.smp"
 function RunEditorSaveMenu()
   local menu = WarGameMenu(panel(3))
 
@@ -124,7 +125,7 @@ function RunEditorSaveMenu()
 
   menu:addLabel("Save Game", 96, 5)
 
-  local t = menu:addTextInputField("game.smp",
+  local t = menu:addTextInputField(editorMapName,
     (384 - 300 - 18) / 1, 5 + 18, 159)
 
   local browser = menu:addBrowser("maps", ".smp.gz$",
@@ -161,6 +162,7 @@ function RunEditorSaveMenu()
 
       --SaveGame(name)
       EditorSaveMap(browser.path .. name)
+      editorMapName = name
       UI.StatusLine:Set("Saved game to: " .. browser.path .. name)
       menu:stop()
     end)

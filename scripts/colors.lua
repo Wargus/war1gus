@@ -98,3 +98,9 @@ function SetColorScheme()
     DefinePlayerColors(wc1.HumanCampaignColors)
   end end end
 end
+
+InitFuncs:add(function()
+      if not war1gus.InCampaign then
+         SetColorScheme()
+      end
+end)

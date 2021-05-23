@@ -614,11 +614,45 @@ Load("scripts/menus/diplomacy.lua")
 Load("scripts/menus/results.lua")
 Load("scripts/menus/network.lua")
 Load("scripts/menus/results.lua")
+
+Load("scripts/lib/layouts.lua")
+
+function WarMenuWithLayout(background, box)
+   box:calculateMinExtent()
+   local menu = WarMenu(title, background, {box.width, box.height})
+   menu:setSize(box.width, box.height)
+   menu:setPosition((Video.Width - menu:getWidth()) / 2, (Video.Height - menu:getHeight()) / 2)
+   menu:setDrawMenusUnder(true)
+   box:addWidgetTo(menu)
+   return menu
+end
+
 --[[
 --]]
 
 if SetShader then
   SetShader(wc1.preferences.VideoShader)
+end
+
+CStartEditor = StartEditor
+function StartEditor(mapname)
+  SetColorScheme()
+  -- extend the button area all the way to the menu button to use available space 
+  local i = 6 -- usually there are buttons 0 - 5
+  local x = 4 -- same as in ui.lua
+  local y = 120 + (23 * math.floor(i / 2)) -- same as in ui.lua
+  while y + 23 < UI.MenuButton.Y do
+    if (i + 1) % 2 == 0 then
+      x = 37
+    else
+      x = 4
+    end
+    y = 120 + (23 * math.floor(i / 2))
+    UI.ButtonPanel.Buttons:push_back(MakeButton(x, y))
+    i = i + 1
+  end
+  CStartEditor(mapname)
+  Load("scripts/ui.lua")
 end
 
 if (Editor.Running == EditorCommandLine) then

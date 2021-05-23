@@ -317,8 +317,108 @@ DefaultPreference("FogOfWarType", "enhanced")      -- "enhanced" or "legacy". Le
 DefaultPreference("FogOfWarBilinear", false)       -- Enable/Disable bilinear filtration for fog of war
 DefaultPreference("DungeonSightBlocking", true)    -- Enable/Disable sight blocking in the dungeons
 DefaultPreference("FieldOfViewType", "simple-radial")    -- default field of view type (possibe values: "simple-radial" and "shadow-casting" )
+DefaultPreference("RebalancedStats", true)
 
 wc1.preferences = preferences
+
+function StoreSharedSettingsInBits()
+   local bits = 0
+   if preferences.AllowMultipleTownHalls then
+      bits = bits + 1 -- bit 0
+   end
+   if preferences.AllowTownHallUpgrade then
+      bits = bits + 2 -- bit 1
+   end
+   if preferences.FieldOfViewType == "simple-radial" then
+      bits = bits + 4 -- bit 2
+   end
+   if preferences.SimplifiedAutoTargeting then
+      bits = bits + 8 -- bit 3
+   end
+   if preferences.DungeonSightBlocking then
+      bits = bits + 16 -- bit 4
+   end
+   if preferences.TrainingQueue then
+      bits = bits + 32 -- bit 5
+   end
+   if preferences.RebalancedStats then
+      bits = bits + 64 -- bit 6
+   end
+   return bits
+end
+
+function RestoreSharedSettingsFromBits(bits)
+   if bits >= 64 then
+      if not preferences.RebalancedStats then
+         Load("scripts/balancing.lua")
+         preferences.RebalancedStats = true
+      end
+      bits = bits - 64
+   else
+      if preferences.RebalancedStats then
+         ErrorMenu("Rebalanced stats must be disabled manually and the game restartet to continue")
+      end
+   end
+   if bits >= 32 then
+      preferences.TrainingQueue = true
+      SetTrainingQueue(true)
+      bits = bits - 32
+   else
+      preferences.TrainingQueue = false
+      SetTrainingQueue(false)
+   end
+   if bits >= 16 then
+      preferences.DungeonSightBlocking = true
+      bits = bits - 16
+   else
+      preferences.DungeonSightBlocking = false
+   end
+   if bits >= 8 then
+      -- bit 3 is set
+      preferences.SimplifiedAutoTargeting = true
+      Preference.SimplifiedAutoTargeting = true
+      bits = bits - 8
+   else
+      preferences.SimplifiedAutoTargeting = false
+      Preference.SimplifiedAutoTargeting = false
+   end
+   if bits >= 4 then
+      if preferences.FieldOfViewType ~= "simple-radial" then
+         preferences.FieldOfViewType = "simple-radial"
+         SetFieldOfViewType("simple-radial")
+      end
+      bits = bits - 4
+   else
+      if preferences.FieldOfViewType ~= "shadow-casting" then
+         preferences.FieldOfViewType = "shadow-casting"
+         SetFieldOfViewType("shadow-casting")
+      end
+   end
+   if bits >= 2 then
+      preferences.AllowTownHallUpgrade = true
+      bits = bits - 2
+   else
+      preferences.AllowTownHallUpgrade = false
+   end
+   if bits >= 1 then
+      if not preferences.AllowMultipleTownHalls then
+         preferences.AllowMultipleTownHalls = true
+         Load("scripts/buttons.lua")
+         Load("scripts/buildings.lua")
+      end
+   else
+      if preferences.AllowMultipleTownHalls then
+         preferences.AllowMultipleTownHalls = false
+         Load("scripts/buttons.lua")
+         Load("scripts/buildings.lua")
+      end
+   end
+end
+
+InitFuncs:add(function()
+      GameSettings.MapRichness = StoreSharedSettingsInBits()
+end)
+
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
 local pixelScale = 1.2
 if preferences.VideoWidth < 640 then
@@ -410,5 +510,9 @@ Load("scripts/ai.lua")
 Load("scripts/cheats.lua")
 Load("scripts/colors.lua")
 Load("scripts/commands.lua")
+
+if preferences.RebalancedStats then
+   Load("scripts/balancing.lua")
+end
 
 print("... ready!\n")
