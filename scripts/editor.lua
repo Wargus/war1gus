@@ -62,7 +62,7 @@ local editor_types = {
   "unit-human-stormwind-keep",
 
 --- - - - - - - - - - - - - - - - - - -
-
+  "", "",
 --  "unit-orc-start-location",
 
   "unit-peon",
@@ -86,10 +86,15 @@ local editor_types = {
   "unit-orc-tower",
   "unit-orc-blackrock-spire",
 
+  "", "",
+
 --- - - - - - - - - - - - - - - - - - -
 
   "unit-road",
   "unit-wall",
+
+  "", "",
+
   "unit-gold-mine",
   "unit-dungeon-entrance",
   "unit-brigand",
