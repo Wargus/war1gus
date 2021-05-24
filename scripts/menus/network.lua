@@ -209,20 +209,24 @@ function RunJoiningMapMenu(s)
     GameSettings.NoFogOfWar = not int2bool(ServerSetupState.FogOfWar)
     menu.revealmap:setMarked(int2bool(ServerSetupState.RevealMap))
     GameSettings.RevealMap = ServerSetupState.RevealMap
+
+    GameSettings.NumUnits = ServerSetupState.UnitsOption
     if ServerSetupState.UnitsOption == 0 then
        menu.numunits:setCaption("Map default")
+       GameSettings.NumUnits = -1
     elseif ServerSetupState.UnitsOption == 1 then
        menu.numunits:setCaption("Only 1 peasant")
     else
-       menu.numunits:setCaption("Only " .. ServerSetupState.UnitsOption .. " peasants")
+       menu.numunits:setCaption("Only " .. ServerSetupState.UnitsOption .. " units")
     end
-    GameSettings.NumUnits = ServerSetupState.UnitsOption
+
     if ServerSetupState.ResourcesOption == 0 then
        menu.resources:setCaption("Map default")
+       GameSettings.Resources = -1
     else
        menu.resources:setCaption("Level " .. ServerSetupState.ResourcesOption)
+       GameSettings.Resources = ServerSetupState.ResourcesOption
     end
-    GameSettings.Resources = ServerSetupState.ResourcesOption
 
     GameSettings.MapRichness = ServerSetupState.MapRichness
     RestoreSharedSettingsFromBits(ServerSetupState.MapRichness)
@@ -437,11 +441,17 @@ function RunServerMultiGameMenu(map, description, numplayers)
                           LDropDown({"Map Default", "Low", "Medium", "High"}, function(dd)
                                 GameSettings.Resources = dd:getSelected()
                                 ServerSetupState.ResourcesOption = GameSettings.Resources
+                                if GameSettings.Resources == 0 then
+                                   GameSettings.Resources = -1
+                                end
                                 NetworkServerResyncClients()
                           end):id("resources"),
                           LDropDown({"Map Default", "One Peasant Only"}, function(dd)
                                 GameSettings.NumUnits = dd:getSelected()
                                 ServerSetupState.UnitsOption = GameSettings.NumUnits
+                                if GameSettings.NumUnits == 0 then
+                                   GameSettings.NumUnits = -1
+                                end
                                 NetworkServerResyncClients()
                           end):id("numunits"),
                           LCheckBox("", function(dd)
