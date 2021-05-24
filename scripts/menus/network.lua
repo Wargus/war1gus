@@ -123,6 +123,7 @@ function RunJoiningMapMenu(s)
                           "Allow multiple townhalls",
                           "Allow townhall upgrades",
                           "Enable training queue",
+                          "Unit stats",
                           "Unit vision",
                     }):withPadding(5),
                     VBox({
@@ -133,6 +134,7 @@ function RunJoiningMapMenu(s)
                           LCheckBox(""):id("autotarget"),
                           LCheckBox(""):id("multitown"),
                           LCheckBox(""):id("towncastle"),
+                          LLabel(""):id("rebalancedstats"),
                           LCheckBox(""):id("trainingqueue"),
                           LLabel(""):id("fieldofviewtype")
                     }):withPadding(5)
@@ -179,7 +181,12 @@ function RunJoiningMapMenu(s)
   menu.multitown:setEnabled(false)
   menu.towncastle:setEnabled(false)
   menu.trainingqueue:setEnabled(false)
-
+  if preferences.RebalancedStats then
+     menu.rebalancedstats:setCaption("Rebalanced")
+  else
+     menu.rebalancedstats:setCaption("Original")
+  end
+  menu.rebalancedstats:adjustSize()
   local OldPresentMap = PresentMap
   PresentMap = function(desc, nplayers, w, h, id)
     numplayers = nplayers
@@ -240,6 +247,14 @@ function RunJoiningMapMenu(s)
         SetFogOfWar(menu.fow:isMarked())
         if menu.revealmap:isMarked() == true then
           RevealMap()
+        end
+
+        if StoreSharedSettingsInBits() ~= GameSettings.MapRichness then
+           -- try one more time, then give up
+           RestoreSharedSettingsFromBits(GameSettings.MapRichness, function(msg)
+                 ErrorMenu(msg)
+                 menu:stop()
+           end)
         end
         NetworkGamePrepareGameSettings()
         war1gus.InCampaign = false
@@ -409,6 +424,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
                           "Allow multiple townhalls",
                           "Allow townhall upgrades",
                           "Enable training queue",
+                          "Unit stats",
                           "Unit vision",
                     }):withPadding(5),
                     VBox({
@@ -461,6 +477,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
                                        NetworkServerResyncClients()
                                        RestoreSharedSettingsFromBits(GameSettings.MapRichness)
                           end):id("trainingqueue"),
+                          LLabel(""):id("rebalancedstats"),
                           LDropDown({"Radial", "Shadow Casting"}, function(dd)
                                 if dd:getSelected() == 0 then
                                    preferences.FieldOfViewType = "simple-radial"
@@ -542,6 +559,12 @@ function RunServerMultiGameMenu(map, description, numplayers)
   menu.multitown:setMarked(preferences.AllowMultipleTownHalls)
   menu.towncastle:setMarked(preferences.AllowTownHallUpgrade)
   menu.trainingqueue:setMarked(preferences.TrainingQueue)
+  if preferences.RebalancedStats then
+     menu.rebalancedstats:setCaption("Rebalanced")
+  else
+     menu.rebalancedstats:setCaption("Original")
+  end
+  menu.rebalancedstats:adjustSize()
   if preferences.FieldOfViewType == "simple-radial" then
      menu.fieldofviewtype:setSelected(0)
   else

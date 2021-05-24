@@ -347,7 +347,7 @@ function StoreSharedSettingsInBits()
    return bits
 end
 
-function RestoreSharedSettingsFromBits(bits)
+function RestoreSharedSettingsFromBits(bits, errorCb)
    if bits >= 64 then
       if not preferences.RebalancedStats then
          Load("scripts/balancing.lua")
@@ -356,7 +356,9 @@ function RestoreSharedSettingsFromBits(bits)
       bits = bits - 64
    else
       if preferences.RebalancedStats then
-         ErrorMenu("Rebalanced stats must be disabled manually and the game restartet to continue")
+         if errorCb then
+            errorCb("Rebalanced stats must be disabled manually and the game restartet to continue")
+         end
       end
    end
    if bits >= 32 then
