@@ -256,7 +256,8 @@ Section "-${NAME}"
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 	CreateDirectory "$SMPROGRAMS\$STARTMENUDIR"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME}.lnk" "$INSTDIR\${EXE}"
-	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Retro).lnk" "$INSTDIR\${EXE} -Z -x 1"
+	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Debug mode).lnk" "$INSTDIR\${EXE} -p -i"
+	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Safe graphics mode).lnk" "$INSTDIR\${EXE} -g -W -v 320x240"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\Uninstall.lnk" "$INSTDIR\${UNINSTALL}"
 	CreateShortcut "$DESKTOP\${NAME}.lnk" "$INSTDIR\${EXE}"
 	!insertmacro MUI_STARTMENU_WRITE_END
