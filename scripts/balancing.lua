@@ -130,6 +130,7 @@ DefineUnitType("unit-water-elemental",{OnDeath = function(elemental, x, y)
       table.remove(CasterToElementalMap, caster)
       table.remove(ElementalToCasterMap, elemental)
       TransformUnit(caster, "unit-conjurer")
+      SetUnitVariable(caster, "Mana", 0)
    end
 end})
 
@@ -191,6 +192,7 @@ DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
         table.remove(ElementalToCasterMap, elemental)
         RemoveUnit(elemental)
         TransformUnit(caster, "unit-conjurer")
+        SetUnitVariable(caster, "Mana", 0)
      end
 end})
 
@@ -218,6 +220,7 @@ DefineUnitType("unit-daemon",{OnDeath = function(daemon, x, y)
       table.remove(CasterToDaemonMap, caster)
       table.remove(DaemonToCasterMap, daemon)
       TransformUnit(caster, "unit-warlock")
+      SetUnitVariable(caster, "Mana", 0)
    end
 end})
 
@@ -280,5 +283,6 @@ DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
         table.remove(DaemonToCasterMap, daemon)
         RemoveUnit(daemon)
         TransformUnit(caster, "unit-warlock")
+        SetUnitVariable(caster, "Mana", 0)
      end
 end})
