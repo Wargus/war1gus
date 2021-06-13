@@ -3814,27 +3814,6 @@ void copyArchive(const char* partialPath) {
 	fclose(target);
 }
 
-void CopyDirectories(const char** directories) {
-	int i, ret;
-	const char* dir;
-	char cmd[2048];
-
-	CheckPath(Dir);
-
-	for (i = 0; (dir = directories[i]); i++) {
-#if defined(_MSC_VER) || defined(WIN32)
-		sprintf(cmd, "robocopy \"%s\" \"%s\\%s\" /MIR", dir, Dir, dir);
-#else
-		sprintf(cmd, "cp -Ru \"%s\" \"%s/\"", dir, Dir);
-#endif
-		ret = system(cmd);
-		if (ret != 0) {
-			fprintf(stderr, "Problem copying %s to %s\n", dir, Dir);
-			fflush(stdout);
-		}
-	}
-}
-
 void CreateConfig(char* outputdir, int video, int miditoogg) {
 	char cfile[2048];
 	FILE *config;
@@ -4091,11 +4070,6 @@ int main(int argc, char** argv)
 	printf("Extract from \"%s\" to \"%s\"\n", ArchiveDir, Dir);
 	printf("Please be patient, the data may take a couple of minutes to extract...\n");
 	fflush(stdout);
-
-	// dirs[0] = "scripts";
-	// dirs[1] = "contrib";
-	// dirs[2] = "campaigns";
-	// CopyDirectories(dirs);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		printf("%s:\n", Todo[u].File);
