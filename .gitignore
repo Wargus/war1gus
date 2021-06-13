@@ -4,3 +4,7 @@ build/
 CMakeFiles
 .clangd
 compile_commands.json
+*.dll
+*.exe
+*.zip
+*.log
