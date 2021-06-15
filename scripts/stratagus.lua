@@ -394,6 +394,7 @@ function RestoreSharedSettingsFromBits(bits, errorCb)
       if preferences.FieldOfViewType ~= "shadow-casting" then
          preferences.FieldOfViewType = "shadow-casting"
          SetFieldOfViewType("shadow-casting")
+         SetFogOfWarType("enhanced")
       end
    end
    if bits >= 2 then
