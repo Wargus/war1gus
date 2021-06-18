@@ -278,6 +278,7 @@ Section "-${NAME}"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME}.lnk" "$INSTDIR\${EXE}"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Debug mode).lnk" "$INSTDIR\${EXE}" "-p -i"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Safe graphics mode).lnk" "$INSTDIR\${EXE}" "-g -W -v 320x240"
+	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} Map Editor.lnk" "$INSTDIR\${EXE}" "-e -g -W -v 640x480"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\Uninstall.lnk" "$INSTDIR\${UNINSTALL}"
 	CreateShortcut "$DESKTOP\${NAME}.lnk" "$INSTDIR\${EXE}"
 	!insertmacro MUI_STARTMENU_WRITE_END
@@ -303,6 +304,7 @@ Section "-${NAME}"
 	CreateShortCut "$INSTDIR\${NAME}.lnk" "$INSTDIR\${EXE}"
 	CreateShortCut "$INSTDIR\${NAME} (Debug mode).lnk" "$INSTDIR\${EXE}" "-p -i"
 	CreateShortCut "$INSTDIR\${NAME} (Safe graphics mode).lnk" "$INSTDIR\${EXE}" "-g -W -v 320x240"
+	CreateShortCut "$INSTDIR\${NAME} Map Editor.lnk" "$INSTDIR\${EXE}" "-e -g -W -v 640x480"
 !endif
 SectionEnd
 
