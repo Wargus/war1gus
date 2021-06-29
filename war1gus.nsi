@@ -62,15 +62,21 @@
 !system "powershell -Command $\"& {cp **\${WARTOOL} ${WARTOOL}}$\""
 !system "powershell -Command $\"& {cp **\${EXE} ${EXE}}$\""
 
+!define INNOEXTRACT "innoextract.exe"
 !define FFMPEG "ffmpeg.exe"
 !define SF2BANK "TimGM6mb.sf2"
 
 !define VCREDIST "vc_redist.x86.exe"
 !define VCREDISTREGKEY "SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86"
 
+!ifndef PORTABLE
 !define UNINSTALL "uninstall.exe"
 !define INSTALLER "${NAME}-${VERSION}.exe"
 !define INSTALLDIR "$PROGRAMFILES\${NAME}\"
+!else
+!define INSTALLER "${NAME}-portable-${VERSION}.exe"
+!define INSTALLDIR "$DESKTOP\${NAME}\"
+!endif
 
 ; Installer for x86-64 systems
 !ifdef x86_64
@@ -83,13 +89,16 @@ ${redefine} VCREDISTREGKEY "SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\
 !endif
 
 ; Registry paths
+!ifndef PORTABLE
 !define REGKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}"
 !define STRATAGUS_REGKEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${STRATAGUS_NAME}"
+!endif
 
 ;--------------------------------
 
 ; Download and extract nessesary 3rd party programs
 !ifndef NO_DOWNLOAD
+!system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${INNOEXTRACT} -OutFile ${INNOEXTRACT}}$\""
 !system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${FFMPEG} -OutFile ${FFMPEG}}$\""
 !system "powershell -Command $\"& {wget https://github.com/Wargus/stratagus/releases/download/2015-30-11/${SF2BANK} -OutFile ${SF2BANK}}$\""
 !system "powershell -Command $\"& {wget https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/${VCREDIST} -OutFile ${VCREDIST}}$\""
@@ -99,7 +108,9 @@ ${redefine} VCREDISTREGKEY "SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\
 
 ;--------------------------------
 
+!ifndef PORTABLE
 Var STARTMENUDIR
+!endif
 
 !define MUI_ICON "${ICON}"
 !define MUI_UNICON "${ICON}"
@@ -122,7 +133,9 @@ Var STARTMENUDIR
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 
+!ifndef PORTABLE
 !insertmacro MUI_PAGE_STARTMENU Application $STARTMENUDIR
+!endif
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
@@ -181,9 +194,15 @@ VIProductVersion "${VIVERSION}"
 
 BrandingText "${NAME}, $(STR_VERSION) ${VERSION}  ${HOMEPAGE}"
 ShowInstDetails Show
+!ifndef PORTABLE
 ShowUnInstDetails Show
+!endif
 XPStyle on
+!ifndef PORTABLE
 RequestExecutionLevel admin
+!else
+RequestExecutionLevel user
+!endif
 
 ReserveFile "${WARTOOL}"
 
@@ -193,6 +212,7 @@ Section "${NAME}"
 	SectionIn RO
 SectionEnd
 
+!ifndef PORTABLE
 Section "-${NAME}" UninstallPrevious
 
 	SectionIn RO
@@ -208,6 +228,7 @@ Section "-${NAME}" UninstallPrevious
 	SetDetailsPrint lastused
 
 SectionEnd
+!endif
 
 Section "-${NAME}"
 
@@ -216,6 +237,7 @@ Section "-${NAME}"
 	SetOutPath "$INSTDIR"
 	File "${EXE}"
 	File "${WARTOOL}"
+	File "${INNOEXTRACT}"
 	File "${FFMPEG}"
 
         ; -- XXX TODO: include Stratagus and dependencies some better way
@@ -253,10 +275,13 @@ Section "-${NAME}"
 
 	!cd ${CMAKE_CURRENT_BINARY_DIR}
 
+!ifndef PORTABLE
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 	CreateDirectory "$SMPROGRAMS\$STARTMENUDIR"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME}.lnk" "$INSTDIR\${EXE}"
-	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Retro).lnk" "$INSTDIR\${EXE} -Z -x 1"
+	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Debug mode).lnk" "$INSTDIR\${EXE}" "-p -i"
+	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} (Safe graphics mode).lnk" "$INSTDIR\${EXE}" "-g -W -v 320x240"
+	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\${NAME} Map Editor.lnk" "$INSTDIR\${EXE}" "-e -g -W -v 640x480"
 	CreateShortCut "$SMPROGRAMS\$STARTMENUDIR\Uninstall.lnk" "$INSTDIR\${UNINSTALL}"
 	CreateShortcut "$DESKTOP\${NAME}.lnk" "$INSTDIR\${EXE}"
 	!insertmacro MUI_STARTMENU_WRITE_END
@@ -275,17 +300,27 @@ Section "-${NAME}"
 	WriteRegStr HKLM "${STRATAGUS_REGKEY}\Games" "${NAME}" "${VERSION}"
 
 	WriteUninstaller "$INSTDIR\${UNINSTALL}"
+!else
+	!appendfile "$%temp%\compiletimefile" ""
+	File "/oname=$INSTDIR\portable-install" "$%temp%\compiletimefile"
 
+	CreateShortCut "$INSTDIR\${NAME}.lnk" "$INSTDIR\${EXE}"
+	CreateShortCut "$INSTDIR\${NAME} (Debug mode).lnk" "$INSTDIR\${EXE}" "-p -i"
+	CreateShortCut "$INSTDIR\${NAME} (Safe graphics mode).lnk" "$INSTDIR\${EXE}" "-g -W -v 320x240"
+	CreateShortCut "$INSTDIR\${NAME} Map Editor.lnk" "$INSTDIR\${EXE}" "-e -g -W -v 640x480"
+!endif
 SectionEnd
 
 ;--------------------------------
 
+!ifndef PORTABLE
 Section "un.${NAME}" Executable
 
 	SectionIn RO
 
 	Delete "$INSTDIR\${EXE}"
 	Delete "$INSTDIR\${WARTOOL}"
+	Delete "$INSTDIR\${INNOEXTRACT}"
 	Delete "$INSTDIR\${FFMPEG}"
 	Delete "$INSTDIR\*.exe"
 	Delete "$INSTDIR\*.dll"
@@ -328,6 +363,7 @@ SectionEnd
 !insertmacro MUI_DESCRIPTION_TEXT "${Configuration}" "$(DESC_REMOVECONF)"
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_END
 
+!endif
 ;--------------------------------
 
 Function .onInit

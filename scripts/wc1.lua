@@ -107,6 +107,9 @@ function SetPlayerData(player, data, arg1, arg2)
     elseif (GameSettings.Presets[player].Race == 2) then
         arg1 = "orc"
     end
+    DebugPrint("Preset race for player " .. player .. " is " .. GameSettings.Presets[player].Race)
+    DebugPrint("    oldarg1: " .. oldarg1)
+    DebugPrint("    newarg1: " .. arg1)
     ShouldTogglePlayerRace[player] = (oldarg1 ~= arg1)  
     if (GetThisPlayer() == player) then
         LoadUI(arg1, Video.Width, Video.Height)

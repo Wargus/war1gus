@@ -56,6 +56,8 @@
 #include <zlib.h>
 
 #include <string>
+#include <regex>
+#include <sstream>
 
 #ifdef _MSC_VER
 // #define inline __inline
@@ -1629,15 +1631,12 @@ int ConvertFLCFrameChunk(flcfile *file, unsigned char* buf)
 */
 void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int uncompressed) {
 	char *flc;
-	int ret, i, cmdlen;
-	char *cmd, *output, *buf;
-	char pngfiles[1024];
-	char cmdprefix[512];
-	struct stat st;
+	int cmdlen;
+	char *cmd;
 	static const char *encoder = NULL;
 
 	flc = strdup(iflc);
-	for (int i = 0; i < strlen(flc); i++) {
+	for (size_t i = 0; i < strlen(flc); i++) {
 		flc[i] = tolower(flc[i]);
 	}
 	
@@ -1659,109 +1658,78 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 	}
 
 	// delete the last png, it's the first frame again (for looping)
-	struct dirent *ep;
-	struct stat result;
-	int last = 0;
-	DIR *dp = opendir(Dir);
-	char *pngname = (char *)calloc(strlen(Dir) + 1 + strlen("thumb0000.png") + 1, sizeof(char));
-	while ((ep = readdir(dp))) {
-		int cur;
-		char *n = (char*)calloc(200, sizeof(char));
-		if (sscanf(ep->d_name, "%[a-z0-9]-%d.png", n, &cur)) {
-			free(n);
-			if (cur > last) {
-				last = cur;
-				sprintf(pngname, "%s/%s", Dir, ep->d_name);
+	int last = -1;
+	std::filesystem::path last_png;
+	std::filesystem::directory_iterator videosDir(std::filesystem::path(Dir) / VIDEO_PATH);
+	std::regex pattern("[a-zA-Z0-9]+\\-([0-9]+)");
+	for(auto& direntry: std::filesystem::directory_iterator(std::filesystem::path(Dir) / VIDEO_PATH)) {
+		if (direntry.is_regular_file()) {
+			auto& direntry_path = direntry.path();
+			if (direntry_path.extension() == ".png") {
+				std::smatch sm;
+				std::string basename = direntry_path.stem().string();
+				if (std::regex_match(basename, sm, pattern)) {
+					int cur = std::stoi(sm[1]);
+					if (cur > last) {
+						last = cur;
+						last_png = direntry_path;
+					}
+				}
 			}
 		}
 	}
-	closedir(dp);
-	// delete last file
-	unlink(pngname);
-	free(pngname);
+	if (last >= 0) {
+		std::filesystem::remove(last_png);
+	}
 
 	const char *to_video;
+	std::filesystem::path output = std::filesystem::path(Dir) / VIDEO_PATH / flc;
 	if (uncompressed) {
 		to_video =
 			"%s -y -r %d -i \"%s-%%04d.png\" -codec:v huffyuv "
 			"-vf scale=640:-1 \"%s\"";
-		output = (char *)calloc(strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(flc) + 1, sizeof(char));
-		sprintf(output, "%s/%s/%s", Dir, VIDEO_PATH, flc);
-		output[strlen(output) - 3] = 'a';
-		output[strlen(output) - 2] = 'v';
-		output[strlen(output) - 1] = 'i';
+		output.replace_extension(".avi");
 	} else {
 		to_video =
 			"%s -y -r %d -i \"%s-%%04d.png\" -codec:v libtheora "
 			"-qscale:v 31 -codec:a libvorbis -qscale:a 15 -pix_fmt yuv420p -vb 4000k "
 			"-vf scale=640:-1 \"%s\"";
-		output = (char *)calloc(strlen(Dir) + 1 + strlen(VIDEO_PATH) + 1 + strlen(flc) + 1, sizeof(char));
-		sprintf(output, "%s/%s/%s", Dir, VIDEO_PATH, flc);
-		output[strlen(output) - 3] = 'o';
-		output[strlen(output) - 2] = 'g';
-		output[strlen(output) - 1] = 'v';
+		output.replace_extension(".ogv");
 	}
-	CheckPath(output);
+	std::filesystem::create_directories(output.parent_path());
 
 	cmdlen = strlen(to_video) + 1 /*fps*/ + strlen(encoder) + strlen(Dir) + strlen(flc) +
-		strlen(VIDEO_PATH) + strlen(output);
+		strlen(VIDEO_PATH) + output.string().size();
 	cmd = (char *)calloc(strlen(to_video) + strlen(encoder) + strlen(Dir) + strlen(flc) +
-						 strlen(output),
+						 output.string().size(),
 						 sizeof(char));
-	snprintf(cmd, cmdlen, to_video, encoder, speed, file->FLCFile, output);
+	snprintf(cmd, cmdlen, to_video, encoder, speed, file->FLCFile, output.string().c_str());
 	printf("%s\n", cmd);
 	system(cmd);
 	free(cmd);
-	free(output);
 
 	// keep the first frame as png
-	if (stillImage) {
-		FILE *in, *out;
-
-		pngname = (char *)calloc(strlen(file->FLCFile) + strlen("-0000.png") + 1, sizeof(char));
-		if (stillImage > 1) {
-			sprintf(pngname, "%s-%04d.png", file->FLCFile, stillImage);
+	if (stillImage > 0) {
+		std::stringstream stillFilenameStream;
+		stillFilenameStream << file->FLCFile << "-";
+		if (stillImage == 1) {
+			stillFilenameStream << "0000.png";
 		} else {
-			sprintf(pngname, "%s-0000.png", file->FLCFile);
+			stillFilenameStream << std::setw(4) << std::setfill('0') << std::to_string(stillImage - 1) << ".png";
 		}
-		in = fopen(pngname, "rb");
-		free(pngname);
-
-		output = (char *)calloc(strlen(Dir) + 1 + strlen(GRAPHIC_PATH) + 1 +
-                                strlen(flc) + 1,
-								sizeof(char));
-		sprintf(output, "%s/%s/%s", Dir, GRAPHIC_PATH, flc);
-		output[strlen(output) - 3] = 'p';
-		output[strlen(output) - 2] = 'n';
-		output[strlen(output) - 1] = 'g';
-		CheckPath(output);
-		out = fopen(output, "wb");
-		free(output);
-
-		while (1) {
-			int a = fgetc(in);
-			if (!feof(in)) {
-				fputc(a, out);
-			} else {
-				break;
-			}
-		}
-
-		fclose(in);
-		fclose(out);
+		std::string stillFilename = stillFilenameStream.str();
+		
+		std::filesystem::path output = std::filesystem::path(Dir) / GRAPHIC_PATH / flc;
+		output.replace_extension(".png");
+		std::filesystem::create_directories(output.parent_path());
+		std::filesystem::copy_file(stillFilename, output, std::filesystem::copy_options::overwrite_existing);
 	}
-
-	pngname = (char *)calloc(strlen(file->FLCFile) + strlen("-0000.png") + 1, sizeof(char));
-	sprintf(pngname, "%s/%s", Dir, VIDEO_PATH);
-	dp = opendir(pngname);
-	while ((ep = readdir(dp))) {
-		if (strstr(ep->d_name, ".png")) {
-			sprintf(pngname, "%s/%s/%s", Dir, VIDEO_PATH, ep->d_name);
-			unlink(pngname);
+	
+	for(auto& direntry: std::filesystem::directory_iterator(std::filesystem::path(Dir) / VIDEO_PATH)) {
+		if (direntry.is_regular_file() && direntry.path().extension() == ".png") {
+			std::filesystem::remove(direntry);
 		}
 	}
-	closedir(dp);
-	free(pngname);
 }
 
 /**
@@ -3767,7 +3735,6 @@ int ConvertMap(const char* file, int txte, int mtxme)
 
 void copyArchive(const char* partialPath) {
 	FILE *source, *target;
-	char ch;
 	struct stat st;
 
 	char srcname[8192] = {'\0'};
@@ -3789,7 +3756,7 @@ void copyArchive(const char* partialPath) {
 
 	source = fopen(srcname, "rb");
 	if (source == NULL) {
-		fclose(target);
+		fclose(source);
 		fprintf(stderr, "Cannot copy %s...\n", srcname);
 		exit(-1);
 	}
@@ -3812,27 +3779,6 @@ void copyArchive(const char* partialPath) {
 
 	fclose(source);
 	fclose(target);
-}
-
-void CopyDirectories(const char** directories) {
-	int i, ret;
-	const char* dir;
-	char cmd[2048];
-
-	CheckPath(Dir);
-
-	for (i = 0; (dir = directories[i]); i++) {
-#if defined(_MSC_VER) || defined(WIN32)
-		sprintf(cmd, "robocopy \"%s\" \"%s\\%s\" /MIR", dir, Dir, dir);
-#else
-		sprintf(cmd, "cp -Ru \"%s\" \"%s/\"", dir, Dir);
-#endif
-		ret = system(cmd);
-		if (ret != 0) {
-			fprintf(stderr, "Problem copying %s to %s\n", dir, Dir);
-			fflush(stdout);
-		}
-	}
 }
 
 void CreateConfig(char* outputdir, int video, int miditoogg) {
@@ -3919,23 +3865,8 @@ void teeStdout() {
 		exit(1);
 	}
 
-	LPTSTR appdataVal = (LPTSTR) malloc(BUFSIZE*sizeof(TCHAR));
-    if (appdataVal == NULL) {
-        printf("Out of memory\n");
-        exit(1);
-    }
-    DWORD dwRet = GetEnvironmentVariable(VARNAME, appdataVal, BUFSIZE);
-	if (dwRet > BUFSIZE) {
-		appdataVal = (LPTSTR) realloc(appdataVal, dwRet*sizeof(TCHAR));
-		GetEnvironmentVariable(VARNAME, appdataVal, BUFSIZE);
-	}
-	// assume that %APPDATA% exists
-	LPTSTR stdoutpath = (LPTSTR) calloc(dwRet + _tcslen(GAMEDIR) + _tcslen(LOGFILE) + 1, sizeof(TCHAR));
-	_tcscat(stdoutpath, appdataVal);
-	_tcscat(stdoutpath, GAMEDIR);
-	_tmkdir(stdoutpath);
-	_tcscat(stdoutpath, LOGFILE);
-	int logfilefd = _topen(stdoutpath, _O_WRONLY | _O_CREAT | _O_BINARY | _O_TRUNC, _S_IWRITE);
+	char* stdoutpath = GetExtractionLogPath("War1gus", Dir);
+	int logfilefd = _open(stdoutpath, _O_WRONLY | _O_CREAT | _O_BINARY | _O_TRUNC, _S_IWRITE);
 
     // make stdout/stderr write into the write ends of the pipes
 	_dup2(stdoutPipes[1], 1);
@@ -4039,7 +3970,6 @@ int main(int argc, char** argv)
 		exit(-1);
 	}
 
-	teeStdout();
 
 	ArchiveDir = argv[a];
 	archive_dir = (char*)calloc(sizeof(char), strlen(ArchiveDir) + strlen("fdata") + 1);
@@ -4052,6 +3982,7 @@ int main(int argc, char** argv)
 	} else {
 		Dir = strdup(DEFAULT_DATA_DIR);
 	}
+	teeStdout();
 
 	sprintf(buf, "%s/data.war", ArchiveDir);
 	if (stat(buf, &st)) {
@@ -4091,11 +4022,6 @@ int main(int argc, char** argv)
 	printf("Extract from \"%s\" to \"%s\"\n", ArchiveDir, Dir);
 	printf("Please be patient, the data may take a couple of minutes to extract...\n");
 	fflush(stdout);
-
-	// dirs[0] = "scripts";
-	// dirs[1] = "contrib";
-	// dirs[2] = "campaigns";
-	// CopyDirectories(dirs);
 
 	for (u = 0; u < sizeof(Todo) / sizeof(*Todo); ++u) {
 		printf("%s:\n", Todo[u].File);

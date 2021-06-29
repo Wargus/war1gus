@@ -149,6 +149,8 @@ function RunJoiningMapMenu(s)
                     HBox({
                           "Chat: ",
                           LTextInputField("", function()
+                           OnlineService.sendmessage(menu.chatinput:getText())
+                           menu.chatinput:setText("")
                           end):id("chatinput")
                     })
               }):withPadding(1),
@@ -168,12 +170,15 @@ function RunJoiningMapMenu(s)
         LFiller()
   }):withPadding(5)
 
-
   menubox.width = Video.Width
   menubox.height = Video.Height
   menubox.x = 0
   menubox.y = 0
   menubox:addWidgetTo(menu)
+  
+  local chatList = {}
+  local AddMessage = AddOnlineChatMessage(chatList, menu.chat)
+  OnlineService.setup({ShowChat = AddMessage})
 
   menu.fow:setEnabled(false)
   menu.revealmap:setEnabled(false)
@@ -513,6 +518,8 @@ function RunServerMultiGameMenu(map, description, numplayers)
                     HBox({
                           "Chat: ",
                           LTextInputField("", function()
+                           OnlineService.sendmessage(menu.chatinput:getText())
+                           menu.chatinput:setText("")
                           end):id("chatinput")
                     })
               }):withPadding(1),
@@ -553,6 +560,10 @@ function RunServerMultiGameMenu(map, description, numplayers)
   menubox.x = 0
   menubox.y = 0
   menubox:addWidgetTo(menu)
+
+  local chatList = {}
+  local AddMessage = AddOnlineChatMessage(chatList, menu.chat)
+  OnlineService.setup({ShowChat = AddMessage})
 
   menu.fow:setMarked(true)
   menu.startgame:setVisible(false)
@@ -777,6 +788,20 @@ function RunMultiPlayerGameMenu(s)
   ExitNetwork1()
 end
 
+function AddOnlineChatMessage(list, listbox)
+   return function(str, pre, suf)
+      for line in string.gmatch(str, "([^".. string.char(10) .."]+)") do
+      if pre and suf then
+         table.insert(list, pre .. line .. suf)
+      else
+         table.insert(list, line)
+      end
+      end
+      listbox:setList(list)
+      listbox:scrollToBottom()
+   end
+end
+
 function RunOnlineMenu()
   local counter = 0
 
@@ -839,7 +864,7 @@ function RunOnlineMenu()
      games:getWidth(),
      Video.Height - (margin + messageLabel:getY() + messageLabel:getHeight()) - (btnHeight * 2) - (margin * 2),
      messageList
-  )
+   )
 
   local input = menu:addTextInputField(
      "",
@@ -859,6 +884,7 @@ function RunOnlineMenu()
      input:getY() + btnHeight,
      function()
         RunCreateMultiGameMenu()
+        OnlineService.setup({ShowChat = AddMessage})
      end
   )
   createGame:setWidth((Video.Width - margin * 4 - listWidth) / 3)
@@ -883,6 +909,7 @@ function RunOnlineMenu()
               -- connect failed, don't leave this menu
               return
            end
+           OnlineService.setup({ShowChat = AddMessage})
         else
            ErrorMenu(_("No game selected"))
         end
@@ -929,7 +956,7 @@ function RunOnlineMenu()
      end
      friends:setList(friendsList)
   end
-
+  
   local SetGames = function(...)
      gamesList = {}
      gamesObjectList = {}
@@ -960,18 +987,8 @@ function RunOnlineMenu()
      end
      selectedChannelIdx = -1
   end
-
-  local AddMessage = function(str, pre, suf)
-     for line in string.gmatch(str, "([^".. string.char(10) .."]+)") do
-       if pre and suf then
-         table.insert(messageList, pre .. line .. suf)
-       else
-         table.insert(messageList, line)
-       end
-     end
-     messages:setList(messageList)
-     messages:scrollToBottom()
-  end
+  
+  local AddMessage = AddOnlineChatMessage(messageList, messages)
 
   local ShowInfo = function(errmsg)
      AddMessage(errmsg, "~<", "~>")
