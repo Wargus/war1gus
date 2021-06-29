@@ -1,14 +1,16 @@
 language: cpp
 compiler:
   - gcc
-os:
-  - linux
-  # - osx
-osx_image: xcode12
+jobs:
+   include:
+      - os: linux
+        dist: focal
+# - osx
+# osx_image: xcode12
 addons:
   apt:
     packages:
-      - libpng12-dev
+      - libpng-dev
 before_script:
   - mkdir build
   - cd build
