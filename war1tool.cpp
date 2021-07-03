@@ -3970,6 +3970,11 @@ int main(int argc, char** argv)
 		exit(-1);
 	}
 
+#ifdef WIN32
+	std::filesystem::path exepath(argv[0]);
+	exepath = std::filesystem::absolute(exepath);
+	_wchdir(exepath.parent_path().wstring().c_str());
+#endif
 
 	ArchiveDir = argv[a];
 	archive_dir = (char*)calloc(sizeof(char), strlen(ArchiveDir) + strlen("fdata") + 1);
