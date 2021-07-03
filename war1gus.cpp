@@ -29,11 +29,11 @@
 */
 
 #define GAME_NAME "War1gus"
-#define GAME_CD "Warcraft I DOS DATA.WAR file"
-#define GAME_CD_FILE_PATTERNS "DATA.WAR", "data.war"
+#define GAME_CD "Warcraft I DOS DATA.WAR file or GoG installer exe"
+#define GAME_CD_FILE_PATTERNS "DATA.WAR", "data.war", "setup*.exe"
 #define GAME "war1gus"
 #define EXTRACTOR_TOOL "war1tool"
-#define EXTRACTOR_ARGS "-v"
+#define EXTRACTOR_ARGS {"-v", NULL}
 #define EXTRACTION_FILES "war1data"
 #define CHECK_EXTRACTED_VERSION 1
 #define __war1gus_contrib__ "campaigns", "campaigns", \
