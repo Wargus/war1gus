@@ -1,6 +1,13 @@
-war1gus (3.0.1-1) UNRELEASED; urgency=medium
+war1gus (3.1.0-1) focal; urgency=medium
+  * Overhaul multiplayer menus and online sign on
+  * Sync settings for multiplayer games to avoid desyncs
+  * Support new fog of war options
+  * Support extracting from the GOG installer file
+  * Add rebalanced unit stats by default
+  * Improve map editor usability
+  * Fix various menus and settings options
 
- -- Tim Felgentreff <timfelgentreff@gmail.com>  Sun, 20 Dec 2020 11:06:33 +0100
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Sat, 03 Jul 2021 20:27:27 +0200
 
 war1gus (3.0.0-1) focal; urgency=medium
 
