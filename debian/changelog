@@ -1,8 +1,8 @@
-war1gus (3.1.1-1) UNRELEASED; urgency=medium
+war1gus (3.1.1-1) focal; urgency=medium
 
-  * 
+  * Fix compilation on older versions of GCC and Clang
 
- -- Tim Felgentreff <timfelgentreff@gmail.com>  Mon, 05 Jul 2021 07:37:31 +0200
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Thu, 15 Jul 2021 19:20:05 +0200
 
 war1gus (3.1.0-1) focal; urgency=medium
   * Overhaul multiplayer menus and online sign on
