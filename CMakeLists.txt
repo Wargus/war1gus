@@ -50,7 +50,6 @@ endif()
 
 if(WIN32 AND MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
-  set_target_properties(war1tool PROPERTIES LINK_FLAGS "${LINK_FLAGS}")
 else()
 	include(CheckCXXSourceCompiles)
 	set(FS_SRC "
