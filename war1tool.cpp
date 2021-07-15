@@ -1659,10 +1659,10 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 
 	// delete the last png, it's the first frame again (for looping)
 	int last = -1;
-	std::filesystem::path last_png;
-	std::filesystem::directory_iterator videosDir(std::filesystem::path(Dir) / VIDEO_PATH);
+	fs::path last_png;
+	fs::directory_iterator videosDir(fs::path(Dir) / VIDEO_PATH);
 	std::regex pattern("[a-zA-Z0-9]+\\-([0-9]+)");
-	for(auto& direntry: std::filesystem::directory_iterator(std::filesystem::path(Dir) / VIDEO_PATH)) {
+	for(auto& direntry: fs::directory_iterator(fs::path(Dir) / VIDEO_PATH)) {
 		if (direntry.is_regular_file()) {
 			auto& direntry_path = direntry.path();
 			if (direntry_path.extension() == ".png") {
@@ -1679,11 +1679,11 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 		}
 	}
 	if (last >= 0) {
-		std::filesystem::remove(last_png);
+		fs::remove(last_png);
 	}
 
 	const char *to_video;
-	std::filesystem::path output = std::filesystem::path(Dir) / VIDEO_PATH / flc;
+	fs::path output = fs::path(Dir) / VIDEO_PATH / flc;
 	if (uncompressed) {
 		to_video =
 			"%s -y -r %d -i \"%s-%%04d.png\" -codec:v huffyuv "
@@ -1696,7 +1696,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 			"-vf scale=640:-1 \"%s\"";
 		output.replace_extension(".ogv");
 	}
-	std::filesystem::create_directories(output.parent_path());
+	fs::create_directories(output.parent_path());
 
 	cmdlen = strlen(to_video) + 1 /*fps*/ + strlen(encoder) + strlen(Dir) + strlen(flc) +
 		strlen(VIDEO_PATH) + output.string().size();
@@ -1719,15 +1719,15 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 		}
 		std::string stillFilename = stillFilenameStream.str();
 		
-		std::filesystem::path output = std::filesystem::path(Dir) / GRAPHIC_PATH / flc;
+		fs::path output = fs::path(Dir) / GRAPHIC_PATH / flc;
 		output.replace_extension(".png");
-		std::filesystem::create_directories(output.parent_path());
-		std::filesystem::copy_file(stillFilename, output, std::filesystem::copy_options::overwrite_existing);
+		fs::create_directories(output.parent_path());
+		fs::copy_file(stillFilename, output, fs::copy_options::overwrite_existing);
 	}
 	
-	for(auto& direntry: std::filesystem::directory_iterator(std::filesystem::path(Dir) / VIDEO_PATH)) {
+	for(auto& direntry: fs::directory_iterator(fs::path(Dir) / VIDEO_PATH)) {
 		if (direntry.is_regular_file() && direntry.path().extension() == ".png") {
-			std::filesystem::remove(direntry);
+			fs::remove(direntry);
 		}
 	}
 }
@@ -3971,8 +3971,8 @@ int main(int argc, char** argv)
 	}
 
 #ifdef WIN32
-	std::filesystem::path exepath(argv[0]);
-	exepath = std::filesystem::absolute(exepath);
+	fs::path exepath(argv[0]);
+	exepath = fs::absolute(exepath);
 	_wchdir(exepath.parent_path().wstring().c_str());
 #endif
 
