@@ -75,6 +75,7 @@
 
 #include <stratagus-gameutils.h>
 
+#include "endian.h"
 #include "xmi2mid.h"
 #include "scale2x.h"
 
@@ -98,57 +99,7 @@ typedef unsigned long u_int32_t;
 #define O_BINARY 0
 #endif
 
-// From SDL_byteorder.h
-#if  defined(__i386__) || defined(__ia64__) || defined(WIN32) || \
-    (defined(__alpha__) || defined(__alpha)) || \
-     defined(__arm__) || \
-    (defined(__mips__) && defined(__MIPSEL__)) || \
-     defined(__SYMBIAN32__) || \
-     defined(__x86_64__) || \
-     defined(__LITTLE_ENDIAN__)
-#ifdef __cplusplus
-static inline void SkipLE16(unsigned char*& p) {
-	p += 2;
-}
-static inline unsigned short FetchLE16(unsigned char*& p) {
-	unsigned short s = *(unsigned short*)p;
-	SkipLE16(p);
-	return s;
-}
-static inline void SkipLE32(unsigned char*& p) {
-	p += 4;
-}
-static inline unsigned int FetchLE32(unsigned char*& p) {
-	unsigned int s = *(unsigned int*)p;
-	SkipLE32(p);
-	return s;
-}
-#else
-#define SkipLE16(p) p += 2
-#define FetchLE16(p) (*((unsigned short*)(p))); SkipLE16(p)
-#define SkipLE32(p) p += 4
-#define FetchLE32(p) (*((unsigned int*)(p))); SkipLE32(p)
-#endif
-#define AccessLE16(p) (*((unsigned short*)(p)))
-#define AccessLE32(p) (*((unsigned int*)(p)))
-#define ConvertLE16(v) (v)
-#else
-static inline unsigned short Swap16(unsigned short D) {
-	return ((D << 8) | (D >> 8));
-}
-static inline unsigned int Swap32(unsigned int D) {
-	return ((D << 24) | ((D << 8) & 0x00FF0000) | ((D >> 8) & 0x0000FF00) | (D >> 24));
-}
-#define FetchLE16(p) Swap16(*((unsigned short*)(p))); p += 2
-#define FetchLE32(p) Swap32(*((unsigned int*)(p))) p += 4
-#define AccessLE16(p) Swap16((*((unsigned short*)(p))))
-#define AccessLE32(p) Swap32(*((unsigned int*)(p)))
-#define ConvertLE16(v) Swap16(v)
-#endif
-
-#define SkipByte(p) ++p
 #define AccessByte(p) (*((unsigned char*)(p)))
-#define FetchByte(p) (*((unsigned char*)(p))); SkipByte(p)
 
 //----------------------------------------------------------------------------
 //  Config
@@ -1507,7 +1458,7 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	p = buf;
 	height = FetchLE16(p);
 	width = FetchLE16(p);
-	SkipLE16(p);
+	FetchLE16(p);
 
 	image = (unsigned char*)malloc(height * width);
 	if (!image) {
@@ -1520,7 +1471,7 @@ void ConvertFLC_PSTAMP(unsigned char* buf)
 	//
 	//  PSTAMP header
 	//
-	SkipLE32(p);
+	FetchLE32(p);
 	pstamp_type = FetchLE16(p);
 
 	switch (pstamp_type) {
@@ -1659,10 +1610,10 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 
 	// delete the last png, it's the first frame again (for looping)
 	int last = -1;
-	std::filesystem::path last_png;
-	std::filesystem::directory_iterator videosDir(std::filesystem::path(Dir) / VIDEO_PATH);
+	fs::path last_png;
+	fs::directory_iterator videosDir(fs::path(Dir) / VIDEO_PATH);
 	std::regex pattern("[a-zA-Z0-9]+\\-([0-9]+)");
-	for(auto& direntry: std::filesystem::directory_iterator(std::filesystem::path(Dir) / VIDEO_PATH)) {
+	for(auto& direntry: fs::directory_iterator(fs::path(Dir) / VIDEO_PATH)) {
 		if (direntry.is_regular_file()) {
 			auto& direntry_path = direntry.path();
 			if (direntry_path.extension() == ".png") {
@@ -1679,11 +1630,11 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 		}
 	}
 	if (last >= 0) {
-		std::filesystem::remove(last_png);
+		fs::remove(last_png);
 	}
 
 	const char *to_video;
-	std::filesystem::path output = std::filesystem::path(Dir) / VIDEO_PATH / flc;
+	fs::path output = fs::path(Dir) / VIDEO_PATH / flc;
 	if (uncompressed) {
 		to_video =
 			"%s -y -r %d -i \"%s-%%04d.png\" -codec:v huffyuv "
@@ -1696,7 +1647,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 			"-vf scale=640:-1 \"%s\"";
 		output.replace_extension(".ogv");
 	}
-	std::filesystem::create_directories(output.parent_path());
+	fs::create_directories(output.parent_path());
 
 	cmdlen = strlen(to_video) + 1 /*fps*/ + strlen(encoder) + strlen(Dir) + strlen(flc) +
 		strlen(VIDEO_PATH) + output.string().size();
@@ -1719,15 +1670,15 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 		}
 		std::string stillFilename = stillFilenameStream.str();
 		
-		std::filesystem::path output = std::filesystem::path(Dir) / GRAPHIC_PATH / flc;
+		fs::path output = fs::path(Dir) / GRAPHIC_PATH / flc;
 		output.replace_extension(".png");
-		std::filesystem::create_directories(output.parent_path());
-		std::filesystem::copy_file(stillFilename, output, std::filesystem::copy_options::overwrite_existing);
+		fs::create_directories(output.parent_path());
+		fs::copy_file(stillFilename, output, fs::copy_options::overwrite_existing);
 	}
 	
-	for(auto& direntry: std::filesystem::directory_iterator(std::filesystem::path(Dir) / VIDEO_PATH)) {
+	for(auto& direntry: fs::directory_iterator(fs::path(Dir) / VIDEO_PATH)) {
 		if (direntry.is_regular_file() && direntry.path().extension() == ".png") {
-			std::filesystem::remove(direntry);
+			fs::remove(direntry);
 		}
 	}
 }
@@ -2736,8 +2687,8 @@ int ConvertCursor(const char* file, int pale, int cure)
 		return 0;
 	}
 
-	SkipLE16(p); // hoty
-	SkipLE16(p); // hotx
+	FetchLE16(p); // hoty
+	FetchLE16(p); // hotx
 	w = FetchLE16(p);
 	h = FetchLE16(p);
 	image = (unsigned char*)calloc(sizeof(unsigned char*), w * h);
@@ -2980,7 +2931,7 @@ int ConvertVoc(const char* file,int voce)
 	}
 	p += 19;
 	++p; // 0x1A
-	SkipLE16(p);
+	FetchLE16(p);
 	i = FetchLE16(p); // Version
 	i = FetchLE16(p); // 1's comp of version
 
@@ -2999,8 +2950,8 @@ int ConvertVoc(const char* file,int voce)
 		size = (c << 16) | (b << 8) | a;
 		switch (type) {
 			case 1:
-				SkipByte(p);
-				SkipByte(p);
+				FetchByte(p);
+				FetchByte(p);
 				wavlen += size - 2;
 				wavp = (unsigned char*)realloc(wavp, wavlen);
 				for (i = size - 2; i; --i) {
@@ -3481,14 +3432,14 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 	numunits = 0;
 	p2 = p;
 	while (p2[0] != 0xFF || p2[1] != 0xFF) {
-		SkipByte(p2);
-		SkipByte(p2);
+		FetchByte(p2);
+		FetchByte(p2);
 		type = FetchByte(p2);
-		SkipByte(p2);
+		FetchByte(p2);
 		if (type == 0x32) {
 			// gold mine
-			SkipByte(p2);
-			SkipByte(p2);
+			FetchByte(p2);
+			FetchByte(p2);
 		}
 		++numunits;
 	}
@@ -3507,7 +3458,7 @@ static void SmsSaveUnits(gzFile f, unsigned char* txtp)
 		player = FetchByte(p);
 		if (type == 0x32) {
 			// gold mine
-			SkipByte(p); // skip -0xfe
+			FetchByte(p); // skip -0xfe
 			value = (int)FetchByte(p);
 			value *= 250;
 		} else {
@@ -3970,6 +3921,11 @@ int main(int argc, char** argv)
 		exit(-1);
 	}
 
+#ifdef WIN32
+	fs::path exepath(argv[0]);
+	exepath = fs::absolute(exepath);
+	_wchdir(exepath.parent_path().wstring().c_str());
+#endif
 
 	ArchiveDir = argv[a];
 	archive_dir = (char*)calloc(sizeof(char), strlen(ArchiveDir) + strlen("fdata") + 1);

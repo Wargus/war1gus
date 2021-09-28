@@ -15,9 +15,11 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 project(war1gus)
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.10)
+cmake_policy(VERSION 3.10..3.20.2)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD 17)
 
 if(EXISTS ${WIN32_CMAKE_PREFIX_PATH})
 	list(APPEND CMAKE_PREFIX_PATH "${WIN32_CMAKE_PREFIX_PATH}")
@@ -41,28 +43,58 @@ set(war1tool_HDRS xmi2mid.h scale2x.h)
 find_package(PNG REQUIRED)
 find_package(ZLIB REQUIRED)
 
-include_directories(${PNG_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS})
-set(war1tool_LIBS ${PNG_LIBRARIES} ${ZLIB_LIBRARIES})
-
-add_executable(war1tool ${war1tool_SRCS} ${war1tool_HDRS})
-target_link_libraries(war1tool ${war1tool_LIBS})
-install(TARGETS war1tool DESTINATION "bin")
-
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -ggdb -std=c99")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -ggdb -std=c++17")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -ggdb")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -ggdb")
 endif()
 
-if (WIN32 AND MSVC)
-  add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
-  set_target_properties(war1tool PROPERTIES LINK_FLAGS "${LINK_FLAGS}")
+if(WIN32 AND MSVC)
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE=1)
+else()
+	include(CheckCXXSourceCompiles)
+	set(FS_SRC "
+	#include <experimental/filesystem> 
+	namespace fs = std::experimental::filesystem;
+	int main(int argc, char **argv) {
+		fs::path p = fs::path(\".\");
+		if (fs::absolute(p).is_absolute()) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+	")
+	check_cxx_source_compiles("${FS_SRC}" HAS_17_FS)
+	if(NOT HAS_17_FS)
+		set(CMAKE_REQUIRED_LIBRARIES stdc++fs)
+		check_cxx_source_compiles("${FS_SRC}" HAS_EXP_17_FS_WITH_STDC)
+		if(HAS_EXP_17_FS_WITH_STDC)
+			set(war1gus_LIBS ${war1gus_LIBS} stdc++fs)
+			set(war1tool_LIBS ${war1tool_LIBS} stdc++fs)
+		else()
+			set(CMAKE_REQUIRED_LIBRARIES c++fs)
+			check_cxx_source_compiles("${FS_SRC}" HAS_EXP_17_FS_WITH_CLIB)
+			if(HAS_EXP_17_FS_WITH_CLIB)
+				set(war1gus_LIBS ${war1gus_LIBS} c++fs)
+				set(war1tool_LIBS ${war1tool_LIBS} c++fs)
+			else()
+				message(FATAL_ERROR "I don't know how to compile with C++17 filesystem support on your system")
+			endif()
+		endif()
+	endif()
 endif()
 
 if(WIN32 AND MSVC AND NOT CMAKE_PREFIX_PATH)
   # use a default
   set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../dependencies)
 endif()
+
+include_directories(${PNG_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS})
+set(war1tool_LIBS ${war1tool_LIBS} ${PNG_LIBRARIES} ${ZLIB_LIBRARIES})
+
+add_executable(war1tool ${war1tool_SRCS} ${war1tool_HDRS})
+target_link_libraries(war1tool ${war1tool_LIBS})
+install(TARGETS war1tool DESTINATION "bin")
 
 # Launcher
 
