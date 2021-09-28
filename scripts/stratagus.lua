@@ -193,6 +193,9 @@ SetMinimapTerrain(true)
 --  Set Fog of War opacity
 SetFogOfWarOpacity(128)
 
+-- Make grayscale icons for cooldown
+Preference.GrayscaleIcons = true
+
 -------------------------------------------------------------------------------
 
 --  Define default resources
