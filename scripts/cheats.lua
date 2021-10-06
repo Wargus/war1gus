@@ -121,7 +121,7 @@ function HandleCheats(str)
         AddMessage("!!! :)")
 
      elseif (str == "sally shears") then
-        RevealMap()
+        RevealMap("explored")
 
      elseif (str == "hurry up guys") then
         if (speedcheat) then

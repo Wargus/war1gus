@@ -118,7 +118,7 @@ function RunJoiningMapMenu(s)
                           "Fog of war",
                           "Resources",
                           "Number of units",
-                          "Reveal map",
+                          "Terrain",
                           "Auto targeting",
                           "Allow multiple townhalls",
                           "Allow townhall upgrades",
@@ -130,7 +130,7 @@ function RunJoiningMapMenu(s)
                           LCheckBox(""):id("fow"),
                           LLabel("Map default"):id("resources"),
                           LLabel("Map default"):id("numunits"),
-                          LCheckBox(""):id("revealmap"),
+                          LLabel("Map default"):id("revealmap"),
                           LCheckBox(""):id("autotarget"),
                           LCheckBox(""):id("multitown"),
                           LCheckBox(""):id("towncastle"),
@@ -212,7 +212,9 @@ function RunJoiningMapMenu(s)
     NetworkProcessClientRequest()
     menu.fow:setMarked(int2bool(ServerSetupState.FogOfWar))
     GameSettings.NoFogOfWar = not int2bool(ServerSetupState.FogOfWar)
-    menu.revealmap:setMarked(int2bool(ServerSetupState.RevealMap))
+    
+    local revealTypes = {"Hidden", "Known", "Explored"}
+    menu.revealmap:setCaption(revealTypes[ServerSetupState.RevealMap + 1])
     GameSettings.RevealMap = ServerSetupState.RevealMap
 
     GameSettings.NumUnits = ServerSetupState.UnitsOption
@@ -253,11 +255,6 @@ function RunJoiningMapMenu(s)
       SetThisPlayer(1)
       joincounter = joincounter + 1
       if (joincounter == 30) then
-        SetFogOfWar(menu.fow:isMarked())
-        if menu.revealmap:isMarked() == true then
-          RevealMap()
-        end
-
         if StoreSharedSettingsInBits() ~= GameSettings.MapRichness then
            -- try one more time, then give up
            RestoreSharedSettingsFromBits(GameSettings.MapRichness, function(msg)
@@ -267,7 +264,7 @@ function RunJoiningMapMenu(s)
         end
         NetworkGamePrepareGameSettings()
         war1gus.InCampaign = false
-        RunMap(NetworkMapName, menu.fow:isMarked())
+        RunMap(NetworkMapName, menu.fow:isMarked(), GameSettings.RevealMap)
         PresentMap = OldPresentMap
         menu:stop()
       end
@@ -428,7 +425,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
                           "Fog of war",
                           "Resources",
                           "Number of units",
-                          "Reveal map",
+                          "Terrain",
                           "Auto targeting",
                           "Allow multiple townhalls",
                           "Allow townhall upgrades",
@@ -459,10 +456,10 @@ function RunServerMultiGameMenu(map, description, numplayers)
                                 end
                                 NetworkServerResyncClients()
                           end):id("numunits"),
-                          LCheckBox("", function(dd)
-                                       ServerSetupState.RevealMap = bool2int(dd:isMarked())
+                          LDropDown({"Hidden", "Known", "Explored"}, function(dd)
+                                       ServerSetupState.RevealMap = dd:getSelected()
                                        NetworkServerResyncClients()
-                                       GameSettings.RevealMap = bool2int(dd:isMarked())
+                                       GameSettings.RevealMap = dd:getSelected()
                           end):id("revealmap"),
                           LCheckBox("", function(dd)
                                        preferences.SimplifiedAutoTargeting = dd:isMarked()
@@ -533,15 +530,11 @@ function RunServerMultiGameMenu(map, description, numplayers)
                     end)
               }),
               LButton("~!Start Game", "s", function(s)
-                         SetFogOfWar(menu.fow:isMarked())
-                         if menu.revealmap:isMarked() == true then
-                            RevealMap()
-                         end
-                         NetworkServerStartGame()
-                         NetworkGamePrepareGameSettings()
-                         war1gus.InCampaign = false
-                         RunMap(map, menu.fow:isMarked())
-                         menu:stop()
+                        NetworkServerStartGame()
+                        NetworkGamePrepareGameSettings()
+                        war1gus.InCampaign = false
+                        RunMap(map, menu.fow:isMarked(), GameSettings.RevealMap)
+                        menu:stop()
               end):id("startgame"),
               LLabel("Waiting for players"):id("waitingtext"),
               LButton("~!Cancel", "c", function()

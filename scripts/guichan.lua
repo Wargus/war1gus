@@ -351,8 +351,9 @@ function RunMap(map, fow, revealmap)
     if fow ~= nil then
       SetFogOfWar(fow)
     end
-    if revealmap == true then
-       RevealMap()
+    if revealmap ~= nil then
+      local revealTypes = {"hidden", "known", "explored"}
+      RevealMap(revealTypes[revealmap + 1])      
     end
     StartMap(map)
     if GameResult ~= GameRestart then
