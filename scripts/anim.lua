@@ -308,7 +308,7 @@ DefineAnimations("animations-footman", BuildAnimations(frameNumbers_5_5_5_3))
 DefineAnimations("animations-grunt", BuildAnimations(frameNumbers_5_5_5_3))
 
 local worker_anim = BuildAnimations(
-   frameNumbers_5_5_5_3,
+   frameNumbers_5_5_4_3,
    {attacksound = "tree chopping",
     Harvest_wood = BuildAttackHarvest(frameNumbers_5_5_4_3[2], 5, "tree chopping"),
     RepairAsAttack = true}
