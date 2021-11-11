@@ -120,7 +120,7 @@ DefineButtonStyle("icon", {
   TextNormalColor = "yellow",
   TextReverseColor = "white",
   TextAlign = "Right",
-  TextPos = {27, 13},
+  TextPos = {27, 12},
   Default = {
     Border = {
       Color = {0, 0, 0}, Size = 1,
