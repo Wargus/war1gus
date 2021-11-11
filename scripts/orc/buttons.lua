@@ -251,7 +251,7 @@ DefineButton( { Pos = 1, Level = 2, Icon = "icon-orc-blacksmith",
 
 DefineButton( { Pos = 2, Level = 2, Icon = "icon-orc-temple",
   Action = "build", Value = "unit-orc-temple",
-  Key = "c", Hint = "BUILD ~!CHURCH",
+  Key = "t", Hint = "BUILD ~!TEMPLE",
   ForUnit = {"unit-peon"} } )
 
 DefineButton( { Pos = 3, Level = 2, Icon = "icon-orc-kennel",
