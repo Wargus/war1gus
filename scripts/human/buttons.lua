@@ -145,13 +145,13 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-healing",
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-far-seeing",
   Action = "cast-spell", Value = "spell-far-seeing",
   Allowed = "check-upgrade", AllowArg = {"upgrade-far-seeing"},
-  Key = "s", Hint = "FAR ~!SEEING",
+  Key = "f", Hint = "~!FAR SEEING",
   ForUnit = {"unit-cleric"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-invisibility",
   Action = "cast-spell", Value = "spell-invisibility",
   Allowed = "check-upgrade", AllowArg = {"upgrade-invisibility"},
-  Key = "i", Hint = "~!INVISIBILITY",
+  Key = "v", Hint = "IN~!VISIBILITY",
   ForUnit = {"unit-cleric"} } )
 
 -- conjurer specific actions ------------------------------------------------------
@@ -164,7 +164,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-fireball",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-scorpion",
   Action = "cast-spell", Value = "spell-summon-scorpions",
   Allowed = "check-upgrade", AllowArg = {"upgrade-scorpion"},
-  Key = "u", Hint = "S~!UMMON SCORPIONS",
+  Key = "c", Hint = "SUMMON S~!CORPIONS",
   ForUnit = {"unit-conjurer"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-rain-of-fire",
@@ -176,7 +176,7 @@ DefineButton( { Pos = 5, Level = 0, Icon = "icon-rain-of-fire",
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-water-elemental",
   Action = "cast-spell", Value = "spell-summon-elemental",
   Allowed = "check-upgrade", AllowArg = {"upgrade-water-elemental"},
-  Key = "e", Hint = "SUMMON E~!LEMENTAL",
+  Key = "e", Hint = "SUMMON ~!ELEMENTAL",
   ForUnit = {"unit-conjurer"} } )
 
 -- peasant specific actions ---------------------------------------------------
@@ -216,7 +216,7 @@ DefineButton( { Pos = 1, Level = 1, Icon = "icon-human-farm",
 
 DefineButton( { Pos = 2, Level = 1, Icon = "icon-human-lumber-mill",
   Action = "build", Value = "unit-human-lumber-mill",
-  Key = "l", Hint = "BUILD ~!LUMBER MILL",
+  Key = "r", Hint = "BUILD LUMBE~!R MILL",
   ForUnit = {"unit-peasant"} } )
 
 DefineButton( { Pos = 3, Level = 1, Icon = "icon-human-barracks",
@@ -251,7 +251,7 @@ DefineButton( { Pos = 1, Level = 2, Icon = "icon-human-blacksmith",
 
 DefineButton( { Pos = 2, Level = 2, Icon = "icon-human-church",
   Action = "build", Value = "unit-human-church",
-  Key = "u", Hint = "BUILD CH~!URCH",
+  Key = "c", Hint = "BUILD ~!CHURCH",
   ForUnit = {"unit-peasant"} } )
 
 DefineButton( { Pos = 3, Level = 2, Icon = "icon-human-stable",
@@ -261,7 +261,7 @@ DefineButton( { Pos = 3, Level = 2, Icon = "icon-human-stable",
 
 DefineButton( { Pos = 4, Level = 2, Icon = "icon-human-tower",
   Action = "build", Value = "unit-human-tower",
-  Key = "t", Hint = "BUILD ~!TOWER",
+  Key = "w", Hint = "BUILD TO~!WER",
   ForUnit = {"unit-peasant"} } )
 
 DefineButton( { Pos = 6, Level = 2, Icon = "icon-cancel",
@@ -274,7 +274,7 @@ DefineButton( { Pos = 6, Level = 2, Icon = "icon-cancel",
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-peasant",
   Action = "train-unit", Value = "unit-peasant",
   Allowed = "check-no-research",
-  Key = "p", Hint = "TRAIN ~!PEASANT",
+  Key = "e", Hint = "TRAIN P~!EASANT",
   ForUnit = {"unit-human-town-hall", "unit-human-stormwind-keep"} } )
 
 -- training commands ---------------------------------------------------------
@@ -291,29 +291,29 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-archer",
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-catapult",
   Action = "train-unit", Value = "unit-human-catapult",
-  Key = "b", Hint = "BUILD ~!CATAPULT",
+  Key = "c", Hint = "BUILD ~!CATAPULT",
   ForUnit = {"unit-human-barracks"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-knight",
   Action = "train-unit", Value = "unit-knight",
-  Key = "k", Hint = "TRAIN ~!KNIGHT",
+  Key = "g", Hint = "TRAIN KNI~!GHT",
   ForUnit = {"unit-human-barracks"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-knight",
   Action = "train-unit", Value = "unit-knight1",
-  Key = "k", Hint = "TRAIN ~!KNIGHT",
+  Key = "g", Hint = "TRAIN KNI~!GHT",
   Allowed = "check-upgrade", AllowArg = {"upgrade-horse1"},
   ForUnit = {"unit-human-barracks"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-knight",
   Action = "train-unit", Value = "unit-knight2",
-  Key = "k", Hint = "TRAIN ~!KNIGHT",
+  Key = "g", Hint = "TRAIN KNI~!GHT",
   Allowed = "check-upgrade", AllowArg = {"upgrade-horse2"},
   ForUnit = {"unit-human-barracks"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-conjurer",
   Action = "train-unit", Value = "unit-conjurer",
-  Key = "t", Hint = "TRAIN ~!CONJURER",
+  Key = "c", Hint = "TRAIN ~!CONJURER",
   ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-cleric",
@@ -326,37 +326,37 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-cleric",
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-sword2",
   Action = "research", Value = "upgrade-sword1",
   Allowed = "check-single-research",
-  Key = "w", Hint = "UPGRADE S~!WORD STRENGTH",
+  Key = "a", Hint = "UPGR~!ADE SWORD STRENGTH",
   ForUnit = {"unit-human-blacksmith"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-sword3",
   Action = "research", Value = "upgrade-sword2",
   Allowed = "check-single-research",
-  Key = "w", Hint = "UPGRADE S~!WORD STRENGTH",
+  Key = "a", Hint = "UPGR~!ADE SWORD STRENGTH",
   ForUnit = {"unit-human-blacksmith"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield2",
   Action = "research", Value = "upgrade-human-shield1",
   Allowed = "check-single-research",
-  Key = "h", Hint = "UPGRADE S~!HIELD STRENGTH",
+  Key = "s", Hint = "UPGRADE ~!SHIELD STRENGTH",
   ForUnit = {"unit-human-blacksmith"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield3",
   Action = "research", Value = "upgrade-human-shield2",
   Allowed = "check-single-research",
-  Key = "h", Hint = "UPGRADE S~!HIELD STRENGTH",
+  Key = "s", Hint = "UPGRADE ~!SHIELD STRENGTH",
   ForUnit = {"unit-human-blacksmith"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow2",
   Action = "research", Value = "upgrade-arrow1",
   Allowed = "check-single-research",
-  Key = "u", Hint = "~!UPGRADE ARROW STRENGTH",
+  Key = "a", Hint = "UPGRADE ~!ARROW STRENGTH",
   ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow3",
   Action = "research", Value = "upgrade-arrow2",
   Allowed = "check-single-research",
-  Key = "u", Hint = "~!UPGRADE ARROW STRENGTH",
+  Key = "a", Hint = "UPGRADE ~!ARROW STRENGTH",
   ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse1",
@@ -388,13 +388,13 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-far-seeing",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-invisibility",
   Action = "research", Value = "upgrade-invisibility",
   Allowed = "check-single-research",
-  Key = "i", Hint = "RESEARCH ~!INVISIBILITY",
+  Key = "v", Hint = "RESEARCH IN~!VISIBILITY",
   ForUnit = {"unit-human-church"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-scorpion",
   Action = "research", Value = "upgrade-scorpion",
   Allowed = "check-single-research",
-  Key = "s", Hint = "RESEARCH SUMMON ~!SCORPIONS",
+  Key = "c", Hint = "RESEARCH SUMMON S~!CORPIONS",
   ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-rain-of-fire",
