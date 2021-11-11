@@ -39,8 +39,8 @@ local info_panel_x = 2
 local info_panel_y = 70
 local info_panel_w = 64
 
-local min_damage = Div(ActiveUnitVar("PiercingDamage"), 2)
-local max_damage = Add(ActiveUnitVar("PiercingDamage"), ActiveUnitVar("BasicDamage"))
+local min_damage = Add(Div(ActiveUnitVar("PiercingDamage"),2), Add(Div(ActiveUnitVar("BasicDamage"), 2),1))
+local max_damage = Add(ActiveUnitVar("PiercingDamage"), Max(ActiveUnitVar("BasicDamage"), 1))
 local function ttlpercent()
    local ttlp = GetUnitVariable(-1, "TTLPercent")
    if ttlp > 0 then
