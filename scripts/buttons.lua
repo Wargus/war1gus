@@ -63,20 +63,20 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-wall",
 
 DefineButton( { Pos = 5, Level = 9, Icon = "icon-cancel",
   Action = "cancel",
-  Key = "\27", Hint = "~<ESC~> CANCEL",
+  Key = "esc", Hint = "~<ESC~> CANCEL",
   ForUnit = {"*"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-cancel",
   Action = "cancel-upgrade",
-  Key = "\27", Hint = "~<ESC~> CANCEL UPGRADE",
+  Key = "esc", Hint = "~<ESC~> CANCEL UPGRADE",
   ForUnit = {"cancel-upgrade"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-cancel",
   Action = "cancel-train-unit",
-  Key = "\27", Hint = "~<ESC~> CANCEL UNIT TRAINING",
+  Key = "esc", Hint = "~<ESC~> CANCEL UNIT TRAINING",
   ForUnit = {"*"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-cancel",
   Action = "cancel-build",
-  Key = "\27", Hint = "~<ESC~> CANCEL CONSTRUCTION",
+  Key = "esc", Hint = "~<ESC~> CANCEL CONSTRUCTION",
   ForUnit = {"cancel-build"} } )
