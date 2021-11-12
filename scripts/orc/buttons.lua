@@ -239,7 +239,7 @@ end
 
 DefineButton( { Pos = 6, Level = 1, Icon = "icon-cancel",
   Action = "button", Value = 0,
-  Key = "\27", Hint = "~<ESC~> - CANCEL",
+  Key = "esc", Hint = "~<ESC~> - CANCEL",
   ForUnit = {"unit-peon"} } )
 
 -- advanced buildings ---------------------------------------------------
@@ -266,7 +266,7 @@ DefineButton( { Pos = 4, Level = 2, Icon = "icon-orc-tower",
 
 DefineButton( { Pos = 6, Level = 2, Icon = "icon-cancel",
   Action = "button", Value = 0,
-  Key = "\27", Hint = "~<ESC~> - CANCEL",
+  Key = "esc", Hint = "~<ESC~> - CANCEL",
   ForUnit = {"unit-peon"} } )
 
 -- town hall commands ---------------------------------------------------------
