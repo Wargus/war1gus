@@ -62,9 +62,9 @@ DefineUnitType("unit-orc-catapult", {
 })
 
 DefineMissileType("missile-catapult-rock", {
-                     Speed = 1,
-                     Range = 2,
-                     SplashFactor = 4
+                  Speed = 1,
+                  Range = 2,
+                  SplashFactor = 4
 })
 
 -----------------------------------------------------------------------
@@ -83,34 +83,34 @@ DefineUnitType("unit-grunt", {
 -----------------------------------------------------------------------
 
 DefineUnitType("unit-knight", {
-Costs = {"time", 90, "gold", 850},
-Demand = 2,
-Armor = 1
+                  Costs = {"time", 90, "gold", 850},
+                  Demand = 2,
+                  Armor = 1
 })
 DefineUnitType("unit-raider", {
-Costs = {"time", 90, "gold", 850},
-Demand = 2,
-Armor = 1
+                  Costs = {"time", 90, "gold", 850},
+                  Demand = 2,
+                  Armor = 1
 })
 DefineUnitType("unit-knight1", {
-Costs = {"time", 90, "gold", 850},
-Demand = 2,
-Armor = 1
+                  Costs = {"time", 90, "gold", 850},
+                  Demand = 2,
+                  Armor = 1
 })
 DefineUnitType("unit-raider1", {
-Costs = {"time", 90, "gold", 850},
-Demand = 2,
-Armor = 1
+                  Costs = {"time", 90, "gold", 850},
+                  Demand = 2,
+                  Armor = 1
 })
 DefineUnitType("unit-knight2", {
-Costs = {"time", 90, "gold", 850},
-Demand = 2,
-Armor = 1
+                  Costs = {"time", 90, "gold", 850},
+                  Demand = 2,
+                  Armor = 1
 })
 DefineUnitType("unit-raider2", {
-Costs = {"time", 90, "gold", 850},
-Demand = 2,
-Armor = 1
+                  Costs = {"time", 90, "gold", 850},
+                  Demand = 2,
+                  Armor = 1
 })
 
 -----------------------------------------------------------------------
@@ -202,7 +202,7 @@ DefineUnitType("unit-conjurer-during-summoning",
 
 DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
   AlwaysShow = true,
-  Key = "\27", Hint = "~<ESC~> BREAK SUMMONING",
+  Key = "esc", Hint = "~<ESC~> BREAK SUMMONING",
   ForUnit = {"unit-conjurer-during-summoning"},
   Action = "callback",
   Value = function(caster)
@@ -293,7 +293,7 @@ DefineUnitType("unit-warlock-during-summoning",
 
 DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
   AlwaysShow = true,
-  Key = "\27", Hint = "~<ESC~> BREAK SUMMONING",
+  Key = "esc", Hint = "~<ESC~> BREAK SUMMONING",
   ForUnit = {"unit-warlock-during-summoning"},
   Action = "callback",
   Value = function(caster)
