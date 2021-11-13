@@ -32,21 +32,14 @@
 table.foreach(
    UnitTypeFiles,
    function(k, v)
-      local iconname
-      if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
-         iconname = string.gsub(k, "unit%-", "icon-")
-      else
-         iconname = string.gsub(k, "unit%-", "icon-") .. "-swamp"
-      end
       DefineUnitType(
          k,
-         {
-            Image = {"file", v[war1gus.tileset]},
-            Icon = iconname
-         }
+         { Image = {"file", v[war1gus.tileset]} }
       )
    end
 )
+
+Load("scripts/icons.lua")
 
 -- XXX: make sure walls and roads have their directions
 DefineUnitType("unit-wall", {NumDirections = 16, Flip = false})
