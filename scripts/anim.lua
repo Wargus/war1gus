@@ -166,7 +166,7 @@ local function BuildAttackHarvest(frames, waittime, sound)
       res[1 + #res] = "wait " .. waittime
    end
    res[1 + #res] = "unbreakable end"
-   res[1 + #res] = "frame 0"
+   res[1 + #res] = "frame 5"
    res[1 + #res] = "wait 1"
    return res
 end
