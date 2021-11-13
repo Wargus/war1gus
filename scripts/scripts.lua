@@ -29,8 +29,24 @@
 --      $Id$
 
 -- Set the unit type graphics to the correct tileset
-table.foreach(UnitTypeFiles,
-	function(k, v) DefineUnitType(k, {Image = {"file", v[war1gus.tileset]}}) end)
+table.foreach(
+   UnitTypeFiles,
+   function(k, v)
+      local iconname
+      if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+         iconname = string.gsub(k, "unit%-", "icon-")
+      else
+         iconname = string.gsub(k, "unit%-", "icon-") .. "-swamp"
+      end
+      DefineUnitType(
+         k,
+         {
+            Image = {"file", v[war1gus.tileset]},
+            Icon = iconname
+         }
+      )
+   end
+)
 
 -- XXX: make sure walls and roads have their directions
 DefineUnitType("unit-wall", {NumDirections = 16, Flip = false})

@@ -186,16 +186,10 @@ end
 ]]
 for i = 1,table.getn(icons) do
   icon = CIcon:New(icons[i][1])
-  icon.G = CPlayerColorGraphic:New("tilesets/forest/portrait_icons.png", 27, 19) 
+  icon.G = CPlayerColorGraphic:New("tilesets/forest/portrait_icons.png", 27, 19)
   icon.Frame = icons[i][2]
 
-  icon = CIcon:New(icons[i][1])
-  icon.G = CPlayerColorGraphic:New("tilesets/swamp/portrait_icons.png", 27, 19) 
-  icon.Frame = icons[i][2]
-
-  icon = CIcon:New(icons[i][1])
-  icon.G = CPlayerColorGraphic:New("tilesets/dungeon/portrait_icons.png", 27, 19) 
+  icon = CIcon:New(icons[i][1] .. "-swamp")
+  icon.G = CPlayerColorGraphic:New("tilesets/swamp/portrait_icons.png", 27, 19)
   icon.Frame = icons[i][2]
 end
-
-
