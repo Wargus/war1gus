@@ -64,7 +64,8 @@ DefineUnitType("unit-orc-catapult", {
 DefineMissileType("missile-catapult-rock", {
                   Speed = 1,
                   Range = 2,
-                  SplashFactor = 4
+                  SplashFactor = 4,
+                  NumDirections = 9
 })
 
 -----------------------------------------------------------------------
