@@ -306,7 +306,7 @@ UI.Resources[2].TextY = 1
 UI.Resources[2].Font = Fonts["game"]
 
 -- mana -- no good icon, but we need this for the info bar
-UI.Resources[ManaResCost].G = CGraphic:New("missiles/healing.png", 16, 16)
+UI.Resources[ManaResCost].G = CGraphic:New("contrib/graphics/ui/mana_icon_1.png", 9,9)
 UI.Resources[ManaResCost].IconFrame = 0
 UI.Resources[ManaResCost].IconX = -50
 UI.Resources[ManaResCost].IconY = -50
@@ -441,7 +441,7 @@ function LoadUI(race, screen_width, screen_height)
    UI.Fillers:clear()
    AddFiller("ui/" .. race .. "/minimap.png", 0, 0, 72, 72)
    AddFiller("ui/" .. race .. "/left_panel.png", 0, 72, 72, Video.Height - (200 - 128))
-   AddFiller("ui/" .. race .. "/top_resource_bar.png", 72, 0, Video.Width - (320 - 240), 12)
+   AddFiller("contrib/graphics/ui/" .. race .. "/top_resource_bar.png", 72, 0, Video.Width - (320 - 240), 12)
    AddFiller("ui/" .. race .. "/right_panel.png", Video.Width - 8, 0, 8, Video.Height)
    AddFiller("ui/" .. race .. "/bottom_panel.png", 72, Video.Height - 12, Video.Width - (320 - 240), 12)
 
