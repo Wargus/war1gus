@@ -247,15 +247,15 @@ function RunPreferencesMenu()
   end)
 
   menu:addLabel("Fog of war type:", 8, 20 + 18 * 4.5, Fonts["game"], false)
-  local fogOfWarTypes    = {"legacy", "enhanced"}
-  local fogOfWarTypeList = {_("legacy"), _("enhanced")}
+  local fogOfWarTypes    = {"tiled", "enhanced", "fast"}
+  local fogOfWarTypeList = {_("tiled"), _("enhanced"), _("fast")}
   local fogOfWarType = menu:addDropDown(fogOfWarTypeList, 8, 20 + 18 * 5.0, function(dd)end)
   fogOfWarType:setSelected(GetFogOfWarType())
   fogOfWarType:setActionCallback(
     function()
       preferences.FogOfWarType = fogOfWarTypes[fogOfWarType:getSelected() + 1]
       SetFogOfWarType(preferences.FogOfWarType)
-      if (preferences.FogOfWarType == "legacy" and GameSettings.Inside) then -- legacy fog doesn't work with shadow caster fov
+      if (preferences.FogOfWarType ~= "enhanced" and GameSettings.Inside) then -- tiled and fast fog don't work with shadow caster fov
         preferences.DungeonSightBlocking = false;
         sightBlocking:setMarked(preferences.DungeonSightBlocking)
       end
