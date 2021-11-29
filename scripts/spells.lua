@@ -31,7 +31,7 @@
 -- For documentation see stratagus/doc/ccl/ccl.html
 
 DefineBoolFlags("isundead", "organic", "hero", "volatile")
-DefineVariables("Mana", {Max = 0, Value = 64, Increase = 1, Enable = false}, "Speed", "ShadowFly", {Max = 2}, "Level")
+DefineVariables("Mana", {Max = 0, Value = 64, Increase = 1, IncreaseFrequency = 2, Enable = false}, "Speed", "ShadowFly", {Max = 2}, "Level")
 
 --  Declare some unit types used in spells. This is quite accetable, the other
 --  way would be to define can-cast-spell outside unit definitions, not much of an improvement.
@@ -81,8 +81,8 @@ local function SpellUnholyArmor(spell, unit, x, y, target)
 			DamageUnit(-1, target, 99999)
 		else
 			DamageUnit(-1, target, math.max(1, math.floor(GetUnitVariable(target, "HitPoints", "Max") / 2)))
-			SetUnitVariable(target, "UnholyArmor", 500, "Max")
-			SetUnitVariable(target, "UnholyArmor", 500, "Value")
+			SetUnitVariable(target, "UnholyArmor", 1000, "Max")
+			SetUnitVariable(target, "UnholyArmor", 1000, "Value")
 			SetUnitVariable(target, "UnholyArmor", 1, "Enable")
 		end
 	end
@@ -140,7 +140,7 @@ DefineSpell("spell-far-seeing",
 	"manacost", 70,
 	"range", "infinite",
 	"target", "position",
-	"action", {{"summon", "unit-type", "unit-revealer", "time-to-live", 100},
+	"action", {{"summon", "unit-type", "unit-revealer", "time-to-live", 1000},
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"sound-when-cast", "vision",
@@ -152,7 +152,7 @@ DefineSpell("spell-dark-vision",
 	"manacost", 70,
 	"range", "infinite",
 	"target", "position",
-	"action", {{"summon", "unit-type", "unit-revealer", "time-to-live", 100},
+	"action", {{"summon", "unit-type", "unit-revealer", "time-to-live", 1000},
 		{"spawn-missile", "missile", "missile-normal-spell",
 			"start-point", {"base", "target"}}},
 	"sound-when-cast", "vision",
