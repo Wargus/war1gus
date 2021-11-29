@@ -73,7 +73,7 @@ DefinePanelContents(
       Ident = "panel-general-contents",
       Pos = {info_panel_x, info_panel_y}, DefaultFont = "small",
       Contents = {
-         { Pos = {life_bar_off_x, 21}, Condition = {ShowOpponent = false, HideNeutral = true},
+         { Pos = {life_bar_off_x, 21}, Condition = {ShowOpponent = true, HideNeutral = true},
            More = {"LifeBar", {Variable = "HitPoints", Height = 3, Width = 27, Border = false,
                                Colors = {{75, "green"}, {50, "yellow"}, {25, "orange"}, {0, "red"}}}
            }
@@ -108,22 +108,22 @@ DefinePanelContents(
       Ident = "panel-all-unit-contents",
       Pos = {info_panel_x, info_panel_y},
       DefaultFont = "small",
-      Condition = {ShowOpponent = false, HideNeutral = true, Building = "false", Build = "false"},
+      Condition = {ShowOpponent = true, HideNeutral = true, Building = "false", Build = "false"},
       Contents = {
          { Pos = first_line,
            More = {"FormattedText2", {Format = "HP:%d/%d", Variable = "HitPoints", Component1 = "Value", Component2 = "Max"}}
          },
-         { Pos = second_line, Condition = {CanAttack = "only"},
+         { Pos = second_line, Condition = {ShowOpponent = true, CanAttack = "only"},
            More = {"Text", {Text = Concat("DMG:", String(min_damage), "-", String(max_damage))}}
          },
          { Pos = third_line,
            More = {"Text", {Text = "ARM:", Variable = "Armor", Stat = true}}
          },
-         { Pos = fourth_line, Condition = {CanAttack = "only", AttackRange = "only"},
+         { Pos = fourth_line, Condition = {ShowOpponent = true, CanAttack = "only", AttackRange = "only"},
            More = {"Text", {Text = "RNG:", Variable = "AttackRange" , Stat = true}}
          },
          -- Mana
-         { Pos = {36, 10}, Condition = {Mana = "only"},
+         { Pos = {36, 10}, Condition = {ShowOpponent = true, Mana = "only"},
            More = {"LifeBar", {Variable = "Mana", Height = 3, Width = 27, Border = false, Colors = {{0, "light-blue"}}}}
          },
          -- Summoned units
