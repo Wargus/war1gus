@@ -214,9 +214,9 @@ end
 
 local function BuildAnimations(frames, ...)
    options = select(1, ...) or {}
-   speed = options.speed or 6
-   attackspeed = options.attackspeed or 5
-   coolofftime = options.coolofftime or 1
+   speed = options.speed or 4
+   attackspeed = options.attackspeed or 7
+   coolofftime = options.coolofftime or 20
    attacksound = options.attacksound or "sword attack"
    local returnvalue = {
       Still = options.Still or DefaultStillAnimation(),
@@ -252,13 +252,13 @@ DefineAnimations("animations-brigand", BuildAnimations(frameNumbers_5_5_3_2))
 
 DefineAnimations("animations-spider",
 		 BuildAnimations(frameNumbers_5_5_4_5,
-				 {attacksound = "fist attack", speed = 4}))
+				 {attacksound = "fist attack", speed = 3.5}))
 
 DefineAnimations("animations-water-elemental",
 		 BuildAnimations(frameNumbers_5_3_5_3,
-				 {speed = 4,
+				 {speed = 3.5,
 				  attacksound = "fireball attack",
-				  coolofftime = 24,
+				  coolofftime = 70,
 				  Still = {
 				      "frame 1", "wait 8",
 					  "frame 5", "wait 8",
@@ -267,9 +267,9 @@ DefineAnimations("animations-water-elemental",
 
 DefineAnimations("animations-fire-elemental",
 		 BuildAnimations(GetFrameNumbers(5, {5, 5, 0}),
-				 {speed = 5,
+				 {speed = 3.5,
 				  attacksound = "fireball attack",
-				  coolofftime = 24,
+				  coolofftime = 60,
 				  Still = {
 					  "frame 5", "wait 8",
 					  "frame 15", "wait 8",
@@ -293,7 +293,7 @@ DefineAnimations(
       attacksound = "fist attack",
       attackspeed = 15,
 	  coolofftime = 5,
-      speed = 8})
+      speed = 6})
 )
 
 local grizelda_garona_anim = {
@@ -318,7 +318,7 @@ DefineAnimations("animations-peon", worker_anim)
 
 local catapult_anim = BuildAnimations(
    frameNumbers_5_2_5_3,
-   { speed = 10,
+   { speed = 6,
      attackspeed = 25,
      coolofftime = 49,
      attacksound = "catapult attack" }
@@ -336,36 +336,36 @@ local anim_rider2 = BuildAnimations(frameNumbers_5_5_5_5, {speed = 2.7})
 DefineAnimations("animations-knight2", anim_rider2)
 DefineAnimations("animations-raider2", anim_rider2)
 
-DefineAnimations("animations-daemon", BuildAnimations(frameNumbers_5_5_5_5, {coolofftime = 24}))
+DefineAnimations("animations-daemon", BuildAnimations(frameNumbers_5_5_5_5, {coolofftime = 50}))
 DefineAnimations("animations-ogre",
 		 BuildAnimations(frameNumbers_5_5_5_5,
 				 {attacksound = "fist attack"}))
 DefineAnimations("animations-skeleton", BuildAnimations(frameNumbers_5_5_5_5))
 DefineAnimations("animations-scorpion",
 		 BuildAnimations(frameNumbers_5_5_5_5,
-				 {attacksound = "fist attack", speed = 4}))
+				 {attacksound = "fist attack", speed = 3.5}))
 DefineAnimations("animations-the-dead", BuildAnimations(frameNumbers_5_5_5_5))
 
 DefineAnimations("animations-archer",
 		 BuildAnimations(frameNumbers_5_5_2_3,
-				 {attackspeed = 10,
+				 {attackspeed = 14,
 				  attacksound = "arrow attack"}))
 DefineAnimations("animations-spearman",
 		 BuildAnimations(frameNumbers_5_5_2_3,
-				 {attackspeed = 10,
+				 {attackspeed = 13,
 				  attacksound = "arrow attack"}))
 
 DefineAnimations("animations-cleric",
 		 BuildAnimations(frameNumbers_5_5_4_3,
-				 {attacksound = "fireball attack", speed = 7}))
+				 {attacksound = "fireball attack", speed = 5}))
 
 DefineAnimations("animations-necrolyte",
 		 BuildAnimations(frameNumbers_5_5_5_4,
-				 {attacksound = "fireball attack", speed = 7}))
+				 {attacksound = "fireball attack", speed = 5}))
 
 DefineAnimations("animations-conjurer",
 		 BuildAnimations(frameNumbers_5_5_4_4,
-				 {attacksound = "fireball attack", speed = 7,
+				 {attacksound = "fireball attack", speed = 5,
 				  SpellCast = {
 				  "frame 5", "wait 8",
 				  "frame 20", "wait 8",
@@ -374,7 +374,7 @@ DefineAnimations("animations-conjurer",
 				  }}))
 DefineAnimations("animations-warlock",
 		 BuildAnimations(frameNumbers_5_5_5_3,
-				 {attacksound = "fireball attack", speed = 7,
+				 {attacksound = "fireball attack", speed = 5,
 				  SpellCast = {
 				  "frame 5", "wait 8",
 				  "frame 20", "wait 8",
