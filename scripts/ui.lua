@@ -483,7 +483,7 @@ if (wc1.preferences.ShowButtonPopups) then
          BackgroundColor = PopupBackgroundColor,
          BorderColor = PopupBorderColor,
          Contents = {
-            { 	Margin = {1, 1}, HighlightColor = "red",
+            { 	Margin = {1, 1}, HighlightColor = "yellow",
                 More = {"ButtonInfo", {InfoType = "Hint", Font = PopupFont}}
             },
             -- Move  hint
