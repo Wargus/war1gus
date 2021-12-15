@@ -93,7 +93,7 @@ SetSelectionStyle("rectangle")
 Preference.ShowSightRange = false
 Preference.ShowAttackRange = false
 Preference.ShowReactionRange = false
-
+Preference.ShowNoSelectionStats = false
 Preference.ShowOrders = 2
 
 -------------------------------------------------------------------------------
