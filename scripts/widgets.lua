@@ -38,7 +38,7 @@ DefineButtonStyle("menu", {
 
 
 DefineButtonStyle("main", {
-  Size = {128, math.floor(16 * (Video.Height - UI.Minimap.H) / (240 - UI.Minimap.H))},
+  Size = {64, math.floor(16 * (Video.Height - UI.Minimap.H) / (240 - UI.Minimap.H))},
   Font = "game",
   TextNormalColor = "yellow",
   TextReverseColor = "white",
