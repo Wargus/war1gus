@@ -120,10 +120,10 @@ function RunPreferencesMenu()
                         LCheckBox("Rebalanced stats", function(dd)
                                      if preferences.RebalancedStats then
                                         preferences.RebalancedStats = false
-                                        local menu = WarMenu(nil, panel(4), false)
-                                        menu:setSize(144, 64)
-                                        menu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
-                                        menu:setDrawMenusUnder(true)
+                                        local infoMenu = WarMenu(nil, panel(4), false)
+                                        infoMenu:setSize(144, 64)
+                                        infoMenu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
+                                        infoMenu:setDrawMenusUnder(true)
                                         local l = MultiLineLabel("You must restart the game to change to original game stats.")
                                         l:setFont(Fonts["large"])
                                         l:setAlignment(MultiLineLabel.CENTER)
@@ -132,9 +132,9 @@ function RunPreferencesMenu()
                                         l:setWidth(135)
                                         l:setHeight(20)
                                         l:setBackgroundColor(dark)
-                                        menu:add(l, 4, 19)
-                                        menu:addHalfButton("~!OK", "o", 41, 40, function() menu:stop() end)
-                                        menu:run()
+                                        infoMenu:add(l, 4, 19)
+                                        infoMenu:addHalfButton("~!OK", "o", 41, 40, function() infoMenu:stop() end)
+                                        infoMenu:run()
                                      else
                                         Load("scripts/balancing.lua")
                                         preferences.RebalancedStats = true
@@ -251,6 +251,15 @@ function RunPreferencesMenu()
                                         end
                                      end
                         end):id("shader"),
+                        LCheckBox("Original pixel ratio", function(dd)
+                                     preferences.OriginalPixelRatio = dd:isMarked()
+                                     if preferences.OriginalPixelRatio then
+                                        SetVerticalPixelSize(1.2)
+                                     else
+                                        SetVerticalPixelSize(1.0)
+                                     end
+                                     SavePreferences()
+                        end):id("pixelratio"),
                   }):withPadding(2),
             }):withPadding(2),
 
@@ -318,6 +327,7 @@ function RunPreferencesMenu()
    menu.fogtype:setSelected(GetFogOfWarType())
    menu.fowbilinear:setMarked(GetIsFogOfWarBilinear())
    menu.shader:setSelected(getCurrentShaderIndex() - 1)
+   menu.pixelratio:setMarked(preferences.OriginalPixelRatio)
 
    if (GameCycle > 0) then
       menu:run(false)

@@ -322,6 +322,7 @@ DefaultPreference("FogOfWarBilinear", false)       -- Enable/Disable bilinear fi
 DefaultPreference("DungeonSightBlocking", true)    -- Enable/Disable sight blocking in the dungeons
 DefaultPreference("FieldOfViewType", "simple-radial")    -- default field of view type (possibe values: "simple-radial" and "shadow-casting" )
 DefaultPreference("RebalancedStats", true)
+DefaultPreference("OriginalPixelRatio", true)
 
 wc1.preferences = preferences
 
@@ -427,11 +428,16 @@ InitFuncs:add(function()
 end)
 
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)
-local pixelScale = 1.2
+local pixelScale = 1.0
+if preferences.OriginalPixelRatio then
+   pixelScale = 1.2
+end
 if preferences.VideoWidth < 640 then
    SetWindowSize(preferences.VideoWidth * 2, preferences.VideoHeight * 2 * pixelScale)
 end
-SetVerticalPixelSize(pixelScale) -- WC1 uses non-square pixels: graphics are 320x200, but rendered 320x240
+-- WC1 uses non-square pixels: graphics are 320x200, but rendered 320x240
+SetVerticalPixelSize(pixelScale)
+
 SetVideoFullScreen(preferences.VideoFullScreen)
 SetLocalPlayerName(preferences.PlayerName)
 SetFogOfWar(preferences.FogOfWar)
