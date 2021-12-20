@@ -176,32 +176,90 @@ DefineUnitType("unit-spearman", {
 })
 
 -----------------------------------------------------------------------
--- Elemental Rebalancing
+-- Elemental and Demon Rebalancing
 -----------------------------------------------------------------------
 
-CasterToElementalMap = {}
-ElementalToCasterMap = {}
+CasterToSummonedMap = {}
+SummonedToCasterMap = {}
 
 -- add callback to connect caster with elemental, so they deaths are linked
-DefineSpell("spell-summon-elemental", "action", {{"lua-callback", function(spellname, caster, x, y, elemental)
-   print(spellname .. " cast by " .. caster .. " at " .. x .. "@" .. y .. " spawning " .. elemental)
-   TransformUnit(caster, "unit-conjurer-during-summoning")
-   CasterToElementalMap[caster] = elemental
-   ElementalToCasterMap[elemental] = caster
+local SummonSpellCallback = function(spellname, caster, x, y, summoned)
+   print(spellname .. " cast by " .. caster .. " at " .. x .. "@" .. y .. " spawning " .. summoned)
+   local ident = GetUnitVariable(caster, "Ident")
+   if ident == "unit-conjurer" then
+      TransformUnit(caster, "unit-conjurer-during-summoning")
+   elseif ident == "unit-warlock" then
+      TransformUnit(caster, "unit-warlock-during-summoning")
+   else
+      return true
+   end
+   CasterToSummonedMap[caster] = summoned
+   SummonedToCasterMap[summoned] = caster
    return true
-end}})
+end
+
+DefineSpell("spell-summon-elemental", "action", {{"lua-callback", SummonSpellCallback}})
+DefineSpell("spell-summon-daemon", "action", {{"lua-callback", SummonSpellCallback}})
 
 -- add death callback to elemental
-DefineUnitType("unit-water-elemental",{OnDeath = function(elemental, x, y)
+local SummonedDeathCallback = function(summoned, x, y)
    -- elemental will die, release the conjurer from concentration
-   local caster = ElementalToCasterMap[elemental]
-   if caster then
-      table.remove(CasterToElementalMap, caster)
-      table.remove(ElementalToCasterMap, elemental)
-      TransformUnit(caster, "unit-conjurer")
-     -- SetUnitVariable(caster, "Mana", 0)
+   local caster = SummonedToCasterMap[summoned]
+   table.remove(CasterToSummonedMap, caster)
+   table.remove(SummonedToCasterMap, summoned)
+   if caster and caster > 0 then
+      local casterIdent = GetUnitVariable(caster, "Ident")
+      local hp = GetUnitVariable(caster, "HitPoints")
+      -- there can be races, so be extra careful
+      if hp > 0 then
+         if casterIdent == "unit-conjurer-during-summoning" then
+            TransformUnit(caster, "unit-conjurer")
+         elseif casterIdent == "unit-warlock-during-summoning" then
+            TransformUnit(caster, "unit-warlock")
+         end
+      end
    end
-end})
+end
+
+DefineUnitType("unit-water-elemental",{OnDeath = SummonedDeathCallback})
+DefineUnitType("unit-daemon",{OnDeath = SummonedDeathCallback})
+
+-- define summoner states and deaths
+local SummonerDeathCallback = function(caster, attacker, damage)
+   -- caster will die, kill any summoned unit, if exists
+   local activeSummoned = CasterToSummonedMap[caster]
+   table.remove(CasterToSummonedMap, caster)
+   table.remove(SummonedToCasterMap, activeSummoned)
+   if activeSummoned and activeSummoned > 0 then
+      local hp = GetUnitVariable(activeSummoned, "HitPoints")
+      if hp > 0 then
+         local summonedIdent = GetUnitVariable(activeSummoned, "Ident")
+         local casterIdent = GetUnitVariable(caster, "Ident")
+         if casterIdent == "unit-conjurer-during-summoning" then
+            if summonedIdent == "unit-water-elemental" then
+               RemoveUnit(activeSummoned)
+            end
+         elseif casterIdent == "unit-warlock-during-summoning" then
+            if summonedIdent == "unit-daemon" then
+               RemoveUnit(activeSummoned)
+            end
+         end
+      end
+   end
+end
+
+local SummonerCancelButtonAction = function(caster)
+   SummonerDeathCallback(caster, -1, 0)
+   local casterIdent = GetUnitVariable(caster, "Ident")
+   local hp = GetUnitVariable(caster, "HitPoints")
+   if hp > 0 then
+      if casterIdent == "unit-conjurer-during-summoning" then
+         TransformUnit(caster, "unit-conjurer")
+      elseif casterIdent == "unit-warlock-during-summoning" then
+         TransformUnit(caster, "unit-warlock")
+      end
+   end
+end
 
 DefineAnimations("animations-conjurer-summoning",
                  {Still = {
@@ -238,15 +296,7 @@ DefineUnitType("unit-conjurer-during-summoning",
                  SelectableByRectangle = false, -- annoying otherwise
                  SightRange = 2, -- eyes are closed during summoning!
                  BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
-                 OnDeath = function(conjurer, attacker, damage)
-                    -- conjurer will die, kill any summoned elemental, if exists
-                    local activeElemental = CasterToElementalMap[conjurer]
-                    if activeElemental then
-                       table.remove(CasterToElementalMap, conjurer)
-                       table.remove(ElementalToCasterMap, elemental)
-                       RemoveUnit(activeElemental)
-                    end
-                 end
+                 OnDeath = SummonerDeathCallback
 })
 
 DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
@@ -254,44 +304,7 @@ DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
   Key = "esc", Hint = "~<ESC~> BREAK SUMMONING",
   ForUnit = {"unit-conjurer-during-summoning"},
   Action = "callback",
-  Value = function(caster)
-     local elemental = CasterToElementalMap[caster]
-     if elemental then
-        table.remove(CasterToElementalMap, caster)
-        table.remove(ElementalToCasterMap, elemental)
-        RemoveUnit(elemental)
-        TransformUnit(caster, "unit-conjurer")
-       -- SetUnitVariable(caster, "Mana", 0)
-     end
-end})
-
------------------------------------------------------------------------
--- Daemon Rebalancing
------------------------------------------------------------------------
-
-CasterToDaemonMap = {}
-DaemonToCasterMap = {}
-
--- add callback to connect caster with daemon, so they deaths are linked
-DefineSpell("spell-summon-daemon", "action", {{"lua-callback", function(spellname, caster, x, y, daemon)
-   print(spellname .. " cast by " .. caster .. " at " .. x .. "@" .. y .. " spawning " .. daemon)
-   TransformUnit(caster, "unit-warlock-during-summoning")
-   CasterToDaemonMap[caster] = daemon
-   DaemonToCasterMap[daemon] = caster
-   return true
-end}})
-
--- add death callback to daemon
-DefineUnitType("unit-daemon",{OnDeath = function(daemon, x, y)
-   -- daemon will die, release the warlock from concentration
-   local caster = DaemonToCasterMap[daemon]
-   if caster then
-      table.remove(CasterToDaemonMap, caster)
-      table.remove(DaemonToCasterMap, daemon)
-      TransformUnit(caster, "unit-warlock")
-     -- SetUnitVariable(caster, "Mana", 0)
-   end
-end})
+  Value = SummonerCancelButtonAction})
 
 DefineAnimations("animations-warlock-summoning",
                  {Still = {
@@ -329,15 +342,7 @@ DefineUnitType("unit-warlock-during-summoning",
                  SelectableByRectangle = false, -- annoying otherwise
                  SightRange = 2, -- eyes are closed during summoning!
                  BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
-                 OnDeath = function(warlock, attacker, damage)
-                    -- warlock will die, kill any summoned daemon, if exists
-                    local activeDaemon = CasterToDaemonMap[warlock]
-                    if activeDaemon then
-                       table.remove(CasterToDaemonMap, warlock)
-                       table.remove(DaemonToCasterMap, daemon)
-                       RemoveUnit(activeDaemon)
-                    end
-                 end
+                 OnDeath = SummonerDeathCallback
 })
 
 DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
@@ -345,17 +350,7 @@ DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
   Key = "esc", Hint = "~<ESC~> BREAK SUMMONING",
   ForUnit = {"unit-warlock-during-summoning"},
   Action = "callback",
-  Value = function(caster)
-     local daemon = CasterToDaemonMap[caster]
-     if daemon then
-        table.remove(CasterToDaemonMap, caster)
-        table.remove(DaemonToCasterMap, daemon)
-        RemoveUnit(daemon)
-        TransformUnit(caster, "unit-warlock")
-      --  SetUnitVariable(caster, "Mana", 0)
-     end
-end})
-
+  Value = SummonerCancelButtonAction})
 
 -----------------------------------------------------------------------
 -- Upgrades Rebalancing
