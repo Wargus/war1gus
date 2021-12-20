@@ -403,7 +403,7 @@ function LSlider:getWidth()
 end
 
 function LSlider:getHeight()
-   return nil
+   return 8
 end
 
 function LSlider:setValue(val)

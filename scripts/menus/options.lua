@@ -88,241 +88,242 @@ function RunGameSoundOptionsMenu()
 end
 
 function RunPreferencesMenu()
-  local menu = WarGameMenu(panel(1), 152, 180)
- 
-  menu:addFullButton("~!OK", "o", 12, menu:getHeight() - 8 - 13,
-    function()
-      preferences.FogOfWar = GetFogOfWar()
-      preferences.ShowCommandKey = UI.ButtonPanel.ShowCommandKey
-      preferences.GameSpeed = GetGameSpeed()
-      SavePreferences()
-      menu:stop()
-    end)
-    
-  local titleLabel = Label("Preferences")
-  menu:add(titleLabel, menu:getWidth() / 2 - titleLabel:getWidth() / 2, 5)
-
-  -- fog of war
-  local fog = {}
-  fog = menu:addCheckBox("Fog of War", 8, 20 + 18 * 0,
-    function()
-	  SetFogOfWar(fog:isMarked())
-	  preferences.FogOfWar = fog:isMarked()
-	  SavePreferences()
-	end)
-  fog:setMarked(GetFogOfWar())
-  if (IsReplayGame() or IsNetworkGame()) then
-    fog:setEnabled(false)
-  end
-
-  -- Command keys
-  local ckey = {}
-  ckey = menu:addCheckBox("Show cmd keys", menu:getWidth() / 2, 20 + 18 * 0,
-    function() UI.ButtonPanel.ShowCommandKey = ckey:isMarked() end)
-  ckey:setMarked(UI.ButtonPanel.ShowCommandKey)
-
-  if GameCycle == 0 then
-    b = menu:addCheckBox("Allow multiple Town Halls", 8, 20 + 18 * 0.5,
-      function()
-        preferences.AllowMultipleTownHalls = not preferences.AllowMultipleTownHalls
-        Load("scripts/buttons.lua")
-        Load("scripts/buildings.lua")
-        SavePreferences()
-      end)
-    b:setMarked(preferences.AllowMultipleTownHalls)
-
-    b = menu:addCheckBox("Use simplified color scheme", 8, 20 + 18 * 1.0,
-      function()
-      preferences.MultiColoredCampaigns = not preferences.MultiColoredCampaigns
-      SetColorScheme()
-      SavePreferences()
-    end)
-    b:setMarked(not preferences.MultiColoredCampaigns)
-
-    b = menu:addCheckBox("Rebalanced Unit Stats", 8, 20 + 18 * 1.5,
-      function()
-        if preferences.RebalancedStats then
-          preferences.RebalancedStats = false
-          local menu = WarMenu(nil, panel(4), false)
-          menu:setSize(144, 64)
-          menu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
-          menu:setDrawMenusUnder(true)
-          local l = MultiLineLabel("You must restart the game to change to original game stats.")
-          l:setFont(Fonts["large"])
-          l:setAlignment(MultiLineLabel.CENTER)
-          l:setVerticalAlignment(MultiLineLabel.CENTER)
-          l:setLineWidth(135)
-          l:setWidth(135)
-          l:setHeight(20)
-          l:setBackgroundColor(dark)
-          menu:add(l, 4, 19)
-          menu:addHalfButton("~!OK", "o", 41, 40, function() menu:stop() end)
-          menu:run()
-        else
-          Load("scripts/balancing.lua")
-          preferences.RebalancedStats = true
-        end
-        SavePreferences()
-      end)
-    b:setMarked(preferences.RebalancedStats)
-  else
-    menu:addLabel("Game Speed", 8, 20 + 18 * 0.5, Fonts["game"], false)
-    local gamespeed = {}
-    gamespeed = menu:addSlider(15, 75, menu:getWidth() - 16 * 2, 9, 16, 20 + 18 * 1.0,
-      function() SetGameSpeed(gamespeed:getValue()) end)
-    gamespeed:setValue(GetGameSpeed())
-    menu:addLabel("slow", 17, 20 + (18 * 1.5), Fonts["small"], false)
-    local l = Label("fast")
-    l:setFont(Fonts["small"])
-    l:adjustSize()
-    menu:add(l, menu:getWidth() - l:getWidth() - 17, 20 + (18 * 1.5))
-  end
-
-  local b = menu:addCheckBox("Fullscreen", 8, 20 + 18 * 2.0,
-    function()
-      ToggleFullScreen()
-      preferences.VideoFullScreen = Video.FullScreen
-    end)
-  b:setMarked(Video.FullScreen)
-
-  b = menu:addCheckBox("Show Orders", menu:getWidth() / 2, 20 + 18 * 2.0,
-    function()
-       preferences.ShowOrders = not preferences.ShowOrders
-       if preferences.ShowOrders then
-          Preference.ShowOrders = 1
-       else
-          Preference.ShowOrders = 0
-       end
-       SavePreferences()
-    end)
-  b:setMarked(preferences.ShowOrders)
-
-  if GameCycle == 0 then
-    b = menu:addCheckBox("Train Queue", 8, 20 + 18 * 2.5,
-      function()
-      preferences.TrainingQueue = not preferences.TrainingQueue
-      SetTrainingQueue(not not preferences.TrainingQueue)
-        SavePreferences()
-      end)
-    b:setMarked(preferences.TrainingQueue)
-  end
-
-  b = menu:addCheckBox("Show Damage", menu:getWidth() / 2, 20 + 18 * 2.5,
-    function()
-       preferences.ShowDamage = not preferences.ShowDamage
-       if preferences.ShowDamage then
-          SetDamageMissile("missile-hit")
-       else
-          SetDamageMissile(nil)
-       end
-       SavePreferences()
-    end)
-  b:setMarked(preferences.ShowOrders)
-
-  local simplifiedAutoTargeting
-  if (not IsNetworkGame()) then
-     simplifiedAutoTargeting = menu:addCheckBox(_("Simplified auto targeting"), 8, 20 + 18 * 3.0 + 5, function()end)
-     simplifiedAutoTargeting:setMarked(Preference.SimplifiedAutoTargeting)
-     simplifiedAutoTargeting:setActionCallback(
-       function()
-          Preference.SimplifiedAutoTargeting = simplifiedAutoTargeting:isMarked()
-          preferences.SimplifiedAutoTargeting = Preference.SimplifiedAutoTargeting
-          SavePreferences()
-     end)
-  end
-
-  local sightBlocking = menu:addCheckBox(_("Block sight in dungeons"), 8, 20 + 18 * 3.5 + 5, function()end)
-  sightBlocking:setMarked(preferences.DungeonSightBlocking)
-  sightBlocking:setActionCallback(
-    function()
-        preferences.DungeonSightBlocking = sightBlocking:isMarked()
-        if GameSettings.Inside then
-          if preferences.DungeonSightBlocking then
-            SetFieldOfViewType("shadow-casting")
-          else
-            SetFieldOfViewType("simple-radial")
-          end
-        end
-        SavePreferences()
-  end)
-
-  menu:addLabel("Fog of war type:", 8, 20 + 18 * 4.5, Fonts["game"], false)
-  local fogOfWarTypes    = {"tiled", "enhanced", "fast"}
-  local fogOfWarTypeList = {_("tiled"), _("enhanced"), _("fast")}
-  local fogOfWarType = menu:addDropDown(fogOfWarTypeList, 8, 20 + 18 * 5.0, function(dd)end)
-  fogOfWarType:setSelected(GetFogOfWarType())
-  fogOfWarType:setActionCallback(
-    function()
-      preferences.FogOfWarType = fogOfWarTypes[fogOfWarType:getSelected() + 1]
-      SetFogOfWarType(preferences.FogOfWarType)
-      if (preferences.FogOfWarType ~= "enhanced" and GameSettings.Inside) then -- tiled and fast fog don't work with shadow caster fov
-        preferences.DungeonSightBlocking = false;
-        sightBlocking:setMarked(preferences.DungeonSightBlocking)
+   local shaderNames = (GetShaderNames and GetShaderNames()) or {_("default")}
+   local function getCurrentShaderIndex()
+      local currentShader = GetShader()
+      for idx,name in pairs(shaderNames) do
+         if name == currentShader then
+            return idx
+         end
       end
-      SavePreferences()
-  end)
-  fogOfWarType:setSize(60, fogOfWarType:getHeight())
+   end
+   local menu
+   
+   menu = WarMenuWithLayout(
+      panel(1),
+      VBox({
+            LLabel("Preferences"),
 
-  local fowBilinear = menu:addCheckBox(_("Bilinear int."), menu:getWidth() / 2, 20 + 18 * 5.0, function()end)
-  fowBilinear:setMarked(GetIsFogOfWarBilinear())
-  fowBilinear:setActionCallback(
-    function()
-        preferences.FogOfWarBilinear = fowBilinear:isMarked()
-        SetFogOfWarBilinear(preferences.FogOfWarBilinear)
-        SavePreferences()
-  end)
+            HBox({
+                  VBox({
+                        LCheckBox("Fog of War", function(fog)
+                                     SetFogOfWar(fog:isMarked())
+                                     preferences.FogOfWar = fog:isMarked()
+                                     SavePreferences()
+                        end):id("fog"),
+                        LCheckBox("Multiple Townhalls", function(dd)
+                                     preferences.AllowMultipleTownHalls = dd:isMarked()
+                                     Load("scripts/buttons.lua")
+                                     Load("scripts/buildings.lua")
+                                     SavePreferences()
+                        end):id("multiTown"),
+                        LCheckBox("Rebalanced stats", function(dd)
+                                     if preferences.RebalancedStats then
+                                        preferences.RebalancedStats = false
+                                        local menu = WarMenu(nil, panel(4), false)
+                                        menu:setSize(144, 64)
+                                        menu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
+                                        menu:setDrawMenusUnder(true)
+                                        local l = MultiLineLabel("You must restart the game to change to original game stats.")
+                                        l:setFont(Fonts["large"])
+                                        l:setAlignment(MultiLineLabel.CENTER)
+                                        l:setVerticalAlignment(MultiLineLabel.CENTER)
+                                        l:setLineWidth(135)
+                                        l:setWidth(135)
+                                        l:setHeight(20)
+                                        l:setBackgroundColor(dark)
+                                        menu:add(l, 4, 19)
+                                        menu:addHalfButton("~!OK", "o", 41, 40, function() menu:stop() end)
+                                        menu:run()
+                                     else
+                                        Load("scripts/balancing.lua")
+                                        preferences.RebalancedStats = true
+                                     end
+                                     SavePreferences()
+                        end):id("stats"),
+                        LCheckBox(_("Simplified auto targeting"), function(dd)
+                                     Preference.SimplifiedAutoTargeting = dd:isMarked()
+                                     preferences.SimplifiedAutoTargeting = Preference.SimplifiedAutoTargeting
+                                     SavePreferences()
+                        end):id("simpleautotgt"),
+                        LCheckBox(_("Block sight in dungeons"), function(dd)
+                                     preferences.DungeonSightBlocking = dd:isMarked()
+                                     if GameSettings.Inside then
+                                        if preferences.DungeonSightBlocking then
+                                           SetFieldOfViewType("shadow-casting")
+                                        else
+                                           SetFieldOfViewType("simple-radial")
+                                        end
+                                     end
+                                     SavePreferences()
+                        end):id("sightblock"),
+                        LCheckBox("Training queue", function(dd)
+                                     preferences.TrainingQueue = dd:isMarked()
+                                     SetTrainingQueue(not not preferences.TrainingQueue)
+                                     SavePreferences()
+                        end):id("trainingqueue"),
 
-  menu:addLabel("Max Selection", 8, 20 + 18 * 6.0, Fonts["game"], false)
-  local maxselections = {"4 (WC1 default)", "9", "12", "18", "50"}
-  maxselection = menu:addDropDown(maxselections, 8, 20 + 18 * 6.5,
-    function(dd)
-	  local selected = maxselections[maxselection:getSelected() + 1]
-	  local count = tonumber(string.gmatch(selected, "%d+")())
-	  preferences.MaxSelection = count
-	  SavePreferences()
-	  SetMaxSelectable(count)
-	end)
-  for idx,str in ipairs(maxselections) do
-    local count = tonumber(string.gmatch(str, "%d+")())
-  	if preferences.MaxSelection == count then
-  	  maxselection:setSelected(idx - 1)
-  	  break
-  	end
-  end
-  maxselection:setSize(60, maxselection:getHeight())
+                        HBox({
+                              LLabel("Max selection: "),
+                              LDropDown({"4 (WC1 default)", "9", "12", "18", "50"}, function(dd)
+                                    local idx = dd:getSelected()
+                                    if idx == 0 then
+                                       preferences.MaxSelection = 4
+                                    elseif idx == 1 then
+                                       preferences.MaxSelection = 9
+                                    elseif idx == 2 then
+                                       preferences.MaxSelection = 12
+                                    elseif idx == 3 then
+                                       preferences.MaxSelection = 18
+                                    elseif idx == 4 then
+                                       preferences.MaxSelection = 50
+                                    end
+                                    SavePreferences()
+                                    SetMaxSelectable(preferences.MaxSelection)
+                              end):id("maxselect")
+                        }),
+                  }):withPadding(2),
+                  VBox({
+                        LCheckBox("Simple colors", function(dd)
+                                     preferences.MultiColoredCampaigns = dd:isMarked()
+                                     SetColorScheme()
+                                     SavePreferences()
+                        end):id("simpleColors"),
+                        LCheckBox("Show orders", function(dd)
+                                     if dd:isMarked() then
+                                        preferences.ShowOrders = true
+                                        Preference.ShowOrders = 1
+                                     else
+                                        preferences.ShowOrders = false
+                                        Preference.ShowOrders = 0
+                                     end
+                                     SavePreferences()
+                        end):id("showorders"),
+                        LCheckBox("Show damage", function(dd)
+                                     preferences.ShowDamage = dd:isMarked()
+                                     if preferences.ShowDamage then
+                                        SetDamageMissile("missile-hit")
+                                     else
+                                        SetDamageMissile(nil)
+                                     end
+                                     SavePreferences()
+                        end):id("showdmg"),
+                        LCheckBox("Show cmd keys", function(ckey)
+                                     UI.ButtonPanel.ShowCommandKey = ckey:isMarked()
+                        end):id("ckey"),
+                        LCheckBox("Fullscreen", function(dd)
+                                     ToggleFullScreen()
+                                     preferences.VideoFullScreen = Video.FullScreen
+                                     SavePreferences()
+                        end):id("fullscreen"),
 
-  if GetShaderNames then
-    local shaderNames = GetShaderNames()
-    if #shaderNames > 0 then
-       menu:addLabel(_("Shader"), menu:getWidth() / 2 + 5, 20 + 18 * 6.0, Fonts["game"], false)
-       local shaderName = menu:addDropDown(shaderNames, 8 + 75, 20 + 18 * 6.5, function(dd) end)
-       local function getCurrentShaderIndex()
-          local currentShader = GetShader()
-          for idx,name in pairs(shaderNames) do
-             if name == currentShader then
-                return idx
-             end
-          end
-       end
-       shaderName:setSelected(getCurrentShaderIndex() - 1)
-       shaderName:setActionCallback(function()
-             local newShader = shaderNames[shaderName:getSelected() + 1];
-             if SetShader(newShader) then
-                Preference.VideoShader = newShader
-                wc1.preferences.VideoShader = newShader
-             end
-       end)
-       shaderName:setSize(60, shaderName:getHeight())
-    end
-  end
+                        HBox({
+                              LLabel("Fog: "),
+                              LDropDown({_("tiled"), _("enhanced"), _("fast")}, function(dd)
+                                    if dd:getSelected() == 0 then
+                                       preferences.FogOfWarType = "tiled"
+                                    elseif dd:getSelected() == 1 then
+                                       preferences.FogOfWarType = "enhanced"
+                                    elseif dd:getSelected() == 2 then
+                                       preferences.FogOfWarType = "fast"
+                                    end
+                                    SetFogOfWarType(preferences.FogOfWarType)
+                                    if (preferences.FogOfWarType ~= "enhanced" and GameSettings.Inside) then
+                                       -- tiled and fast fog don't work with shadow caster fov
+                                       preferences.DungeonSightBlocking = false;
+                                       menu.sightblock:setMarked(false)
+                                    end
+                                    SavePreferences()
+                              end):id("fogtype")
+                        }),
+                        LCheckBox(_("Bilinear int."), function(dd)
+                                     preferences.FogOfWarBilinear = dd:isMarked()
+                                     SetFogOfWarBilinear(preferences.FogOfWarBilinear)
+                                     SavePreferences()
+                        end):id("fowbilinear"),
+                        LLabel(_("Shader")),
+                        LDropDown(shaderNames, function(dd)
+                                     if #shaderNames > 1 then
+                                        local newShader = shaderNames[dd:getSelected() + 1];
+                                        if SetShader(newShader) then
+                                           Preference.VideoShader = newShader
+                                           wc1.preferences.VideoShader = newShader
+                                        end
+                                     end
+                        end):id("shader"),
+                  }):withPadding(2),
+            }):withPadding(2),
 
+            HBox({
+                  LLabel("Game speed: ", Fonts["game"], false, false),
+                  VBox({
+                        LSlider(15, 75, function(s)
+                                   SetGameSpeed(s:getValue())
+                        end):id("gamespeed"):expanding(),
+                        HBox({
+                              LLabel("slow", Fonts["small"], false),
+                              LFiller(),
+                              LLabel("fast", Fonts["small"], false),
+                        }),
+                  }):expanding(),
+            }),
 
+            LButton("~!OK", "o",
+                    function()
+                       preferences.FogOfWar = GetFogOfWar()
+                       preferences.ShowCommandKey = UI.ButtonPanel.ShowCommandKey
+                       preferences.GameSpeed = GetGameSpeed()
+                       SavePreferences()
+                       menu:stop()
+            end)
+      }):withPadding(5)
+   )
 
-  if (GameCycle > 0) then
-    menu:run(false)
-  else
-    menu:run()
-  end
+   menu.fog:setMarked(GetFogOfWar())
+   if (IsReplayGame() or IsNetworkGame()) then
+      menu.fog:setEnabled(false)
+   end
+   menu.multiTown:setMarked(preferences.AllowMultipleTownHalls)
+   menu.simpleautotgt:setMarked(Preference.SimplifiedAutoTargeting)
+   if IsNetworkGame() then
+      menu.simpleautotgt:setEnabled(false)
+   end
+   menu.stats:setMarked(preferences.RebalancedStats)
+   if GameCycle ~= 0 then
+      menu.multiTown:setEnabled(false)
+      -- menu.simpleColors:setEnabled(false)
+      menu.stats:setEnabled(false)
+   end
+   menu.showorders:setMarked(preferences.ShowOrders)
+   menu.trainingqueue:setMarked(preferences.TrainingQueue)
+   menu.showdmg:setMarked(preferences.ShowDamage)
+
+   menu.simpleColors:setMarked(not preferences.MultiColoredCampaigns)
+   menu.ckey:setMarked(UI.ButtonPanel.ShowCommandKey)
+   menu.fullscreen:setMarked(Video.FullScreen)
+   menu.sightblock:setMarked(preferences.DungeonSightBlocking)
+
+   if preferences.MaxSelection == 4 then
+      menu.maxselect:setSelected(0)
+   elseif preferences.MaxSelection == 9 then
+      menu.maxselect:setSelected(1)
+   elseif preferences.MaxSelection == 12 then
+      menu.maxselect:setSelected(2)
+   elseif preferences.MaxSelection == 18 then
+      menu.maxselect:setSelected(3)
+   elseif preferences.MaxSelection == 50 then
+      menu.maxselect:setSelected(4)
+   end
+
+   menu.fogtype:setSelected(GetFogOfWarType())
+   menu.fowbilinear:setMarked(GetIsFogOfWarBilinear())
+   menu.shader:setSelected(getCurrentShaderIndex() - 1)
+
+   if (GameCycle > 0) then
+      menu:run(false)
+   else
+      menu:run()
+   end
 end
 
 function SetVideoSize(width, height)
