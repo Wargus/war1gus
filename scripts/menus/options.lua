@@ -111,41 +111,50 @@ function RunPreferencesMenu()
                                      preferences.FogOfWar = fog:isMarked()
                                      SavePreferences()
                         end):id("fog"),
-                        LCheckBox("Multiple Townhalls", function(dd)
-                                     preferences.AllowMultipleTownHalls = dd:isMarked()
-                                     Load("scripts/buttons.lua")
-                                     Load("scripts/buildings.lua")
-                                     SavePreferences()
-                        end):id("multiTown"),
-                        LCheckBox("Rebalanced stats", function(dd)
-                                     if preferences.RebalancedStats then
-                                        preferences.RebalancedStats = false
-                                        local infoMenu = WarMenu(nil, panel(4), false)
-                                        infoMenu:setSize(144, 64)
-                                        infoMenu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
-                                        infoMenu:setDrawMenusUnder(true)
-                                        local l = MultiLineLabel("You must restart the game to change to original game stats.")
-                                        l:setFont(Fonts["large"])
-                                        l:setAlignment(MultiLineLabel.CENTER)
-                                        l:setVerticalAlignment(MultiLineLabel.CENTER)
-                                        l:setLineWidth(135)
-                                        l:setWidth(135)
-                                        l:setHeight(20)
-                                        l:setBackgroundColor(dark)
-                                        infoMenu:add(l, 4, 19)
-                                        infoMenu:addHalfButton("~!OK", "o", 41, 40, function() infoMenu:stop() end)
-                                        infoMenu:run()
-                                     else
-                                        Load("scripts/balancing.lua")
-                                        preferences.RebalancedStats = true
-                                     end
-                                     SavePreferences()
-                        end):id("stats"),
-                        LCheckBox(_("Simplified auto targeting"), function(dd)
-                                     Preference.SimplifiedAutoTargeting = dd:isMarked()
-                                     preferences.SimplifiedAutoTargeting = Preference.SimplifiedAutoTargeting
-                                     SavePreferences()
-                        end):id("simpleautotgt"),
+                        ((GameCycle == 0 and
+                          LCheckBox("Multiple Townhalls", function(dd)
+                                       preferences.AllowMultipleTownHalls = dd:isMarked()
+                                       Load("scripts/buttons.lua")
+                                       Load("scripts/buildings.lua")
+                                       SavePreferences()
+                          end):id("multiTown")) or
+                           LLabel(("Multiple Townhalls" .. " " ..
+                                   (preferences.AllowMultipleTownHalls and _("on") or _("off"))), nil, false)),
+                        ((GameCycle == 0 and
+                          LCheckBox("Rebalanced stats", function(dd)
+                                       if preferences.RebalancedStats then
+                                          preferences.RebalancedStats = false
+                                          local infoMenu = WarMenu(nil, panel(4), false)
+                                          infoMenu:setSize(144, 64)
+                                          infoMenu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
+                                          infoMenu:setDrawMenusUnder(true)
+                                          local l = MultiLineLabel("You must restart the game to change to original game stats.")
+                                          l:setFont(Fonts["large"])
+                                          l:setAlignment(MultiLineLabel.CENTER)
+                                          l:setVerticalAlignment(MultiLineLabel.CENTER)
+                                          l:setLineWidth(135)
+                                          l:setWidth(135)
+                                          l:setHeight(20)
+                                          l:setBackgroundColor(dark)
+                                          infoMenu:add(l, 4, 19)
+                                          infoMenu:addHalfButton("~!OK", "o", 41, 40, function() infoMenu:stop() end)
+                                          infoMenu:run()
+                                       else
+                                          Load("scripts/balancing.lua")
+                                          preferences.RebalancedStats = true
+                                       end
+                                       SavePreferences()
+                          end):id("stats")) or
+                           LLabel(("Rebalanced stats" .. " " ..
+                                   (preferences.RebalancedStats and _("on") or _("off"))), nil, false)),
+                        (((not IsNetworkGame()) and 
+                              LCheckBox(_("Simplified auto targeting"), function(dd)
+                                           Preference.SimplifiedAutoTargeting = dd:isMarked()
+                                           preferences.SimplifiedAutoTargeting = Preference.SimplifiedAutoTargeting
+                                           SavePreferences()
+                              end):id("simpleautotgt")) or
+                           LLabel((_("Simplified auto targeting") .. " " ..
+                                   (Preference.SimplifiedAutoTargeting and _("on") or _("off"))), nil, false)),
                         LCheckBox(_("Block sight in dungeons"), function(dd)
                                      preferences.DungeonSightBlocking = dd:isMarked()
                                      if GameSettings.Inside then
@@ -184,11 +193,14 @@ function RunPreferencesMenu()
                         }),
                   }):withPadding(2),
                   VBox({
-                        LCheckBox("Simple colors", function(dd)
-                                     preferences.MultiColoredCampaigns = dd:isMarked()
-                                     SetColorScheme()
-                                     SavePreferences()
-                        end):id("simpleColors"),
+                        ((GameCycle == 0 and
+                          LCheckBox("Simple colors", function(dd)
+                                       preferences.MultiColoredCampaigns = not dd:isMarked()
+                                       SetColorScheme()
+                                       SavePreferences()
+                          end):id("simpleColors")) or
+                           LLabel(("Simple colors" .. " " ..
+                                   (preferences.MultiColoredCampaigns and _("off") or _("on"))), nil, false)),
                         LCheckBox("Show orders", function(dd)
                                      if dd:isMarked() then
                                         preferences.ShowOrders = true
@@ -241,25 +253,30 @@ function RunPreferencesMenu()
                                      SetFogOfWarBilinear(preferences.FogOfWarBilinear)
                                      SavePreferences()
                         end):id("fowbilinear"),
-                        LLabel(_("Shader")),
-                        LDropDown(shaderNames, function(dd)
-                                     if #shaderNames > 1 then
-                                        local newShader = shaderNames[dd:getSelected() + 1];
-                                        if SetShader(newShader) then
-                                           Preference.VideoShader = newShader
-                                           wc1.preferences.VideoShader = newShader
-                                        end
-                                     end
-                        end):id("shader"),
-                        LCheckBox("Original pixel ratio", function(dd)
-                                     preferences.OriginalPixelRatio = dd:isMarked()
-                                     if preferences.OriginalPixelRatio then
-                                        SetVerticalPixelSize(1.2)
-                                     else
-                                        SetVerticalPixelSize(1.0)
-                                     end
-                                     SavePreferences()
-                        end):id("pixelratio"),
+                        HBox({
+                              LLabel(_("Shader")),
+                              LDropDown(shaderNames, function(dd)
+                                           if #shaderNames > 1 then
+                                              local newShader = shaderNames[dd:getSelected() + 1];
+                                              if SetShader(newShader) then
+                                                 Preference.VideoShader = newShader
+                                                 wc1.preferences.VideoShader = newShader
+                                              end
+                                           end
+                              end):id("shader"),
+                        }),
+                        ((GameCycle == 0 and
+                          LCheckBox(_("Original pixel ratio"), function(dd)
+                                       preferences.OriginalPixelRatio = dd:isMarked()
+                                       if preferences.OriginalPixelRatio then
+                                          SetVerticalPixelSize(1.2)
+                                       else
+                                          SetVerticalPixelSize(1.0)
+                                       end
+                                       SavePreferences()
+                          end):id("pixelratio")) or
+                           LLabel((_("Original pixel ratio") .. " " ..
+                                   (preferences.OriginalPixelRatio and _("on") or _("off"))), nil, false)),
                   }):withPadding(2),
             }):withPadding(2),
 
@@ -292,25 +309,26 @@ function RunPreferencesMenu()
    if (IsReplayGame() or IsNetworkGame()) then
       menu.fog:setEnabled(false)
    end
-   menu.multiTown:setMarked(preferences.AllowMultipleTownHalls)
-   menu.simpleautotgt:setMarked(Preference.SimplifiedAutoTargeting)
-   if IsNetworkGame() then
-      menu.simpleautotgt:setEnabled(false)
+   
+   if menu.simpleautotgt then
+      menu.simpleautotgt:setMarked(Preference.SimplifiedAutoTargeting)
    end
-   menu.stats:setMarked(preferences.RebalancedStats)
-   if GameCycle ~= 0 then
-      menu.multiTown:setEnabled(false)
-      -- menu.simpleColors:setEnabled(false)
-      menu.stats:setEnabled(false)
+
+   if GameCycle == 0 then
+      menu.multiTown:setMarked(preferences.AllowMultipleTownHalls)
+      menu.simpleColors:setMarked(not preferences.MultiColoredCampaigns)
+      menu.stats:setMarked(preferences.RebalancedStats)
+      menu.pixelratio:setMarked(preferences.OriginalPixelRatio)
    end
    menu.showorders:setMarked(preferences.ShowOrders)
    menu.trainingqueue:setMarked(preferences.TrainingQueue)
    menu.showdmg:setMarked(preferences.ShowDamage)
 
-   menu.simpleColors:setMarked(not preferences.MultiColoredCampaigns)
    menu.ckey:setMarked(UI.ButtonPanel.ShowCommandKey)
    menu.fullscreen:setMarked(Video.FullScreen)
    menu.sightblock:setMarked(preferences.DungeonSightBlocking)
+
+   menu.gamespeed:setValue(GetGameSpeed())
 
    if preferences.MaxSelection == 4 then
       menu.maxselect:setSelected(0)
@@ -326,8 +344,7 @@ function RunPreferencesMenu()
 
    menu.fogtype:setSelected(GetFogOfWarType())
    menu.fowbilinear:setMarked(GetIsFogOfWarBilinear())
-   menu.shader:setSelected(getCurrentShaderIndex() - 1)
-   menu.pixelratio:setMarked(preferences.OriginalPixelRatio)
+   menu.shader:setSelected(getCurrentShaderIndex() - 1)   
 
    if (GameCycle > 0) then
       menu:run(false)
