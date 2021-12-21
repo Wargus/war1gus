@@ -64,7 +64,7 @@ function SetupAnimation(filename, w, h, x, y, framecntX, framecntY, backwards, p
   return {animationCb, headClip}
 end
 
-function Briefing(title, objs, bgImg, mapbg, text, voices)
+function Briefing(title, objs, bgImg, mapbg, mapVideo, text, voices)
   SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
 
   local menu = WarMenu()
@@ -174,6 +174,7 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
   SetGameSpeed(30)
 
   local currentAction = nil
+  local overall
   function action2()
      if (channel ~= -1) then
         voice = table.getn(voices)
@@ -181,7 +182,21 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
      end
      StopMusic()
      MusicStopped()
-     menu:stop()
+
+     local scenem = Movie()
+     if scenem:Load(mapVideo, Video.Width, Video.Height) then
+        currentAction = function() menu:stop() end
+        local movieWidget = ImageWidget(scenem)
+        menu:add(movieWidget, 0, 0)
+        menu:add(overall, 0, 0)
+        local function playEnd()
+           if not scenem:IsPlaying() then
+              menu:stop()
+           end
+        end
+        local listener = LuaActionListener(playEnd)
+        menu:addLogicCallback(listener)
+     end
   end
   function action1()
      if bg2 ~= nil then
@@ -198,7 +213,7 @@ function Briefing(title, objs, bgImg, mapbg, text, voices)
   end
   currentAction = action1
 
-  local overall = ImageButton()
+  overall = ImageButton()
   overall:setWidth(Video.Width)
   overall:setHeight(Video.Height)
   overall:setBorderSize(0)
@@ -325,11 +340,10 @@ function CreateMapStep(race, map)
        objectives,
        "../graphics/ui/" .. race .. "/briefing.png",
        "../graphics/" .. race_prefix .. "map" .. map .. ".png",
+       "videos/" .. race_prefix .. "map" .. map .. ".ogv",
        prefix .. map .. "_intro.txt",
        {prefix .. map .. "_intro.wav"}
     )
-
-    PlayMovie("videos/" .. race_prefix .. "map" .. map .. ".ogv")
 
     war1gus.InCampaign = true
     Load(prefix .. map .. ".smp")
