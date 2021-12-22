@@ -201,46 +201,91 @@ end
 DefineSpell("spell-summon-elemental", "action", {{"lua-callback", SummonSpellCallback}})
 DefineSpell("spell-summon-daemon", "action", {{"lua-callback", SummonSpellCallback}})
 
+local DaemonDeath = function(daemon, warlock)
+   TransformUnit(warlock, "unit-warlock")
+   -- daemons are nasty creatures, they destroy when they are forced to
+   -- return and kill the warlock
+   AddMessage(_("A daemons magic returns to the hells ..."))
+   for i,unit in ipairs(GetUnitsAroundUnit(warlock, 6, false)) do
+      DamageUnit(-1, unit, 15)
+   end
+   DamageUnit(-1, warlock, 100)
+end
+
+local ElementalDeath = function(elemental, conjurer)
+   TransformUnit(caster, "unit-conjurer")
+end
+
 -- add death callback to elemental
 local SummonedDeathCallback = function(summoned, x, y)
    -- elemental will die, release the conjurer from concentration
    local caster = SummonedToCasterMap[summoned]
-   table.remove(CasterToSummonedMap, caster)
-   table.remove(SummonedToCasterMap, summoned)
-   if caster and caster > 0 then
+   CasterToSummonedMap[caster] = nil
+   SummonedToCasterMap[summoned] = nil
+   if caster then
       local casterIdent = GetUnitVariable(caster, "Ident")
       local hp = GetUnitVariable(caster, "HitPoints")
       -- there can be races, so be extra careful
       if hp > 0 then
          if casterIdent == "unit-conjurer-during-summoning" then
-            TransformUnit(caster, "unit-conjurer")
+            ElementalDeath(summoned, caster)
          elseif casterIdent == "unit-warlock-during-summoning" then
-            TransformUnit(caster, "unit-warlock")
+            DaemonDeath(summoned, caster)
          end
       end
    end
 end
 
-DefineUnitType("unit-water-elemental",{OnDeath = SummonedDeathCallback})
-DefineUnitType("unit-daemon",{OnDeath = SummonedDeathCallback})
+DefineUnitType("unit-water-elemental", {
+                  HitPoints = 200,
+                  PiercingDamage = 0,
+                  BasicDamage = 30,
+                  OnDeath = SummonedDeathCallback
+})
+DefineUnitType("unit-daemon", {
+                  BasicDamage = 30,
+                  OnDeath = SummonedDeathCallback
+})
 
 -- define summoner states and deaths
-local SummonerDeathCallback = function(caster, attacker, damage)
+local SummonerDeathCallback = function(caster, x, y)
    -- caster will die, kill any summoned unit, if exists
    local activeSummoned = CasterToSummonedMap[caster]
-   table.remove(CasterToSummonedMap, caster)
-   table.remove(SummonedToCasterMap, activeSummoned)
-   if activeSummoned and activeSummoned > 0 then
+   CasterToSummonedMap[caster] = nil
+   SummonedToCasterMap[activeSummoned] = nil
+   if activeSummoned then
       local hp = GetUnitVariable(activeSummoned, "HitPoints")
       if hp > 0 then
          local summonedIdent = GetUnitVariable(activeSummoned, "Ident")
          local casterIdent = GetUnitVariable(caster, "Ident")
          if casterIdent == "unit-conjurer-during-summoning" then
             if summonedIdent == "unit-water-elemental" then
-               RemoveUnit(activeSummoned)
+               if x < 0 then
+                  -- called from SummonerCancelButtonAction. remove the unit
+                  RemoveUnit(activeSummoned)
+               else
+                  -- as per the manual, "should they [Water Elementals] escape
+                  -- the control of their master, they become free creatures to
+                  -- do as they will"
+                  AddMessage(_("An elemental escapes its bonds to roam the world ..."))
+                  -- In our case, what we do is make the elemental neutral but
+                  -- order it to attack someone near the conjurer. It'll run out
+                  -- of TTL eventually, anyway...
+                  SetUnitVariable(activeSummoned, "Player", 15)
+                  local posx = GetUnitVariable(activeSummoned, "PosX")
+                  local posy = GetUnitVariable(activeSummoned, "PosY")
+                  OrderUnit(15, summonedIdent, {posx, posy}, {
+                               x - 10, y - 10,
+                               x + 10, y + 10
+                  })
+               end
             end
          elseif casterIdent == "unit-warlock-during-summoning" then
             if summonedIdent == "unit-daemon" then
+               AddMessage(_("A daemon escapes its bond and furiously returns to the hells ..."))
+               for i,unit in ipairs(GetUnitsAroundUnit(caster, 6, false)) do
+                  DamageUnit(-1, unit, 15)
+               end
                RemoveUnit(activeSummoned)
             end
          end
@@ -249,14 +294,15 @@ local SummonerDeathCallback = function(caster, attacker, damage)
 end
 
 local SummonerCancelButtonAction = function(caster)
-   SummonerDeathCallback(caster, -1, 0)
+   SummonerDeathCallback(caster, -1, -1)
    local casterIdent = GetUnitVariable(caster, "Ident")
    local hp = GetUnitVariable(caster, "HitPoints")
    if hp > 0 then
       if casterIdent == "unit-conjurer-during-summoning" then
          TransformUnit(caster, "unit-conjurer")
       elseif casterIdent == "unit-warlock-during-summoning" then
-         TransformUnit(caster, "unit-warlock")
+         AddMessage(_("A daemon is forced back to the hells ..."))
+         DamageUnit(-1, caster, 100)
       end
    end
 end
