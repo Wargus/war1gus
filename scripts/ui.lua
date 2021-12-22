@@ -128,8 +128,11 @@ DefinePanelContents(
            More = {"Text", {Text = "RNG:", Variable = "AttackRange" , Stat = true}}
          },
          -- Mana
-         { Pos = {36, 10}, Condition = {ShowOpponent = true, Mana = "only"},
+         { Pos = {36, 10}, Condition = {HideAllied = false, ShowOpponent = true, HideNeutral = true, Mana = "only"},
            More = {"LifeBar", {Variable = "Mana", Height = 3, Width = 27, Border = false, Colors = {{0, "light-blue"}}}}
+         },
+         { Pos = {36, 10}, Condition = {HideAllied = true, ShowOpponent = true, HideNeutral = true, Mana = "only"},
+           More = {"LifeBar", {Variable = "Mana", Height = 3, Width = 27, Border = 0x9b9b9b, Colors = {{0, "light-blue"}}}}
          },
          -- Summoned units
          { Pos = {36, 10},

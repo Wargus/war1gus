@@ -205,11 +205,11 @@ local DaemonDeath = function(daemon, warlock)
    TransformUnit(warlock, "unit-warlock")
    -- daemons are nasty creatures, they destroy when they are forced to
    -- return and kill the warlock
-   AddMessage(_("A daemons magic returns to the hells ..."))
    for i,unit in ipairs(GetUnitsAroundUnit(warlock, 6, false)) do
       DamageUnit(-1, unit, 15)
    end
    DamageUnit(-1, warlock, 100)
+   AddMessage(_("A daemons chaos magic returns to the hells ..."))
 end
 
 local ElementalDeath = function(elemental, conjurer)
@@ -220,7 +220,9 @@ end
 local SummonedDeathCallback = function(summoned, x, y)
    -- elemental will die, release the conjurer from concentration
    local caster = SummonedToCasterMap[summoned]
-   CasterToSummonedMap[caster] = nil
+   if caster then
+      CasterToSummonedMap[caster] = nil
+   end
    SummonedToCasterMap[summoned] = nil
    if caster then
       local casterIdent = GetUnitVariable(caster, "Ident")
@@ -252,7 +254,9 @@ local SummonerDeathCallback = function(caster, x, y)
    -- caster will die, kill any summoned unit, if exists
    local activeSummoned = CasterToSummonedMap[caster]
    CasterToSummonedMap[caster] = nil
-   SummonedToCasterMap[activeSummoned] = nil
+   if activeSummoned then
+      SummonedToCasterMap[activeSummoned] = nil
+   end
    if activeSummoned then
       local hp = GetUnitVariable(activeSummoned, "HitPoints")
       if hp > 0 then
@@ -271,22 +275,53 @@ local SummonerDeathCallback = function(caster, x, y)
                   -- In our case, what we do is make the elemental neutral but
                   -- order it to attack someone near the conjurer. It'll run out
                   -- of TTL eventually, anyway...
-                  SetUnitVariable(activeSummoned, "Player", 15)
+
+                  local prevPlayer = GetUnitVariable(activeSummoned, "Player")
+                  local enemyPlayer = 0
+                  local neutralPlayer = 0
+                  for i=15,1,-1 do
+                     if i ~= prevPlayer then
+                        if GetPlayerData(i, "AiEnabled") then
+                           local dip = GetDiplomacy(i, prevPlayer)
+                           if dip == "enemy" or dip == "crazy" then
+                              enemyPlayer = i
+                              break
+                           elseif dip == "neutral" then
+                              neutralPlayer = i
+                           end
+                        end
+                     end
+                  end
+
+                  if enemyPlayer == 0 then
+                     if neutralPlayer == 0 then
+                        -- did not find even a neutral player? what do we do?
+                        RemoveUnit(activeSummoned)
+                     else
+                        SetUnitVariable(activeSummoned, "Player", neutralPlayer)
+                        SetDiplomacy(neutralPlayer, "enemy", prevPlayer)
+                     end
+                  else
+                     SetUnitVariable(activeSummoned, "Player", enemyPlayer)
+                  end
+
                   local posx = GetUnitVariable(activeSummoned, "PosX")
                   local posy = GetUnitVariable(activeSummoned, "PosY")
+                  local dx = GetUnitVariable(caster, "PosX")
+                  local dy = GetUnitVariable(caster, "PosY")
                   OrderUnit(15, summonedIdent, {posx, posy}, {
-                               x - 10, y - 10,
-                               x + 10, y + 10
-                  })
+                               dx - 10, dy - 10,
+                               dx + 10, dy + 10
+                  }, "attack")
                end
             end
          elseif casterIdent == "unit-warlock-during-summoning" then
             if summonedIdent == "unit-daemon" then
-               AddMessage(_("A daemon escapes its bond and furiously returns to the hells ..."))
                for i,unit in ipairs(GetUnitsAroundUnit(caster, 6, false)) do
                   DamageUnit(-1, unit, 15)
                end
                RemoveUnit(activeSummoned)
+               AddMessage(_("A daemon escapes its bond and furiously returns to the hells ..."))
             end
          end
       end
@@ -301,8 +336,8 @@ local SummonerCancelButtonAction = function(caster)
       if casterIdent == "unit-conjurer-during-summoning" then
          TransformUnit(caster, "unit-conjurer")
       elseif casterIdent == "unit-warlock-during-summoning" then
-         AddMessage(_("A daemon is forced back to the hells ..."))
          DamageUnit(-1, caster, 100)
+         AddMessage(_("A daemon is forced back to the hells ..."))
       end
    end
 end
