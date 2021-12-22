@@ -12,7 +12,7 @@ function AddSoundOptions(menu, offx, offy, centerx, bottom)
      b:adjustSize();
      menu:add(b, 8, offy + 18 * offstart)
 
-     local slider = Slider(0, 127)
+     local slider = Slider(0, 255)
      slider:setValue(getvalue())
      slider:setActionCallback(function() setvalue(slider:getValue()) end)
      slider:setWidth(99)
