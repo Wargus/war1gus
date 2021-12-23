@@ -63,7 +63,7 @@ local fourth_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 41}
 
 local function MakeCompleteBar(condition, variable)
    return { Pos = {1, 36}, Condition = condition,
-            More = {"CompleteBar", {Variable = variable, Width = 62, Height = 7, Color = "green", Border = true}}
+            More = {"CompleteBar", {Variable = variable, Width = 61, Height = 7, Color = "green", Border = true}}
    }
 end
 
