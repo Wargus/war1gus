@@ -205,16 +205,24 @@ local DaemonDeath = function(daemon, warlock)
    print("Death of " .. daemon .. " spawned from " .. warlock)
    -- daemons are nasty creatures, they destroy when they are forced to
    -- return and kill the warlock
+   local spos = GetUnitVariable(daemon, "PixelPos")
    for i,unit in ipairs(GetUnitsAroundUnit(warlock, 6, false)) do
-      if unit ~= daemon then
+      if GetUnitVariable(unit, "Ident") ~= "unit-daemon" then
+         local pos = GetUnitVariable(unit, "PixelPos")
+         CreateMissile("missile-magic-fireball", {spos.x, spos.y}, {pos.x, pos.y}, daemon, unit, false, true)
          DamageUnit(-1, unit, 15)
       end
    end
    for i,unit in ipairs(GetUnitsAroundUnit(warlock, 2, false)) do
-      if unit ~= daemon then
+      if GetUnitVariable(unit, "Ident") ~= "unit-daemon" then
+         local pos = GetUnitVariable(unit, "PixelPos")
+         CreateMissile("missile-explosion", {pos.x, pos.y}, {pos.x, pos.y}, daemon, unit, false, true)
          DamageUnit(-1, unit, 25)
       end
    end
+   local pos = GetUnitVariable(warlock, "PixelPos")
+   CreateMissile("missile-magic-fireball", {spos.x, spos.y}, {pos.x, pos.y}, daemon, warlock, false, true)
+   CreateMissile("missile-explosion", {pos.x, pos.y}, {pos.x, pos.y}, daemon, warlock, false, true)
    DamageUnit(-1, warlock, 40)
    AddMessage(_("A daemons chaos magic returns to the hells ..."))
 end
@@ -274,7 +282,7 @@ local SummonerDeathCallback = function(caster, x, y)
             if summonedIdent == "unit-water-elemental" then
                if x < 0 then
                   -- called from SummonerCancelButtonAction. remove the unit
-                  RemoveUnit(activeSummoned)
+                  DamageUnit(-1, activeSummoned, 1000)
                else
                   -- as per the manual, "should they [Water Elementals] escape
                   -- the control of their master, they become free creatures to
@@ -304,7 +312,7 @@ local SummonerDeathCallback = function(caster, x, y)
                   if enemyPlayer == 0 then
                      if neutralPlayer == 0 then
                         -- did not find even a neutral player? what do we do?
-                        RemoveUnit(activeSummoned)
+                        DamageUnit(-1, activeSummoned, 1000)
                      else
                         SetUnitVariable(activeSummoned, "Player", neutralPlayer)
                         SetDiplomacy(neutralPlayer, "enemy", prevPlayer)
@@ -325,15 +333,26 @@ local SummonerDeathCallback = function(caster, x, y)
             end
          elseif casterIdent == "unit-warlock-during-summoning" then
             if summonedIdent == "unit-daemon" then
+               local spos = GetUnitVariable(activeSummoned, "PixelPos")
                if x >= 0 then
                   for i,unit in ipairs(GetUnitsAroundUnit(caster, 6, false)) do
-                     DamageUnit(-1, unit, 15)
+                     if GetUnitVariable(unit, "Ident") ~= "unit-daemon" then
+                        local pos = GetUnitVariable(unit, "PixelPos")
+                        CreateMissile("missile-magic-fireball", {spos.x, spos.y}, {pos.x, pos.y}, activeSummoned, unit, false, true)
+                        DamageUnit(-1, unit, 15)
+                     end
                   end
                   for i,unit in ipairs(GetUnitsAroundUnit(caster, 2, false)) do
-                     DamageUnit(-1, unit, 25)
+                     if GetUnitVariable(unit, "Ident") ~= "unit-daemon" then
+                        local pos = GetUnitVariable(unit, "PixelPos")
+                        CreateMissile("missile-explosion", {pos.x, pos.y}, {pos.x, pos.y}, activeSummoned, unit, false, true)
+                        DamageUnit(-1, unit, 25)
+                     end
                   end
                end
-               RemoveUnit(activeSummoned)
+               local cpos = GetUnitVariable(caster, "PixelPos")
+               CreateMissile("missile-magic-fireball", {spos.x, spos.y}, {cpos.x, cpos.y}, activeSummoned, caster, false, true)
+               DamageUnit(-1, activeSummoned, 1000)
                AddMessage(_("A daemon escapes its bond and furiously returns to the hells ..."))
             end
          end
@@ -349,6 +368,8 @@ local SummonerCancelButtonAction = function(caster)
       if casterIdent == "unit-conjurer-during-summoning" then
          TransformUnit(caster, "unit-conjurer")
       elseif casterIdent == "unit-warlock-during-summoning" then
+         local cpos = GetUnitVariable(caster, "PixelPos")
+         CreateMissile("missile-explosion", {cpos.x, cpos.y}, {cpos.x, cpos.y}, caster, caster, false, true)
          DamageUnit(-1, caster, 30)
          TransformUnit(caster, "unit-warlock")
          AddMessage(_("A daemon is forced back to the hells ..."))
