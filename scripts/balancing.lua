@@ -202,18 +202,26 @@ DefineSpell("spell-summon-elemental", "action", {{"lua-callback", SummonSpellCal
 DefineSpell("spell-summon-daemon", "action", {{"lua-callback", SummonSpellCallback}})
 
 local DaemonDeath = function(daemon, warlock)
-   TransformUnit(warlock, "unit-warlock")
+   print("Death of " .. daemon .. " spawned from " .. warlock)
    -- daemons are nasty creatures, they destroy when they are forced to
    -- return and kill the warlock
    for i,unit in ipairs(GetUnitsAroundUnit(warlock, 6, false)) do
-      DamageUnit(-1, unit, 15)
+      if unit ~= daemon then
+         DamageUnit(-1, unit, 15)
+      end
    end
-   DamageUnit(-1, warlock, 100)
+   for i,unit in ipairs(GetUnitsAroundUnit(warlock, 2, false)) do
+      if unit ~= daemon then
+         DamageUnit(-1, unit, 25)
+      end
+   end
+   DamageUnit(-1, warlock, 40)
    AddMessage(_("A daemons chaos magic returns to the hells ..."))
 end
 
 local ElementalDeath = function(elemental, conjurer)
-   TransformUnit(caster, "unit-conjurer")
+   print("Death of " .. elemental .. " spawned from " .. conjurer)
+   TransformUnit(conjurer, "unit-conjurer")
 end
 
 -- add death callback to elemental
@@ -317,8 +325,13 @@ local SummonerDeathCallback = function(caster, x, y)
             end
          elseif casterIdent == "unit-warlock-during-summoning" then
             if summonedIdent == "unit-daemon" then
-               for i,unit in ipairs(GetUnitsAroundUnit(caster, 6, false)) do
-                  DamageUnit(-1, unit, 15)
+               if x >= 0 then
+                  for i,unit in ipairs(GetUnitsAroundUnit(caster, 6, false)) do
+                     DamageUnit(-1, unit, 15)
+                  end
+                  for i,unit in ipairs(GetUnitsAroundUnit(caster, 2, false)) do
+                     DamageUnit(-1, unit, 25)
+                  end
                end
                RemoveUnit(activeSummoned)
                AddMessage(_("A daemon escapes its bond and furiously returns to the hells ..."))
@@ -336,7 +349,8 @@ local SummonerCancelButtonAction = function(caster)
       if casterIdent == "unit-conjurer-during-summoning" then
          TransformUnit(caster, "unit-conjurer")
       elseif casterIdent == "unit-warlock-during-summoning" then
-         DamageUnit(-1, caster, 100)
+         DamageUnit(-1, caster, 30)
+         TransformUnit(caster, "unit-warlock")
          AddMessage(_("A daemon is forced back to the hells ..."))
       end
    end
