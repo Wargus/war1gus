@@ -201,6 +201,11 @@ end
 DefineSpell("spell-summon-elemental", "action", {{"lua-callback", SummonSpellCallback}})
 DefineSpell("spell-summon-daemon", "action", {{"lua-callback", SummonSpellCallback}})
 
+DefineMissileType("missile-demon-hate",
+  { File = "missiles/fireball.png", Size = {32, 32}, Frames = 25, NumDirections = 9,
+    DrawLevel = 200, ImpactSound = "fireball attack", Damage = 15,
+    Class = "missile-class-point-to-point", Sleep = 1, Speed = 7, Range = 128 } )
+
 local DaemonDeath = function(daemon, warlock)
    print("Death of " .. daemon .. " spawned from " .. warlock)
    -- daemons are nasty creatures, they destroy when they are forced to
@@ -209,21 +214,19 @@ local DaemonDeath = function(daemon, warlock)
    for i,unit in ipairs(GetUnitsAroundUnit(warlock, 6, false)) do
       if GetUnitVariable(unit, "Ident") ~= "unit-daemon" then
          local pos = GetUnitVariable(unit, "PixelPos")
-         CreateMissile("missile-magic-fireball", {spos.x, spos.y}, {pos.x, pos.y}, daemon, unit, false, true)
-         DamageUnit(-1, unit, 15)
+         CreateMissile("missile-demon-hate", {spos.x, spos.y}, {pos.x, pos.y}, daemon, unit, true, true)
       end
    end
    for i,unit in ipairs(GetUnitsAroundUnit(warlock, 2, false)) do
       if GetUnitVariable(unit, "Ident") ~= "unit-daemon" then
          local pos = GetUnitVariable(unit, "PixelPos")
-         CreateMissile("missile-explosion", {pos.x, pos.y}, {pos.x, pos.y}, daemon, unit, false, true)
-         DamageUnit(-1, unit, 25)
+         CreateMissile("missile-demon-hate", {spos.x, spos.y}, {pos.x, pos.y}, daemon, unit, true, true)
       end
    end
    local pos = GetUnitVariable(warlock, "PixelPos")
-   CreateMissile("missile-magic-fireball", {spos.x, spos.y}, {pos.x, pos.y}, daemon, warlock, false, true)
-   CreateMissile("missile-explosion", {pos.x, pos.y}, {pos.x, pos.y}, daemon, warlock, false, true)
-   DamageUnit(-1, warlock, 40)
+   CreateMissile("missile-demon-hate", {spos.x, spos.y}, {pos.x, pos.y}, daemon, warlock, true, true)
+   CreateMissile("missile-demon-hate", {spos.x, spos.y}, {pos.x, pos.y}, daemon, warlock, true, true)
+   CreateMissile("missile-demon-hate", {spos.x, spos.y}, {pos.x, pos.y}, daemon, warlock, true, true)
    AddMessage(_("A daemons chaos magic returns to the hells ..."))
 end
 
@@ -261,7 +264,7 @@ DefineUnitType("unit-water-elemental", {
                   OnDeath = SummonedDeathCallback
 })
 DefineUnitType("unit-daemon", {
-                  BasicDamage = 30,
+                  BasicDamage = 35,
                   OnDeath = SummonedDeathCallback
 })
 
@@ -338,20 +341,19 @@ local SummonerDeathCallback = function(caster, x, y)
                   for i,unit in ipairs(GetUnitsAroundUnit(caster, 6, false)) do
                      if GetUnitVariable(unit, "Ident") ~= "unit-daemon" then
                         local pos = GetUnitVariable(unit, "PixelPos")
-                        CreateMissile("missile-magic-fireball", {spos.x, spos.y}, {pos.x, pos.y}, activeSummoned, unit, false, true)
-                        DamageUnit(-1, unit, 15)
+                        CreateMissile("missile-demon-hate", {spos.x, spos.y}, {pos.x, pos.y}, activeSummoned, unit, true, true)
                      end
                   end
                   for i,unit in ipairs(GetUnitsAroundUnit(caster, 2, false)) do
                      if GetUnitVariable(unit, "Ident") ~= "unit-daemon" then
                         local pos = GetUnitVariable(unit, "PixelPos")
-                        CreateMissile("missile-explosion", {pos.x, pos.y}, {pos.x, pos.y}, activeSummoned, unit, false, true)
-                        DamageUnit(-1, unit, 25)
+                        CreateMissile("missile-demon-hate", {spos.x, spos.y}, {pos.x, pos.y}, activeSummoned, unit, true, true)
                      end
                   end
                end
                local cpos = GetUnitVariable(caster, "PixelPos")
-               CreateMissile("missile-magic-fireball", {spos.x, spos.y}, {cpos.x, cpos.y}, activeSummoned, caster, false, true)
+               CreateMissile("missile-demon-hate", {spos.x, spos.y}, {cpos.x, cpos.y}, activeSummoned, caster, false, true)
+               CreateMissile("missile-demon-hate", {spos.x, spos.y}, {cpos.x, cpos.y}, activeSummoned, caster, false, true)
                DamageUnit(-1, activeSummoned, 1000)
                AddMessage(_("A daemon escapes its bond and furiously returns to the hells ..."))
             end
@@ -368,9 +370,6 @@ local SummonerCancelButtonAction = function(caster)
       if casterIdent == "unit-conjurer-during-summoning" then
          TransformUnit(caster, "unit-conjurer")
       elseif casterIdent == "unit-warlock-during-summoning" then
-         local cpos = GetUnitVariable(caster, "PixelPos")
-         CreateMissile("missile-explosion", {cpos.x, cpos.y}, {cpos.x, cpos.y}, caster, caster, false, true)
-         DamageUnit(-1, caster, 30)
          TransformUnit(caster, "unit-warlock")
          AddMessage(_("A daemon is forced back to the hells ..."))
       end
