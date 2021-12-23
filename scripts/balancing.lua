@@ -198,8 +198,8 @@ local SummonSpellCallback = function(spellname, caster, x, y, summoned)
    return true
 end
 
-DefineSpell("spell-summon-elemental", "action", {{"lua-callback", SummonSpellCallback}})
-DefineSpell("spell-summon-daemon", "action", {{"lua-callback", SummonSpellCallback}})
+DefineSpell("spell-summon-elemental", "manacost", 100, "action", {{"lua-callback", SummonSpellCallback}})
+DefineSpell("spell-summon-daemon", "manacost", 100, "action", {{"lua-callback", SummonSpellCallback}})
 
 DefineMissileType("missile-demon-hate",
   { File = "missiles/fireball.png", Size = {32, 32}, Frames = 25, NumDirections = 9,
