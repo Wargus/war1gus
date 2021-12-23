@@ -146,6 +146,8 @@ SetDamageMissile("missile-hit")
 
 SetLeaveStops(true)
 
+ResourcesMultiBuildersMultiplier(1)
+
 --  Edit this to enable/disable grabbing the mouse.
 SetGrabMouse(false)
 
