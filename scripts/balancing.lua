@@ -492,3 +492,22 @@ local upgrades = {
 for idx,spec in ipairs(upgrades) do
    DefineUpgradeFromSpec(spec)
 end
+
+-----------------------------------------------------------------------
+-- Orcs can heal at their temple
+-----------------------------------------------------------------------
+DefineUnitType("unit-orc-temple", {
+   OnEachSecond = function (temple)
+      local freq = GetUnitVariable(temple, "RegenerationFrequency")
+      if freq <= 1 then
+         for i,unit in ipairs(GetUnitsAroundUnit(temple, 1, false)) do
+            if GetUnitVariable(unit, "organic") then
+               SetUnitVariable(unit, "HitPoints", GetUnitVariable(unit, "HitPoints") + 1)
+            end
+         end
+         SetUnitVariable(temple, "RegenerationFrequency", 6)
+      else
+         SetUnitVariable(temple, "RegenerationFrequency", freq - 1)
+      end
+   end
+})
