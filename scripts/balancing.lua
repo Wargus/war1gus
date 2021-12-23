@@ -104,12 +104,14 @@ DefineUnitType("unit-warlock", 				{Costs = {"time", 350, "gold", 800, "wood", 1
 
 DefineUnitType("unit-human-catapult", {                  
                   Demand = 3,
+                  organic = false,
                   BasicDamage = 150,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
 })
 DefineUnitType("unit-orc-catapult", {                  
                   Demand = 3,
+                  organic = false,
                   BasicDamage = 150,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
@@ -516,15 +518,30 @@ end
 -----------------------------------------------------------------------
 -- Orcs can heal at their temple
 -----------------------------------------------------------------------
+DefineMissileType("missile-temple-heal",
+  { File = "missiles/healing.png", Size = {16, 16}, Frames = 6, NumDirections = 1,
+    DrawLevel = 50, Class = "missile-class-stay", Sleep = 10, Speed = 0, Range = 1 } )
+
 DefineUnitType("unit-orc-temple", {
    OnEachSecond = function (temple)
       local freq = GetUnitVariable(temple, "RegenerationFrequency")
-      if freq <= 1 then
+      local doheal = freq <= 1
+      local dodraw = (freq % 2 == 1)
+      if dodraw then
          for i,unit in ipairs(GetUnitsAroundUnit(temple, 1, false)) do
             if GetUnitVariable(unit, "organic") then
-               SetUnitVariable(unit, "HitPoints", GetUnitVariable(unit, "HitPoints") + 1)
+               local hp = GetUnitVariable(unit, "HitPoints")
+               local maxhp = GetUnitVariable(unit, "HitPoints", "Max")
+               if hp < maxhp then
+                  if doheal then
+                     SetUnitVariable(unit, "HitPoints", hp + 1)
+                  end
+                  CreateMissile("missile-temple-heal", {0, 0}, {0, 0}, unit, unit, false)
+               end
             end
          end
+      end
+      if doheal then
          SetUnitVariable(temple, "RegenerationFrequency", 6)
       else
          SetUnitVariable(temple, "RegenerationFrequency", freq - 1)
