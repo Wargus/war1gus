@@ -104,6 +104,8 @@ DefineUnitType("unit-warlock", 				{Costs = {"time", 350, "gold", 800, "wood", 1
 
 DefineUnitType("unit-human-catapult", {                  
                   Demand = 3,
+                  RepairHp = 4,
+                  RepairCosts = { "gold", 1, "wood", 1 },
                   organic = false,
                   BasicDamage = 150,
                   MaxAttackRange = 8,
@@ -111,6 +113,8 @@ DefineUnitType("unit-human-catapult", {
 })
 DefineUnitType("unit-orc-catapult", {                  
                   Demand = 3,
+                  RepairHp = 4,
+                  RepairCosts = { "gold", 1, "wood", 1 },
                   organic = false,
                   BasicDamage = 150,
                   MaxAttackRange = 8,
