@@ -540,7 +540,7 @@ DefineUnitType("unit-orc-temple", {
                   if doheal then
                      SetUnitVariable(unit, "HitPoints", hp + 1)
                   end
-                  CreateMissile("missile-temple-heal", {0, 0}, {0, 0}, unit, unit, false)
+                  CreateMissile("missile-temple-heal", {8, 8}, {8, 8}, unit, unit, false)
                end
             end
          end
