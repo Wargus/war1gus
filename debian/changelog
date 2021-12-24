@@ -1,8 +1,65 @@
-war1gus (3.1.3-1) UNRELEASED; urgency=medium
+war1gus (3.2.0-1) focal; urgency=medium
 
-  * 
+  [ Tim Felgentreff ]
+  * add a cooldown to healing and raise dead, so AI doesn't cast it like crazy
 
- -- Tim Felgentreff <timfelgentreff@gmail.com>  Sat, 17 Jul 2021 07:33:23 +0200
+  [ Northfear ]
+  * Disable healing autocast on enemy units
+
+  [ alyokhin ]
+  * Adaptation of war1gus script to new map reveal modes
+
+  [ Lagi7 ]
+  * Update anim.lua
+  * shortcuts update for orcs
+  * key shortcuts update for humans
+  * change church to temple
+  * more accurate damage calulation for the unit stat
+  * fix speed upgrade knights, fix wizards CTD summon
+  * working esc
+  * position of yellow key shortcut on icons
+  * last esc update for humans
+
+  [ Tim Felgentreff ]
+  * Fix harvest chopping animation. Fixes #208
+  * Fix colors of building icons. Fixes #132
+  * redefine icons based on tileset on start. fixes #218
+
+  [ Lagi7 ]
+  * show enemy stats
+  * give orc skeleton a command button
+
+  [ Tim Felgentreff ]
+  * fix catapult missile with rebalancing active
+
+  [ Lagi7 ]
+  * change hint highlight color from red to yellow
+  * orc top resource bar ui
+  * smooth animations
+  * slower mana reg, longer unholy armor
+  * balancing units costs/times proposition
+
+  [ alyokhin ]
+  * added "fast" fog of war type
+
+  [ Tim Felgentreff ]
+  * disable stats, fixes #234
+  * simplify summoning rebalancing and hopefully fix #238
+  * draw a simple border for enemy life bar.
+  * fix menu button width. fixes #197
+  * refactor options menu to use layouts
+  * expose pixel ratio as setting. fixes #196
+  * fix a crash in war1gus scenario custom resource selection
+  * play map video as part of the briefing
+  * tweak elementals and daemons.
+  * fix pixel error in build bar
+  * orcs can heal at their temple
+  * consume resources for multiple builders
+  * don't heal catapults, draw a healing missile at temple
+  * Fix temple healing effect offset
+  * allow repairing of catapults by workers
+
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Fri, 24 Dec 2021 21:40:01 +0100
 
 war1gus (3.1.2-1) focal; urgency=medium
 
