@@ -160,18 +160,18 @@ SetKeyScroll(true)
 --SetKeyScroll(false)
 
 --  Set keyboard scroll speed in frames (1=each frame,2 each second,...)
---SetKeyScrollSpeed(1)
+SetKeyScrollSpeed(8)
 
 --  Set mouse scroll speed in pixels per frame
 --  This is when the mouse cursor hits the border.
---SetMouseScrollSpeed(1)
+SetMouseScrollSpeed(4)
 
 --  While middle-mouse is pressed:
 --  Pixels to move per scrolled mouse pixel, negative = reversed
-SetMouseScrollSpeedDefault(4)
+SetMouseScrollSpeedDefault(1)
 
 --  Same if Control is pressed
-SetMouseScrollSpeedControl(15)
+SetMouseScrollSpeedControl(2)
 
 --  Change next, for the wanted double-click delay (in ms).
 SetDoubleClickDelay(300)
