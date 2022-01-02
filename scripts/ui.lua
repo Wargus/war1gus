@@ -298,18 +298,18 @@ UI.ReverseFontColor = "yellow";
 -- gold
 UI.Resources[1].G = CGraphic:New("ui/gold_icon_1.png", 13, 6)
 UI.Resources[1].IconFrame = 0
-UI.Resources[1].IconX = Video.Width - 33 - 13
+UI.Resources[1].IconX = Video.Width - 137 - 9
 UI.Resources[1].IconY = 1
-UI.Resources[1].TextX = Video.Width - 33 - 13 - 40
+UI.Resources[1].TextX = Video.Width - 129 - 9 - 40
 UI.Resources[1].TextY = 1
 UI.Resources[1].Font = Fonts["game"]
 
 -- wood
 UI.Resources[2].G = CGraphic:New("ui/lumber_icon_1.png", 9, 9)
 UI.Resources[2].IconFrame = 0
-UI.Resources[2].IconX = Video.Width - 137 - 9
+UI.Resources[2].IconX = Video.Width - 33 - 13 - 13
 UI.Resources[2].IconY = 0
-UI.Resources[2].TextX = Video.Width - 129 - 9 - 40
+UI.Resources[2].TextX = Video.Width - 33 - 13 - 40
 UI.Resources[2].TextY = 1
 UI.Resources[2].Font = Fonts["game"]
 
