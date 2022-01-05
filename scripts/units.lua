@@ -124,7 +124,7 @@ local units = {
     CanGatherResources = {
        {"resource-id", "gold",
         "resource-capacity", 100,
-        "wait-at-resource", 150,
+        "wait-at-resource", 300,
         "wait-at-depot", 150},
        {"resource-id", "wood",
         "resource-capacity", 100,
