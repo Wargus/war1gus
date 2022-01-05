@@ -6,22 +6,22 @@
 -- Sightrange Rebalancing Buildings
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-human-farm", 			  {SightRange = 5})
-DefineUnitType("unit-orc-farm", 			    {SightRange = 5})
-DefineUnitType("unit-human-town-hall", 	  {SightRange = 5})
-DefineUnitType("unit-orc-town-hall", 		  {SightRange = 5})
-DefineUnitType("unit-human-barracks", 	  {SightRange = 5})
-DefineUnitType("unit-orc-barracks", 		  {SightRange = 5})
-DefineUnitType("unit-human-lumber-mill",	{SightRange = 5})
+DefineUnitType("unit-human-farm",			{SightRange = 5})
+DefineUnitType("unit-orc-farm",				{SightRange = 5})
+DefineUnitType("unit-human-town-hall",		{SightRange = 5})
+DefineUnitType("unit-orc-town-hall",		    {SightRange = 5})
+DefineUnitType("unit-human-barracks",		{SightRange = 5})
+DefineUnitType("unit-orc-barracks", 		    {SightRange = 5})
+DefineUnitType("unit-human-lumber-mill",	    {SightRange = 5})
 DefineUnitType("unit-orc-lumber-mill", 		{SightRange = 5})
-DefineUnitType("unit-human-stable", 		  {SightRange = 5})
-DefineUnitType("unit-orc-kennel", 			  {SightRange = 5})
-DefineUnitType("unit-human-blacksmith", 	{SightRange = 5})
+DefineUnitType("unit-human-stable",			{SightRange = 5})
+DefineUnitType("unit-orc-kennel",			{SightRange = 5})
+DefineUnitType("unit-human-blacksmith", 	    {SightRange = 5})
 DefineUnitType("unit-orc-blacksmith", 		{SightRange = 5})
-DefineUnitType("unit-human-church", 		  {SightRange = 5})
-DefineUnitType("unit-orc-temple", 			  {SightRange = 5})
-DefineUnitType("unit-human-tower", 			  {SightRange = 5})
-DefineUnitType("unit-orc-tower", 			    {SightRange = 5})
+DefineUnitType("unit-human-church",			{SightRange = 5})
+DefineUnitType("unit-orc-temple",			{SightRange = 5})
+DefineUnitType("unit-human-tower",			{SightRange = 5})
+DefineUnitType("unit-orc-tower",			{SightRange = 5})
 DefineUnitType("unit-stormwind-keep", 		{SightRange = 5})
 DefineUnitType("unit-blackrock-spire", 		{SightRange = 5})
 
@@ -29,74 +29,78 @@ DefineUnitType("unit-blackrock-spire", 		{SightRange = 5})
 -- Sightrange Rebalancing Units
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-peasant", 			  {SightRange = 4})
-DefineUnitType("unit-peon", 			    {SightRange = 4})
-DefineUnitType("unit-footman", 		  	{SightRange = 4})
-DefineUnitType("unit-grunt", 			    {SightRange = 4})
-DefineUnitType("unit-archer", 			  {SightRange = 6})
-DefineUnitType("unit-spearman", 		  {SightRange = 6})
-DefineUnitType("unit-orc-catapult", 	{SightRange = 4})
-DefineUnitType("unit-human-catapult", {SightRange = 4})
-DefineUnitType("unit-raider", 			  {SightRange = 4})
-DefineUnitType("unit-knight", 			  {SightRange = 4})
-DefineUnitType("unit-raider1", 			  {SightRange = 4})
-DefineUnitType("unit-knight1", 			  {SightRange = 4})
-DefineUnitType("unit-raider2", 			  {SightRange = 4})
-DefineUnitType("unit-knight2", 			  {SightRange = 4})
-DefineUnitType("unit-conjurer", 		  {SightRange = 4})
-DefineUnitType("unit-warlock", 			  {SightRange = 4, MaxAttackRange = 3})
-DefineUnitType("unit-cleric", 			  {SightRange = 5, MaxAttackRange = 2})
-DefineUnitType("unit-necrolyte", 		  {SightRange = 5})
+DefineUnitType("unit-peasant",			{SightRange = 4})
+DefineUnitType("unit-peon",			{SightRange = 4})
+DefineUnitType("unit-footman",			{SightRange = 4})
+DefineUnitType("unit-grunt",			{SightRange = 4})
+DefineUnitType("unit-archer",			{SightRange = 6})
+DefineUnitType("unit-spearman",			{SightRange = 6})
+DefineUnitType("unit-orc-catapult",		{SightRange = 4})
+DefineUnitType("unit-human-catapult",	{SightRange = 4})
+DefineUnitType("unit-raider",			{SightRange = 4})
+DefineUnitType("unit-knight",			{SightRange = 4})
+DefineUnitType("unit-raider1",			{SightRange = 4})
+DefineUnitType("unit-knight1",			{SightRange = 4})
+DefineUnitType("unit-raider2",			{SightRange = 4})
+DefineUnitType("unit-knight2",			{SightRange = 4})
+DefineUnitType("unit-conjurer",			{SightRange = 4})
+DefineUnitType("unit-warlock",			{SightRange = 4, MaxAttackRange = 3})
+DefineUnitType("unit-cleric",			{SightRange = 5, MaxAttackRange = 2})
+DefineUnitType("unit-necrolyte",		{SightRange = 5})
 
 -----------------------------------------------------------------------
 -- Cost Rebalancing Buildings
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-human-farm",			    {Costs = {"time", 200, "gold", 500,		"wood", 300},})
-DefineUnitType("unit-orc-farm",			    	{Costs = {"time", 200, "gold", 500,		"wood", 300},})
-DefineUnitType("unit-human-barracks",		  {Costs = {"time", 300, "gold", 600, 	"wood", 500},})
-DefineUnitType("unit-orc-barracks",			  {Costs = {"time", 300, "gold", 600, 	"wood", 500},})
-DefineUnitType("unit-human-lumber-mill",	{Costs = {"time", 250, "gold", 600, 	"wood", 150},})
+DefineUnitType("unit-human-town-hall",		{Costs = {"time", 100, "gold", 400,		"wood", 400},Supply = 3})
+DefineUnitType("unit-orc-town-hall",		    {Costs = {"time", 100, "gold", 400,		"wood", 400},Supply = 3})
+
+DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},})
+DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},})
+DefineUnitType("unit-human-barracks",		{Costs = {"time", 400, "gold", 600, 	"wood", 500},})
+DefineUnitType("unit-orc-barracks",			{Costs = {"time", 400, "gold", 600, 	"wood", 500},})
+DefineUnitType("unit-human-lumber-mill",	    {Costs = {"time", 250, "gold", 600, 	"wood", 150},})
 DefineUnitType("unit-orc-lumber-mill",		{Costs = {"time", 250, "gold", 600, 	"wood", 150},})
 
 DefineUnitType("unit-human-stable",		  	{Costs = {"time", 300, "gold", 1000,	"wood", 400},})
-DefineUnitType("unit-orc-kennel",			    {Costs = {"time", 300, "gold", 1000, 	"wood", 400},})
+DefineUnitType("unit-orc-kennel",			{Costs = {"time", 300, "gold", 1000, 	"wood", 400},})
 DefineUnitType("unit-human-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},})
-DefineUnitType("unit-orc-blacksmith",		  {Costs = {"time", 300, "gold", 900, 	"wood", 400},})
+DefineUnitType("unit-orc-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},})
 
-DefineUnitType("unit-human-church",		  	{Costs = {"time", 400, "gold", 800, 	"wood", 500},})
-DefineUnitType("unit-orc-temple",			    {Costs = {"time", 400, "gold", 800, 	"wood", 500},})
-DefineUnitType("unit-human-tower",		  	{Costs = {"time", 400, "gold", 1400, 	"wood", 300},})
-DefineUnitType("unit-orc-tower",			    {Costs = {"time", 400, "gold", 1400, 	"wood", 300},})
+DefineUnitType("unit-human-church",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},})
+DefineUnitType("unit-orc-temple",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},})
+DefineUnitType("unit-human-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},})
+DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},})
 
-DefineUnitType("unit-wall",					      {Costs = {"time", 30,  "gold", 0,		"wood", 50},})
+DefineUnitType("unit-wall",				{Costs = {"time", 30,  "gold", 0,		"wood", 50}, Armor = 20})
 
-DefineUnitType("unit-gold-mine", 		    	{MaxOnBoard = 2})
+DefineUnitType("unit-gold-mine",			{MaxOnBoard = 2})
 
 -----------------------------------------------------------------------
 -- Cost Rebalancing Units
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-peasant", 				{Costs = {"time", 75,  "gold", 350, "wood", 0},})
-DefineUnitType("unit-peon", 				  {Costs = {"time", 75,  "gold", 350, "wood", 0},})
-DefineUnitType("unit-footman", 				{Costs = {"time", 150, "gold", 400, "wood", 0},})
-DefineUnitType("unit-grunt", 				  {Costs = {"time", 150, "gold", 400, "wood", 0},})
-DefineUnitType("unit-archer", 				{Costs = {"time", 200, "gold", 450, "wood", 50},})
-DefineUnitType("unit-spearman", 			{Costs = {"time", 200, "gold", 450, "wood", 50},})
-DefineUnitType("unit-orc-catapult", 	{Costs = {"time", 300, "gold", 650, "wood", 300},})
-DefineUnitType("unit-human-catapult", {Costs = {"time", 300, "gold", 650, "wood", 300},})
+DefineUnitType("unit-peasant",			{Costs = {"time", 75,  "gold", 350, "wood", 0},})
+DefineUnitType("unit-peon",			{Costs = {"time", 75,  "gold", 350, "wood", 0},})
+DefineUnitType("unit-footman",			{Costs = {"time", 200, "gold", 400, "wood", 0},})
+DefineUnitType("unit-grunt",			{Costs = {"time", 200, "gold", 400, "wood", 0},})
 
-DefineUnitType("unit-raider", 				{Costs = {"time", 250, "gold", 750, "wood", 100},}										  )
-DefineUnitType("unit-knight", 				{Costs = {"time", 250, "gold", 750, "wood", 100},})
-DefineUnitType("unit-raider1", 				{Costs = {"time", 250, "gold", 750, "wood", 100},})
-DefineUnitType("unit-knight1", 				{Costs = {"time", 250, "gold", 750, "wood", 100},})
-DefineUnitType("unit-raider2", 				{Costs = {"time", 250, "gold", 750, "wood", 100},})
-DefineUnitType("unit-knight2", 				{Costs = {"time", 250, "gold", 750, "wood", 100},})
+DefineUnitType("unit-archer",			{Costs = {"time", 220, "gold", 350, "wood", 50},})
+DefineUnitType("unit-spearman",			{Costs = {"time", 220, "gold", 350, "wood", 50},})
+DefineUnitType("unit-orc-catapult",		{Costs = {"time", 300, "gold", 650, "wood", 300},})
+DefineUnitType("unit-human-catapult",	{Costs = {"time", 300, "gold", 650, "wood", 300},})
 
-DefineUnitType("unit-cleric", 				{Costs = {"time", 300, "gold", 600, "wood", 50},})
-DefineUnitType("unit-necrolyte", 			{Costs = {"time", 300, "gold", 600, "wood", 50},})
-DefineUnitType("unit-conjurer", 			{Costs = {"time", 350, "gold", 800, "wood", 100},})
-DefineUnitType("unit-warlock", 				{Costs = {"time", 350, "gold", 800, "wood", 100},})
+DefineUnitType("unit-raider",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
+DefineUnitType("unit-knight",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
+DefineUnitType("unit-raider1",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
+DefineUnitType("unit-knight1",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
+DefineUnitType("unit-raider2",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
+DefineUnitType("unit-knight2",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
+
+DefineUnitType("unit-cleric",			{Costs = {"time", 250, "gold", 500, "wood", 50},})
+DefineUnitType("unit-necrolyte",		{Costs = {"time", 250, "gold", 500, "wood", 50},})
+DefineUnitType("unit-conjurer",			{Costs = {"time", 300, "gold", 800, "wood", 100},})
+DefineUnitType("unit-warlock",			{Costs = {"time", 300, "gold", 800, "wood", 100},})
 
 -----------------------------------------------------------------------
 -- Catapult Rebalancing
@@ -133,11 +137,14 @@ DefineMissileType("missile-catapult-rock", {
 -----------------------------------------------------------------------
 
 DefineUnitType("unit-footman", {
-                  Armor = 0
+                  Armor = 1,
+				BasicDamage = 7
 })
 DefineUnitType("unit-grunt", {
-                  Armor = 0
+                  Armor = 0,
+				BasicDamage = 8
 })
+
 
 -----------------------------------------------------------------------
 -- Raider/Knight Rebalancing
@@ -513,6 +520,16 @@ local upgrades = {
     human = {"horse2", {"knight1"}},
     cost = {   700,   1500,     800,     0,     0,     0,     0},
    },	
+    
+   {orc = {"dark-vision", {"necrolyte"}},
+    human = {"far-seeing", {"cleric"}},
+    cost = {   120,   500,     0,     0,     0,     0,     0}
+	},
+
+   {orc = {"unholy-armor", {"necrolyte"}},
+    human = {"invisibility", {"cleric"}},
+    cost = {   120,   750,     0,     0,     0,     0,     0}
+	},
 }
 
 for idx,spec in ipairs(upgrades) do
@@ -532,7 +549,7 @@ DefineUnitType("unit-orc-temple", {
       local doheal = freq <= 1
       local dodraw = (freq % 2 == 1)
       if dodraw then
-         for i,unit in ipairs(GetUnitsAroundUnit(temple, 1, false)) do
+         for i,unit in ipairs(GetUnitsAroundUnit(temple, 2, false)) do
             if GetUnitVariable(unit, "organic") then
                local hp = GetUnitVariable(unit, "HitPoints")
                local maxhp = GetUnitVariable(unit, "HitPoints", "Max")
@@ -546,7 +563,7 @@ DefineUnitType("unit-orc-temple", {
          end
       end
       if doheal then
-         SetUnitVariable(temple, "RegenerationFrequency", 6)
+         SetUnitVariable(temple, "RegenerationFrequency", 2)
       else
          SetUnitVariable(temple, "RegenerationFrequency", freq - 1)
       end
