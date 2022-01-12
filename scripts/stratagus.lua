@@ -415,12 +415,18 @@ function RestoreSharedSettingsFromBits(bits, errorCb)
          preferences.AllowMultipleTownHalls = true
          Load("scripts/buttons.lua")
          Load("scripts/buildings.lua")
+         if preferences.RebalancedStats then
+            Load("scripts/balancing.lua")
+         end
       end
    else
       if preferences.AllowMultipleTownHalls then
          preferences.AllowMultipleTownHalls = false
          Load("scripts/buttons.lua")
          Load("scripts/buildings.lua")
+         if preferences.RebalancedStats then
+            Load("scripts/balancing.lua")
+         end
       end
    end
 end
