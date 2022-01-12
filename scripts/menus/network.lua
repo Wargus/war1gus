@@ -665,6 +665,7 @@ function RunMultiPlayerGameMenu(s)
   local nick = menu:addTextInputField(GetLocalPlayerName(), offx + 149, 130 + offy)
   menu:writeText(_("Password :"), 104 + offx, 131 + offy + 18)
   local pass = menu:addTextInputField("", offx + 149, 130 + offy + 18)
+  pass:setPassword(true)
 
   local loginBtn = menu:addHalfButton(_("Go ~!Online"), "o", 104 + offx, 160 + (18 * 0) + offy,
     function()
