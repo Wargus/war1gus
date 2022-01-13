@@ -323,6 +323,9 @@ function RunJoiningGameMenu(s)
     elseif (state == 17) then -- ccs_incompatibleluafiles
       ErrorMenu("Incompatible lua files")
       menu:stop(1)
+    elseif (state == 18) then -- ccs_needmap
+      percent = 0
+      sb:setCaption(_("Getting map..."))
     end
   end
   local listener = LuaActionListener(checkconnection)
