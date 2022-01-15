@@ -177,7 +177,7 @@ function RunJoiningMapMenu(s)
   menubox:addWidgetTo(menu)
   
   local chatList = {}
-  local AddMessage = AddOnlineChatMessage(chatList, menu.chat)
+  local AddMessage = AddOnlineChatMessage(chatList, menu.chat, menu)
   OnlineService.setup({ShowChat = AddMessage})
 
   menu.fow:setEnabled(false)
@@ -785,7 +785,7 @@ function RunMultiPlayerGameMenu(s)
   ExitNetwork1()
 end
 
-function AddOnlineChatMessage(list, listbox)
+function AddOnlineChatMessage(list, listbox, menu)
    return function(str, pre, suf)
       for line in string.gmatch(str, "([^".. string.char(10) .."]+)") do
       if pre and suf then
@@ -796,6 +796,7 @@ function AddOnlineChatMessage(list, listbox)
       end
       listbox:setList(list)
       listbox:scrollToBottom()
+      menu:setDirty(true)
    end
 end
 
@@ -928,6 +929,7 @@ function RunOnlineMenu()
   local AddUser = function(name)
      table.insert(userList, name)
      users:setList(userList)
+     menu:setDirty(true)
   end
 
   local ClearUsers = function()
@@ -935,6 +937,7 @@ function RunOnlineMenu()
         table.remove(userList, i)
      end
      users:setList(userList)
+     menu:setDirty(true)
   end
 
   local RemoveUser = function(name)
@@ -944,6 +947,7 @@ function RunOnlineMenu()
         end
      end
      users:setList(userList)
+     menu:setDirty(true)
   end
 
   local SetFriends = function(...)
@@ -952,6 +956,7 @@ function RunOnlineMenu()
         table.insert(friendsList, v.Name .. "|" .. v.Product .. "(" .. v.Status .. ")")
      end
      friends:setList(friendsList)
+     menu:setDirty(true)
   end
   
   local SetGames = function(...)
@@ -962,6 +967,7 @@ function RunOnlineMenu()
         table.insert(gamesObjectList, game)
      end
      games:setList(gamesList)
+     menu:setDirty(true)
   end
 
   local SetChannels = function(...)
@@ -971,6 +977,7 @@ function RunOnlineMenu()
      end
      channels:setList(channelList)
      channels:setSelected(selectedChannelIdx)
+     menu:setDirty(true)
   end
 
   local SetActiveChannel = function(name)
@@ -985,7 +992,7 @@ function RunOnlineMenu()
      selectedChannelIdx = -1
   end
   
-  local AddMessage = AddOnlineChatMessage(messageList, messages)
+  local AddMessage = AddOnlineChatMessage(messageList, messages, menu)
 
   local ShowInfo = function(errmsg)
      AddMessage(errmsg, "~<", "~>")
