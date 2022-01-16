@@ -561,7 +561,7 @@ DefineConstruction(
    "construction-orc-watch-tower",
    {
       Files = { 
-         File = "contrib/graphics/buildings/orc-watch-tower-UC.png",
+         File = "tilesets/forest/human/buildings/farm_construction.png",
          Size = {48, 48} 
       }, 
       Constructions = {
@@ -571,9 +571,14 @@ DefineConstruction(
             Frame = 0
          },
          {
-            Percent = 50,
-            File = "construction",
-            Frame = 1
+            Percent = 33,
+            File = "main",
+            Frame = -2,
+         },
+         {
+            Percent = 66,
+            File = "main",
+            Frame = -3,
          }
       }
    }
