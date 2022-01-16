@@ -552,3 +552,106 @@ DefineUnitType("unit-orc-temple", {
       end
    end
 })
+
+-----------------------------------------------------------------------
+-- Orc watchtower
+-----------------------------------------------------------------------
+
+DefineConstruction(
+   "construction-orc-watch-tower",
+   {
+      Files = { 
+         File = "contrib/graphics/buildings/orc-watch-tower-UC.png",
+         Size = {48, 48} 
+      }, 
+      Constructions = {
+         {
+            Percent = 0,
+            File = "construction",
+            Frame = 0
+         },
+         {
+            Percent = 50,
+            File = "construction",
+            Frame = 1
+         }
+      }
+   }
+)
+
+local orcWatchTowerIcon = CIcon:New("icon-orc-watch-tower")
+orcWatchTowerIcon.G = CPlayerColorGraphic:New("contrib/graphics/buildings/orc-watch-tower-icon-swamp.png", 27, 19)
+orcWatchTowerIcon.Frame = 0
+
+DefineAnimations(
+   "animations-orc-watch-tower", 
+   {Still = {"frame 0", "wait 5"},
+    Attack = {"frame 0", "attack", "wait 8"}, -- attack speed
+    Death = {"frame 0", "wait 1"}}
+)
+
+DefineUnitType("unit-orc-watch-tower", { Name = _("Watch Tower"),
+  Image = {
+     "file", "contrib/graphics/buildings/orc-watch-tower.png",
+     "size", {48, 48}
+  },
+  Animations = "animations-orc-watch-tower", Icon = "icon-orc-watch-tower",
+  Costs = {"time", 140, "gold", 500, "wood", 150},
+  RepairHp = 4,
+  RepairCosts = {"gold", 1, "wood", 1},
+  Construction = "construction-orc-watch-tower",
+  Speed = 0,
+  HitPoints = 130,
+  DrawLevel = 40,
+  TileSize = {2, 2}, BoxSize = {32, 32},
+  SightRange = 9, ComputerReactionRange = 6, PersonReactionRange = 6,
+  Armor = 20, BasicDamage = 4, PiercingDamage = 12, Missile = "missile-arrow",
+  RightMouseAction = "attack",
+  MaxAttackRange = 6,
+  Priority = 50, AnnoyComputerFactor = 60,
+  Points = 200,
+  Corpse = "unit-destroyed-2x2-place",
+  ExplodeWhenKilled = "missile-building-collapse",
+  Type = "land",
+  CanAttack = true,
+  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
+  Building = true, VisibleUnderFog = true,
+  DetectCloak = true,
+  Elevated = true,
+  BuildingRules =
+            {
+                -- all buildings except the town hall
+                {
+                    "distance",{ Distance = 5, DistanceType = "<", Owner = "self" }
+                }
+            },
+            AiBuildingRules =
+            {
+                -- all buildings except the town hall
+                {
+                    "distance",{ Distance = 2, DistanceType = ">=", Type = "unit-gold-mine" },
+                    "distance",{ Distance = 2, DistanceType = ">=", Owner = "self" }
+                }
+            },
+  Sounds = {
+    "ready", "orc work complete",
+    "selected", "orc-selected",
+    "help", "orc help 1",
+    "dead", "building destroyed"} } )
+
+DefineButton( { Pos = 5, Level = 1, Icon = "icon-orc-watch-tower",
+   Action = "build", Value = "unit-orc-watch-tower",
+   Key = "w", Hint = "BUILD ~!WATCH TOWER",
+   ForUnit = {"unit-peon"} } )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear1",
+   Action = "attack",
+   Key = "a", Hint = "~!ATTACK",
+   ForUnit = {"unit-orc-watch-tower"} } )
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-cancel",
+   Action = "stop",
+   Key = "s", Hint = "~!STOP",
+   ForUnit = {"unit-orc-watch-tower"} } )
+
+DefineAllow("unit-orc-watch-tower", "AAAAAAAAAAAAAAAA")
