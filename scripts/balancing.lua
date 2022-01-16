@@ -700,3 +700,108 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-town-hall-salvage",
    Description = "Salvage this town hall for resources to rebuild somewhere else.",
    Key = "v", Hint = "SAL~!VAGE",
    ForUnit = {"unit-human-town-hall", "unit-human-blackrock-spire"} } )
+
+-----------------------------------------------------------------------
+-- Orc saliva upgrades
+-----------------------------------------------------------------------
+
+local orcSalivaIcon1 = CIcon:New("icon-orc-saliva1")
+orcSalivaIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/orc-saliva-kennel.png", 27, 19)
+orcSalivaIcon1.Frame = 0
+
+local orcSalivaUpgrade1 = CUpgrade:New("upgrade-orc-saliva1")
+orcSalivaUpgrade1.Icon = orcSalivaIcon1
+orcSalivaUpgrade1.Costs[0] = 140 -- time
+orcSalivaUpgrade1.Costs[1] = 750 -- gold
+orcSalivaUpgrade1.Costs[2] = 150 -- wood
+
+DefineModifier("upgrade-orc-saliva1",
+  {"Level", 1},
+  {"regeneration-rate", 1},
+  {"regeneration-frequency", 2},
+  {"apply-to", "unit-raider"}, {"apply-to", "unit-raider1"}, {"apply-to", "unit-raider2"})
+
+DefineAllow("upgrade-orc-saliva1", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-saliva1",
+  Action = "research", Value = "upgrade-orc-saliva1",
+  Allowed = "check-single-research",
+  Key = "h", Hint = "RESEARCH ~!HEALING SALIVA",
+  ForUnit = {"unit-orc-kennel"} } )
+
+local orcSalivaIcon2 = CIcon:New("icon-orc-saliva2")
+orcSalivaIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/orc-saliva-kennel2.png", 27, 19)
+orcSalivaIcon2.Frame = 0
+
+local orcSalivaUpgrade2 = CUpgrade:New("upgrade-orc-saliva2")
+orcSalivaUpgrade2.Icon = orcSalivaIcon2
+orcSalivaUpgrade2.Costs[0] = 140 -- time
+orcSalivaUpgrade2.Costs[1] = 750 -- gold
+orcSalivaUpgrade2.Costs[2] = 150 -- wood
+
+DefineModifier("upgrade-orc-saliva2",
+   {"Level", 1},
+   {"regeneration-rate", 1},
+   {"apply-to", "unit-raider"}, {"apply-to", "unit-raider1"}, {"apply-to", "unit-raider2"})
+
+DefineAllow("upgrade-orc-saliva2", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-saliva2",
+   Action = "research", Value = "upgrade-orc-saliva2",
+   Allowed = "check-upgrade", AllowArg = {"upgrade-orc-saliva2"},
+   Key = "h", Hint = "RESEARCH ~!HEALING SALIVA",
+   ForUnit = {"unit-orc-kennel"} } )
+
+DefineDependency("upgrade-orc-saliva2", { "upgrade-orc-saliva1"} )
+
+-----------------------------------------------------------------------
+-- Human barding upgrades
+-----------------------------------------------------------------------
+
+local humanBardingIcon1 = CIcon:New("icon-human-barding1")
+humanBardingIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/human-barding-stable1.png", 27, 19)
+humanBardingIcon1.Frame = 0
+
+local humanBardingUpgrade1 = CUpgrade:New("upgrade-human-barding1")
+humanBardingUpgrade1.Icon = humanBardingIcon1
+humanBardingUpgrade1.Costs[0] = 140 -- time
+humanBardingUpgrade1.Costs[1] = 750 -- gold
+humanBardingUpgrade1.Costs[2] = 150 -- wood
+
+DefineModifier("upgrade-human-barding1",
+  {"Level", 1},
+  {"Armor", 1},
+  {"apply-to", "unit-knight"}, {"apply-to", "unit-knight1"}, {"apply-to", "unit-knight2"})
+
+DefineAllow("upgrade-human-barding1", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-barding1",
+  Action = "research", Value = "upgrade-human-barding1",
+  Allowed = "check-single-research",
+  Key = "r", Hint = "~!RESEARCH BARDING",
+  ForUnit = {"unit-human-stable"} } )
+
+local humanBardingIcon2 = CIcon:New("icon-human-barding2")
+humanBardingIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/human-barding-stable.png", 27, 19)
+humanBardingIcon2.Frame = 0
+
+local humanBardingUpgrade2 = CUpgrade:New("upgrade-human-barding2")
+humanBardingUpgrade2.Icon = humanBardingIcon2
+humanBardingUpgrade2.Costs[0] = 140 -- time
+humanBardingUpgrade2.Costs[1] = 750 -- gold
+humanBardingUpgrade2.Costs[2] = 150 -- wood
+
+DefineModifier("upgrade-human-barding2",
+   {"Level", 1},
+   {"Armor", 1},
+   {"apply-to", "unit-knight"}, {"apply-to", "unit-knight1"}, {"apply-to", "unit-knight2"})
+
+DefineAllow("upgrade-human-barding2", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-barding2",
+   Action = "research", Value = "upgrade-human-barding2",
+   Allowed = "check-upgrade", AllowArg = {"upgrade-human-barding1"},
+   Key = "r", Hint = "~!RESEARCH BARDING",
+   ForUnit = {"unit-human-stable"} } )
+
+DefineDependency("upgrade-human-barding2", { "upgrade-human-barding1"} )
