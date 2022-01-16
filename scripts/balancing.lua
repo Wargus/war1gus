@@ -655,3 +655,43 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-cancel",
    ForUnit = {"unit-orc-watch-tower"} } )
 
 DefineAllow("unit-orc-watch-tower", "AAAAAAAAAAAAAAAA")
+
+-----------------------------------------------------------------------
+-- Town hall salvage buttons
+-----------------------------------------------------------------------
+
+local orcSalvageIcon = CIcon:New("icon-orc-town-hall-salvage")
+orcSalvageIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/salvage-th-orc.png", 27, 19)
+orcSalvageIcon.Frame = 0
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-town-hall-salvage",
+   AlwaysShow = true,
+   Action = "callback", Value = function(townHall)
+      DamageUnit(-1, townHall, GetUnitVariable(townHall, "HitPoints"))
+      SetPlayerData(GetThisPlayer(), "Resources", "gold",
+                      GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-orc-town-hall", "Costs", "gold"))
+      SetPlayerData(GetThisPlayer(), "Resources", "wood",
+                      GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-orc-town-hall", "Costs", "wood"))
+   end,
+   Allowed = "check-units-or", AllowArg = {"unit-peon"},
+   Description = "Salvage this town hall for resources to rebuild somewhere else.",
+   Key = "v", Hint = "SAL~!VAGE",
+   ForUnit = {"unit-orc-town-hall", "unit-orc-blackrock-spire"} } )
+
+local humanSalvageIcon = CIcon:New("icon-human-town-hall-salvage")
+humanSalvageIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/salvage-th-human.png", 27, 19)
+humanSalvageIcon.Frame = 0
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-town-hall-salvage",
+   AlwaysShow = true,
+   Action = "callback", Value = function(townHall)
+      DamageUnit(-1, townHall, GetUnitVariable(townHall, "HitPoints"))
+      SetPlayerData(GetThisPlayer(), "Resources", "gold",
+                        GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-human-town-hall", "Costs", "gold"))
+      SetPlayerData(GetThisPlayer(), "Resources", "wood",
+                        GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-human-town-hall", "Costs", "wood"))
+   end,
+   Allowed = "check-units-or", AllowArg = {"unit-peasant"},
+   Description = "Salvage this town hall for resources to rebuild somewhere else.",
+   Key = "v", Hint = "SAL~!VAGE",
+   ForUnit = {"unit-human-town-hall", "unit-human-blackrock-spire"} } )
