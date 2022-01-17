@@ -54,12 +54,12 @@ UI.InfoPanel.X = info_panel_x
 UI.InfoPanel.Y = info_panel_y
 
 local life_bar_off_x = 36
-local info_text_off_x = 3
+local info_text_off_x = 1
 
 local first_line = {info_text_off_x, 35}
 local second_line = {info_text_off_x, 41}
-local third_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 35}
-local fourth_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 2, 41}
+local third_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 7, 35}
+local fourth_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 7, 41}
 
 local function MakeCompleteBar(condition, variable)
    return { Pos = {1, 36}, Condition = condition,
