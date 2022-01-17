@@ -9,14 +9,14 @@
 DefineUnitType("unit-human-farm",			{SightRange = 5})
 DefineUnitType("unit-orc-farm",				{SightRange = 5})
 DefineUnitType("unit-human-town-hall",		{SightRange = 5})
-DefineUnitType("unit-orc-town-hall",		    {SightRange = 5})
+DefineUnitType("unit-orc-town-hall",		{SightRange = 5})
 DefineUnitType("unit-human-barracks",		{SightRange = 5})
-DefineUnitType("unit-orc-barracks", 		    {SightRange = 5})
-DefineUnitType("unit-human-lumber-mill",	    {SightRange = 5})
+DefineUnitType("unit-orc-barracks", 		{SightRange = 5})
+DefineUnitType("unit-human-lumber-mill",	{SightRange = 5})
 DefineUnitType("unit-orc-lumber-mill", 		{SightRange = 5})
 DefineUnitType("unit-human-stable",			{SightRange = 5})
 DefineUnitType("unit-orc-kennel",			{SightRange = 5})
-DefineUnitType("unit-human-blacksmith", 	    {SightRange = 5})
+DefineUnitType("unit-human-blacksmith", 	{SightRange = 5})
 DefineUnitType("unit-orc-blacksmith", 		{SightRange = 5})
 DefineUnitType("unit-human-church",			{SightRange = 5})
 DefineUnitType("unit-orc-temple",			{SightRange = 5})
@@ -30,7 +30,7 @@ DefineUnitType("unit-blackrock-spire", 		{SightRange = 5})
 -----------------------------------------------------------------------
 
 DefineUnitType("unit-peasant",			{SightRange = 4})
-DefineUnitType("unit-peon",			{SightRange = 4})
+DefineUnitType("unit-peon",				{SightRange = 4})
 DefineUnitType("unit-footman",			{SightRange = 4})
 DefineUnitType("unit-grunt",			{SightRange = 4})
 DefineUnitType("unit-archer",			{SightRange = 6})
@@ -53,13 +53,13 @@ DefineUnitType("unit-necrolyte",		{SightRange = 5})
 -----------------------------------------------------------------------
 
 DefineUnitType("unit-human-town-hall",		{Costs = {"time", 100, "gold", 400,		"wood", 400},Supply = 3})
-DefineUnitType("unit-orc-town-hall",		    {Costs = {"time", 100, "gold", 400,		"wood", 400},Supply = 3})
+DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 100, "gold", 400,		"wood", 400},Supply = 3})
 
 DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},})
 DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},})
 DefineUnitType("unit-human-barracks",		{Costs = {"time", 400, "gold", 600, 	"wood", 500},})
 DefineUnitType("unit-orc-barracks",			{Costs = {"time", 400, "gold", 600, 	"wood", 500},})
-DefineUnitType("unit-human-lumber-mill",	    {Costs = {"time", 250, "gold", 600, 	"wood", 150},})
+DefineUnitType("unit-human-lumber-mill",	{Costs = {"time", 250, "gold", 600, 	"wood", 150},})
 DefineUnitType("unit-orc-lumber-mill",		{Costs = {"time", 250, "gold", 600, 	"wood", 150},})
 
 DefineUnitType("unit-human-stable",		  	{Costs = {"time", 300, "gold", 1000,	"wood", 400},})
@@ -72,16 +72,21 @@ DefineUnitType("unit-orc-temple",			{Costs = {"time", 300, "gold", 700, 	"wood",
 DefineUnitType("unit-human-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},})
 DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},})
 
-DefineUnitType("unit-wall",				{Costs = {"time", 30,  "gold", 0,		"wood", 50}, Armor = 20})
+DefineUnitType("unit-wall",					{Costs = {"time", 30,  "gold", 0,		"wood", 50}, Armor = 20})
 
 DefineUnitType("unit-gold-mine",			{MaxOnBoard = 2})
+
+DefineDependency("unit-human-barracks", { "unit-human-farm"} )
+DefineDependency("unit-orc-barracks", { "unit-orc-farm"} )
+DefineDependency("unit-human-lumber-mill", { "unit-human-barracks"} )
+DefineDependency("unit-orc-lumber-mill", { "unit-orc-barracks"} )
 
 -----------------------------------------------------------------------
 -- Cost Rebalancing Units
 -----------------------------------------------------------------------
 
 DefineUnitType("unit-peasant",			{Costs = {"time", 75,  "gold", 350, "wood", 0},})
-DefineUnitType("unit-peon",			{Costs = {"time", 75,  "gold", 350, "wood", 0},})
+DefineUnitType("unit-peon",				{Costs = {"time", 75,  "gold", 350, "wood", 0},})
 DefineUnitType("unit-footman",			{Costs = {"time", 200, "gold", 400, "wood", 0},})
 DefineUnitType("unit-grunt",			{Costs = {"time", 200, "gold", 400, "wood", 0},})
 
@@ -111,7 +116,7 @@ DefineUnitType("unit-human-catapult", {
                   RepairHp = 4,
                   RepairCosts = { "gold", 1, "wood", 1 },
                   organic = false,
-                  BasicDamage = 150,
+                  BasicDamage = 120,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
 })
@@ -120,7 +125,7 @@ DefineUnitType("unit-orc-catapult", {
                   RepairHp = 4,
                   RepairCosts = { "gold", 1, "wood", 1 },
                   organic = false,
-                  BasicDamage = 150,
+                  BasicDamage = 120,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
 })
@@ -132,16 +137,48 @@ DefineMissileType("missile-catapult-rock", {
                   NumDirections = 9
 })
 
+local CatapultRock = CIcon:New("icon-rock")
+CatapultRock.G = CPlayerColorGraphic:New("contrib/graphics/ui/icon-attack-catapult.png", 27, 19)
+CatapultRock.Frame = 0
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-rock",
+  Action = "attack",
+  Key = "a", Hint = "~!ATTACK",
+  ForUnit = {"unit-orc-catapult", "unit-human-catapult"}})
+ 
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-CatapultAmmo1",
+  Action = "attack",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-orc-CatapultAmmo1"},
+  Key = "a", Hint = "~!ATTACK",
+  ForUnit = {"unit-orc-catapult"} } )
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-CatapultAmmo1",
+  Action = "attack",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-human-CatapultAmmo1"},
+  Key = "a", Hint = "~!ATTACK",
+  ForUnit = {"unit-human-catapult"} } )
+ 
+--lagi: attack ground dont work - not sure why not, its even define in war1gus . I thought only graphic is missing 
+local attackGroundIcon = CIcon:New("icon-attack-ground")
+attackGroundIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/icon-attack-ground.png", 27, 19)
+attackGroundIcon.Frame = 0
+  
+ DefineButton( { Pos = 4, Level = 0, Icon = "icon-attack-ground",
+  Action = "attack-ground",
+  Key = "g", Hint = "ATTACK ~!GROUND",
+  ForUnit = {"unit-orc-catapult", "unit-human-catapult"}})
+
+
 -----------------------------------------------------------------------
 -- Grunt/Footman Rebalancing
 -----------------------------------------------------------------------
 
 DefineUnitType("unit-footman", {
-                  Armor = 1,
+                Armor = 1,
 				BasicDamage = 7
 })
 DefineUnitType("unit-grunt", {
-                  Armor = 0,
+                Armor = 0,
 				BasicDamage = 8
 })
 
@@ -181,11 +218,11 @@ DefineUnitType("unit-raider2", {
 
 DefineUnitType("unit-archer", {
                   PiercingDamage = 1,
-                  BasicDamage = 3
+                  BasicDamage = 4
 })
 DefineUnitType("unit-spearman", {
                   PiercingDamage = 2,
-                  BasicDamage = 3
+                  BasicDamage = 4
 })
 
 -----------------------------------------------------------------------
@@ -571,7 +608,7 @@ DefineUnitType("unit-orc-temple", {
 })
 
 -----------------------------------------------------------------------
--- Orc watchtower
+-- Orc watch tower
 -----------------------------------------------------------------------
 
 DefineConstruction(
@@ -601,14 +638,23 @@ DefineConstruction(
    }
 )
 
-local orcWatchTowerIcon = CIcon:New("icon-orc-watch-tower")
-orcWatchTowerIcon.G = CPlayerColorGraphic:New("contrib/graphics/buildings/orc-watch-tower-icon-swamp.png", 27, 19)
-orcWatchTowerIcon.Frame = 0
+local DefineOrcTowerIcon = function()
+   local iconname
+   if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+      iconname = "contrib/graphics/ui/orc/icon-orc-watch-tower-forest.png"
+   else
+      iconname = "contrib/graphics/ui/orc/icon-orc-watch-tower-swamp.png"
+   end
+   local orcWatchTowerIcon = CIcon:New("icon-orc-watch-tower")
+   orcWatchTowerIcon.G = CPlayerColorGraphic:New(iconname, 27, 19)
+   orcWatchTowerIcon.Frame = 0
+end
+DefineOrcTowerIcon()
 
 DefineAnimations(
    "animations-orc-watch-tower", 
    {Still = {"frame 0", "wait 5"},
-    Attack = {"frame 0", "attack", "wait 8"}, -- attack speed
+    Attack = {"frame 0", "attack", "wait 95"}, -- attack speed
     Death = {"frame 0", "wait 1"}}
 )
 
@@ -618,7 +664,7 @@ DefineUnitType("unit-orc-watch-tower", { Name = _("Watch Tower"),
      "size", {48, 48}
   },
   Animations = "animations-orc-watch-tower", Icon = "icon-orc-watch-tower",
-  Costs = {"time", 140, "gold", 500, "wood", 150},
+  Costs = {"time", 200, "gold", 500, "wood", 350},
   RepairHp = 4,
   RepairCosts = {"gold", 1, "wood", 1},
   Construction = "construction-orc-watch-tower",
@@ -627,7 +673,7 @@ DefineUnitType("unit-orc-watch-tower", { Name = _("Watch Tower"),
   DrawLevel = 40,
   TileSize = {2, 2}, BoxSize = {32, 32},
   SightRange = 9, ComputerReactionRange = 6, PersonReactionRange = 6,
-  Armor = 20, BasicDamage = 4, PiercingDamage = 12, Missile = "missile-arrow",
+  Armor = 0, BasicDamage = 4, PiercingDamage = 4, Missile = "missile-arrow",
   RightMouseAction = "attack",
   MaxAttackRange = 6,
   Priority = 50, AnnoyComputerFactor = 60,
@@ -671,22 +717,154 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear1",
    Key = "a", Hint = "~!ATTACK",
    ForUnit = {"unit-orc-watch-tower"} } )
 
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-cancel",
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield1",
    Action = "stop",
    Key = "s", Hint = "~!STOP",
    ForUnit = {"unit-orc-watch-tower"} } )
 
 DefineAllow("unit-orc-watch-tower", "AAAAAAAAAAAAAAAA")
 
+DefineDependency("unit-orc-watch-tower", { "unit-orc-lumber-mill"} )
+
+-----------------------------------------------------------------------
+-- Human guard tower
+-----------------------------------------------------------------------
+
+DefineConstruction(
+   "construction-human-guard-tower",
+   {
+      Files = { 
+         File = "tilesets/forest/human/buildings/farm_construction.png",
+         Size = {48, 48} 
+      }, 
+      Constructions = {
+         {
+            Percent = 0,
+            File = "construction",
+            Frame = 0
+         },
+         {
+            Percent = 33,
+            File = "main",
+            Frame = -2,
+         },
+         {
+            Percent = 66,
+            File = "main",
+            Frame = -3,
+         }
+      }
+   }
+)
+
+local DefineHumanTowerIcon = function()
+   local iconname
+   if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+      iconname = "contrib/graphics/ui/human/icon-human-guard-tower-forest.png"
+   else
+      iconname = "contrib/graphics/ui/human/icon-human-guard-tower-swamp.png"
+   end
+   local humanGuardTowerIcon = CIcon:New("icon-human-guard-tower")
+   humanGuardTowerIcon.G = CPlayerColorGraphic:New(iconname, 27, 19)
+   humanGuardTowerIcon.Frame = 0
+end
+DefineHumanTowerIcon()
+
+DefineAnimations(
+   "animations-human-guard-tower", 
+   {Still = {"frame 0", "wait 5"},
+    Attack = {"frame 0", "attack", "wait 95"}, -- attack speed
+    Death = {"frame 0", "wait 1"}}
+)
+
+DefineUnitType("unit-human-guard-tower", { Name = _("Guard Tower"),
+  Image = {
+     "file", "contrib/graphics/buildings/human-guard-tower.png",
+     "size", {48, 48}
+  },
+  Animations = "animations-human-guard-tower", Icon = "icon-human-guard-tower",
+  Costs = {"time", 300, "gold", 500, "wood", 450},
+  RepairHp = 4,
+  RepairCosts = {"gold", 1, "wood", 1},
+  Construction = "construction-human-guard-tower",
+  Speed = 0,
+  HitPoints = 130,
+  DrawLevel = 40,
+  TileSize = {2, 2}, BoxSize = {32, 32},
+  SightRange = 9, ComputerReactionRange = 6, PersonReactionRange = 6,
+  Armor = 5, BasicDamage = 4, PiercingDamage = 4, Missile = "missile-arrow",
+  RightMouseAction = "attack",
+  MaxAttackRange = 6,
+  Priority = 50, AnnoyComputerFactor = 60,
+  Points = 200,
+  Corpse = "unit-destroyed-2x2-place",
+  ExplodeWhenKilled = "missile-building-collapse",
+  Type = "land",
+  CanAttack = true,
+  CanTargetLand = true, CanTargetSea = true, CanTargetAir = true,
+  Building = true, VisibleUnderFog = true,
+  DetectCloak = true,
+  Elevated = true,
+  BuildingRules =
+            {
+                -- all buildings except the town hall
+                {
+                    "distance",{ Distance = 5, DistanceType = "<", Owner = "self" }
+                }
+            },
+            AiBuildingRules =
+            {
+                -- all buildings except the town hall
+                {
+                    "distance",{ Distance = 2, DistanceType = ">=", Type = "unit-gold-mine" },
+                    "distance",{ Distance = 2, DistanceType = ">=", Owner = "self" }
+                }
+            },
+  Sounds = {
+    "ready", "human work complete",
+    "selected", "human-selected",
+    "help", "human help 1",
+    "dead", "building destroyed"} } )
+
+DefineButton( { Pos = 5, Level = 1, Icon = "icon-human-guard-tower",
+   Action = "build", Value = "unit-human-guard-tower",
+   Key = "g", Hint = "BUILD ~!GUARD TOWER",
+   ForUnit = {"unit-peasant"} } )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow1",
+   Action = "attack",
+   Key = "a", Hint = "~!ATTACK",
+   ForUnit = {"unit-human-guard-tower"} } )
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
+   Action = "stop",
+   Key = "s", Hint = "~!STOP",
+   ForUnit = {"unit-human-guard-tower"} } )
+
+DefineAllow("unit-human-guard-tower", "AAAAAAAAAAAAAAAA")
+
+DefineDependency("unit-human-guard-tower", { "unit-human-lumber-mill"} )
+
 -----------------------------------------------------------------------
 -- Town hall salvage buttons
 -----------------------------------------------------------------------
 
 local orcSalvageIcon = CIcon:New("icon-orc-town-hall-salvage")
-orcSalvageIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/salvage-th-orc.png", 27, 19)
+orcSalvageIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-salvage-th.png", 27, 19)
 orcSalvageIcon.Frame = 0
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-town-hall-salvage",
+  Action = "button", Value = 1,
+  Description = "Salvage this town hall for resources to rebuild somewhere else.",
+  Key = "v", Hint = "SAL~!VAGE",
+  ForUnit = {"unit-orc-town-hall"} } )
+  
+DefineButton( { Pos = 2, Level = 1, Icon = "icon-cancel",
+  Action = "button", Value = 0,
+  Key = "esc", Hint = "~<ESC~> - CANCEL",
+  ForUnit = {"unit-orc-town-hall"} } )
+
+DefineButton( { Pos = 1, Level = 1, Icon = "icon-orc-town-hall-salvage",
    AlwaysShow = true,
    Action = "callback", Value = function(townHall)
       DamageUnit(-1, townHall, GetUnitVariable(townHall, "HitPoints"))
@@ -696,15 +874,29 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-town-hall-salvage",
                       GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-orc-town-hall", "Costs", "wood"))
    end,
    Allowed = "check-units-or", AllowArg = {"unit-peon"},
-   Description = "Salvage this town hall for resources to rebuild somewhere else.",
-   Key = "v", Hint = "SAL~!VAGE",
+   Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEON!",
+   Key = "s", Hint = "~!SALVAGE CONFIRM",
    ForUnit = {"unit-orc-town-hall", "unit-orc-blackrock-spire"} } )
 
+
+
+
 local humanSalvageIcon = CIcon:New("icon-human-town-hall-salvage")
-humanSalvageIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/salvage-th-human.png", 27, 19)
+humanSalvageIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-salvage-th.png", 27, 19)
 humanSalvageIcon.Frame = 0
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-town-hall-salvage",
+  Action = "button", Value = 1,
+  Description = "Salvage this town hall for resources to rebuild somewhere else.",
+  Key = "v", Hint = "SAL~!VAGE",
+  ForUnit = {"unit-human-town-hall"} } )
+  
+DefineButton( { Pos = 2, Level = 1, Icon = "icon-cancel",
+  Action = "button", Value = 0,
+  Key = "esc", Hint = "~<ESC~> - CANCEL",
+  ForUnit = {"unit-human-town-hall"} } )
+
+DefineButton( { Pos = 1, Level = 1, Icon = "icon-human-town-hall-salvage",
    AlwaysShow = true,
    Action = "callback", Value = function(townHall)
       DamageUnit(-1, townHall, GetUnitVariable(townHall, "HitPoints"))
@@ -714,23 +906,23 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-town-hall-salvage",
                         GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-human-town-hall", "Costs", "wood"))
    end,
    Allowed = "check-units-or", AllowArg = {"unit-peasant"},
-   Description = "Salvage this town hall for resources to rebuild somewhere else.",
-   Key = "v", Hint = "SAL~!VAGE",
-   ForUnit = {"unit-human-town-hall", "unit-human-blackrock-spire"} } )
+   Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEASANT!",
+   Key = "s", Hint = "~!SALVAGE CONFIRM",
+   ForUnit = {"unit-human-town-hall", "unit-human-stormwind-keep"} } )
 
 -----------------------------------------------------------------------
 -- Orc saliva upgrades
 -----------------------------------------------------------------------
 
 local orcSalivaIcon1 = CIcon:New("icon-orc-saliva1")
-orcSalivaIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/orc-saliva-kennel.png", 27, 19)
+orcSalivaIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-saliva1.png", 27, 19)
 orcSalivaIcon1.Frame = 0
 
 local orcSalivaUpgrade1 = CUpgrade:New("upgrade-orc-saliva1")
 orcSalivaUpgrade1.Icon = orcSalivaIcon1
-orcSalivaUpgrade1.Costs[0] = 140 -- time
+orcSalivaUpgrade1.Costs[0] = 700 -- time
 orcSalivaUpgrade1.Costs[1] = 750 -- gold
-orcSalivaUpgrade1.Costs[2] = 150 -- wood
+orcSalivaUpgrade1.Costs[2] = 400 -- wood
 
 DefineModifier("upgrade-orc-saliva1",
   {"Level", 1},
@@ -747,14 +939,14 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-saliva1",
   ForUnit = {"unit-orc-kennel"} } )
 
 local orcSalivaIcon2 = CIcon:New("icon-orc-saliva2")
-orcSalivaIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/orc-saliva-kennel2.png", 27, 19)
+orcSalivaIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-saliva2.png", 27, 19)
 orcSalivaIcon2.Frame = 0
 
 local orcSalivaUpgrade2 = CUpgrade:New("upgrade-orc-saliva2")
 orcSalivaUpgrade2.Icon = orcSalivaIcon2
-orcSalivaUpgrade2.Costs[0] = 140 -- time
-orcSalivaUpgrade2.Costs[1] = 750 -- gold
-orcSalivaUpgrade2.Costs[2] = 150 -- wood
+orcSalivaUpgrade2.Costs[0] = 700 -- time
+orcSalivaUpgrade2.Costs[1] = 1500 -- gold
+orcSalivaUpgrade2.Costs[2] = 800 -- wood
 
 DefineModifier("upgrade-orc-saliva2",
    {"Level", 1},
@@ -765,7 +957,7 @@ DefineAllow("upgrade-orc-saliva2", "AAAAAAAAAAAAAAAA")
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-saliva2",
    Action = "research", Value = "upgrade-orc-saliva2",
-   Allowed = "check-upgrade", AllowArg = {"upgrade-orc-saliva2"},
+   Allowed = "check-upgrade", AllowArg = {"upgrade-orc-saliva1"},
    Key = "h", Hint = "RESEARCH ~!HEALING SALIVA",
    ForUnit = {"unit-orc-kennel"} } )
 
@@ -776,14 +968,14 @@ DefineDependency("upgrade-orc-saliva2", { "upgrade-orc-saliva1"} )
 -----------------------------------------------------------------------
 
 local humanBardingIcon1 = CIcon:New("icon-human-barding1")
-humanBardingIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/human-barding-stable1.png", 27, 19)
+humanBardingIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-barding1.png", 27, 19)
 humanBardingIcon1.Frame = 0
 
 local humanBardingUpgrade1 = CUpgrade:New("upgrade-human-barding1")
 humanBardingUpgrade1.Icon = humanBardingIcon1
-humanBardingUpgrade1.Costs[0] = 140 -- time
-humanBardingUpgrade1.Costs[1] = 750 -- gold
-humanBardingUpgrade1.Costs[2] = 150 -- wood
+humanBardingUpgrade1.Costs[0] = 700 -- time
+humanBardingUpgrade1.Costs[1] = 500 -- gold
+humanBardingUpgrade1.Costs[2] = 200 -- wood
 
 DefineModifier("upgrade-human-barding1",
   {"Level", 1},
@@ -799,14 +991,14 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-barding1",
   ForUnit = {"unit-human-stable"} } )
 
 local humanBardingIcon2 = CIcon:New("icon-human-barding2")
-humanBardingIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/human-barding-stable.png", 27, 19)
+humanBardingIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-barding2.png", 27, 19)
 humanBardingIcon2.Frame = 0
 
 local humanBardingUpgrade2 = CUpgrade:New("upgrade-human-barding2")
 humanBardingUpgrade2.Icon = humanBardingIcon2
-humanBardingUpgrade2.Costs[0] = 140 -- time
+humanBardingUpgrade2.Costs[0] = 700 -- time
 humanBardingUpgrade2.Costs[1] = 750 -- gold
-humanBardingUpgrade2.Costs[2] = 150 -- wood
+humanBardingUpgrade2.Costs[2] = 400 -- wood
 
 DefineModifier("upgrade-human-barding2",
    {"Level", 1},
@@ -822,3 +1014,162 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-barding2",
    ForUnit = {"unit-human-stable"} } )
 
 DefineDependency("upgrade-human-barding2", { "upgrade-human-barding1"} )
+
+-----------------------------------------------------------------------
+-- Orc light armor upgrades
+-----------------------------------------------------------------------
+
+local orcLightArmorIcon1 = CIcon:New("icon-orc-LightArmor1")
+orcLightArmorIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-Light-Armor1.png", 27, 19)
+orcLightArmorIcon1.Frame = 0
+
+local orcLightArmorUpgrade1 = CUpgrade:New("upgrade-orc-LightArmor1")
+orcLightArmorUpgrade1.Icon = orcLightArmorIcon1
+orcLightArmorUpgrade1.Costs[0] = 700 -- time
+orcLightArmorUpgrade1.Costs[1] = 500 -- gold
+orcLightArmorUpgrade1.Costs[2] = 200 -- wood
+
+DefineModifier("upgrade-orc-LightArmor1",
+  {"Level", 1},
+  {"Armor", 1},
+  {"apply-to", "unit-spearman"}, {"apply-to", "unit-necrolyte"}, {"apply-to", "unit-warlock"})
+
+DefineAllow("upgrade-orc-LightArmor1", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-LightArmor1",
+  Action = "research", Value = "upgrade-orc-LightArmor1",
+  Allowed = "check-single-research",
+  Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
+  ForUnit = {"unit-orc-blacksmith"} } )
+
+local orcLightArmorIcon2 = CIcon:New("icon-orc-LightArmor2")
+orcLightArmorIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-Light-Armor2.png", 27, 19)
+orcLightArmorIcon2.Frame = 0
+
+local orcLightArmorUpgrade2 = CUpgrade:New("upgrade-orc-LightArmor2")
+orcLightArmorUpgrade2.Icon = orcLightArmorIcon2
+orcLightArmorUpgrade2.Costs[0] = 700 -- time
+orcLightArmorUpgrade2.Costs[1] = 750 -- gold
+orcLightArmorUpgrade2.Costs[2] = 400 -- wood
+
+DefineModifier("upgrade-orc-LightArmor2",
+   {"Level", 1},
+   {"Armor", 1},
+   {"apply-to", "unit-spearman"}, {"apply-to", "unit-necrolyte"}, {"apply-to", "unit-warlock"})
+
+DefineAllow("upgrade-orc-LightArmor2", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-LightArmor2",
+   Action = "research", Value = "upgrade-orc-LightArmor2",
+   Allowed = "check-upgrade", AllowArg = {"upgrade-orc-LightArmor1"},
+   Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
+   ForUnit = {"unit-orc-blacksmith"} } )
+
+DefineDependency("upgrade-orc-LightArmor2", { "upgrade-orc-LightArmor1"} )
+
+-----------------------------------------------------------------------
+-- Human light armor upgrades
+-----------------------------------------------------------------------
+
+local humanLightArmorIcon1 = CIcon:New("icon-human-LightArmor1")
+humanLightArmorIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-Light-Armor1.png", 27, 19)
+humanLightArmorIcon1.Frame = 0
+
+local humanLightArmorUpgrade1 = CUpgrade:New("upgrade-human-LightArmor1")
+humanLightArmorUpgrade1.Icon = humanLightArmorIcon1
+humanLightArmorUpgrade1.Costs[0] = 700 -- time
+humanLightArmorUpgrade1.Costs[1] = 500 -- gold
+humanLightArmorUpgrade1.Costs[2] = 200 -- wood
+
+DefineModifier("upgrade-human-LightArmor1",
+  {"Level", 1},
+  {"Armor", 1},
+  {"apply-to", "unit-archer"}, {"apply-to", "unit-cleric"}, {"apply-to", "unit-conjurer"})
+
+DefineAllow("upgrade-human-LightArmor1", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-LightArmor1",
+  Action = "research", Value = "upgrade-human-LightArmor1",
+  Allowed = "check-single-research",
+  Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
+  ForUnit = {"unit-human-blacksmith"} } )
+
+local humanLightArmorIcon2 = CIcon:New("icon-human-LightArmor2")
+humanLightArmorIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-Light-Armor2.png", 27, 19)
+humanLightArmorIcon2.Frame = 0
+
+local humanLightArmorUpgrade2 = CUpgrade:New("upgrade-human-LightArmor2")
+humanLightArmorUpgrade2.Icon = humanLightArmorIcon2
+humanLightArmorUpgrade2.Costs[0] = 700 -- time
+humanLightArmorUpgrade2.Costs[1] = 750 -- gold
+humanLightArmorUpgrade2.Costs[2] = 400 -- wood
+
+DefineModifier("upgrade-human-LightArmor2",
+   {"Level", 1},
+   {"Armor", 1},
+   {"apply-to", "unit-archer"}, {"apply-to", "unit-cleric"}, {"apply-to", "unit-conjurer"})
+
+DefineAllow("upgrade-human-LightArmor2", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-LightArmor2",
+   Action = "research", Value = "upgrade-human-LightArmor2",
+   Allowed = "check-upgrade", AllowArg = {"upgrade-human-LightArmor1"},
+   Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
+   ForUnit = {"unit-human-blacksmith"} } )
+
+DefineDependency("upgrade-human-LightArmor2", { "upgrade-human-LightArmor1"} )
+
+-----------------------------------------------------------------------
+-- Human catapult upgrades
+-----------------------------------------------------------------------
+
+local humanCatapultAmmoIcon1 = CIcon:New("icon-human-CatapultAmmo1")
+humanCatapultAmmoIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-catapult-steel-upg.png", 26, 19)
+humanCatapultAmmoIcon1.Frame = 0
+
+local humanCatapultAmmoUpgrade1 = CUpgrade:New("upgrade-human-CatapultAmmo1")
+humanCatapultAmmoUpgrade1.Icon = humanCatapultAmmoIcon1
+humanCatapultAmmoUpgrade1.Costs[0] = 700 -- time
+humanCatapultAmmoUpgrade1.Costs[1] = 750 -- gold
+humanCatapultAmmoUpgrade1.Costs[2] = 400 -- wood
+
+DefineModifier("upgrade-human-CatapultAmmo1",
+  {"Level", 1},
+  {"PiercingDamage", 20},
+  {"apply-to", "unit-human-catapult"})
+  
+DefineAllow("upgrade-human-CatapultAmmo1", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-CatapultAmmo1",
+  Action = "research", Value = "upgrade-human-CatapultAmmo1",
+  Allowed = "check-single-research",
+  Key = "e", Hint = "RESEARCH ST~!EEL SHRAPNELS",
+  ForUnit = {"unit-human-blacksmith"} } )
+
+
+-----------------------------------------------------------------------
+-- orc catapult upgrades
+-----------------------------------------------------------------------
+
+local orcCatapultAmmoIcon1 = CIcon:New("icon-orc-CatapultAmmo1")
+orcCatapultAmmoIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-catapult-fire-upg.png", 27, 19)
+orcCatapultAmmoIcon1.Frame = 0
+
+local orcCatapultAmmoUpgrade1 = CUpgrade:New("upgrade-orc-CatapultAmmo1")
+orcCatapultAmmoUpgrade1.Icon = orcCatapultAmmoIcon1
+orcCatapultAmmoUpgrade1.Costs[0] = 700 -- time
+orcCatapultAmmoUpgrade1.Costs[1] = 750 -- gold
+orcCatapultAmmoUpgrade1.Costs[2] = 400 -- wood
+
+DefineModifier("upgrade-orc-CatapultAmmo1",
+  {"Level", 1},
+  {"PiercingDamage", 20},
+  {"apply-to", "unit-orc-catapult"})
+  
+DefineAllow("upgrade-orc-CatapultAmmo1", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-CatapultAmmo1",
+  Action = "research", Value = "upgrade-orc-CatapultAmmo1",
+  Allowed = "check-single-research",
+  Key = "b", Hint = "RESEARCH ~!BURNING OIL",
+  ForUnit = {"unit-orc-blacksmith"} } )
