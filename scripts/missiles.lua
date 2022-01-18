@@ -50,7 +50,7 @@ DefineMissileType("missile-big-fire",
 
 DefineMissileType("missile-explosion",
   { File = "missiles/explosion.png", Size = {48, 48}, Frames = 6, NumDirections = 1,
-  DrawLevel = 50, Class = "missile-class-stay", Sleep = 1, Speed = 16, Range = 1 } )
+  DrawLevel = 50, Class = "missile-class-stay", Sleep = 6, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-normal-spell",
   { File = "missiles/healing.png", Size = {16, 16}, Frames = 6, NumDirections = 1,
@@ -73,12 +73,12 @@ DefineMissileType("missile-water",
 
 DefineMissileType("missile-rain-of-fire",
   { File = "missiles/rain_of_fire.png", Size = {16, 16}, Frames = 7, NumDirections = 1,
-  Class = "missile-class-point-to-point-with-hit", Sleep = 2, Speed = 8, Range = 1,
+  Class = "missile-class-point-to-point-with-hit", Sleep = 4, Speed = 8, Range = 1,
   DrawLevel = 100 } )
 
 DefineMissileType("missile-poison-cloud",
   { File = "missiles/poison_cloud.png", Size = {64, 64}, Frames = 4, NumDirections = 1,
-  Class = "missile-class-point-to-point-with-hit", Sleep = 2, Speed = 8, Range = 1,
+  Class = "missile-class-point-to-point-with-hit", Sleep = 5, Speed = 8, Range = 1,
   DrawLevel = 100 } )
 
 DefineMissileType("missile-none",
