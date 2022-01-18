@@ -244,6 +244,11 @@ for idx,unit in ipairs(units) do
    DefineUnitFromSpec(unit)
 end
 
+local EarlyMount = "blacksmith"           --this is to skip blacksmith req for knights and raiders, if you using Rebalanced stats
+if preferences.RebalancedStats then
+EarlyMount = "farm"
+end
+
 local knight_raider_spec = {
    Names = {orc = "Raider", human = "Knight"},
    Name = {orc = "Raider", human = "Knight"},
@@ -256,8 +261,8 @@ local knight_raider_spec = {
    AnnoyComputerFactor = 120,
    PiercingDamage = 1,
    BasicDamage = 13,
-   Dependencies = {orc = {"blacksmith", "kennel"},
-                   human = {"blacksmith", "stable"}}}
+   Dependencies = {orc = {EarlyMount, "kennel"},
+                   human = {EarlyMount, "stable"}}}
 DefineUnitFromSpec(knight_raider_spec)
 knight_raider_spec.Names = {orc = "Raider1", human = "Knight1"}
 DefineUnitFromSpec(knight_raider_spec)
