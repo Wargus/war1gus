@@ -119,6 +119,7 @@ DefineUnitType("unit-human-catapult", {
                   BasicDamage = 120,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
+		  GroundAttack = true,
 })
 DefineUnitType("unit-orc-catapult", {                  
                   Demand = 3,
@@ -128,6 +129,7 @@ DefineUnitType("unit-orc-catapult", {
                   BasicDamage = 120,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
+		  GroundAttack = true,
 })
 
 DefineMissileType("missile-catapult-rock", {
@@ -158,7 +160,6 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-CatapultAmmo1",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-human-catapult"} } )
  
---lagi: attack ground dont work - not sure why not, its even define in war1gus . I thought only graphic is missing 
 local attackGroundIcon = CIcon:New("icon-attack-ground")
 attackGroundIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/icon-attack-ground.png", 27, 19)
 attackGroundIcon.Frame = 0
