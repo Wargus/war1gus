@@ -123,10 +123,10 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-arrow3",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-archer"} } )
 
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-attack-ground",
-  Action = "attack-ground",
-  Key = "g", Hint = "ATTACK ~!GROUND",
-  ForUnit = {"unit-human-catapult", "human-group"} } )
+--DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-attack-ground",
+--  Action = "attack-ground",
+--  Key = "g", Hint = "ATTACK ~!GROUND",
+--  ForUnit = {"unit-human-catapult", "human-group"} } )
 
 -- cleric specific actions ---------------------------------------------------
 
