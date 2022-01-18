@@ -123,10 +123,10 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-spear3",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-spearman"} } )
 
-DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-attack-ground",
-  Action = "attack-ground",
-  Key = "g", Hint = "ATTACK ~!GROUND",
-  ForUnit = {"unit-orc-catapult", "orc-group"} } )
+--DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-attack-ground",
+--  Action = "attack-ground",
+--  Key = "g", Hint = "ATTACK ~!GROUND",
+--  ForUnit = {"unit-orc-catapult", "orc-group"} } )
 
 -- necrolyte specific actions ---------------------------------------------------
 
