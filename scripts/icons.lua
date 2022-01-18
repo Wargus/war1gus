@@ -184,15 +184,20 @@ for i = 1,table.getn(icons) do
     Frame = icons[i][2],})
 end
 ]]
-for i = 1,table.getn(icons) do
-   if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
-      iconname = "tilesets/forest/portrait_icons.png"
-   elseif war1gus.tileset == "dungeon" or war1gus.tileset == "dungeon_campaign" then
-      iconname = "tilesets/dungeon/portrait_icons.png"
-   else
-      iconname = "tilesets/swamp/portrait_icons.png"
-   end
-   icon = CIcon:New(icons[i][1])
-   icon.G = CPlayerColorGraphic:New(iconname, 27, 19)
-   icon.Frame = icons[i][2]
+
+local DefineIcons = function()
+  for i = 1,table.getn(icons) do
+    if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+        iconname = "tilesets/forest/portrait_icons.png"
+    elseif war1gus.tileset == "dungeon" or war1gus.tileset == "dungeon_campaign" then
+        iconname = "tilesets/dungeon/portrait_icons.png"
+    else
+        iconname = "tilesets/swamp/portrait_icons.png"
+    end
+    icon = CIcon:New(icons[i][1])
+    icon.G = CPlayerColorGraphic:New(iconname, 27, 19)
+    icon.Frame = icons[i][2]
+  end
 end
+DefineIcons()
+OnTilesetChangeFunctions:add(DefineIcons)

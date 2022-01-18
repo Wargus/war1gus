@@ -53,6 +53,11 @@ function InitFuncs:add(f)
   table.insert(self, f)
 end
 
+OnTilesetChangeFunctions = {}
+function OnTilesetChangeFunctions:add(f)
+  table.insert(self, f)
+end
+
 function InitGameVariables()
   for i=1,table.getn(InitFuncs) do
     InitFuncs[i]()

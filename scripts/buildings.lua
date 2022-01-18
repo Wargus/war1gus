@@ -28,12 +28,6 @@
 --
 --      $Id$
 
-UnitTypeFiles = {}
-
-if (war1gus.tileset == nil) then
-  war1gus.tileset = "forest"
-end
-
 local townHallBuildingRules = nil
 if (preferences.AllowMultipleTownHalls) then
   townHallBuildingRules = {

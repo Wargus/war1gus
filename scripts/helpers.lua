@@ -32,10 +32,21 @@
 -- Helper functions
 --
 
+UnitTypeFiles = {}
 wc1_buildings = { orc = { }, human = { } }
 wc1_units = { orc = { }, human = { }, neutral = { } }
 wc1_upgrades = { orc = { }, human = { } }
 UnitEquivalents = UnitEquivalents or { }
+
+local SetUnitTypeFiles = function()
+    -- Set the unit type graphics to the correct tileset
+    table.foreach(UnitTypeFiles, function(k, v) DefineUnitType(k, { Image = {"file", v[war1gus.tileset]} }) end)
+end
+OnTilesetChangeFunctions:add(SetUnitTypeFiles)
+
+if (war1gus.tileset == nil) then
+war1gus.tileset = "forest"
+end
 
 function DefineBuildingFromSpec(building)
     local orcident

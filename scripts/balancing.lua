@@ -650,6 +650,7 @@ local DefineOrcTowerIcon = function()
    orcWatchTowerIcon.Frame = 0
 end
 DefineOrcTowerIcon()
+OnTilesetChangeFunctions:add(DefineOrcTowerIcon)
 
 DefineAnimations(
    "animations-orc-watch-tower", 
@@ -769,6 +770,7 @@ local DefineHumanTowerIcon = function()
    humanGuardTowerIcon.Frame = 0
 end
 DefineHumanTowerIcon()
+OnTilesetChangeFunctions:add(DefineHumanTowerIcon)
 
 DefineAnimations(
    "animations-human-guard-tower", 

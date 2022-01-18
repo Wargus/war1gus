@@ -28,18 +28,9 @@
 --
 --      $Id$
 
--- Set the unit type graphics to the correct tileset
-table.foreach(
-   UnitTypeFiles,
-   function(k, v)
-      DefineUnitType(
-         k,
-         { Image = {"file", v[war1gus.tileset]} }
-      )
-   end
-)
-
-Load("scripts/icons.lua")
+for i=1,table.getn(OnTilesetChangeFunctions) do
+    OnTilesetChangeFunctions[i]()
+end
 
 -- XXX: make sure walls and roads have their directions
 DefineUnitType("unit-wall", {NumDirections = 16, Flip = false})
