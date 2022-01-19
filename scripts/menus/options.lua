@@ -171,7 +171,10 @@ function RunPreferencesMenu()
                                      SetTrainingQueue(not not preferences.TrainingQueue)
                                      SavePreferences()
                         end):id("trainingqueue"),
-
+                        LCheckBox("Play intro", function(dd)
+                                     preferences.PlayIntro = dd:isMarked()
+                                     SavePreferences()
+                        end):id("PlayIntro"),
                         HBox({
                               LLabel("Max selection: "),
                               LDropDown({"4 (WC1 default)", "9", "12", "18", "50"}, function(dd)
