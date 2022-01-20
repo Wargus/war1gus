@@ -87,7 +87,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword1",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-archer",
     "unit-knight", "unit-knight1", "unit-knight2",
-    "unit-water-elemental", "unit-scorpion", "unit-lothar",
+    "unit-scorpion", "unit-lothar",
     "unit-human-catapult", "human-group"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword2",
@@ -156,10 +156,10 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-invisibility",
 
 -- conjurer specific actions ------------------------------------------------------
 
-DefineButton( { Pos = 3, Level = 0, Icon = "icon-fireball",
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-elemental-blast",
   Action = "attack",
-  Key = "a", Hint = "FIREBALL ~!ATTACK",
-  ForUnit = {"unit-conjurer"} } )
+  Key = "a", Hint = "ELEMENTAL BL~!AST",
+  ForUnit = {"unit-conjurer","unit-water-elemental"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-scorpion",
   Action = "cast-spell", Value = "spell-summon-scorpions",
