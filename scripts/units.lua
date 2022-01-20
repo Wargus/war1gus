@@ -183,7 +183,7 @@ local units = {
           "spell-summon-spiders",
           "spell-summon-daemon",
           "spell-poison-cloud" } },
-    Missile = "missile-fireball",
+    Missile = {orc = "missile-fireball", human = "missile-water"},
     PiercingDamage = 6,
     BasicDamage = 0,
     MaxAttackRange = {human = 3, orc = 2}},
