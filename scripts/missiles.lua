@@ -32,12 +32,12 @@
 DefineMissileType("missile-arrow",
   { File = "missiles/arrow.png", Size = {32, 32}, Frames = 5, NumDirections = 9,
   DrawLevel = 50, ImpactSound = "bow hit",
-  Class = "missile-class-point-to-point", Sleep = 1, Speed = 32, Range = 0 } )
+  Class = "missile-class-point-to-point", Sleep = 1, Speed = 16, Range = 0 } )
 
 DefineMissileType("missile-catapult-rock",
   { File = "missiles/catapult_projectile.png", Size = {32, 32}, Frames = 15, NumDirections = 9,
   ImpactSound = "explosion",
-  DrawLevel = 50, Class = "missile-class-parabolic", Sleep = 1, Speed = 3, Range = 2,
+  DrawLevel = 200, Class = "missile-class-parabolic", Sleep = 1, Speed = 3, Range = 2,
   ImpactMissile = "missile-explosion", SplashFactor = 4 } )
 
 DefineMissileType("missile-small-fire",
@@ -50,26 +50,26 @@ DefineMissileType("missile-big-fire",
 
 DefineMissileType("missile-explosion",
   { File = "missiles/explosion.png", Size = {48, 48}, Frames = 6, NumDirections = 1,
-  DrawLevel = 50, Class = "missile-class-stay", Sleep = 6, Speed = 16, Range = 1 } )
+  DrawLevel = 200, Class = "missile-class-stay", Sleep = 6, Speed = 16, Range = 1 } )
 
 DefineMissileType("missile-normal-spell",
   { File = "missiles/healing.png", Size = {16, 16}, Frames = 6, NumDirections = 1,
-    DrawLevel = 50, Class = "missile-class-stay", Sleep = 5, Speed = 0, Range = 1 } )
+    DrawLevel = 200, Class = "missile-class-stay", Sleep = 5, Speed = 0, Range = 1 } )
 
 DefineMissileType("missile-magic-fireball",
   { File = "missiles/fireball.png", Size = {32, 32}, Frames = 25, NumDirections = 9,
     DrawLevel = 200, ImpactSound = "fireball attack",
-    Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
+    Class = "missile-class-point-to-point", Sleep = 1, Speed = 3, Range = 0 } )
 
 DefineMissileType("missile-fireball",
   { File = "missiles/fireball_2.png", Size = {32, 32}, Frames = 10, NumDirections = 9,
-    DrawLevel = 50, ImpactSound = "bow hit",
-    Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
+    DrawLevel = 200, ImpactSound = "bow hit",
+    Class = "missile-class-point-to-point", Sleep = 1, Speed = 3, Range = 0 } )
 
 DefineMissileType("missile-water",
   { File = "missiles/water_elemental_projectile.png", Size = {32, 32}, Frames = 10, NumDirections = 9,
-    DrawLevel = 50, ImpactSound = "fireball attack",
-    Class = "missile-class-point-to-point", Sleep = 1, Speed = 8, Range = 0 } )
+    DrawLevel = 200, ImpactSound = "fireball attack",
+    Class = "missile-class-point-to-point", Sleep = 1, Speed = 3, Range = 0 } )
 
 DefineMissileType("missile-rain-of-fire",
   { File = "missiles/rain_of_fire.png", Size = {16, 16}, Frames = 7, NumDirections = 1,

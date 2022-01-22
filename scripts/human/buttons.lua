@@ -41,7 +41,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peasant",
   Action = "move",
   Key = "m", Hint = "~!MOVE",
   ForUnit = {"unit-footman", "unit-knight", "unit-archer",
-    "unit-human-catapult", "unit-peasant",
+    "unit-human-catapult", "unit-human-catapult-noattack", "unit-peasant",
     "unit-water-elemental", "unit-scorpion",
     "unit-cleric", "unit-conjurer", "unit-medivh", "unit-lothar",
     "human-group" } } )
@@ -61,7 +61,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-footman", "unit-archer",
     "unit-knight", "unit-knight1", "unit-knight2",
-    "unit-human-catapult", "unit-peasant",
+    "unit-human-catapult", "unit-human-catapult-noattack", "unit-peasant",
     "unit-water-elemental", "unit-scorpion",
     "unit-cleric", "unit-conjurer", "unit-medivh", "unit-lothar",
     "human-group"} } )
@@ -139,13 +139,13 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-holy-lance",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-healing",
   Action = "cast-spell", Value = "spell-healing",
   Allowed = "check-upgrade", AllowArg = {"upgrade-healing"},
-  Key = "h", Hint = "~!HEALING (per 1 HP)",
+  Key = "e", Hint = "H~!EALING (per 1 HP)",
   ForUnit = {"unit-cleric"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-far-seeing",
   Action = "cast-spell", Value = "spell-far-seeing",
   Allowed = "check-upgrade", AllowArg = {"upgrade-far-seeing"},
-  Key = "f", Hint = "~!FAR SEEING",
+  Key = "r", Hint = "FA~!R SEEING",
   ForUnit = {"unit-cleric"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-invisibility",
@@ -164,13 +164,13 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-elemental-blast",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-scorpion",
   Action = "cast-spell", Value = "spell-summon-scorpions",
   Allowed = "check-upgrade", AllowArg = {"upgrade-scorpion"},
-  Key = "c", Hint = "SUMMON S~!CORPIONS",
+  Key = "r", Hint = "SUMMON SCO~!RPIONS",
   ForUnit = {"unit-conjurer"} } )
 
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-rain-of-fire",
   Action = "cast-spell", Value = "spell-rain-of-fire",
   Allowed = "check-upgrade", AllowArg = {"upgrade-rain-of-fire"},
-  Key = "r", Hint = "~!RAIN OF FIRE",
+  Key = "f", Hint = "RAIN OF ~!FIRE",
   ForUnit = {"unit-conjurer"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-water-elemental",
@@ -376,13 +376,13 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse2",
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-healing",
   Action = "research", Value = "upgrade-healing",
   Allowed = "check-single-research",
-  Key = "h", Hint = "RESEARCH ~!HEALING",
+  Key = "e", Hint = "RESEARCH H~!EALING",
   ForUnit = {"unit-human-church"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-far-seeing",
   Action = "research", Value = "upgrade-far-seeing",
   Allowed = "check-single-research",
-  Key = "f", Hint = "RESEARCH ~!FAR SEEING",
+  Key = "r", Hint = "RESEARCH FA~!R SEEING",
   ForUnit = {"unit-human-church"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-invisibility",
@@ -394,13 +394,13 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-invisibility",
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-scorpion",
   Action = "research", Value = "upgrade-scorpion",
   Allowed = "check-single-research",
-  Key = "c", Hint = "RESEARCH SUMMON S~!CORPIONS",
+  Key = "r", Hint = "RESEARCH SUMMON SCO~!RPIONS",
   ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-rain-of-fire",
   Action = "research", Value = "upgrade-rain-of-fire",
   Allowed = "check-single-research",
-  Key = "r", Hint = "RESEARCH ~!RAIN OF FIRE",
+  Key = "f", Hint = "RESEARCH RAIN OF ~!FIRE",
   ForUnit = {"unit-human-tower"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-water-elemental",
