@@ -145,13 +145,13 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-raise-dead",
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-dark-vision",
   Action = "cast-spell", Value = "spell-dark-vision",
   Allowed = "check-upgrade", AllowArg = {"upgrade-dark-vision"},
-  Key = "v", Hint = "DARK ~!VISION",
+  Key = "r", Hint = "~!DARK VISION",
   ForUnit = {"unit-necrolyte"} } )
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-unholy-armor",
   Action = "cast-spell", Value = "spell-unholy-armor",
   Allowed = "check-upgrade", AllowArg = {"upgrade-unholy-armor"},
-  Key = "h", Hint = "UN~!HOLY-ARMOR",
+  Key = "c", Hint = "~!CAST UNHOLY-ARMOR",
   ForUnit = {"unit-necrolyte"} } )
 
 -- warlock specific actions ------------------------------------------------------
@@ -382,13 +382,13 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-raise-dead",
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-dark-vision",
   Action = "research", Value = "upgrade-dark-vision",
   Allowed = "check-single-research",
-  Key = "v", Hint = "RESEARCH DARK ~!VISION",
+  Key = "r", Hint = "RESEARCH DA~!RK VISION",
   ForUnit = {"unit-orc-temple"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-unholy-armor",
   Action = "research", Value = "upgrade-unholy-armor",
   Allowed = "check-single-research",
-  Key = "h", Hint = "RESEARCH UN~!HOLY ARMOR",
+  Key = "c", Hint = "RESEAR~!CH UNHOLY ARMOR",
   ForUnit = {"unit-orc-temple"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-spider",
