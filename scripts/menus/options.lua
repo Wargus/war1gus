@@ -325,6 +325,7 @@ function RunPreferencesMenu()
    end
    menu.showorders:setMarked(preferences.ShowOrders)
    menu.trainingqueue:setMarked(preferences.TrainingQueue)
+   menu.PlayIntro:setMarked(preferences.PlayIntro or true)
    menu.showdmg:setMarked(preferences.ShowDamage)
 
    menu.ckey:setMarked(UI.ButtonPanel.ShowCommandKey)
