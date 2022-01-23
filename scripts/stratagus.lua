@@ -144,7 +144,7 @@ SetMMFogOfWarOpacityLevels(0x55, 0xAA, 0xFF) -- default values
 RightButtonMoves()
 
 --  Set the name of the missile to use when clicking
---SetClickMissile("missile-green-cross")
+SetClickMissile("missile-grey-cross")
 
 --  Set the name of the missile to use when displaying damage
 SetDamageMissile("missile-hit")
