@@ -98,3 +98,7 @@ DefineBurningBuilding(
   {"percent", 50, "missile", "missile-small-fire"},
   {"percent", 75 } -- no missile
 )
+
+DefineMissileType("missile-grey-cross",
+  { File = "contrib/graphics/missiles/grey_cross.png", Size = {18, 18}, Frames = 6, NumDirections = 1,
+  DrawLevel = 150, Class = "missile-class-cycle-once", Sleep = 3, Speed = 111, Range = 1 } )
