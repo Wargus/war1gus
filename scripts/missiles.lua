@@ -102,3 +102,8 @@ DefineBurningBuilding(
 DefineMissileType("missile-grey-cross",
   { File = "contrib/graphics/missiles/grey_cross.png", Size = {18, 18}, Frames = 6, NumDirections = 1,
   DrawLevel = 150, Class = "missile-class-cycle-once", Sleep = 3, Speed = 111, Range = 1 } )
+
+DefineMissileType("missile-web",
+  { File = "missiles/missile-web.png", Size = {32, 32}, Frames = 5, NumDirections = 9,
+    DrawLevel = 200, ImpactSound = "fireball attack",
+    Class = "missile-class-point-to-point", Sleep = 1, Speed = 2, Range = 0 } )
