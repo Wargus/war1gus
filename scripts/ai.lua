@@ -35,12 +35,6 @@ race1 = "human"
 race2 = "orc"
 
 DefineAiHelper(
-   {"unit-equiv", "unit-knight", "unit-knight1", "unit-knight2"}
-)
-DefineAiHelper(
-   {"unit-equiv", "unit-raider", "unit-raider1", "unit-raider2"}
-)
-DefineAiHelper(
    {"unit-equiv", "unit-human-town-hall", "unit-human-stormwind-keep"}
 )
 DefineAiHelper(

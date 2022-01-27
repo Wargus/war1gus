@@ -252,7 +252,7 @@ function DefineUnitFromSpec(unit)
             TileSize = { 1, 1 },
             BoxSize = { 15, 15 },
             SightRange = 3,
-            Speed = 9,
+            Speed = 4,
             organic = true,
             ComputerReactionRange = 4,
             PersonReactionRange = 6,

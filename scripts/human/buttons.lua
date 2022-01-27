@@ -48,19 +48,21 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peasant",
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse1",
   Action = "move",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-horse1"},
   Key = "m", Hint = "~!MOVE",
-  ForUnit = { "unit-knight1" } } )
+  ForUnit = { "unit-knight" } } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse2",
   Action = "move",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-horse2"},
   Key = "m", Hint = "~!MOVE",
-  ForUnit = { "unit-knight2" } } )
+  ForUnit = { "unit-knight" } } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
   Action = "stop",
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-footman", "unit-archer",
-    "unit-knight", "unit-knight1", "unit-knight2",
+    "unit-knight",
     "unit-human-catapult", "unit-human-catapult-noattack", "unit-peasant",
     "unit-water-elemental", "unit-scorpion",
     "unit-cleric", "unit-conjurer", "unit-medivh", "unit-lothar",
@@ -71,7 +73,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield2",
   Allowed = "check-upgrade", AllowArg = {"upgrade-human-shield1"},
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-footman", "unit-archer",
-    "unit-knight", "unit-knight1", "unit-knight2",
+    "unit-knight",
     "unit-human-catapult"}} )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield3",
@@ -79,14 +81,14 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield3",
   Allowed = "check-upgrade", AllowArg = {"upgrade-human-shield2"},
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-footman", "unit-archer",
-    "unit-knight", "unit-knight1", "unit-knight2",
+    "unit-knight",
     "unit-human-catapult"}} )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword1",
   Action = "attack",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-archer",
-    "unit-knight", "unit-knight1", "unit-knight2",
+    "unit-knight",
     "unit-scorpion", "unit-lothar",
     "unit-human-catapult", "human-group"} } )
 
@@ -95,7 +97,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword2",
   Allowed = "check-upgrade", AllowArg = {"upgrade-sword1"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-archer",
-    "unit-knight", "unit-knight1", "unit-knight2",
+    "unit-knight",
     "unit-human-catapult"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword3",
@@ -103,7 +105,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword3",
   Allowed = "check-upgrade", AllowArg = {"upgrade-sword2"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-footman", "unit-archer",
-    "unit-knight", "unit-knight1", "unit-knight2",
+    "unit-knight",
     "unit-human-catapult"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-arrow1",
@@ -297,18 +299,6 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-catapult",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-knight",
   Action = "train-unit", Value = "unit-knight",
   Key = "g", Hint = "TRAIN KNI~!GHT",
-  ForUnit = {"unit-human-barracks"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-knight",
-  Action = "train-unit", Value = "unit-knight1",
-  Key = "g", Hint = "TRAIN KNI~!GHT",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-horse1"},
-  ForUnit = {"unit-human-barracks"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-knight",
-  Action = "train-unit", Value = "unit-knight2",
-  Key = "g", Hint = "TRAIN KNI~!GHT",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-horse2"},
   ForUnit = {"unit-human-barracks"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-conjurer",
