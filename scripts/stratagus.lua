@@ -204,6 +204,8 @@ SetMinimapTerrain(true)
 -- Make grayscale icons for cooldown
 Preference.GrayscaleIcons = true
 
+SetFontCodePage(20127) -- 7-bit ascii only
+
 -------------------------------------------------------------------------------
 
 --  Define default resources
