@@ -49,7 +49,7 @@ DefineUnitType("unit-cleric",			{SightRange = 5, MaxAttackRange = 2})
 DefineUnitType("unit-necrolyte",		{SightRange = 5})
 
 DefineUnitType("unit-scorpion",			{SightRange = 4})
-DefineUnitType("unit-spider",			{SightRange = 4})
+DefineUnitType("unit-spider",			{SightRange = 4, MaxAttackRange = 3, Missile = "missile-web"})
 DefineUnitType("unit-dead",				{SightRange = 4})
 DefineUnitType("unit-daemon",			{SightRange = 5})
 DefineUnitType("unit-water-elemental",	{SightRange = 6})
