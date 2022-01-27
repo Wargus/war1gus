@@ -37,40 +37,46 @@ DefineUnitType("unit-archer",			{SightRange = 6})
 DefineUnitType("unit-spearman",			{SightRange = 6})
 DefineUnitType("unit-orc-catapult",		{SightRange = 4})
 DefineUnitType("unit-human-catapult",	{SightRange = 4})
-DefineUnitType("unit-raider",			{SightRange = 4})
+DefineUnitType("unit-raider",			{SightRange = 5})
 DefineUnitType("unit-knight",			{SightRange = 4})
-DefineUnitType("unit-raider1",			{SightRange = 4})
+DefineUnitType("unit-raider1",			{SightRange = 5})
 DefineUnitType("unit-knight1",			{SightRange = 4})
-DefineUnitType("unit-raider2",			{SightRange = 4})
+DefineUnitType("unit-raider2",			{SightRange = 5})
 DefineUnitType("unit-knight2",			{SightRange = 4})
 DefineUnitType("unit-conjurer",			{SightRange = 4})
 DefineUnitType("unit-warlock",			{SightRange = 4, MaxAttackRange = 3})
 DefineUnitType("unit-cleric",			{SightRange = 5, MaxAttackRange = 2})
 DefineUnitType("unit-necrolyte",		{SightRange = 5})
 
+DefineUnitType("unit-scorpion",			{SightRange = 4})
+DefineUnitType("unit-spider",			{SightRange = 4})
+DefineUnitType("unit-dead",				{SightRange = 4})
+DefineUnitType("unit-daemon",			{SightRange = 5})
+DefineUnitType("unit-water-elemental",	{SightRange = 6})
+
 -----------------------------------------------------------------------
 -- Cost Rebalancing Buildings
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-human-town-hall",		{Costs = {"time", 100, "gold", 400,		"wood", 400},Supply = 3})
-DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 100, "gold", 400,		"wood", 400},Supply = 3})
+DefineUnitType("unit-human-town-hall",		{Costs = {"time", 250, "gold", 500,		"wood", 500},Armor = 10, Supply = 3})
+DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 250, "gold", 500,		"wood", 500},Armor = 10, Supply = 3})
 
-DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},})
-DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},})
-DefineUnitType("unit-human-barracks",		{Costs = {"time", 400, "gold", 600, 	"wood", 500},})
-DefineUnitType("unit-orc-barracks",			{Costs = {"time", 400, "gold", 600, 	"wood", 500},})
-DefineUnitType("unit-human-lumber-mill",	{Costs = {"time", 250, "gold", 600, 	"wood", 150},})
-DefineUnitType("unit-orc-lumber-mill",		{Costs = {"time", 250, "gold", 600, 	"wood", 150},})
+DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
+DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
+DefineUnitType("unit-human-barracks",		{Costs = {"time", 400, "gold", 600, 	"wood", 500},Armor = 10})
+DefineUnitType("unit-orc-barracks",			{Costs = {"time", 400, "gold", 600, 	"wood", 500},Armor = 10})
+DefineUnitType("unit-human-lumber-mill",	{Costs = {"time", 250, "gold", 600, 	"wood", 150},Armor = 5})
+DefineUnitType("unit-orc-lumber-mill",		{Costs = {"time", 250, "gold", 600, 	"wood", 150},Armor = 5})
 
-DefineUnitType("unit-human-stable",		  	{Costs = {"time", 300, "gold", 1000,	"wood", 400},})
-DefineUnitType("unit-orc-kennel",			{Costs = {"time", 300, "gold", 1000, 	"wood", 400},})
-DefineUnitType("unit-human-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},})
-DefineUnitType("unit-orc-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},})
+DefineUnitType("unit-human-stable",		  	{Costs = {"time", 300, "gold", 1000,	"wood", 400},Armor = 0})
+DefineUnitType("unit-orc-kennel",			{Costs = {"time", 300, "gold", 1000, 	"wood", 400},Armor = 0})
+DefineUnitType("unit-human-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},Armor = 5})
+DefineUnitType("unit-orc-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},Armor = 5})
 
-DefineUnitType("unit-human-church",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},})
-DefineUnitType("unit-orc-temple",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},})
-DefineUnitType("unit-human-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},})
-DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},})
+DefineUnitType("unit-human-church",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},Armor = 5})
+DefineUnitType("unit-orc-temple",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},Armor = 5})
+DefineUnitType("unit-human-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 10})
+DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 10})
 
 DefineUnitType("unit-wall",					{Costs = {"time", 30,  "gold", 0,		"wood", 50}, Armor = 20})
 
@@ -85,8 +91,8 @@ DefineDependency("unit-orc-lumber-mill", { "unit-orc-barracks"} )
 -- Cost Rebalancing Units
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-peasant",			{Costs = {"time", 75,  "gold", 350, "wood", 0},})
-DefineUnitType("unit-peon",				{Costs = {"time", 75,  "gold", 350, "wood", 0},})
+DefineUnitType("unit-peasant",			{Costs = {"time", 75,  "gold", 350, "wood", 0},	AutoRepairRange = 4,})
+DefineUnitType("unit-peon",				{Costs = {"time", 75,  "gold", 350, "wood", 0},	AutoRepairRange = 4,})
 DefineUnitType("unit-footman",			{Costs = {"time", 200, "gold", 400, "wood", 0},})
 DefineUnitType("unit-grunt",			{Costs = {"time", 200, "gold", 400, "wood", 0},})
 
@@ -108,34 +114,98 @@ DefineUnitType("unit-conjurer",			{Costs = {"time", 300, "gold", 800, "wood", 10
 DefineUnitType("unit-warlock",			{Costs = {"time", 300, "gold", 800, "wood", 100},})
 
 -----------------------------------------------------------------------
+-- Grunt/Footman Rebalancing
+-----------------------------------------------------------------------
+
+DefineUnitType("unit-footman", {
+				HitPoints = 70,
+                Armor = 1,
+				BasicDamage = 7
+})
+DefineUnitType("unit-grunt", {
+				HitPoints = 70,
+                Armor = 0,
+				BasicDamage = 8
+})
+
+-----------------------------------------------------------------------
+-- Raider/Knight Rebalancing
+-----------------------------------------------------------------------
+
+DefineUnitType("unit-knight", {
+                  Demand = 2,
+                  Armor = 1
+})
+DefineUnitType("unit-raider", {
+                  Demand = 2,
+                  Armor = 0,
+				  PiercingDamage = 2
+})
+DefineUnitType("unit-knight1", {
+                  Demand = 2,
+                  Armor = 1
+})
+DefineUnitType("unit-raider1", {
+                  Demand = 2,
+                  Armor = 0,
+				  PiercingDamage = 2
+})
+DefineUnitType("unit-knight2", {
+                  Demand = 2,
+                  Armor = 1
+})
+DefineUnitType("unit-raider2", {
+                  Demand = 2,
+                  Armor = 0,
+				  PiercingDamage = 2
+})
+
+-----------------------------------------------------------------------
+-- Archer/Spearman Rebalancing
+-----------------------------------------------------------------------
+
+DefineUnitType("unit-archer", {
+                  PiercingDamage = 1,
+                  BasicDamage = 6,
+                  Armor = 0
+})
+DefineUnitType("unit-spearman", {
+                  PiercingDamage = 2,
+                  BasicDamage = 6,
+                  Armor = 0
+})
+
+-----------------------------------------------------------------------
 -- Catapult Rebalancing
 -----------------------------------------------------------------------
 
 DefineUnitType("unit-human-catapult", {                  
-                  Demand = 3,
+                  Demand = 2,
                   RepairHp = 4,
                   RepairCosts = { "gold", 1, "wood", 1 },
                   organic = false,
-                  BasicDamage = 120,
+				  Corpse = nil,
+                  BasicDamage = 100,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
-		  GroundAttack = true,
+				  GroundAttack = true,
 })
 DefineUnitType("unit-orc-catapult", {                  
-                  Demand = 3,
+                  Demand = 2,
                   RepairHp = 4,
                   RepairCosts = { "gold", 1, "wood", 1 },
                   organic = false,
-                  BasicDamage = 120,
+				  Corpse = nil,
+                  BasicDamage = 100,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
-		  GroundAttack = true,
+				  GroundAttack = true,
 })
 
 DefineMissileType("missile-catapult-rock", {
                   Speed = 1,
                   Range = 2,
-                  SplashFactor = 4,
+                  SplashFactor = 2,
                   NumDirections = 9
 })
 
@@ -159,71 +229,108 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-CatapultAmmo1",
   Allowed = "check-upgrade", AllowArg = {"upgrade-human-CatapultAmmo1"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-human-catapult"} } )
- 
+  
 local attackGroundIcon = CIcon:New("icon-attack-ground")
 attackGroundIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/icon-attack-ground.png", 27, 19)
 attackGroundIcon.Frame = 0
   
- DefineButton( { Pos = 4, Level = 0, Icon = "icon-attack-ground",
+ DefineButton( { Pos = 5, Level = 0, Icon = "icon-attack-ground",
   Action = "attack-ground",
-  Key = "g", Hint = "ATTACK ~!GROUND",
+  Key = "d", Hint = "ATTACK GROUN~!D",
   ForUnit = {"unit-orc-catapult", "unit-human-catapult"}})
 
+local HoldFireButtonAction = function(unit)
+TransformUnit(unit, "unit-".. GetPlayerData(GetThisPlayer(), "RaceName").. "-catapult-noattack") 
+end
 
+local FreeFireButtonAction = function(unit)
+SetPlayerData(GetThisPlayer(), "Resources", "gold",
+                      GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-".. GetPlayerData(GetThisPlayer(), "RaceName").. "-catapult", "Costs", "gold"))
+SetPlayerData(GetThisPlayer(), "Resources", "wood",
+                      GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-".. GetPlayerData(GetThisPlayer(), "RaceName").. "-catapult", "Costs", "wood"))		  
+TransformUnit(unit, "unit-".. GetPlayerData(GetThisPlayer(), "RaceName").. "-catapult") 
+end
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-attack-ground",
+  Key = "f", Hint = "~!FIRE AT WILL",
+  ForUnit = {"unit-human-catapult-noattack", "unit-orc-catapult-noattack"},
+  Action = "callback",
+  Value = FreeFireButtonAction}) 
+  
 -----------------------------------------------------------------------
--- Grunt/Footman Rebalancing
------------------------------------------------------------------------
-
-DefineUnitType("unit-footman", {
-                Armor = 1,
-				BasicDamage = 7
-})
-DefineUnitType("unit-grunt", {
-                Armor = 0,
-				BasicDamage = 8
-})
-
-
------------------------------------------------------------------------
--- Raider/Knight Rebalancing
------------------------------------------------------------------------
-
-DefineUnitType("unit-knight", {
-                  Demand = 2,
-                  Armor = 1
-})
-DefineUnitType("unit-raider", {
-                  Demand = 2,
-                  Armor = 1
-})
-DefineUnitType("unit-knight1", {
-                  Demand = 2,
-                  Armor = 1
-})
-DefineUnitType("unit-raider1", {
-                  Demand = 2,
-                  Armor = 1
-})
-DefineUnitType("unit-knight2", {
-                  Demand = 2,
-                  Armor = 1
-})
-DefineUnitType("unit-raider2", {
-                  Demand = 2,
-                  Armor = 1
-})
-
------------------------------------------------------------------------
--- Archer/Spearman Rebalancing
+-- Orc catapult Hold Fire transform
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-archer", {
-                  PiercingDamage = 1,
-                  BasicDamage = 4
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-holdfire",
+  Key = "f", Hint = "HOLD ~!FIRE",
+  ForUnit = {"unit-orc-catapult"},
+  Action = "callback",
+  Value = HoldFireButtonAction}) 
+
+DefineUnitType("unit-orc-catapult-noattack",
+               { Name = "Catapult",
+                 Image = {"file", "orc/units/catapult.png", "size", {32, 32}},
+                 Icon = "icon-orc-catapult",
+                 DrawLevel = 60,
+                 TileSize = { 1, 1 },
+                 BoxSize = {15, 15},
+                 Type = "land",
+				 organic = false,
+				 Corpse = nil,
+                 CanAttack = false,
+                 LandUnit = true,
+				 Sounds = {
+					"attack", "orc acknowledge",
+					"selected", "orc selected",
+					"acknowledge", "orc acknowledge",
+					"ready", "orc ready",
+					"help", "orc help 3",
+					"dead", "orc dead"
+				 },
+				 SelectableByRectangle = true,
+                 Animations = "animations-orc-catapult", 
+                 HitPoints = 120,
+                 Demand = 3, 
+                 CanTargetLand = false, 
+                 SightRange = 5, 
 })
-DefineUnitType("unit-spearman", {
-                  PiercingDamage = 2,
-                  BasicDamage = 4
+
+-----------------------------------------------------------------------
+-- Human catapult Hold Fire transform
+-----------------------------------------------------------------------
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-holdfire",
+  Key = "f", Hint = "HOLD ~!FIRE",
+  ForUnit = {"unit-human-catapult"},
+  Action = "callback",
+  Value = HoldFireButtonAction})
+
+DefineUnitType("unit-human-catapult-noattack",
+               { Name = "Catapult",
+                 Image = {"file", "human/units/catapult.png", "size", {32, 32}},
+                 Icon = "icon-human-catapult",
+                 DrawLevel = 60,
+                 TileSize = { 1, 1 },
+                 BoxSize = {15, 15},
+                 Type = "land",
+				 organic = false,
+				 Corpse = nil,
+                 CanAttack = false,
+                 LandUnit = true,
+				 Sounds = {
+					"attack", "human acknowledge",
+					"selected", "human selected",
+					"acknowledge", "human acknowledge",
+					"ready", "human ready",
+					"help", "human help 3",
+					"dead", "human dead"
+				 },
+				 SelectableByRectangle = true,
+                 Animations = "animations-human-catapult", 
+                 HitPoints = 120,
+                 Demand = 3, 
+                 CanTargetLand = false, 
+                 SightRange = 5, 
 })
 
 -----------------------------------------------------------------------
@@ -419,8 +526,16 @@ local SummonerCancelButtonAction = function(caster)
    local hp = GetUnitVariable(caster, "HitPoints")
    if hp > 0 then
       if casterIdent == "unit-conjurer-during-summoning" then
+	           SetPlayerData(GetThisPlayer(), "Resources", "gold",
+                      GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-conjurer", "Costs", "gold"))
+			   SetPlayerData(GetThisPlayer(), "Resources", "wood",
+                      GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-conjurer", "Costs", "wood"))
          TransformUnit(caster, "unit-conjurer")
       elseif casterIdent == "unit-warlock-during-summoning" then
+	           SetPlayerData(GetThisPlayer(), "Resources", "gold",
+                      GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-warlock", "Costs", "gold"))
+			   SetPlayerData(GetThisPlayer(), "Resources", "wood",
+                      GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-warlock", "Costs", "wood"))	  
          TransformUnit(caster, "unit-warlock")
          AddMessage(_("A daemon is forced back to the hells ..."))
       end
@@ -561,7 +676,7 @@ local upgrades = {
     
    {orc = {"dark-vision", {"necrolyte"}},
     human = {"far-seeing", {"cleric"}},
-    cost = {   120,   500,     0,     0,     0,     0,     0}
+    cost = {   120,   750,     0,     0,     0,     0,     0}
 	},
 
    {orc = {"unholy-armor", {"necrolyte"}},
@@ -579,7 +694,7 @@ end
 -----------------------------------------------------------------------
 DefineMissileType("missile-temple-heal",
   { File = "missiles/healing.png", Size = {16, 16}, Frames = 6, NumDirections = 1,
-    DrawLevel = 50, Class = "missile-class-stay", Sleep = 10, Speed = 0, Range = 1 } )
+    DrawLevel = 250, Class = "missile-class-stay", Sleep = 10, Speed = 0, Range = 1 } )
 
 DefineUnitType("unit-orc-temple", {
    OnEachSecond = function (temple)
@@ -607,6 +722,38 @@ DefineUnitType("unit-orc-temple", {
       end
    end
 })
+
+-----------------------------------------------------------------------
+-- Human recharge mana at their Church
+-----------------------------------------------------------------------
+
+DefineUnitType("unit-human-church", {
+   OnEachSecond = function (church)
+      local freq = GetUnitVariable(church, "RegenerationFrequency")
+      local doheal = freq <= 1
+      local dodraw = (freq % 2 == 1)
+      if dodraw then
+         for i,unit in ipairs(GetUnitsAroundUnit(church, 2, false)) do
+            if GetUnitVariable(unit, "organic") then
+               local hp = GetUnitVariable(unit, "Mana")
+               local maxhp = GetUnitVariable(unit, "Mana", "Max")
+               if hp < maxhp then
+                  if doheal then
+                     SetUnitVariable(unit, "Mana", hp + 1)
+                  end
+                  CreateMissile("missile-temple-heal", {8, 8}, {8, 8}, unit, unit, false)
+               end
+            end
+         end
+      end
+      if doheal then
+         SetUnitVariable(church, "RegenerationFrequency", 3)
+      else
+         SetUnitVariable(church, "RegenerationFrequency", freq - 1)
+      end
+   end
+})
+
 
 -----------------------------------------------------------------------
 -- Orc watch tower
@@ -858,7 +1005,7 @@ orcSalvageIcon.Frame = 0
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-town-hall-salvage",
   Action = "button", Value = 1,
-  Description = "Salvage this town hall for resources to rebuild somewhere else.",
+  Description = "Salvage this town hall for gold to rebuild somewhere else.",
   Key = "v", Hint = "SAL~!VAGE",
   ForUnit = {"unit-orc-town-hall"} } )
   
@@ -873,8 +1020,8 @@ DefineButton( { Pos = 1, Level = 1, Icon = "icon-orc-town-hall-salvage",
       DamageUnit(-1, townHall, GetUnitVariable(townHall, "HitPoints"))
       SetPlayerData(GetThisPlayer(), "Resources", "gold",
                       GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-orc-town-hall", "Costs", "gold"))
-      SetPlayerData(GetThisPlayer(), "Resources", "wood",
-                      GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-orc-town-hall", "Costs", "wood"))
+     -- SetPlayerData(GetThisPlayer(), "Resources", "wood",
+      --                GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-orc-town-hall", "Costs", "wood"))
    end,
    Allowed = "check-units-or", AllowArg = {"unit-peon"},
    Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEON!",
@@ -890,7 +1037,7 @@ humanSalvageIcon.Frame = 0
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-town-hall-salvage",
   Action = "button", Value = 1,
-  Description = "Salvage this town hall for resources to rebuild somewhere else.",
+  Description = "Salvage this town hall for gold to rebuild somewhere else.",
   Key = "v", Hint = "SAL~!VAGE",
   ForUnit = {"unit-human-town-hall"} } )
   
@@ -905,8 +1052,8 @@ DefineButton( { Pos = 1, Level = 1, Icon = "icon-human-town-hall-salvage",
       DamageUnit(-1, townHall, GetUnitVariable(townHall, "HitPoints"))
       SetPlayerData(GetThisPlayer(), "Resources", "gold",
                         GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-human-town-hall", "Costs", "gold"))
-      SetPlayerData(GetThisPlayer(), "Resources", "wood",
-                        GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-human-town-hall", "Costs", "wood"))
+   --   SetPlayerData(GetThisPlayer(), "Resources", "wood",
+    --                    GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-human-town-hall", "Costs", "wood"))
    end,
    Allowed = "check-units-or", AllowArg = {"unit-peasant"},
    Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEASANT!",
@@ -930,7 +1077,7 @@ orcSalivaUpgrade1.Costs[2] = 400 -- wood
 DefineModifier("upgrade-orc-saliva1",
   {"Level", 1},
   {"regeneration-rate", 1},
-  {"regeneration-frequency", 2},
+  {"regeneration-frequency", 6},
   {"apply-to", "unit-raider"}, {"apply-to", "unit-raider1"}, {"apply-to", "unit-raider2"})
 
 DefineAllow("upgrade-orc-saliva1", "AAAAAAAAAAAAAAAA")
@@ -954,6 +1101,7 @@ orcSalivaUpgrade2.Costs[2] = 800 -- wood
 DefineModifier("upgrade-orc-saliva2",
    {"Level", 1},
    {"regeneration-rate", 1},
+   {"regeneration-frequency", 4},
    {"apply-to", "unit-raider"}, {"apply-to", "unit-raider1"}, {"apply-to", "unit-raider2"})
 
 DefineAllow("upgrade-orc-saliva2", "AAAAAAAAAAAAAAAA")
@@ -977,8 +1125,8 @@ humanBardingIcon1.Frame = 0
 local humanBardingUpgrade1 = CUpgrade:New("upgrade-human-barding1")
 humanBardingUpgrade1.Icon = humanBardingIcon1
 humanBardingUpgrade1.Costs[0] = 700 -- time
-humanBardingUpgrade1.Costs[1] = 500 -- gold
-humanBardingUpgrade1.Costs[2] = 200 -- wood
+humanBardingUpgrade1.Costs[1] = 750 -- gold
+humanBardingUpgrade1.Costs[2] = 400 -- wood
 
 DefineModifier("upgrade-human-barding1",
   {"Level", 1},
@@ -1029,8 +1177,8 @@ orcLightArmorIcon1.Frame = 0
 local orcLightArmorUpgrade1 = CUpgrade:New("upgrade-orc-LightArmor1")
 orcLightArmorUpgrade1.Icon = orcLightArmorIcon1
 orcLightArmorUpgrade1.Costs[0] = 700 -- time
-orcLightArmorUpgrade1.Costs[1] = 500 -- gold
-orcLightArmorUpgrade1.Costs[2] = 200 -- wood
+orcLightArmorUpgrade1.Costs[1] = 750 -- gold
+orcLightArmorUpgrade1.Costs[2] = 400 -- wood
 
 DefineModifier("upgrade-orc-LightArmor1",
   {"Level", 1},
@@ -1081,8 +1229,8 @@ humanLightArmorIcon1.Frame = 0
 local humanLightArmorUpgrade1 = CUpgrade:New("upgrade-human-LightArmor1")
 humanLightArmorUpgrade1.Icon = humanLightArmorIcon1
 humanLightArmorUpgrade1.Costs[0] = 700 -- time
-humanLightArmorUpgrade1.Costs[1] = 500 -- gold
-humanLightArmorUpgrade1.Costs[2] = 200 -- wood
+humanLightArmorUpgrade1.Costs[1] = 750 -- gold
+humanLightArmorUpgrade1.Costs[2] = 400 -- wood
 
 DefineModifier("upgrade-human-LightArmor1",
   {"Level", 1},
@@ -1176,3 +1324,80 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-CatapultAmmo1",
   Allowed = "check-single-research",
   Key = "b", Hint = "RESEARCH ~!BURNING OIL",
   ForUnit = {"unit-orc-blacksmith"} } )
+
+-----------------------------------------------------------------------
+-- advance LoS
+-----------------------------------------------------------------------
+
+SetFieldOfViewType("shadow-casting")
+SetOpaqueFor("forest")
+
+
+-----------------------------------------------------------------------
+-- New Orders Buttons Humans
+-----------------------------------------------------------------------
+local humanpatrol = CIcon:New("icon-human-patrol")
+humanpatrol.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-patrol.png", 27, 19)
+humanpatrol.Frame = 0
+
+local humanExplore = CIcon:New("icon-human-explore")
+humanExplore.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-explore.png", 27, 19)
+humanExplore.Frame = 0
+
+local humanStandground = CIcon:New("icon-human-standground")
+humanStandground.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-standground.png", 27, 19)
+humanStandground.Frame = 0
+
+local humanHoldfire = CIcon:New("icon-human-holdfire")
+humanHoldfire.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-holdfire.png", 27, 19)
+humanHoldfire.Frame = 0
+
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-human-patrol",
+  Action = "patrol",
+  Key = "r", Hint = "PAT~!ROL",
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-knight1", "unit-knight2","unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-explore",
+  Action = "explore",
+  Key = "e", Hint = "~!EXPLORE",
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-knight1", "unit-knight2","unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-standground",
+  Action = "stand-ground",
+  Key = "t", Hint = "S~!TAND GROUND",
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-knight1", "unit-knight2","unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  
+-----------------------------------------------------------------------
+-- New Orders Buttons Orcs
+-----------------------------------------------------------------------
+local orcpatrol = CIcon:New("icon-orc-patrol")
+orcpatrol.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-patrol.png", 27, 19)
+orcpatrol.Frame = 0
+
+local orcExplore = CIcon:New("icon-orc-explore")
+orcExplore.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-explore.png", 27, 19)
+orcExplore.Frame = 0
+
+local orcStandground = CIcon:New("icon-orc-standground")
+orcStandground.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-standground.png", 27, 19)
+orcStandground.Frame = 0
+
+local orcHoldfire = CIcon:New("icon-orc-holdfire")
+orcHoldfire.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-holdfire.png", 27, 19)
+orcHoldfire.Frame = 0
+
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-orc-patrol",
+  Action = "patrol",
+  Key = "r", Hint = "PAT~!ROL",
+  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-raider1", "unit-raider2","unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
+
+DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-explore",
+  Action = "explore",
+  Key = "e", Hint = "~!EXPLORE",
+  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-raider1", "unit-raider2","unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-standground",
+  Action = "stand-ground",
+  Key = "t", Hint = "S~!TAND GROUND",
+  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-raider1", "unit-raider2", "unit-orc-catapult","unit-orc-catapult-noattack", "unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
+

@@ -144,7 +144,7 @@ SetMMFogOfWarOpacityLevels(0x55, 0xAA, 0xFF) -- default values
 RightButtonMoves()
 
 --  Set the name of the missile to use when clicking
---SetClickMissile("missile-green-cross")
+SetClickMissile("missile-grey-cross")
 
 --  Set the name of the missile to use when displaying damage
 SetDamageMissile("missile-hit")
@@ -297,12 +297,12 @@ end
 DefaultPreference("VideoWidth", 480)
 DefaultPreference("VideoHeight", 300)
 DefaultPreference("VideoShader", "none")
-DefaultPreference("VideoFullScreen", false)
+DefaultPreference("VideoFullScreen", true)
 DefaultPreference("PlayerName", "Player")
-DefaultPreference("FogOfWar", false)
+DefaultPreference("FogOfWar", true)
 DefaultPreference("ShowCommandKey", true)
 DefaultPreference("GroupKeys", "0123456789`")
-DefaultPreference("GameSpeed", 30)
+DefaultPreference("GameSpeed", 75)
 DefaultPreference("EffectsEnabled", true)
 DefaultPreference("EffectsVolume", 128)
 DefaultPreference("MusicEnabled", true)
@@ -315,14 +315,14 @@ DefaultPreference("GrabMouse", false)
 DefaultPreference("CampaignOrc", 1)
 DefaultPreference("CampaignHuman", 1)
 DefaultPreference("PlayIntro", true)
-DefaultPreference("MaxSelection", 9)
+DefaultPreference("MaxSelection", 50)
 DefaultPreference("TrainingQueue", true)
 DefaultPreference("AllowMultipleTownHalls", false)
 DefaultPreference("AllowTownHallUpgrade", false)
 DefaultPreference("MultiColoredCampaigns", true)
 DefaultPreference("ShowButtonPopups", true)
 DefaultPreference("ShowDamage", true)
-DefaultPreference("ShowOrders", true)
+DefaultPreference("ShowOrders", false)
 DefaultPreference("OnlineServer", "network.stratagus.de")
 DefaultPreference("OnlinePort", 6112)
 DefaultPreference("SimplifiedAutoTargeting", true)
@@ -422,12 +422,18 @@ function RestoreSharedSettingsFromBits(bits, errorCb)
          preferences.AllowMultipleTownHalls = true
          Load("scripts/buttons.lua")
          Load("scripts/buildings.lua")
+         if preferences.RebalancedStats then
+            Load("scripts/balancing.lua")
+         end
       end
    else
       if preferences.AllowMultipleTownHalls then
          preferences.AllowMultipleTownHalls = false
          Load("scripts/buttons.lua")
          Load("scripts/buildings.lua")
+         if preferences.RebalancedStats then
+            Load("scripts/balancing.lua")
+         end
       end
    end
 end
