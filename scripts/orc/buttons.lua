@@ -151,7 +151,7 @@ DefineButton( { Pos = 5, Level = 0, Icon = "icon-dark-vision",
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-unholy-armor",
   Action = "cast-spell", Value = "spell-unholy-armor",
   Allowed = "check-upgrade", AllowArg = {"upgrade-unholy-armor"},
-  Key = "c", Hint = "~!CAST UNHOLY-ARMOR",
+  Key = "x", Hint = "UNHOLY-ARMOR (~!X)", 
   ForUnit = {"unit-necrolyte"} } )
 
 -- warlock specific actions ------------------------------------------------------
@@ -388,7 +388,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-dark-vision",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-unholy-armor",
   Action = "research", Value = "upgrade-unholy-armor",
   Allowed = "check-single-research",
-  Key = "c", Hint = "RESEAR~!CH UNHOLY ARMOR",
+  Key = "x", Hint = "RESEARCH UNHOLY-ARMOR (~!X)",
   ForUnit = {"unit-orc-temple"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-spider",
