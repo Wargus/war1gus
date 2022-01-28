@@ -104,6 +104,6 @@ DefineMissileType("missile-grey-cross",
   DrawLevel = 150, Class = "missile-class-cycle-once", Sleep = 3, Speed = 111, Range = 1 } )
 
 DefineMissileType("missile-web",
-  { File = "missiles/missile-web.png", Size = {32, 32}, Frames = 5, NumDirections = 9,
+  { File = "contrib/graphics/missiles/missile-web.png", Size = {32, 32}, Frames = 5, NumDirections = 9,
     DrawLevel = 200, ImpactSound = "fireball attack",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 2, Range = 0 } )
