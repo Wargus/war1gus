@@ -49,18 +49,20 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peon",
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-wolves1",
   Action = "move",
   Key = "m", Hint = "~!MOVE",
-  ForUnit = {"unit-raider1"} } )
+  Allowed = "check-upgrade", AllowArg = {"upgrade-wolves1"},
+  ForUnit = {"unit-raider"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-wolves2",
   Action = "move",
   Key = "m", Hint = "~!MOVE",
-  ForUnit = {"unit-raider2"} } )
+  Allowed = "check-upgrade", AllowArg = {"upgrade-wolves2"},
+  ForUnit = {"unit-raider"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield1",
   Action = "stop",
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-grunt", "unit-spearman",
-    "unit-raider", "unit-raider1", "unit-raider2",
+    "unit-raider",
     "unit-orc-catapult", "unit-orc-catapult-noattack", "unit-peon", "unit-the-dead",
     "unit-daemon", "unit-spider",
     "unit-necrolyte", "unit-warlock", "unit-garona", "unit-griselda",
@@ -71,7 +73,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield2",
   Allowed = "check-upgrade", AllowArg = {"upgrade-orc-shield1"},
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-grunt", "unit-spearman",
-    "unit-raider", "unit-raider1", "unit-raider2",
+    "unit-raider",
     "unit-orc-catapult"}} )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield3",
@@ -79,14 +81,14 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield3",
   Allowed = "check-upgrade", AllowArg = {"upgrade-orc-shield2"},
   Key = "s", Hint = "~!STOP",
   ForUnit = {"unit-grunt", "unit-spearman",
-    "unit-raider", "unit-raider1", "unit-raider2",
+    "unit-raider",
     "unit-orc-catapult"}} )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe1",
   Action = "attack",
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-grunt", "unit-spearman",
-    "unit-raider", "unit-raider1", "unit-raider2",
+    "unit-raider",
     "unit-daemon", "unit-spider", "unit-the-dead",
     "unit-orc-catapult", "orc-group"} } )
 
@@ -95,7 +97,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe2",
   Allowed = "check-upgrade", AllowArg = {"upgrade-axe1"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-grunt", "unit-spearman",
-    "unit-raider", "unit-raider1", "unit-raider2",
+    "unit-raider",
     "unit-orc-catapult"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe3",
@@ -103,7 +105,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-axe3",
   Allowed = "check-upgrade", AllowArg = {"upgrade-axe2"},
   Key = "a", Hint = "~!ATTACK",
   ForUnit = {"unit-grunt", "unit-spearman",
-    "unit-raider", "unit-raider1", "unit-raider2",
+    "unit-raider",
     "unit-orc-catapult"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-spear1",
@@ -297,18 +299,6 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-catapult",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-raider",
   Action = "train-unit", Value = "unit-raider",
   Key = "r", Hint = "TRAIN ~!RAIDER",
-  ForUnit = {"unit-orc-barracks"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-raider",
-  Action = "train-unit", Value = "unit-raider1",
-  Key = "r", Hint = "TRAIN ~!RAIDER",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-wolves1"},
-  ForUnit = {"unit-orc-barracks"} } )
-
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-raider",
-  Action = "train-unit", Value = "unit-raider2",
-  Key = "r", Hint = "TRAIN ~!RAIDER",
-  Allowed = "check-upgrade", AllowArg = {"upgrade-wolves2"},
   ForUnit = {"unit-orc-barracks"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-warlock",

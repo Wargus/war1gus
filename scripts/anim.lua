@@ -45,7 +45,7 @@ local function BuildMoveAnimation(frames, waittime)
    local tilesizeinpixel = 16
    local fractional_counter = 0
    local halfIndex, waittime_fraction
-   waittime, waittime_fraction = math.modf(waittime or 6)
+   waittime, waittime_fraction = math.modf(waittime or 0)
 
    if (#frames % 2 == 0) then
       halfIndex = (#frames) / 2
@@ -57,7 +57,7 @@ local function BuildMoveAnimation(frames, waittime)
       for i = 1, halfIndex do
 	 res[1 + #res] = "frame " .. frames[i]
 	 res[1 + #res] = "move 2"
-	 res[1 + #res] = "wait " .. waittime
+	 res[1 + #res] = "wait v.Speed.Value"
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
@@ -68,7 +68,7 @@ local function BuildMoveAnimation(frames, waittime)
       for i = 1, halfIndex - 1  do
 	 res[1 + #res] = "frame " .. frames[halfIndex - i]
 	 res[1 + #res] = "move 2"
-	 res[1 + #res] = "wait " .. waittime
+	 res[1 + #res] = "wait v.Speed.Value"
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
@@ -78,7 +78,7 @@ local function BuildMoveAnimation(frames, waittime)
       end
       res[1 + #res] = "frame 0"
       res[1 + #res] = "move 2"
-      res[1 + #res] = "wait " .. waittime
+      res[1 + #res] = "wait v.Speed.Value"
       fractional_counter = fractional_counter + waittime_fraction
       if fractional_counter > 1 then
          fractional_counter = fractional_counter - 1
@@ -89,7 +89,7 @@ local function BuildMoveAnimation(frames, waittime)
       for i = 1, halfIndex do
 	 res[1 + #res] = "frame " .. frames[1 + #frames - i]
 	 res[1 + #res] = "move 2"
-	 res[1 + #res] = "wait " .. waittime
+	 res[1 + #res] = "wait v.Speed.Value"
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
@@ -100,7 +100,7 @@ local function BuildMoveAnimation(frames, waittime)
       for i = (2 + #frames - halfIndex), #frames do
 	 res[1 + #res] = "frame " .. frames[i]
 	 res[1 + #res] = "move 2"
-	 res[1 + #res] = "wait " .. waittime
+	 res[1 + #res] = "wait v.Speed.Value"
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
@@ -110,7 +110,7 @@ local function BuildMoveAnimation(frames, waittime)
       end
       res[1 + #res] = "frame 0"
       res[1 + #res] = "move 2"
-      res[1 + #res] = "wait " .. waittime
+      res[1 + #res] = "wait v.Speed.Value"
       fractional_counter = fractional_counter + waittime_fraction
       if fractional_counter > 1 then
          fractional_counter = fractional_counter - 1
@@ -214,7 +214,7 @@ end
 
 local function BuildAnimations(frames, ...)
    options = select(1, ...) or {}
-   speed = options.speed or 4
+   speed = options.speed or 0.9
    attackspeed = options.attackspeed or 7
    coolofftime = options.coolofftime or 20
    attacksound = options.attacksound or "sword attack"
@@ -252,11 +252,11 @@ DefineAnimations("animations-brigand", BuildAnimations(frameNumbers_5_5_3_2))
 
 DefineAnimations("animations-spider",
 		 BuildAnimations(frameNumbers_5_5_4_5,
-				 {attacksound = "fist attack", speed = 3.5}))
+				 {attacksound = "fist attack", speed = 0.5}))
 
 DefineAnimations("animations-water-elemental",
 		 BuildAnimations(frameNumbers_5_3_5_3,
-				 {speed = 3.5,
+				 {speed = 0.5,
 				  attacksound = "fireball attack",
 				  coolofftime = 70,
 				  Still = {
@@ -267,7 +267,7 @@ DefineAnimations("animations-water-elemental",
 
 DefineAnimations("animations-fire-elemental",
 		 BuildAnimations(GetFrameNumbers(5, {5, 5, 0}),
-				 {speed = 3.5,
+				 {speed = 0.5,
 				  attacksound = "fireball attack",
 				  coolofftime = 60,
 				  Still = {
@@ -293,7 +293,7 @@ DefineAnimations(
       attacksound = "fist attack",
       attackspeed = 15,
 	  coolofftime = 5,
-      speed = 6})
+      speed = 0})
 )
 
 local grizelda_garona_anim = {
@@ -318,23 +318,16 @@ DefineAnimations("animations-peon", worker_anim)
 
 local catapult_anim = BuildAnimations(
    frameNumbers_5_2_5_3,
-   { speed = 6,
-     attackspeed = 25,
+   { attackspeed = 25,
      coolofftime = 49,
      attacksound = "catapult attack" }
 )
 DefineAnimations("animations-human-catapult", catapult_anim)
 DefineAnimations("animations-orc-catapult", catapult_anim)
 
-local anim_rider = BuildAnimations(frameNumbers_5_5_5_5, {speed = 3.7})
+local anim_rider = BuildAnimations(frameNumbers_5_5_5_5, {speed = 0.7})
 DefineAnimations("animations-knight", anim_rider)
 DefineAnimations("animations-raider", anim_rider)
-local anim_rider1 = BuildAnimations(frameNumbers_5_5_5_5, {speed = 3.2})
-DefineAnimations("animations-knight1", anim_rider1)
-DefineAnimations("animations-raider1", anim_rider1)
-local anim_rider2 = BuildAnimations(frameNumbers_5_5_5_5, {speed = 2.7})
-DefineAnimations("animations-knight2", anim_rider2)
-DefineAnimations("animations-raider2", anim_rider2)
 
 DefineAnimations("animations-daemon", BuildAnimations(frameNumbers_5_5_5_5, {coolofftime = 50}))
 DefineAnimations("animations-ogre",
@@ -343,7 +336,7 @@ DefineAnimations("animations-ogre",
 DefineAnimations("animations-skeleton", BuildAnimations(frameNumbers_5_5_5_5))
 DefineAnimations("animations-scorpion",
 		 BuildAnimations(frameNumbers_5_5_5_5,
-				 {attacksound = "fist attack", speed = 3.5}))
+				 {attacksound = "fist attack", speed = 0.5}))
 DefineAnimations("animations-the-dead", BuildAnimations(frameNumbers_5_5_5_5))
 
 DefineAnimations("animations-archer",
@@ -357,15 +350,15 @@ DefineAnimations("animations-spearman",
 
 DefineAnimations("animations-cleric",
 		 BuildAnimations(frameNumbers_5_5_4_3,
-				 {attacksound = "fireball attack", speed = 5}))
+				 {attacksound = "fireball attack", speed = 0.5}))
 
 DefineAnimations("animations-necrolyte",
 		 BuildAnimations(frameNumbers_5_5_5_4,
-				 {attacksound = "fireball attack", speed = 5}))
+				 {attacksound = "fireball attack", speed = 0.5}))
 
 DefineAnimations("animations-conjurer",
 		 BuildAnimations(frameNumbers_5_5_4_4,
-				 {attacksound = "fireball attack", speed = 5,
+				 {attacksound = "fireball attack", speed = 0.5,
 				  SpellCast = {
 				  "frame 5", "wait 8",
 				  "frame 20", "wait 8",
@@ -374,7 +367,7 @@ DefineAnimations("animations-conjurer",
 				  }}))
 DefineAnimations("animations-warlock",
 		 BuildAnimations(frameNumbers_5_5_5_3,
-				 {attacksound = "fireball attack", speed = 5,
+				 {attacksound = "fireball attack", speed = 0.5,
 				  SpellCast = {
 				  "frame 5", "wait 8",
 				  "frame 20", "wait 8",

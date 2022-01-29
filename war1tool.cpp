@@ -3083,11 +3083,6 @@ static void SmsSaveAllowed(FILE* sms_c2, unsigned char* txtp)
 	fprintf(sms_c2, "\n-- Allowed units\n"\
 					"DefineAllowHumanUnits(\"FFFFFFFFFFFFFFFF\")\n"\
 					"DefineAllowOrcUnits(\"FFFFFFFFFFFFFFFF\")\n");
-	fprintf(sms_c2, "\n-- Allowed upgraded units. These are just enabled if the corresponding update is researched, anyway\n"\
-					"DefineAllow(\"unit-knight1\", \"AAAAAAAAAAAAAAAA\")\n"\
-					"DefineAllow(\"unit-knight2\", \"AAAAAAAAAAAAAAAA\")\n"\
-					"DefineAllow(\"unit-raider1\", \"AAAAAAAAAAAAAAAA\")\n"\
-					"DefineAllow(\"unit-raider2\", \"AAAAAAAAAAAAAAAA\")\n");
 	for (int race = 0; race < 2; race++) {
 		for (int f = 0; f <= MaxAllowedFeature; f++) {
 			if (IsAllowedFeature(allowid, f) && !SkipFeature(f)) {

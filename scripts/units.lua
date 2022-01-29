@@ -48,6 +48,7 @@ local units = {
     Size = {neutral = {48, 48}},
     HitPoints = 200,
     Armor = 0,
+    Speed = 3,
     BasicDamage = 40,
     Missile = "missile-catapult-rock",
     organic = false},
@@ -55,6 +56,7 @@ local units = {
     Size = {neutral = {48, 48}},
     HitPoints = 250,
     Armor = 0,
+    Speed = 3,
     PiercingDamage = 40,
     BasicDamage = 0,
     MaxAttackRange = 3,
@@ -80,6 +82,7 @@ local units = {
     Size = {neutral = {48, 48}}},
    {Names = {neutral = "Scorpion"},
     HitPoints = 30,
+    Speed = 3,
     Armor = 0,
     PiercingDamage = 3,
     BasicDamage = 0,
@@ -93,12 +96,14 @@ local units = {
    {Names = {neutral = "Slime"},
     HitPoints = 150,
     Armor = 10,
+    Speed = 6,
     PiercingDamage = 1,
     BasicDamage = 0,
     organic = false},
    {Names = {neutral = "Spider"},
     HitPoints = 30,
     Armor = 0,
+    Speed = 3,
     PiercingDamage = 1,
     BasicDamage = 3,
     organic = false},
@@ -159,11 +164,11 @@ local units = {
    {Names = {orc = "Catapult", human = "Catapult"},
     Costs = {"time", 100, "gold", 900, "wood", 200},
     HitPoints = 120,
+    Speed = 6,
     BasicDamage = 255,
 	AnnoyComputerFactor = 160,
     MaxAttackRange = 8,
     Armor = 0,
-    Speed = 5,
     organic = true,
     Missile = "missile-catapult-rock",
     Dependencies = {orc = {"blacksmith", "lumber-mill"},
@@ -171,6 +176,7 @@ local units = {
    {Names = {orc = "Warlock", human = "Conjurer"},
     Costs = {"time", 90, "gold", 900},
     HitPoints = 40,
+    Speed = 5,
     Armor = 0,
     Mana = {Max = 100, Enable = true},
 	AnnoyComputerFactor = 200,
@@ -188,6 +194,7 @@ local units = {
     BasicDamage = 0,
     MaxAttackRange = {human = 3, orc = 2}},
    {Names = {orc = "Necrolyte", human = "Cleric"},
+    Speed = 5,
     Costs = {"time", 80, "gold", 700},
     HitPoints = 40,
     Armor = 0,
@@ -249,7 +256,7 @@ if preferences.RebalancedStats then
 EarlyMount = "farm"
 end
 
-local knight_raider_spec = {
+DefineUnitFromSpec({
    Names = {orc = "Raider", human = "Knight"},
    Name = {orc = "Raider", human = "Knight"},
    Image = {orc = {"file", "orc/units/raider.png", "size", {48, 48}},
@@ -257,17 +264,12 @@ local knight_raider_spec = {
    Costs = {"time", 80, "gold", 850},
    HitPoints = 90,
    Armor = 5,
-   Speed = 13,
+   Speed = 4,
    AnnoyComputerFactor = 120,
    PiercingDamage = 1,
    BasicDamage = 13,
    Dependencies = {orc = {EarlyMount, "kennel"},
-                   human = {EarlyMount, "stable"}}}
-DefineUnitFromSpec(knight_raider_spec)
-knight_raider_spec.Names = {orc = "Raider1", human = "Knight1"}
-DefineUnitFromSpec(knight_raider_spec)
-knight_raider_spec.Names = {orc = "Raider2", human = "Knight2"}
-DefineUnitFromSpec(knight_raider_spec)
+                   human = {EarlyMount, "stable"}}})
 
 local dead_bodies = { Name = "Dead Body",
   Image = {"file", "neutral/units/dead_bodies.png", "size", {32, 32}},

@@ -39,10 +39,6 @@ DefineUnitType("unit-orc-catapult",		{SightRange = 4})
 DefineUnitType("unit-human-catapult",	{SightRange = 4})
 DefineUnitType("unit-raider",			{SightRange = 5})
 DefineUnitType("unit-knight",			{SightRange = 4})
-DefineUnitType("unit-raider1",			{SightRange = 5})
-DefineUnitType("unit-knight1",			{SightRange = 4})
-DefineUnitType("unit-raider2",			{SightRange = 5})
-DefineUnitType("unit-knight2",			{SightRange = 4})
 DefineUnitType("unit-conjurer",			{SightRange = 4})
 DefineUnitType("unit-warlock",			{SightRange = 4, MaxAttackRange = 3})
 DefineUnitType("unit-cleric",			{SightRange = 5, MaxAttackRange = 2})
@@ -103,10 +99,6 @@ DefineUnitType("unit-human-catapult",	{Costs = {"time", 300, "gold", 650, "wood"
 
 DefineUnitType("unit-raider",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
 DefineUnitType("unit-knight",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
-DefineUnitType("unit-raider1",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
-DefineUnitType("unit-knight1",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
-DefineUnitType("unit-raider2",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
-DefineUnitType("unit-knight2",			{Costs = {"time", 250, "gold", 750, "wood", 100},})
 
 DefineUnitType("unit-cleric",			{Costs = {"time", 250, "gold", 500, "wood", 50},})
 DefineUnitType("unit-necrolyte",		{Costs = {"time", 250, "gold", 500, "wood", 50},})
@@ -137,24 +129,6 @@ DefineUnitType("unit-knight", {
                   Armor = 1
 })
 DefineUnitType("unit-raider", {
-                  Demand = 2,
-                  Armor = 0,
-				  PiercingDamage = 2
-})
-DefineUnitType("unit-knight1", {
-                  Demand = 2,
-                  Armor = 1
-})
-DefineUnitType("unit-raider1", {
-                  Demand = 2,
-                  Armor = 0,
-				  PiercingDamage = 2
-})
-DefineUnitType("unit-knight2", {
-                  Demand = 2,
-                  Armor = 1
-})
-DefineUnitType("unit-raider2", {
                   Demand = 2,
                   Armor = 0,
 				  PiercingDamage = 2
@@ -638,12 +612,12 @@ DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
 -----------------------------------------------------------------------
 
 local upgrades = {
-   {orc = {"axe1", {"grunt", "raider", "raider1", "raider2"}, "axe2"},
-    human = {"sword1", {"footman", "knight", "knight1", "knight2"}, "sword2"},
+   {orc = {"axe1", {"grunt", "raider"}, "axe2"},
+    human = {"sword1", {"footman", "knight"}, "sword2"},
     cost = {   1200,   750,     400,     0,     0,     0,     0},
     },
-   {orc = {"axe2", {"grunt", "raider", "raider1", "raider2"}, "axe3"},
-    human = {"sword2", {"footman", "knight", "knight1", "knight2"}, "sword3"},
+   {orc = {"axe2", {"grunt", "raider"}, "axe3"},
+    human = {"sword2", {"footman", "knight"}, "sword3"},
     cost = {   1200,   1500,     800,     0,     0,     0,     0},
     },
 
@@ -656,12 +630,12 @@ local upgrades = {
     cost = {   1400,   1500,     800,     0,     0,     0,     0},
     },
 
-   {orc = {"orc-shield1", {"grunt", "raider", "raider1", "raider2"}, "orc-shield2"},
-    human = {"human-shield1", {"footman", "knight", "knight1", "knight2"}, "human-shield2"},
+   {orc = {"orc-shield1", {"grunt", "raider"}, "orc-shield2"},
+    human = {"human-shield1", {"footman", "knight"}, "human-shield2"},
     cost = {   1200,   750, 	400,     0,     0,     0,     0},
    },  
-   {orc = {"orc-shield2", {"grunt", "raider", "raider1", "raider2"}, "orc-shield3"},
-    human = {"human-shield2", {"footman", "knight", "knight1", "knight2"}, "human-shield3"},
+   {orc = {"orc-shield2", {"grunt", "raider"}, "orc-shield3"},
+    human = {"human-shield2", {"footman", "knight"}, "human-shield3"},
     cost = {   1200,   1500,     800,     0,     0,     0,     0}, 
     },
 
@@ -1078,7 +1052,7 @@ DefineModifier("upgrade-orc-saliva1",
   {"Level", 1},
   {"regeneration-rate", 1},
   {"regeneration-frequency", 6},
-  {"apply-to", "unit-raider"}, {"apply-to", "unit-raider1"}, {"apply-to", "unit-raider2"})
+  {"apply-to", "unit-raider"})
 
 DefineAllow("upgrade-orc-saliva1", "AAAAAAAAAAAAAAAA")
 
@@ -1102,7 +1076,7 @@ DefineModifier("upgrade-orc-saliva2",
    {"Level", 1},
    {"regeneration-rate", 1},
    {"regeneration-frequency", 4},
-   {"apply-to", "unit-raider"}, {"apply-to", "unit-raider1"}, {"apply-to", "unit-raider2"})
+   {"apply-to", "unit-raider"})
 
 DefineAllow("upgrade-orc-saliva2", "AAAAAAAAAAAAAAAA")
 
@@ -1131,7 +1105,7 @@ humanBardingUpgrade1.Costs[2] = 400 -- wood
 DefineModifier("upgrade-human-barding1",
   {"Level", 1},
   {"Armor", 1},
-  {"apply-to", "unit-knight"}, {"apply-to", "unit-knight1"}, {"apply-to", "unit-knight2"})
+  {"apply-to", "unit-knight"})
 
 DefineAllow("upgrade-human-barding1", "AAAAAAAAAAAAAAAA")
 
@@ -1154,7 +1128,7 @@ humanBardingUpgrade2.Costs[2] = 400 -- wood
 DefineModifier("upgrade-human-barding2",
    {"Level", 1},
    {"Armor", 1},
-   {"apply-to", "unit-knight"}, {"apply-to", "unit-knight1"}, {"apply-to", "unit-knight2"})
+   {"apply-to", "unit-knight"})
 
 DefineAllow("upgrade-human-barding2", "AAAAAAAAAAAAAAAA")
 
@@ -1355,17 +1329,17 @@ humanHoldfire.Frame = 0
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-human-patrol",
   Action = "patrol",
   Key = "r", Hint = "PAT~!ROL",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-knight1", "unit-knight2","unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-explore",
   Action = "explore",
   Key = "e", Hint = "~!EXPLORE",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-knight1", "unit-knight2","unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-standground",
   Action = "stand-ground",
   Key = "t", Hint = "S~!TAND GROUND",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-knight1", "unit-knight2","unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
   
 -----------------------------------------------------------------------
 -- New Orders Buttons Orcs
@@ -1389,15 +1363,15 @@ orcHoldfire.Frame = 0
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-orc-patrol",
   Action = "patrol",
   Key = "r", Hint = "PAT~!ROL",
-  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-raider1", "unit-raider2","unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
+  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-explore",
   Action = "explore",
   Key = "e", Hint = "~!EXPLORE",
-  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-raider1", "unit-raider2","unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
+  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-standground",
   Action = "stand-ground",
   Key = "t", Hint = "S~!TAND GROUND",
-  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-raider1", "unit-raider2", "unit-orc-catapult","unit-orc-catapult-noattack", "unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
+  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-orc-catapult","unit-orc-catapult-noattack", "unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
 
