@@ -131,7 +131,7 @@ local units = {
         "resource-step", 2,
         "wait-at-resource", 24,
         "wait-at-depot", 150,
-        "lose-resources",
+        --"lose-resources",
         "terrain-harvester"},
        {"resource-id", "lumber", -- dungeon's harvest wood outside
         "resource-capacity", 100,
