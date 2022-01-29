@@ -41,90 +41,112 @@ local function DefaultStillAnimation()
    return {"frame 0", "wait 4"}
 end
 
-local function BuildMoveAnimation(frames, waittime)
-   local tilesizeinpixel = 16
-   local fractional_counter = 0
-   local halfIndex, waittime_fraction
-   waittime, waittime_fraction = math.modf(waittime or 0)
-
+local function BuildMoveAnimation(frames)
+   local maxspeed = 10
+   local halfIndex
+   
    if (#frames % 2 == 0) then
       halfIndex = (#frames) / 2
    else
       halfIndex = (#frames + 1) / 2
    end
    local res = {"unbreakable begin"}
-   while (tilesizeinpixel > 2) do
-      for i = 1, halfIndex do
-	 res[1 + #res] = "frame " .. frames[i]
-	 res[1 + #res] = "move 2"
-	 res[1 + #res] = "wait v.Speed.Value"
+
+   for unitspeed=0,maxspeed do
+      local op
+      if unitspeed == maxspeed then
+         op = ">="
+      else
+         op = "=="
+      end
+      res[1 + #res] = "if-var v.Speed.Value " .. op .. " " .. unitspeed .. " speed_" .. unitspeed
+   end
+
+   for unitspeed=0,maxspeed do
+      local waittime
+      local waittime_fraction
+      local tilesizeinpixel = 16
+      local fractional_counter = 0
+      waittime, waittime_fraction = math.modf((maxspeed - unitspeed) / #frames)
+
+      res[1 + #res] = "label speed_" .. unitspeed
+      while (tilesizeinpixel > 2) do
+         for i = 1, halfIndex do
+            res[1 + #res] = "frame " .. frames[i]
+            res[1 + #res] = "move 2"
+            res[1 + #res] = "wait " .. waittime
+            fractional_counter = fractional_counter + waittime_fraction
+            if fractional_counter > 1 then
+               fractional_counter = fractional_counter - 1
+               res[1 + #res] = "wait 1"
+            end
+            tilesizeinpixel = tilesizeinpixel - 2;
+         end
+         for i = 1, halfIndex - 1  do
+            res[1 + #res] = "frame " .. frames[halfIndex - i]
+            res[1 + #res] = "move 2"
+            res[1 + #res] = "wait " .. waittime
+            fractional_counter = fractional_counter + waittime_fraction
+            if fractional_counter > 1 then
+               fractional_counter = fractional_counter - 1
+               res[1 + #res] = "wait 1"
+            end
+            tilesizeinpixel = tilesizeinpixel - 2;
+         end
+         res[1 + #res] = "frame 0"
+         res[1 + #res] = "move 2"
+         res[1 + #res] = "wait " .. waittime
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
             res[1 + #res] = "wait 1"
          end
-	 tilesizeinpixel = tilesizeinpixel - 2;
-      end
-      for i = 1, halfIndex - 1  do
-	 res[1 + #res] = "frame " .. frames[halfIndex - i]
-	 res[1 + #res] = "move 2"
-	 res[1 + #res] = "wait v.Speed.Value"
+         tilesizeinpixel = tilesizeinpixel - 2;
+   
+         for i = 1, halfIndex do
+            res[1 + #res] = "frame " .. frames[1 + #frames - i]
+            res[1 + #res] = "move 2"
+            res[1 + #res] = "wait " .. waittime
+            fractional_counter = fractional_counter + waittime_fraction
+            if fractional_counter > 1 then
+               fractional_counter = fractional_counter - 1
+               res[1 + #res] = "wait 1"
+            end
+            tilesizeinpixel = tilesizeinpixel - 2;
+         end
+         for i = (2 + #frames - halfIndex), #frames do
+            res[1 + #res] = "frame " .. frames[i]
+            res[1 + #res] = "move 2"
+            res[1 + #res] = "wait " .. waittime
+            fractional_counter = fractional_counter + waittime_fraction
+            if fractional_counter > 1 then
+               fractional_counter = fractional_counter - 1
+               res[1 + #res] = "wait 1"
+            end
+            tilesizeinpixel = tilesizeinpixel - 2;
+         end
+         res[1 + #res] = "frame 0"
+         res[1 + #res] = "move 2"
+         res[1 + #res] = "wait " .. waittime
          fractional_counter = fractional_counter + waittime_fraction
          if fractional_counter > 1 then
             fractional_counter = fractional_counter - 1
             res[1 + #res] = "wait 1"
          end
-	 tilesizeinpixel = tilesizeinpixel - 2;
+         tilesizeinpixel = tilesizeinpixel - 2;
       end
-      res[1 + #res] = "frame 0"
-      res[1 + #res] = "move 2"
-      res[1 + #res] = "wait v.Speed.Value"
-      fractional_counter = fractional_counter + waittime_fraction
-      if fractional_counter > 1 then
-         fractional_counter = fractional_counter - 1
-         res[1 + #res] = "wait 1"
+      res[1 + #res] = "goto end"
+   
+      if (tilesizeinpixel ~= 0) then
+         error("Problem in move animation with #" .. #frames .. " frames")
       end
-      tilesizeinpixel = tilesizeinpixel - 2;
-      
-      for i = 1, halfIndex do
-	 res[1 + #res] = "frame " .. frames[1 + #frames - i]
-	 res[1 + #res] = "move 2"
-	 res[1 + #res] = "wait v.Speed.Value"
-         fractional_counter = fractional_counter + waittime_fraction
-         if fractional_counter > 1 then
-            fractional_counter = fractional_counter - 1
-            res[1 + #res] = "wait 1"
-         end
-	 tilesizeinpixel = tilesizeinpixel - 2;
-      end
-      for i = (2 + #frames - halfIndex), #frames do
-	 res[1 + #res] = "frame " .. frames[i]
-	 res[1 + #res] = "move 2"
-	 res[1 + #res] = "wait v.Speed.Value"
-         fractional_counter = fractional_counter + waittime_fraction
-         if fractional_counter > 1 then
-            fractional_counter = fractional_counter - 1
-            res[1 + #res] = "wait 1"
-         end
-	 tilesizeinpixel = tilesizeinpixel - 2;
-      end
-      res[1 + #res] = "frame 0"
-      res[1 + #res] = "move 2"
-      res[1 + #res] = "wait v.Speed.Value"
-      fractional_counter = fractional_counter + waittime_fraction
-      if fractional_counter > 1 then
-         fractional_counter = fractional_counter - 1
-         res[1 + #res] = "wait 1"
-      end
-      tilesizeinpixel = tilesizeinpixel - 2;
-   end	
+   end
+
+   res[1 + #res] = "label end"
    res[1 + #res] = "unbreakable end"
    res[1 + #res] = "frame 0"
-   res[1 + #res] = "wait 1"	
+   res[1 + #res] = "wait 1"
 
-   if (tilesizeinpixel ~= 0) then
-      error("Problem in move animation")
-   end
    return res
 end
 
@@ -214,13 +236,12 @@ end
 
 local function BuildAnimations(frames, ...)
    options = select(1, ...) or {}
-   speed = options.speed or 0.9
    attackspeed = options.attackspeed or 7
    coolofftime = options.coolofftime or 20
    attacksound = options.attacksound or "sword attack"
    local returnvalue = {
       Still = options.Still or DefaultStillAnimation(),
-      Move = options.Move or BuildMoveAnimation(frames[1], speed),
+      Move = options.Move or BuildMoveAnimation(frames[1]),
       Attack = options.Attack or BuildAttackAnimation(frames[2], attackspeed, coolofftime, attacksound),
       Death = options.Death or BuildDeathAnimation(frames[3]),
       Harvest_wood = options.Harvest_wood
@@ -252,12 +273,11 @@ DefineAnimations("animations-brigand", BuildAnimations(frameNumbers_5_5_3_2))
 
 DefineAnimations("animations-spider",
 		 BuildAnimations(frameNumbers_5_5_4_5,
-				 {attacksound = "fist attack", speed = 0.5}))
+				 {attacksound = "fist attack"}))
 
 DefineAnimations("animations-water-elemental",
 		 BuildAnimations(frameNumbers_5_3_5_3,
-				 {speed = 0.5,
-				  attacksound = "fireball attack",
+				 {attacksound = "fireball attack",
 				  coolofftime = 70,
 				  Still = {
 				      "frame 1", "wait 8",
@@ -267,8 +287,7 @@ DefineAnimations("animations-water-elemental",
 
 DefineAnimations("animations-fire-elemental",
 		 BuildAnimations(GetFrameNumbers(5, {5, 5, 0}),
-				 {speed = 0.5,
-				  attacksound = "fireball attack",
+				 {attacksound = "fireball attack",
 				  coolofftime = 60,
 				  Still = {
 					  "frame 5", "wait 8",
@@ -292,8 +311,7 @@ DefineAnimations(
       },
       attacksound = "fist attack",
       attackspeed = 15,
-	  coolofftime = 5,
-      speed = 0})
+	   coolofftime = 5})
 )
 
 local grizelda_garona_anim = {
@@ -325,7 +343,7 @@ local catapult_anim = BuildAnimations(
 DefineAnimations("animations-human-catapult", catapult_anim)
 DefineAnimations("animations-orc-catapult", catapult_anim)
 
-local anim_rider = BuildAnimations(frameNumbers_5_5_5_5, {speed = 0.7})
+local anim_rider = BuildAnimations(frameNumbers_5_5_5_5, {})
 DefineAnimations("animations-knight", anim_rider)
 DefineAnimations("animations-raider", anim_rider)
 
@@ -336,7 +354,7 @@ DefineAnimations("animations-ogre",
 DefineAnimations("animations-skeleton", BuildAnimations(frameNumbers_5_5_5_5))
 DefineAnimations("animations-scorpion",
 		 BuildAnimations(frameNumbers_5_5_5_5,
-				 {attacksound = "fist attack", speed = 0.5}))
+				 {attacksound = "fist attack"}))
 DefineAnimations("animations-the-dead", BuildAnimations(frameNumbers_5_5_5_5))
 
 DefineAnimations("animations-archer",
@@ -350,15 +368,15 @@ DefineAnimations("animations-spearman",
 
 DefineAnimations("animations-cleric",
 		 BuildAnimations(frameNumbers_5_5_4_3,
-				 {attacksound = "fireball attack", speed = 0.5}))
+				 {attacksound = "fireball attack"}))
 
 DefineAnimations("animations-necrolyte",
 		 BuildAnimations(frameNumbers_5_5_5_4,
-				 {attacksound = "fireball attack", speed = 0.5}))
+				 {attacksound = "fireball attack"}))
 
 DefineAnimations("animations-conjurer",
 		 BuildAnimations(frameNumbers_5_5_4_4,
-				 {attacksound = "fireball attack", speed = 0.5,
+				 {attacksound = "fireball attack",
 				  SpellCast = {
 				  "frame 5", "wait 8",
 				  "frame 20", "wait 8",
@@ -367,7 +385,7 @@ DefineAnimations("animations-conjurer",
 				  }}))
 DefineAnimations("animations-warlock",
 		 BuildAnimations(frameNumbers_5_5_5_3,
-				 {attacksound = "fireball attack", speed = 0.5,
+				 {attacksound = "fireball attack",
 				  SpellCast = {
 				  "frame 5", "wait 8",
 				  "frame 20", "wait 8",
