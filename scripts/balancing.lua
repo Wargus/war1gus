@@ -1373,5 +1373,14 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-orc-explore",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-standground",
   Action = "stand-ground",
   Key = "t", Hint = "S~!TAND GROUND",
-  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-orc-catapult","unit-orc-catapult-noattack", "unit-daemon", "unit-spider", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
+  ForUnit = {"unit-grunt", "unit-spearman", "unit-raider", "unit-orc-catapult","unit-orc-catapult-noattack", "unit-daemon", "unit-the-dead", "unit-garona", "unit-griselda", "orc-group"}}) 
 
+-----------------------------------------------------------------------
+-- Spider Web skill
+----------------------------------------------------------------------- 
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-standground",
+  Action = "cast-spell", Value = "spell-slow", 
+  Key = "w", Hint = "ENTANGLE IN ~!WEB",
+  ForUnit = {"unit-spider"} } )
+  
+  
