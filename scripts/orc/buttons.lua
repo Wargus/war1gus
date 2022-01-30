@@ -277,7 +277,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-peon",
   Action = "train-unit", Value = "unit-peon",
   Allowed = "check-no-research",
   Key = "e", Hint = "TRAIN P~!EON",
-  ForUnit = {"unit-orc-town-hall", "unit-orc-blackrock-spire"} } )
+  ForUnit = {"unit-orc-town-hall", "unit-orc-first-town-hall", "unit-orc-blackrock-spire"} } )
 
 -- training commands ---------------------------------------------------------
 
