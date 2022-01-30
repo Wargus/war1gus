@@ -1453,7 +1453,7 @@ DefineUnitType("unit-orc-first-town-hall", {
 DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-town-hall",
     Action = "build", Value = "unit-orc-first-town-hall",
     Allowed = "check-units-nor", AllowArg = {
-       "unit-orc-first-town-hall",`
+       "unit-orc-first-town-hall",
        "unit-orc-town-hall",
        "unit-orc-farm",
        "unit-orc-barracks",
