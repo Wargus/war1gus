@@ -86,6 +86,9 @@ local units = {
     Armor = 0,
     PiercingDamage = 3,
     BasicDamage = 0,
+    CanCastSpell = {
+       neutral = {"spell-poison"},
+       },
     organic = false},
    {Names = {neutral = "Skeleton"}, -- "Dungeon Skeleton"
     HitPoints = 30,
