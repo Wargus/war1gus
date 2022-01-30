@@ -28,7 +28,7 @@
 --
 --      $Id$
 
-local townHallBuildingRules = nil
+townHallBuildingRules = nil
 if (preferences.AllowMultipleTownHalls) then
   townHallBuildingRules = {
      { "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" },

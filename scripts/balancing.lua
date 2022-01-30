@@ -1403,3 +1403,70 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-venom",
   Key = "v", Hint = "~!VENOM",
   ForUnit = {"unit-scorpion"} } )
     
+-----------------------------------------------------------------------
+-- Fast first townhall
+----------------------------------------------------------------------- 
+
+CopyUnitType("unit-human-town-hall", "unit-human-first-town-hall")
+
+UnitTypeFiles["unit-human-first-town-hall"] = UnitTypeFiles["unit-human-town-hall"]
+DefineUnitType("unit-human-first-town-hall", {
+   Name = "Town hall",
+   Costs = {"time", 10, "gold", 400, "wood", 400},
+   AiBuildingRules = townHallBuildingRules,
+   BuildingRules = townHallBuildingRules,
+   Supply = 2,
+})
+
+DefineButton( { Pos = 4, Level = 1, Icon = "icon-human-town-hall",
+    Action = "build", Value = "unit-human-first-town-hall",
+    Allowed = "check-units-nor", AllowArg = {
+      "unit-human-first-town-hall",
+      "unit-human-town-hall",
+      "unit-human-farm",
+      "unit-human-barracks",
+      "unit-human-lumber-mill",
+      "unit-human-stable",
+      "unit-human-blacksmith",
+      "unit-human-church",
+      "unit-human-tower"},
+    Key = "t", Hint = "ESTABLISH ~!TOWN",
+    ForUnit = {"unit-peasant"} } )
+
+DefineAiHelper(
+   {"unit-equiv", "unit-human-town-hall", "unit-human-stormwind-keep", "unit-human-first-town-hall"}
+)
+
+DefineAllow("unit-human-first-town-hall", "AAAAAAAAAAAAAAAA")
+
+CopyUnitType("unit-orc-town-hall", "unit-orc-first-town-hall")
+
+UnitTypeFiles["unit-orc-first-town-hall"] = UnitTypeFiles["unit-orc-town-hall"]
+DefineUnitType("unit-orc-first-town-hall", {
+   Name = "Town hall",
+   Costs = {"time", 10, "gold", 400, "wood", 400},
+   AiBuildingRules = townHallBuildingRules,
+   BuildingRules = townHallBuildingRules,
+   Supply = 2,
+})
+
+DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-town-hall",
+    Action = "build", Value = "unit-orc-first-town-hall",
+    Allowed = "check-units-nor", AllowArg = {
+       "unit-orc-first-town-hall",`
+       "unit-orc-town-hall",
+       "unit-orc-farm",
+       "unit-orc-barracks",
+       "unit-orc-lumber-mill",
+       "unit-orc-kennel",
+       "unit-orc-blacksmith",
+       "unit-orc-temple",
+       "unit-orc-tower"},
+    Key = "t", Hint = "ESTABLISH ~!TOWN",
+    ForUnit = {"unit-peon"} } )
+
+DefineAiHelper(
+   {"unit-equiv", "unit-orc-town-hall", "unit-orc-blackrock-spire", "unit-orc-first-town-hall"}
+)
+
+DefineAllow("unit-orc-first-town-hall", "AAAAAAAAAAAAAAAA")
