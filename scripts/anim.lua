@@ -67,7 +67,7 @@ local function BuildMoveAnimation(frames)
       local waittime_fraction
       local tilesizeinpixel = 16
       local fractional_counter = 0
-      waittime, waittime_fraction = math.modf((maxspeed - unitspeed) / #frames)
+      waittime, waittime_fraction = math.modf(1 + ((maxspeed - unitspeed) / 2))
 
       res[1 + #res] = "label speed_" .. unitspeed
       while (tilesizeinpixel > 2) do
