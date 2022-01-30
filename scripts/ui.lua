@@ -190,20 +190,25 @@ DefineSprites({
 })
 
 DefineDecorations({
-      Index = "UnholyArmor", ShowOpponent = false,
+      Index = "UnholyArmor", ShowOpponent = true,
       Offset = {0, 0},
       Method = {
          "animated-sprite", {"sprite-unholy", 8}
       }
 })
+DefineSprites({Name = "venom", File = "contrib/graphics/ui/icon-poison.png", Offset = {0, 0}, Size = {4,6}})
 
 DefineDecorations({
-   Index = "Poison", ShowOpponent = false,
-   Offset = {0, 0},
-   Method = {
-      "frame", {Thickness = 2, ColorName = "green"}
-   }
+   Index = "Poison", ShowOpponent = true,
+   Offset = {7, 2},
+   Method = 
+      {"static-sprite", {"venom", 0}}  
 })
+
+DefineSprites({Name = "woundmarker", File = "contrib/graphics/ui/icon-wound.png", Offset = {0, -7}, Size = {5, 6}})
+
+DefineDecorations({Index = "HitPoints", HideNeutral = false, CenterX = true, ShowOpponent=true,
+	OffsetPercent = {50, 100}, Method = {"sprite", {"woundmarker"}}})
 
 DefineCursor({
       Name = "cursor-point",
