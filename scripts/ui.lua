@@ -197,6 +197,14 @@ DefineDecorations({
       }
 })
 
+DefineDecorations({
+   Index = "Poison", ShowOpponent = false,
+   Offset = {0, 0},
+   Method = {
+      "frame", {Thickness = 2, ColorName = "green"}
+   }
+})
+
 DefineCursor({
       Name = "cursor-point",
       Race = "any",

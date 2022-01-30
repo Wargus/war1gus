@@ -252,6 +252,8 @@ function DefineUnitFromSpec(unit)
             TileSize = { 1, 1 },
             BoxSize = { 15, 15 },
             SightRange = 3,
+            PoisonDrain = 2, -- only used when rebalanced mode is active
+            Poison = { Value = 0, Max = 1000, Enable = true }, -- only used when rebalanced mode is active
             Speed = 4,
             organic = true,
             ComputerReactionRange = 4,
