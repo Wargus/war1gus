@@ -983,12 +983,12 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-town-hall-salvage",
   Action = "button", Value = 1,
   Description = "Salvage this town hall for gold to rebuild somewhere else.",
   Key = "v", Hint = "SAL~!VAGE",
-  ForUnit = {"unit-orc-town-hall"} } )
+  ForUnit = {"unit-orc-town-hall", "unit-orc-first-town-hall", "unit-orc-blackrock-spire"} } )
   
 DefineButton( { Pos = 2, Level = 1, Icon = "icon-cancel",
   Action = "button", Value = 0,
   Key = "esc", Hint = "~<ESC~> - CANCEL",
-  ForUnit = {"unit-orc-town-hall"} } )
+  ForUnit = {"unit-orc-town-hall", "unit-orc-first-town-hall", "unit-orc-blackrock-spire"} } )
 
 DefineButton( { Pos = 1, Level = 1, Icon = "icon-orc-town-hall-salvage",
    AlwaysShow = true,
@@ -1002,7 +1002,7 @@ DefineButton( { Pos = 1, Level = 1, Icon = "icon-orc-town-hall-salvage",
    Allowed = "check-units-or", AllowArg = {"unit-peon"},
    Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEON!",
    Key = "s", Hint = "~!SALVAGE CONFIRM",
-   ForUnit = {"unit-orc-town-hall", "unit-orc-blackrock-spire"} } )
+   ForUnit = {"unit-orc-town-hall", "unit-orc-first-town-hall", "unit-orc-blackrock-spire"} } )
 
 
 
@@ -1015,12 +1015,12 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-town-hall-salvage",
   Action = "button", Value = 1,
   Description = "Salvage this town hall for gold to rebuild somewhere else.",
   Key = "v", Hint = "SAL~!VAGE",
-  ForUnit = {"unit-human-town-hall"} } )
+  ForUnit = {"unit-human-town-hall", "unit-human-first-town-hall", "unit-human-stormwind-keep"} } )
   
 DefineButton( { Pos = 2, Level = 1, Icon = "icon-cancel",
   Action = "button", Value = 0,
   Key = "esc", Hint = "~<ESC~> - CANCEL",
-  ForUnit = {"unit-human-town-hall"} } )
+  ForUnit = {"unit-human-town-hall", "unit-human-first-town-hall", "unit-human-stormwind-keep"} } )
 
 DefineButton( { Pos = 1, Level = 1, Icon = "icon-human-town-hall-salvage",
    AlwaysShow = true,
@@ -1034,7 +1034,7 @@ DefineButton( { Pos = 1, Level = 1, Icon = "icon-human-town-hall-salvage",
    Allowed = "check-units-or", AllowArg = {"unit-peasant"},
    Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEASANT!",
    Key = "s", Hint = "~!SALVAGE CONFIRM",
-   ForUnit = {"unit-human-town-hall", "unit-human-stormwind-keep"} } )
+   ForUnit = {"unit-human-town-hall", "unit-human-first-town-hall", "unit-human-stormwind-keep"} } )
 
 -----------------------------------------------------------------------
 -- Orc saliva upgrades
@@ -1453,7 +1453,7 @@ DefineUnitType("unit-orc-first-town-hall", {
 DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-town-hall",
     Action = "build", Value = "unit-orc-first-town-hall",
     Allowed = "check-units-nor", AllowArg = {
-       "unit-orc-first-town-hall",`
+       "unit-orc-first-town-hall",
        "unit-orc-town-hall",
        "unit-orc-farm",
        "unit-orc-barracks",
