@@ -165,27 +165,29 @@ DefinePanelContents(
    }
 )
 
+DefineSprites({
+   Name = "sprite-invisible",
+   File = "contrib/graphics/missiles/invisibility.png", Offset = {-4, -4}, Size = {25, 25}
+})
+
 DefineDecorations({
       Index = "Invisible", ShowOpponent = false,
       Offset = {0, 0},
       Method = {
-         "frame", {Thickness = 2, ColorName = "blue"}
+         "animated-sprite", {"sprite-invisible", 14}
       }
 })
 
 DefineSprites({
    Name = "sprite-unholy",
-   File = "contrib/graphics/missiles/unholy.png", Offset = {0, 0}, Size = {20, 20}
+   File = "contrib/graphics/missiles/unholy.png", Offset = {-2, -2}, Size = {20, 20}
 })
 
 DefineDecorations({
       Index = "UnholyArmor", ShowOpponent = false,
       Offset = {0, 0},
       Method = {
-         "animated-sprite", {
-            SpriteName = "sprite-unholy",
-            WaitFrames = 8
-         }
+         "animated-sprite", {"sprite-unholy", 8}
       }
 })
 
