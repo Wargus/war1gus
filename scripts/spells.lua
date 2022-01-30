@@ -352,3 +352,20 @@ DefineSpell("spell-slow",
 	"autocast", {"range", 10, "condition", {"Coward", "false", "opponent", "only"}},
 	"ai-cast", {"range", 10, "combat", "only", "condition", {"Coward", "false", "opponent", "only"}}
 )
+
+DefineSpell("spell-poison",
+	"showname", _("poison"),
+	"manacost", 0,
+	"range", 1,
+	"target", "unit",
+	 "cooldown", 1000,
+	"action", {{"adjust-variable", {Poison = 500}},
+		{"spawn-missile", "missile", "missile-normal-spell",
+			"start-point", {"base", "target"}}},
+	"condition", {
+		"Building", "false",
+		"Slow", {ExactValue = 0}},
+	"sound-when-cast", "raise dead", 
+	"autocast", {"range", 10, "condition", {"Coward", "false", "opponent", "only"}},
+	"ai-cast", {"range", 10, "combat", "only", "condition", {"Coward", "false", "opponent", "only"}}
+)
