@@ -37,6 +37,8 @@ else
   townHallBuildingRules = {
           { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
             "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
+	    "has-unit", { Type = "unit-human-first-town-hall", Count = 0, CountType = "=" },  --not sure if this one helps
+            "has-unit", { Type = "unit-orc-first-town-hall", Count = 0, CountType = "=" },
 	    "has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
 	    "has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
             "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" },
@@ -305,7 +307,9 @@ DefineUnitType(
      BuildingRules = {
 	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Diagonal = true}},
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
-        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}}},
+        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}},
+	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-first-town-hall", Owner = "self", CheckBuilder = true}},
+        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-first-town-hall", Owner = "self", CheckBuilder = true}}},
      AiBuildingRules = {-- these are silly, but what can you do
 --	-- the first road is next to a town hall
 --	{"has-unit", { Type = "unit-road", Count = 4, CountType = "<=", Owner = "any" },
