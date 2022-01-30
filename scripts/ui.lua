@@ -165,6 +165,12 @@ DefinePanelContents(
    }
 )
 
+DefineSprites({Name = "web", File = "contrib/graphics/missiles/missile-web.png", Offset = {0, 0}, Size = {32, 32}})
+
+DefineDecorations({Index = "Slow", ShowOpponent = true,
+  Offset = {-8, -8}, Method = {"static-sprite", {"web", 4}}
+  })
+
 DefineDecorations({
       Index = "Invisible", ShowOpponent = false,
       Offset = {0, 0},
