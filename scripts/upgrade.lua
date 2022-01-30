@@ -62,11 +62,11 @@ local upgrades = {
    {orc = {"wolves1", {"raider"}},
     human = {"horse1", {"knight"}},
     cost = {   140,   750,     0,     0,     0,     0,     0},
-    modifier = {"Speed", -1}},
+    modifier = {"Speed", 1}},
    {orc = {"wolves2", {"raider"}},
     human = {"horse2", {"knight"}},
     cost = {   140,   1500,     0,     0,     0,     0,     0},
-    modifier = {"Speed", -1},
+    modifier = {"Speed", 1},
     dependency = {orc = "wolves1", human = "horse1"}},
 
    {orc = {"raise-dead", {"necrolyte"}},
