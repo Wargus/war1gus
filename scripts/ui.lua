@@ -173,11 +173,19 @@ DefineDecorations({
       }
 })
 
+DefineSprites({
+   Name = "sprite-unholy",
+   File = "contrib/graphics/missiles/unholy.png", Offset = {0, 0}, Size = {20, 20}
+})
+
 DefineDecorations({
       Index = "UnholyArmor", ShowOpponent = false,
       Offset = {0, 0},
       Method = {
-         "frame", {Thickness = 2, ColorName = "red"}
+         "animated-sprite", {
+            SpriteName = "sprite-unholy",
+            WaitFrames = 8
+         }
       }
 })
 
