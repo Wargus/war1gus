@@ -643,8 +643,8 @@ local upgrades = {
     human = {"horse1", {"knight"}},
     cost = {   700,   750, 	400,     0,     0,     0,     0},
     },
-   {orc = {"wolves2", {"raider1"}},
-    human = {"horse2", {"knight1"}},
+   {orc = {"wolves2", {"raider"}},
+    human = {"horse2", {"knight"}},
     cost = {   700,   1500,     800,     0,     0,     0,     0},
    },	
     
