@@ -201,7 +201,7 @@ DefineSpell("spell-raise-dead",
 
 DefineSpell("spell-unholy-armor",
 	"showname", "unholyarmor",
-	"manacost", 50,
+	"manacost", 40,
 	"range", 8,
 	"target", "unit",
 	"action", {{"lua-callback", SpellUnholyArmor},
@@ -221,7 +221,7 @@ DefineSpell("spell-unholy-armor",
 
 DefineSpell("spell-invisibility",
 	"showname", "invisibility",
-	"manacost", 50,
+	"manacost", 40,
 	"range", 8,
 	"target", "unit",
 	"action", {{"adjust-variable", {Invisible = 2000}},
@@ -336,3 +336,19 @@ DefineSpell("spell-rain-of-fire",
 	"ai-cast", {"range", 12, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard}
 )
 
+DefineSpell("spell-slow",
+	"showname", _("Slow"),
+	"manacost", 0,
+	"range", 10,
+	"target", "unit",
+	 "cooldown", 1000,
+	"action", {{"adjust-variable", {Slow = 500, Haste = 0}},
+		{"spawn-missile", "missile", "missile-web",
+			"start-point", {"base", "target"}}},
+	"condition", {
+		"Building", "false",
+		"Slow", {ExactValue = 0}},
+	"sound-when-cast", "raise dead", 
+	"autocast", {"range", 10, "condition", {"Coward", "false", "opponent", "only"}},
+	"ai-cast", {"range", 10, "combat", "only", "condition", {"Coward", "false", "opponent", "only"}}
+)
