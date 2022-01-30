@@ -44,7 +44,7 @@ DefineUnitType("unit-warlock",			{SightRange = 4, MaxAttackRange = 3})
 DefineUnitType("unit-cleric",			{SightRange = 5, MaxAttackRange = 2})
 DefineUnitType("unit-necrolyte",		{SightRange = 5})
 
-DefineUnitType("unit-scorpion",			{SightRange = 4})
+DefineUnitType("unit-scorpion",			{SightRange = 4, Armor = 5})
 DefineUnitType("unit-spider",			{SightRange = 4, MaxAttackRange = 3, Missile = "missile-web"})
 DefineUnitType("unit-dead",				{SightRange = 4})
 DefineUnitType("unit-daemon",			{SightRange = 5})
@@ -157,6 +157,7 @@ DefineUnitType("unit-human-catapult", {
                   Demand = 2,
                   RepairHp = 4,
                   RepairCosts = { "gold", 1, "wood", 1 },
+		  PoisonDrain = 0,
                   organic = false,
 				  Corpse = nil,
                   BasicDamage = 100,
@@ -168,6 +169,7 @@ DefineUnitType("unit-orc-catapult", {
                   Demand = 2,
                   RepairHp = 4,
                   RepairCosts = { "gold", 1, "wood", 1 },
+		  PoisonDrain = 0,
                   organic = false,
 				  Corpse = nil,
                   BasicDamage = 100,
@@ -1339,7 +1341,7 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-explore",
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-standground",
   Action = "stand-ground",
   Key = "t", Hint = "S~!TAND GROUND",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-lothar", "human-group"}}) 
   
 -----------------------------------------------------------------------
 -- New Orders Buttons Orcs
@@ -1378,9 +1380,26 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-standground",
 -----------------------------------------------------------------------
 -- Spider Web skill
 ----------------------------------------------------------------------- 
+
+local orcStandground = CIcon:New("icon-web")
+orcStandground.G = CPlayerColorGraphic:New("contrib/graphics/ui/icon-web.png", 27, 19)
+orcStandground.Frame = 0
+
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-standground",
   Action = "cast-spell", Value = "spell-slow", 
   Key = "w", Hint = "ENTANGLE IN ~!WEB",
   ForUnit = {"unit-spider"} } )
   
-  
+-----------------------------------------------------------------------
+-- Scorpion Poison skill
+----------------------------------------------------------------------- 
+
+local orcHoldfire = CIcon:New("icon-venom")
+orcHoldfire.G = CPlayerColorGraphic:New("contrib/graphics/ui/icon-venom.png", 27, 19)
+orcHoldfire.Frame = 0  
+
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-venom",
+  Action = "cast-spell", Value = "spell-poison", 
+  Key = "v", Hint = "~!VENOM",
+  ForUnit = {"unit-scorpion"} } )
+    
