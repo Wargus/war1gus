@@ -106,6 +106,9 @@ local units = {
     Speed = 3,
     PiercingDamage = 1,
     BasicDamage = 3,
+    CanCastSpell = {
+       neutral = {"spell-slow" },
+       },	
     organic = false},
    {Names = {neutral = "The dead"}, -- "Orc conjured skeleton"
     HitPoints = 40,
