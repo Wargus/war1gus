@@ -1415,7 +1415,13 @@ DefineUnitType("unit-human-first-town-hall", {
    Costs = {"time", 10, "gold", 400, "wood", 400},
    AiBuildingRules = townHallBuildingRules,
    BuildingRules = townHallBuildingRules,
-   Supply = 2,
+   OnReady = function (unit)
+      SetPlayerData(GetThisPlayer(), "Resources", "gold",
+                      GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-human-town-hall", "Costs", "gold"))
+      SetPlayerData(GetThisPlayer(), "Resources", "wood",
+                      GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-human-town-hall", "Costs", "wood"))
+      TransformUnit(unit, "unit-human-town-hall")
+   end,
 })
 
 DefineButton( { Pos = 4, Level = 1, Icon = "icon-human-town-hall",
@@ -1447,13 +1453,19 @@ DefineUnitType("unit-orc-first-town-hall", {
    Costs = {"time", 10, "gold", 400, "wood", 400},
    AiBuildingRules = townHallBuildingRules,
    BuildingRules = townHallBuildingRules,
-   Supply = 2,
+   OnReady = function (unit)
+      SetPlayerData(GetThisPlayer(), "Resources", "gold",
+                     GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-orc-town-hall", "Costs", "gold"))
+      SetPlayerData(GetThisPlayer(), "Resources", "wood",
+                     GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-orc-town-hall", "Costs", "wood"))
+      TransformUnit(unit, "unit-orc-town-hall")
+   end,
 })
 
 DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-town-hall",
     Action = "build", Value = "unit-orc-first-town-hall",
     Allowed = "check-units-nor", AllowArg = {
-       "unit-orc-first-town-hall",`
+       "unit-orc-first-town-hall",
        "unit-orc-town-hall",
        "unit-orc-farm",
        "unit-orc-barracks",
