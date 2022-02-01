@@ -1385,7 +1385,7 @@ local orcStandground = CIcon:New("icon-web")
 orcStandground.G = CPlayerColorGraphic:New("contrib/graphics/ui/icon-web.png", 27, 19)
 orcStandground.Frame = 0
 
-DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-standground",
+DefineButton( { Pos = 4, Level = 0, Icon = "icon-web",
   Action = "cast-spell", Value = "spell-slow", 
   Key = "w", Hint = "ENTANGLE IN ~!WEB",
   ForUnit = {"unit-spider"} } )
