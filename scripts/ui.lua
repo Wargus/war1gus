@@ -207,7 +207,7 @@ DefineDecorations({
 
 DefineSprites({Name = "woundmarker", File = "contrib/graphics/ui/icon-wound.png", Offset = {0, -7}, Size = {5, 6}})
 
-DefineDecorations({Index = "HitPoints", HideNeutral = false, CenterX = true, ShowOpponent=true,
+DefineDecorations({Index = "HitPoints", HideNeutral = false, CenterX = true, ShowOpponent=true, Building = false,
 	OffsetPercent = {50, 100}, Method = {"sprite", {"woundmarker"}}})
 
 DefineCursor({
