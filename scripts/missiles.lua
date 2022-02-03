@@ -115,3 +115,19 @@ DefineMissileType("missile-unholy",
 DefineMissileType("missile-invisibility",
   { File = "contrib/graphics/missiles/invisibility.png", Size = {25, 25}, Frames = 4, NumDirections = 1,
   DrawLevel = 250, Class = "missile-class-clip-to-target", Sleep = 13, Speed = 11, Range = 1, NumBounces = 38} )
+
+DefineMissileType("missile-bleeding",
+  { File = "contrib/graphics/missiles/bleeding.png", Size = {20, 20}, Frames = 6, NumDirections = 1,
+  DrawLevel = 150, Class = "missile-class-stay", Sleep = 4, Speed = 111, Range = 1 } )
+  
+DefineMissileType("missile-blood-pool",
+  { File = "contrib/graphics/missiles/blood-pool.png", Size = {10, 10}, Frames = 6, NumDirections = 1,
+  DrawLevel = 10, Class = "missile-class-stay", Sleep =  425, Speed = 111, Range = 1 } )
+  
+DefineMissileType("missile-blood-in-impact",
+  { File = "contrib/graphics/missiles/blood-in-impact.png", Size = {10, 10}, Frames = 6, NumDirections = 1,
+  DrawLevel = 150, Class = "missile-class-stay", Sleep = 3, Speed = 111, Range = 1 } )  
+  
+DefineMissileType("missile-blood-footprint",
+  { File = "contrib/graphics/missiles/blood-footprint.png", Size = {10, 10}, Frames = 6, NumDirections = 1,
+  DrawLevel = 10, Class = "missile-class-stay", Sleep =  55, Speed = 111, Range = 1 } )
