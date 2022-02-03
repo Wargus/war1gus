@@ -294,6 +294,7 @@ function DefineUnitFromSpec(unit)
             else
                 unitType.Corpse = "unit-human-dead-body"
             end
+            unitType.Impact = {"general", "missile-blood-in-impact"}
         end
 
         if unit.Mana ~= nil then
