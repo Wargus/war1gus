@@ -81,8 +81,8 @@ local function SpellUnholyArmor(spell, unit, x, y, target)
 			DamageUnit(-1, target, 99999)
 		else
 			DamageUnit(-1, target, math.max(1, math.floor(GetUnitVariable(target, "HitPoints", "Max") / 2)))
-			SetUnitVariable(target, "UnholyArmor", 1000, "Max")
-			SetUnitVariable(target, "UnholyArmor", 1000, "Value")
+			SetUnitVariable(target, "UnholyArmor", 600, "Max")
+			SetUnitVariable(target, "UnholyArmor", 600, "Value")
 			SetUnitVariable(target, "UnholyArmor", 1, "Enable")
 		end
 	end
@@ -270,7 +270,7 @@ DefineSpell("spell-summon-daemon",
 
 DefineSpell("spell-summon-scorpions",
 	"showname", "summon scorpions",
-	"manacost", 20,
+	"manacost", 30,
 	"range", 3,
 	"repeat-cast",
 	"target", "position",
@@ -287,7 +287,7 @@ DefineSpell("spell-summon-scorpions",
 
 DefineSpell("spell-summon-spiders",
 	"showname", "summon spiders",
-	"manacost", 20,
+	"manacost", 30,
 	"range", 3,
 	"repeat-cast",
 	"target", "position",
