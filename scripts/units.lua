@@ -175,7 +175,7 @@ local units = {
 	AnnoyComputerFactor = 160,
     MaxAttackRange = 8,
     Armor = 0,
-    organic = true,
+    organic = false,
     Missile = "missile-catapult-rock",
     Dependencies = {orc = {"blacksmith", "lumber-mill"},
                     human = {"blacksmith", "lumber-mill"}}},
