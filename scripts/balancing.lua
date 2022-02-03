@@ -993,20 +993,20 @@ DefineButton( { Pos = 2, Level = 1, Icon = "icon-cancel",
 DefineButton( { Pos = 1, Level = 1, Icon = "icon-orc-town-hall-salvage",
    AlwaysShow = true,
    Action = "callback", Value = function(townHall)
+	if (GetPlayerData(GetThisPlayer(), "Resources", "wood") < GetUnitTypeData("unit-orc-town-hall", "Costs", "wood")) then
+         AddMessage("Refusing to salvage town hall, not enough wood to rebuild!!!")
+         return
+	end			
       DamageUnit(-1, townHall, GetUnitVariable(townHall, "HitPoints"))
       SetPlayerData(GetThisPlayer(), "Resources", "gold",
                       GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-orc-town-hall", "Costs", "gold"))
-     -- SetPlayerData(GetThisPlayer(), "Resources", "wood",
-      --                GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-orc-town-hall", "Costs", "wood"))
    end,
    Allowed = "check-units-or", AllowArg = {"unit-peon"},
    Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEON!",
    Key = "s", Hint = "~!SALVAGE CONFIRM",
    ForUnit = {"unit-orc-town-hall", "unit-orc-blackrock-spire"} } )
 
-
-
-
+----------------------
 local humanSalvageIcon = CIcon:New("icon-human-town-hall-salvage")
 humanSalvageIcon.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-salvage-th.png", 27, 19)
 humanSalvageIcon.Frame = 0
@@ -1025,11 +1025,13 @@ DefineButton( { Pos = 2, Level = 1, Icon = "icon-cancel",
 DefineButton( { Pos = 1, Level = 1, Icon = "icon-human-town-hall-salvage",
    AlwaysShow = true,
    Action = "callback", Value = function(townHall)
+	if (GetPlayerData(GetThisPlayer(), "Resources", "wood") < GetUnitTypeData("unit-orc-town-hall", "Costs", "wood")) then
+         AddMessage("Refusing to salvage town hall, not enough wood to rebuild!!!")
+	return
+	end
       DamageUnit(-1, townHall, GetUnitVariable(townHall, "HitPoints"))
       SetPlayerData(GetThisPlayer(), "Resources", "gold",
                         GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-human-town-hall", "Costs", "gold"))
-   --   SetPlayerData(GetThisPlayer(), "Resources", "wood",
-    --                    GetPlayerData(GetThisPlayer(), "Resources", "wood") + GetUnitTypeData("unit-human-town-hall", "Costs", "wood"))
    end,
    Allowed = "check-units-or", AllowArg = {"unit-peasant"},
    Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEASANT!",
