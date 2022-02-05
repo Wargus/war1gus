@@ -131,3 +131,7 @@ DefineMissileType("missile-blood-in-impact",
 DefineMissileType("missile-blood-footprint",
   { File = "contrib/graphics/missiles/blood-footprint.png", Size = {10, 10}, Frames = 6, NumDirections = 1,
   DrawLevel = 10, Class = "missile-class-stay", Sleep =  55, Speed = 111, Range = 1 } )
+
+DefineMissileType("missile-bleeding-walk",
+  { File = "contrib/graphics/missiles/bleeding-walk.png", Size = {20, 20}, Frames = 10, NumDirections = 1,
+  DrawLevel = 150, Class = "missile-class-stay", Sleep = 4, Speed = 111, Range = 1 } )
