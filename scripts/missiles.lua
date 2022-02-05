@@ -119,7 +119,7 @@ DefineMissileType("missile-invisibility",
 DefineMissileType("missile-bleeding",
   { File = "contrib/graphics/missiles/bleeding.png", Size = {20, 20}, Frames = 6, NumDirections = 1,
   DrawLevel = 150, Class = "missile-class-stay", Sleep = 4, Speed = 111, Range = 1 } )
-  
+
 DefineMissileType("missile-blood-pool",
   { File = "contrib/graphics/missiles/blood-pool.png", Size = {10, 10}, Frames = 6, NumDirections = 1,
   DrawLevel = 10, Class = "missile-class-stay", Sleep =  425, Speed = 111, Range = 1 } )

@@ -38,20 +38,20 @@ DefineAnimations(
 )
 
 local function DefaultStillAnimation()
-   return {"frame 0", "wait 4",
-				"if-var b.organic != 1 no_blood",
-            "if-var v.HitPoints.Percent > 30 no_blood",
-			
-			"if-var v.HitPoints.Percent > 15 less_blood",
-				"random-goto 87 no_blood",
-				"spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
-				"spawn-missile missile-blood-pool 0 0 0 0 setdirection 0",
-			
-			"label less_blood",
-				"random-goto 97 no_blood",
-				"spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
-				"spawn-missile missile-blood-pool 0 0 0 0 setdirection 0",
-            "label no_blood"}
+   return {
+      "frame 0", "wait 4",
+      "if-var b.organic != 1 no_blood",
+      "if-var v.HitPoints.Percent > 30 no_blood",
+      "if-var v.HitPoints.Percent > 15 less_blood",
+         "random-goto 87 less_blood",
+         "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
+         "spawn-missile missile-blood-pool 0 0 0 0 setdirection 0",
+      "label less_blood",
+         "random-goto 97 no_blood",
+         "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
+         "spawn-missile missile-blood-pool 0 0 0 0 setdirection 0",
+         "label no_blood"
+   }
 end
 
 local function BuildMoveAnimation(frames)
@@ -64,12 +64,13 @@ local function BuildMoveAnimation(frames)
       halfIndex = (#frames + 1) / 2
    end
    local res = {
-	 "if-var b.organic != 1 no_blood",
-	 "if-var v.HitPoints.Percent > 50 no_blood",
-			"random-goto 50 no_blood",
-			"spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
+	   "if-var b.organic != 1 no_blood",
+	   "if-var v.HitPoints.Percent > 40 no_blood",
+         "random-goto 50 no_blood",
+         "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
       "label no_blood",
-  "unbreakable begin"}
+      "unbreakable begin"
+   }
 
    for unitspeed=0,maxspeed do
       local op
