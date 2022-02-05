@@ -41,8 +41,8 @@ local function DefaultStillAnimation()
    return {
       "frame 0", "wait 4",
       "if-var b.organic != 1 no_blood",
-      "if-var v.HitPoints.Percent > 30 no_blood",
-      "if-var v.HitPoints.Percent > 15 less_blood",
+      "if-var v.HitPoints.Percent > 40 no_blood",
+      "if-var v.HitPoints.Percent > 25 less_blood",
          "random-goto 87 less_blood",
          "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
          "spawn-missile missile-blood-pool 0 0 0 0 setdirection 0",
@@ -65,8 +65,14 @@ local function BuildMoveAnimation(frames)
    end
    local res = {
 	   "if-var b.organic != 1 no_blood",
-	   "if-var v.HitPoints.Percent > 40 no_blood",
-         "random-goto 50 no_blood",
+      "if-var v.HitPoints.Percent > 40 no_blood",
+      "if-var v.HitPoints.Percent > 25 less_blood",
+         "random-goto 40 less_blood",
+		 "spawn-missile missile-bleeding-walk 0 0 0 0 setdirection 0",
+         "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
+	  "label less_blood",
+	     "random-goto 50 no_blood",
+		 "spawn-missile missile-bleeding-walk 0 0 0 0 setdirection 0",
          "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
       "label no_blood",
       "unbreakable begin"
