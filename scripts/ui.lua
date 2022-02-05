@@ -210,6 +210,20 @@ DefineSprites({Name = "woundmarker", File = "contrib/graphics/ui/icon-wound.png"
 --DefineDecorations({Index = "HitPoints", HideNeutral = false, CenterX = true, ShowOpponent=true, Building = false,
 --	OffsetPercent = {50, 100}, Method = {"sprite", {"woundmarker"}}})
 
+-- DefineDecorations({Index = "HitPoints", HideNeutral=true, ShowOpponent=false, Building=false,
+-- 	OffsetPercent = {0, 100},
+--    Method = {"bar", {
+--       Orientation="horizontal",
+--       MinValue = 0,
+--       MaxValue = 30,
+--       Invert = true,
+--       BorderSize = 0,
+--       Height = 1,
+--       Width = 8,
+--       SEToNW = true
+--    }
+-- }})
+
 DefineCursor({
       Name = "cursor-point",
       Race = "any",
