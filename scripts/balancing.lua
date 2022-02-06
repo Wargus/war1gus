@@ -1550,7 +1550,7 @@ humanBuildingArmorUpgrade1.Costs[2] = 400 -- wood
 DefineModifier("upgrade-human-BuildingArmor1",
   {"Level", 1},
   {"Armor", 4},
-  {"apply-to", "unit-human-farm", "unit-human-barrack", "unit-human-lumber-mill", "unit-human-blacksmith", "unit-human-stable", "unit-human-church", "unit-human-tower", "unit-human-guard-tower"})
+  {"apply-to", "unit-human-town-hall"}, {"apply-to", "unit-human-farm"}, {"apply-to", "unit-human-barracks"}, {"apply-to", "unit-human-lumber-mill"}, {"apply-to", "unit-human-blacksmith"}, {"apply-to", "unit-human-stable"}, {"apply-to", "unit-human-church"}, {"apply-to", "unit-human-tower"}, {"apply-to", "unit-human-guard-tower"})
 
 DefineAllow("upgrade-human-BuildingArmor1", "AAAAAAAAAAAAAAAA")
 
@@ -1574,7 +1574,7 @@ humanBuildingArmorUpgrade2.Costs[2] = 800 -- wood
 DefineModifier("upgrade-human-BuildingArmor2",
    {"Level", 1},
    {"Armor", 4},
-  {"apply-to", "unit-human-farm", "unit-human-barrack", "unit-human-lumber-mill", "unit-human-blacksmith", "unit-human-stable", "unit-human-church", "unit-human-tower", "unit-human-guard-tower"})
+   {"apply-to", "unit-human-town-hall"}, {"apply-to", "unit-human-farm"}, {"apply-to", "unit-human-barracks"}, {"apply-to", "unit-human-lumber-mill"}, {"apply-to", "unit-human-blacksmith"}, {"apply-to", "unit-human-stable"}, {"apply-to", "unit-human-church"}, {"apply-to", "unit-human-tower"}, {"apply-to", "unit-human-guard-tower"})
 
 DefineAllow("upgrade-human-BuildingArmor2", "AAAAAAAAAAAAAAAA")
 
@@ -1603,7 +1603,7 @@ orcBuildingArmorUpgrade1.Costs[2] = 400 -- wood
 DefineModifier("upgrade-orc-BuildingArmor1",
   {"Level", 1},
   {"Armor", 4},
-  {"apply-to", "unit-orc-farm", "unit-orc-barrack", "unit-orc-lumber-mill", "unit-orc-blacksmith", "unit-orc-kennel", "unit-orc-temple", "unit-orc-tower", "unit-orc-watch-tower"})
+  {"apply-to", "unit-orc-town-hall"}, {"apply-to", "unit-orc-farm"}, {"apply-to", "unit-orc-barracks"}, {"apply-to", "unit-orc-lumber-mill"}, {"apply-to", "unit-orc-blacksmith"}, {"apply-to", "unit-orc-kennel"}, {"apply-to", "unit-orc-temple"}, {"apply-to", "unit-orc-tower"}, {"apply-to", "unit-orc-watch-tower"})
 
 DefineAllow("upgrade-orc-BuildingArmor1", "AAAAAAAAAAAAAAAA")
 
@@ -1627,7 +1627,7 @@ orcBuildingArmorUpgrade2.Costs[2] = 800 -- wood
 DefineModifier("upgrade-orc-BuildingArmor2",
    {"Level", 1},
    {"Armor", 4},
-  {"apply-to", "unit-orc-farm", "unit-orc-barrack", "unit-orc-lumber-mill", "unit-orc-blacksmith", "unit-orc-kennel", "unit-orc-temple", "unit-orc-tower", "unit-orc-watch-tower"})
+  {"apply-to", "unit-orc-town-hall"}, {"apply-to", "unit-orc-farm"}, {"apply-to", "unit-orc-barracks"}, {"apply-to", "unit-orc-lumber-mill"}, {"apply-to", "unit-orc-blacksmith"}, {"apply-to", "unit-orc-kennel"}, {"apply-to", "unit-orc-temple"}, {"apply-to", "unit-orc-tower"}, {"apply-to", "unit-orc-watch-tower"})
 
 DefineAllow("upgrade-orc-BuildingArmor2", "AAAAAAAAAAAAAAAA")
 
