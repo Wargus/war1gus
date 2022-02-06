@@ -1708,3 +1708,27 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-orc-CatapultSpeed",
   Key = "m", Hint = "~!MOVE",
   Allowed = "check-upgrade", AllowArg = {"upgrade-orc-CatapultSpeed"},
   ForUnit = {"unit-orc-catapult"} } )
+
+  -----------------------------------------------------------------------
+  --- arrows for towers upgrade
+  -----------------------------------------------------------------------
+   
+  DefineModifier("upgrade-spear1",
+  {"Level", 1},
+  {"PiercingDamage", 1},
+  {"apply-to", "unit-orc-spearman"}, {"apply-to", "unit-orc-watch-tower"})
+  
+    DefineModifier("upgrade-spear2",
+  {"Level", 1},
+  {"PiercingDamage", 1},
+  {"apply-to", "unit-orc-spearman"}, {"apply-to", "unit-orc-watch-tower"})
+    
+  DefineModifier("upgrade-arrow1",
+  {"Level", 1},
+  {"PiercingDamage", 1},
+  {"apply-to", "unit-human-archer"}, {"apply-to", "unit-human-guard-tower"})
+  
+    DefineModifier("upgrade-arrow2",
+  {"Level", 1},
+  {"PiercingDamage", 1},
+  {"apply-to", "unit-human-archer"}, {"apply-to", "unit-human-guard-tower"})
