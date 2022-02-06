@@ -623,12 +623,12 @@ local upgrades = {
     cost = {   1200,   1500,     800,     0,     0,     0,     0},
     },
 
-   {orc = {"spear1", {"spearman"}, "spear2"},
-    human = {"arrow1", {"archer"}, "arrow2"},
+   {orc = {"spear1", {"spearman", "watch-tower"}, "spear2"},
+    human = {"arrow1", {"archer", "guard-tower"}, "arrow2"},
     cost = {   1400,   750,		400,     0,     0,     0,     0},
     },
-   {orc = {"spear2", {"spearman"}, "spear3"},
-    human = {"arrow2", {"archer"}, "arrow3"},
+   {orc = {"spear2", {"spearman", "watch-tower"}, "spear3"},
+    human = {"arrow2", {"archer", "guard-tower"}, "arrow3"},
     cost = {   1400,   1500,     800,     0,     0,     0,     0},
     },
 
@@ -841,10 +841,34 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear1",
    Action = "attack",
    Key = "a", Hint = "~!ATTACK",
    ForUnit = {"unit-orc-watch-tower"} } )
+   
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear2",
+  Action = "attack",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-spear1"},
+  Key = "a", Hint = "~!ATTACK",
+  ForUnit = {"unit-orc-watch-tower"} } )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear3",
+  Action = "attack",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-spear2"},
+  Key = "a", Hint = "~!ATTACK",
+  ForUnit = {"unit-orc-watch-tower"} } )   
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield1",
    Action = "stop",
    Key = "s", Hint = "~!STOP",
+   ForUnit = {"unit-orc-watch-tower"} } )
+   
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-BuildingArmor1",
+  Action = "stop",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-orc-BuildingArmor1"},
+  Key = "s", Hint = "~!STOP",
+   ForUnit = {"unit-orc-watch-tower"} } )
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-BuildingArmor2",
+  Action = "stop",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-orc-BuildingArmor2"},
+  Key = "s", Hint = "~!STOP",
    ForUnit = {"unit-orc-watch-tower"} } )
 
 DefineAllow("unit-orc-watch-tower", "AAAAAAAAAAAAAAAA")
@@ -961,11 +985,35 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow1",
    Action = "attack",
    Key = "a", Hint = "~!ATTACK",
    ForUnit = {"unit-human-guard-tower"} } )
+   
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow2",
+  Action = "attack",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-arrow1"},
+  Key = "a", Hint = "~!ATTACK",
+   ForUnit = {"unit-human-guard-tower"} } )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-arrow3",
+  Action = "attack",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-arrow2"},
+  Key = "a", Hint = "~!ATTACK",
+   ForUnit = {"unit-human-guard-tower"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
    Action = "stop",
    Key = "s", Hint = "~!STOP",
    ForUnit = {"unit-human-guard-tower"} } )
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-BuildingArmor1",
+  Action = "stop",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-human-BuildingArmor1"},
+  Key = "s", Hint = "~!STOP",
+  ForUnit = {"unit-human-guard-tower"} } )
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-BuildingArmor2",
+  Action = "stop",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-human-BuildingArmor2"},
+  Key = "s", Hint = "~!STOP",
+  ForUnit = {"unit-human-guard-tower"} } )
 
 DefineAllow("unit-human-guard-tower", "AAAAAAAAAAAAAAAA")
 
@@ -1484,3 +1532,179 @@ DefineAiHelper(
 )
 
 DefineAllow("unit-orc-first-town-hall", "AAAAAAAAAAAAAAAA")
+
+-----------------------------------------------------------------------
+-- Human building armor upgrades
+-----------------------------------------------------------------------
+
+local humanBuildingArmorIcon1 = CIcon:New("icon-human-BuildingArmor1")
+humanBuildingArmorIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-building-armor1.png", 27, 19)
+humanBuildingArmorIcon1.Frame = 0
+
+local humanBuildingArmorUpgrade1 = CUpgrade:New("upgrade-human-BuildingArmor1")
+humanBuildingArmorUpgrade1.Icon = humanBuildingArmorIcon1
+humanBuildingArmorUpgrade1.Costs[0] = 700 -- time
+humanBuildingArmorUpgrade1.Costs[1] = 750 -- gold
+humanBuildingArmorUpgrade1.Costs[2] = 400 -- wood
+
+DefineModifier("upgrade-human-BuildingArmor1",
+  {"Level", 1},
+  {"Armor", 4},
+  {"apply-to", "unit-human-farm", "unit-human-barrack", "unit-human-lumber-mill", "unit-human-blacksmith", "unit-human-stable", "unit-human-church", "unit-human-tower", "unit-human-guard-tower"})
+
+DefineAllow("upgrade-human-BuildingArmor1", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-BuildingArmor1",
+  Action = "research", Value = "upgrade-human-BuildingArmor1",
+  Allowed = "check-single-research",
+  Key = "r", Hint = "UPG~!RADE ROOFS",
+  ForUnit = {"unit-human-lumber-mill"} } )
+
+---
+local humanBuildingArmorIcon2 = CIcon:New("icon-human-BuildingArmor2")
+humanBuildingArmorIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-building-armor2.png", 27, 19)
+humanBuildingArmorIcon2.Frame = 0
+
+local humanBuildingArmorUpgrade2 = CUpgrade:New("upgrade-human-BuildingArmor2")
+humanBuildingArmorUpgrade2.Icon = humanBuildingArmorIcon2
+humanBuildingArmorUpgrade2.Costs[0] = 700 -- time
+humanBuildingArmorUpgrade2.Costs[1] = 1500 -- gold
+humanBuildingArmorUpgrade2.Costs[2] = 800 -- wood
+
+DefineModifier("upgrade-human-BuildingArmor2",
+   {"Level", 1},
+   {"Armor", 4},
+  {"apply-to", "unit-human-farm", "unit-human-barrack", "unit-human-lumber-mill", "unit-human-blacksmith", "unit-human-stable", "unit-human-church", "unit-human-tower", "unit-human-guard-tower"})
+
+DefineAllow("upgrade-human-BuildingArmor2", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-BuildingArmor2",
+   Action = "research", Value = "upgrade-human-BuildingArmor2",
+   Allowed = "check-upgrade", AllowArg = {"upgrade-human-BuildingArmor1"},
+   Key = "r", Hint = "UPG~!RADE WALLS",
+   ForUnit = {"unit-human-lumber-mill"} } )
+
+DefineDependency("upgrade-human-BuildingArmor2", { "upgrade-human-BuildingArmor1"} )
+
+-----------------------------------------------------------------------
+-- Orc building armor upgrades
+-----------------------------------------------------------------------
+
+local orcBuildingArmorIcon1 = CIcon:New("icon-orc-BuildingArmor1")
+orcBuildingArmorIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-building-armor1.png", 27, 19)
+orcBuildingArmorIcon1.Frame = 0
+
+local orcBuildingArmorUpgrade1 = CUpgrade:New("upgrade-orc-BuildingArmor1")
+orcBuildingArmorUpgrade1.Icon = orcBuildingArmorIcon1
+orcBuildingArmorUpgrade1.Costs[0] = 700 -- time
+orcBuildingArmorUpgrade1.Costs[1] = 750 -- gold
+orcBuildingArmorUpgrade1.Costs[2] = 400 -- wood
+
+DefineModifier("upgrade-orc-BuildingArmor1",
+  {"Level", 1},
+  {"Armor", 4},
+  {"apply-to", "unit-orc-farm", "unit-orc-barrack", "unit-orc-lumber-mill", "unit-orc-blacksmith", "unit-orc-kennel", "unit-orc-temple", "unit-orc-tower", "unit-orc-watch-tower"})
+
+DefineAllow("upgrade-orc-BuildingArmor1", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-BuildingArmor1",
+  Action = "research", Value = "upgrade-orc-BuildingArmor1",
+  Allowed = "check-single-research",
+  Key = "r", Hint = "UPG~!RADE BUILDINGS FIRE SUPPRESION",
+  ForUnit = {"unit-orc-lumber-mill"} } )
+
+---
+local orcBuildingArmorIcon2 = CIcon:New("icon-orc-BuildingArmor2")
+orcBuildingArmorIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-building-armor2.png", 27, 19)
+orcBuildingArmorIcon2.Frame = 0
+
+local orcBuildingArmorUpgrade2 = CUpgrade:New("upgrade-orc-BuildingArmor2")
+orcBuildingArmorUpgrade2.Icon = orcBuildingArmorIcon2
+orcBuildingArmorUpgrade2.Costs[0] = 700 -- time
+orcBuildingArmorUpgrade2.Costs[1] = 1500 -- gold
+orcBuildingArmorUpgrade2.Costs[2] = 800 -- wood
+
+DefineModifier("upgrade-orc-BuildingArmor2",
+   {"Level", 1},
+   {"Armor", 4},
+  {"apply-to", "unit-orc-farm", "unit-orc-barrack", "unit-orc-lumber-mill", "unit-orc-blacksmith", "unit-orc-kennel", "unit-orc-temple", "unit-orc-tower", "unit-orc-watch-tower"})
+
+DefineAllow("upgrade-orc-BuildingArmor2", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-BuildingArmor2",
+   Action = "research", Value = "upgrade-orc-BuildingArmor2",
+   Allowed = "check-upgrade", AllowArg = {"upgrade-orc-BuildingArmor1"},
+   Key = "r", Hint = "UPG~!RADE WALLS",
+   ForUnit = {"unit-orc-lumber-mill"} } )
+
+DefineDependency("upgrade-orc-BuildingArmor2", { "upgrade-orc-BuildingArmor1"} )
+
+-----------------------------------------------------------------------
+-- Human Catapult speed upgrades
+-----------------------------------------------------------------------
+
+local humanCatapultSpeedIcon1 = CIcon:New("icon-human-CatapultSpeed")
+humanCatapultSpeedIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-catapult-speed.png", 27, 19)
+humanCatapultSpeedIcon1.Frame = 0
+
+local humanCatapultSpeedUpgrade1 = CUpgrade:New("upgrade-human-CatapultSpeed")
+humanCatapultSpeedUpgrade1.Icon = humanCatapultSpeedIcon1
+humanCatapultSpeedUpgrade1.Costs[0] = 700 -- time
+humanCatapultSpeedUpgrade1.Costs[1] = 750 -- gold
+humanCatapultSpeedUpgrade1.Costs[2] = 400 -- wood
+
+DefineModifier("upgrade-human-CatapultSpeed",
+  {"Level", 1},
+  {"Speed", 1},
+  {"apply-to", "unit-human-catapult"})
+
+DefineAllow("upgrade-human-CatapultSpeed", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-CatapultSpeed",
+  Action = "research", Value = "upgrade-human-CatapultSpeed",
+  Allowed = "check-single-research",
+  Key = "s", Hint = "UPGRADE CATAPULT ~!SPEED",
+  ForUnit = {"unit-human-lumber-mill"} } )
+
+DefineDependency("upgrade-human-CatapultSpeed", { "unit-human-blacksmith"} )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-human-CatapultSpeed",
+  Action = "move",
+  Key = "m", Hint = "~!MOVE",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-human-CatapultSpeed"},
+  ForUnit = {"unit-human-catapult"} } )
+
+-----------------------------------------------------------------------
+-- Orc Catapult speed upgrades
+-----------------------------------------------------------------------
+
+local orcCatapultSpeedIcon1 = CIcon:New("icon-orc-CatapultSpeed")
+orcCatapultSpeedIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-catapult-speed.png", 27, 19)
+orcCatapultSpeedIcon1.Frame = 0
+
+local orcCatapultSpeedUpgrade1 = CUpgrade:New("upgrade-orc-CatapultSpeed")
+orcCatapultSpeedUpgrade1.Icon = orcCatapultSpeedIcon1
+orcCatapultSpeedUpgrade1.Costs[0] = 700  -- time
+orcCatapultSpeedUpgrade1.Costs[1] = 750 -- gold
+orcCatapultSpeedUpgrade1.Costs[2] = 400 -- wood
+
+DefineModifier("upgrade-orc-CatapultSpeed",
+  {"Level", 1},
+  {"Speed", 1},
+  {"apply-to", "unit-orc-catapult"})
+
+DefineAllow("upgrade-orc-CatapultSpeed", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-CatapultSpeed",
+  Action = "research", Value = "upgrade-orc-CatapultSpeed",
+  Allowed = "check-single-research",
+  Key = "s", Hint = "UPGRADE CATAPULT ~!SPEED",
+  ForUnit = {"unit-orc-lumber-mill"} } )
+
+DefineDependency("upgrade-orc-CatapultSpeed", { "unit-orc-blacksmith"} )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-orc-CatapultSpeed",
+  Action = "move",
+  Key = "m", Hint = "~!MOVE",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-orc-CatapultSpeed"},
+  ForUnit = {"unit-orc-catapult"} } )
