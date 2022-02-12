@@ -364,6 +364,10 @@ UI.Resources[FoodCost].IconY = 0
 UI.Resources[FoodCost].TextX = Video.Width - 0 - 13 - 40
 UI.Resources[FoodCost].TextY = 1
 
+-- idle workers
+UI.Resources[FreeWorkersCount].TextX = Video.Width - 14
+UI.Resources[FreeWorkersCount].TextY = 1
+
 -- mana -- no good icon, but we need this for the info bar
 UI.Resources[ManaResCost].G = CGraphic:New("contrib/graphics/ui/mana_icon_1.png", 9,9)
 UI.Resources[ManaResCost].IconFrame = 0
