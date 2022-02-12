@@ -78,7 +78,7 @@ DefineMissileType("missile-rain-of-fire",
 
 DefineMissileType("missile-poison-cloud",
   { File = "missiles/poison_cloud.png", Size = {64, 64}, Frames = 4, NumDirections = 1,
-  Class = "missile-class-point-to-point-with-hit", Sleep = 5, Speed = 8, Range = 1,
+  Class = "missile-class-point-to-point-with-hit", Sleep = 8, Speed = 8, Range = 1,
   DrawLevel = 100 } )
 
 DefineMissileType("missile-none",
