@@ -157,8 +157,8 @@ function RunJoiningMapMenu(s)
               HBox({
                     "~<Your Race:~> ",
                     LDropDown({"Map Default", "Human", "Orc"}, function(dd)
-                          GameSettings.Presets[NetLocalHostsSlot].Race = race:getSelected()
-                          LocalSetupState.Race[NetLocalHostsSlot] = race:getSelected()
+                          GameSettings.Presets[NetLocalHostsSlot].Race = dd:getSelected()
+                          LocalSetupState.Race[NetLocalHostsSlot] = dd:getSelected()
                     end)
               }),
               LCheckBox("Ready", function(dd)
@@ -526,9 +526,9 @@ function RunServerMultiGameMenu(map, description, numplayers)
               HBox({
                     "~<Your Race:~> ",
                     LDropDown({"Map Default", "Human", "Orc"}, function(dd)
-                          GameSettings.Presets[0].Race = race:getSelected()
-                          ServerSetupState.Race[0] = race:getSelected()
-                          LocalSetupState.Race[0] = race:getSelected()
+                          GameSettings.Presets[0].Race = dd:getSelected()
+                          ServerSetupState.Race[0] = dd:getSelected()
+                          LocalSetupState.Race[0] = dd:getSelected()
                           NetworkServerResyncClients()
                     end)
               }),
@@ -558,7 +558,7 @@ function RunServerMultiGameMenu(map, description, numplayers)
   menubox:addWidgetTo(menu)
 
   local chatList = {}
-  local AddMessage = AddOnlineChatMessage(chatList, menu.chat)
+  local AddMessage = AddOnlineChatMessage(chatList, menu.chat, menu)
   OnlineService.setup({ShowChat = AddMessage})
 
   menu.fow:setMarked(true)
