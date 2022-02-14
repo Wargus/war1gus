@@ -39,18 +39,22 @@ DefineAnimations(
 
 local function DefaultStillAnimation()
    return {
-      "frame 0", "wait 4",
+      "frame 0", "wait 30",
       "if-var b.organic != 1 no_blood",
-      "if-var v.HitPoints.Percent > 40 no_blood",
+      "if-var v.HitPoints.Percent > 50 no_blood",
       "if-var v.HitPoints.Percent > 25 less_blood",
-         "random-goto 87 less_blood",
+	  
+         "random-goto 25 no_blood",
          "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
          "spawn-missile missile-blood-pool 0 0 0 0 setdirection 0",
+		 "goto no_blood",
+		 
       "label less_blood",
-         "random-goto 97 no_blood",
+         "random-goto 75 no_blood",
          "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
-         "spawn-missile missile-blood-pool 0 0 0 0 setdirection 0",
-         "label no_blood"
+         "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
+      
+	  "label no_blood"
    }
 end
 
@@ -64,17 +68,21 @@ local function BuildMoveAnimation(frames)
       halfIndex = (#frames + 1) / 2
    end
    local res = {
-	   "if-var b.organic != 1 no_blood",
-      "if-var v.HitPoints.Percent > 40 no_blood",
+	  "if-var b.organic != 1 no_blood",
+      "if-var v.HitPoints.Percent > 50 no_blood",
       "if-var v.HitPoints.Percent > 25 less_blood",
-         "random-goto 40 less_blood",
-		 "spawn-missile missile-bleeding-walk 0 0 0 0 setdirection 0",
+	  
+         "random-goto 25 no_blood",
+         "spawn-missile missile-bleeding-walk 0 0 0 0 setdirection 0",
          "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
-	  "label less_blood",
-	     "random-goto 50 no_blood",
-		 "spawn-missile missile-bleeding-walk 0 0 0 0 setdirection 0",
+		 "goto no_blood",
+		 
+      "label less_blood",
+         "random-goto 75 no_blood",
+         "spawn-missile missile-bleeding-walk 0 0 0 0 setdirection 0",
          "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
-      "label no_blood",
+      
+	  "label no_blood",
       "unbreakable begin"
    }
 
@@ -184,7 +192,22 @@ local function BuildAttackAnimation(frames, waittime, coolofftime, sound)
    else
       halfIndex = (#frames + 1) / 2
    end
-   local res = {"unbreakable begin"}
+   local res = {   
+   	  "if-var b.organic != 1 no_blood",
+      "if-var v.HitPoints.Percent > 50 no_blood",
+      "if-var v.HitPoints.Percent > 25 less_blood",
+	  
+         "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
+         "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
+		 "goto no_blood",
+		 
+      "label less_blood",
+         "random-goto 50 no_blood",
+         "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
+         "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
+      
+	  "label no_blood",
+      "unbreakable begin"}
    for i = 1, #frames do
       res[1 + #res] = "frame " .. frames[i]
       if (i == halfIndex) then
@@ -205,7 +228,24 @@ end
 
 local function BuildAttackHarvest(frames, waittime, sound)
    -- Attack / Harvest with some modification
-   local res = {"unbreakable begin", "sound tree chopping", "wait 5"}
+   local res = {
+      "if-var b.organic != 1 no_blood",
+      "if-var v.HitPoints.Percent > 50 no_blood",
+      "if-var v.HitPoints.Percent > 25 less_blood",
+	  
+         "random-goto 50 no_blood",
+         "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
+         "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
+	"goto no_blood",
+		 
+      "label less_blood",
+         "random-goto 75 no_blood",
+         "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
+         "spawn-missile missile-blood-footprint 0 0 0 0 setdirection 0",
+      
+	  "label no_blood",
+          "unbreakable begin",
+	  "sound tree chopping", "wait 5"}
    for i = 1, #frames do
       res[1 + #res] = "frame " .. frames[i]
       if (i == (1 + #frames) / 2) then
@@ -220,7 +260,12 @@ local function BuildAttackHarvest(frames, waittime, sound)
 end
 
 local function BuildDeathAnimation(frames)
-   local res = {"unbreakable begin"}
+      local res = {
+   "if-var b.organic != 1 no_blood", 
+		 "spawn-missile missile-bleeding 0 0 0 0 setdirection 0",
+         "spawn-missile missile-blood-pool 0 0 0 0 setdirection 0",
+      "label no_blood",
+      "unbreakable begin" }
    for i = 1, #frames do
       res[1 + #res] = "frame " .. frames[i]
       res[1 + #res] = "wait 3"
