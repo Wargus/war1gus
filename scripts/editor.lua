@@ -32,6 +32,17 @@
 --	Set which icons to display
 SetEditorSelectIcon("icon-human-patrol-land")
 SetEditorUnitsIcon("icon-footman")
+SetEditorRandomizeProperties({
+  BaseTile = 80, -- grass
+  RandomTiles = {
+    {32, 6, 10}, -- water
+    {64, 12, 16}, -- light grass
+    {112, 8, 16}, -- forest
+  },
+  RandomUnits = {
+    {"unit-gold-mine", 2, 50000, 64}
+  }
+})
 
 --
 --	editor-unit-types a sorted list of unit-types for the editor.
@@ -134,9 +145,10 @@ local keystrokes = {
   {"F6", "Player properties"},
   {"F11", "Save map"},
   {"F12", "Load map"},
-  {"Right mouse", "Tile mode: Deselect current tile"},
-  {"Right mouse", "Unit mode: Deselect current unit"},
-  {"Right mouse", "Select mode: Edit unit under cursor"},
+  {"Rightclick", "Tile mode: Deselect current tile"},
+  {"Rightclick", "Unit mode: Deselect current unit"},
+  {"Rightclick", "Select mode: Edit unit under cursor"},
+  {"Alt+click", "Tile mode when no tile is selected: Modify tile under cursor"}
 }
 
 function RunEditorHelpMenu()
