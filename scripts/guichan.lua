@@ -496,50 +496,74 @@ function RunSinglePlayerGameMenu()
       local OldRunInEditorMenu = RunInEditorMenu
       function RunInEditorMenu()
         Editor.Running = EditorNotRunning;
-        Editor:CreateRandomMap(true)
+        local done = false
+        repeat
+          Editor:CreateRandomMap(true)
+          done = true
 
-        
-        Map.Info.PlayerType[0] = PlayerPerson
-        Players[0].Type = PlayerPerson
-        if race:getSelected() == 0 then
-          Players[0].Race = 0
-        else
-          Players[0].Race = race:getSelected() - 1
-        end
-        Players[0].AiName = "wc1-land-attack"
-        Players[0].Resources[1] = 5000
-        Players[0].Resources[2] = 3000
-        if race:getSelected() < 2 then
-          CreateUnit("unit-peasant", 0, {0, 0})
-        else
-          CreateUnit("unit-peon", 0, {0, 0})
-        end
+          local unit
+          Map.Info.PlayerType[0] = PlayerPerson
+          Players[0].Type = PlayerPerson
+          if race:getSelected() == 0 then
+            Players[0].Race = 0
+          else
+            Players[0].Race = race:getSelected() - 1
+          end
+          Players[0].AiName = "wc1-land-attack"
+          Players[0].Resources[1] = 5000
+          Players[0].Resources[2] = 3000
+          local playerUnitName
+          if race:getSelected() < 2 then
+            playerUnitName = "unit-peasant"
+          else
+            playerUnitName = "unit-peon"
+          end
+          local posx = Map.Info.MapWidth
+          local posy = Map.Info.MapHeight
+          for i,u in ipairs(GetUnits("any")) do
+            if GetUnitVariable(u, "Ident") == "unit-gold-mine" then
+              local ux = GetUnitVariable(u, "PosX")
+              local uy = GetUnitVariable(u, "PosY")
+              if ux + uy < posx + posy then
+                posx = ux
+                posy = uy
+              end
+            end
+          end
+          unit = CreateUnit(playerUnitName, 0, {posx - 1, posy - 1})
+          if FindNextResource(unit, "gold", 6) == nil then
+            done = false
+          end
 
-        local numOpponents = opponents:getSelected()
-        if (numOpponents == 0) then
-          numOpponents = 1
-        end
+          local numOpponents = opponents:getSelected()
+          if (numOpponents == 0) then
+            numOpponents = 1
+          end
 
-        local opponentRace
-        local opponentUnit
-        if race:getSelected() < 2 then
-          opponentRace = 1
-          opponentUnit = "unit-peon"
-        else
-          opponentRace = 0
-          opponentUnit = "unit-peasant"
-        end
+          local opponentRace
+          local opponentUnit
+          if race:getSelected() < 2 then
+            opponentRace = 1
+            opponentUnit = "unit-peon"
+          else
+            opponentRace = 0
+            opponentUnit = "unit-peasant"
+          end
 
-        for i=1,numOpponents,1 do
-          print("Setting up opponent " .. i)
-          Map.Info.PlayerType[i] = PlayerComputer
-          Players[i].Type = PlayerComputer
-          Players[i].Race = opponentRace
-          Players[i].AiName = "wc1-land-attack"
-          Players[i].Resources[1] = 5000
-          Players[i].Resources[2] = 3000
-          CreateUnit(opponentUnit, i, {(Map.Info.MapWidth / i) - 1, Map.Info.MapHeight - 1})
-        end
+          for i=1,numOpponents,1 do
+            print("Setting up opponent " .. i)
+            Map.Info.PlayerType[i] = PlayerComputer
+            Players[i].Type = PlayerComputer
+            Players[i].Race = opponentRace
+            Players[i].AiName = "wc1-land-attack"
+            Players[i].Resources[1] = 5000
+            Players[i].Resources[2] = 3000
+            unit = CreateUnit(opponentUnit, i, {(Map.Info.MapWidth / i) - 1, Map.Info.MapHeight - 1})
+            if FindNextResource(unit, "gold", 60) == nil then
+              done = false
+            end
+          end
+        until done
 
         mapname = "maps/randommap.smp"
         EditorSaveMap(mapname)
@@ -554,7 +578,8 @@ function RunSinglePlayerGameMenu()
       GetMapInfo(mapname)
       SetColorScheme()
       war1gus.InCampaign = false
-      RunMap(mapname, preferences.FogOfWar)
+      GameSettings.RevealMap = 1
+      RunMap(mapname)
     end)
   menu:addFullButton("S~!elect Scenario", "e", offx + 320 - 119 - 8, offy + 150 + 18 * -1,
     function()
