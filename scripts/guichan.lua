@@ -491,6 +491,71 @@ function RunSinglePlayerGameMenu()
   descriptionl = menu:addLabel("descriptionl", offx + 8 + 35, offy + 150, Fonts["game"], false)
 
   menu:addLabel("~<Single Player Game Setup~>", offx + 320/2 + 6, offy + 66)
+  menu:addFullButton("~!Random Scenario", "r", offx + 320 - 119 - 8, offy + 150 + 18 * -2,
+    function()
+      local OldRunInEditorMenu = RunInEditorMenu
+      function RunInEditorMenu()
+        Editor.Running = EditorNotRunning;
+        Editor:CreateRandomMap(true)
+
+        
+        Map.Info.PlayerType[0] = PlayerPerson
+        Players[0].Type = PlayerPerson
+        if race:getSelected() == 0 then
+          Players[0].Race = 0
+        else
+          Players[0].Race = race:getSelected() - 1
+        end
+        Players[0].AiName = "wc1-land-attack"
+        Players[0].Resources[1] = 5000
+        Players[0].Resources[2] = 3000
+        if race:getSelected() < 2 then
+          CreateUnit("unit-peasant", 0, {0, 0})
+        else
+          CreateUnit("unit-peon", 0, {0, 0})
+        end
+
+        local numOpponents = opponents:getSelected()
+        if (numOpponents == 0) then
+          numOpponents = 1
+        end
+
+        local opponentRace
+        local opponentUnit
+        if race:getSelected() < 2 then
+          opponentRace = 1
+          opponentUnit = "unit-peon"
+        else
+          opponentRace = 0
+          opponentUnit = "unit-peasant"
+        end
+
+        for i=1,numOpponents,1 do
+          print("Setting up opponent " .. i)
+          Map.Info.PlayerType[i] = PlayerComputer
+          Players[i].Type = PlayerComputer
+          Players[i].Race = opponentRace
+          Players[i].AiName = "wc1-land-attack"
+          Players[i].Resources[1] = 5000
+          Players[i].Resources[2] = 3000
+          CreateUnit(opponentUnit, i, {(Map.Info.MapWidth / i) - 1, Map.Info.MapHeight - 1})
+        end
+
+        mapname = "maps/randommap.smp"
+        EditorSaveMap(mapname)
+        Load("scripts/ui.lua")
+      end
+      Map.Info.Description = "Random map"
+      Map.Info.MapWidth = 128
+      Map.Info.MapHeight = 128
+      LoadTileModels("scripts/tilesets/forest.lua")
+      StartEditor(nil)
+      RunInEditorMenu = OldRunInEditorMenu
+      GetMapInfo(mapname)
+      SetColorScheme()
+      war1gus.InCampaign = false
+      RunMap(mapname, preferences.FogOfWar)
+    end)
   menu:addFullButton("S~!elect Scenario", "e", offx + 320 - 119 - 8, offy + 150 + 18 * -1,
     function()
       local oldmapname = mapname

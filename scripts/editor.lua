@@ -35,9 +35,9 @@ SetEditorUnitsIcon("icon-footman")
 SetEditorRandomizeProperties({
   BaseTile = 80, -- grass
   RandomTiles = {
-    {32, 6, 10}, -- water
+    {32, 6, 8}, -- water
     {64, 12, 16}, -- light grass
-    {112, 8, 16}, -- forest
+    {112, 6, 12}, -- forest
   },
   RandomUnits = {
     {"unit-gold-mine", 2, 50000, 64}
