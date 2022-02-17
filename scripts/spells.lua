@@ -304,36 +304,36 @@ DefineSpell("spell-summon-spiders",
 
 DefineSpell("spell-poison-cloud",
 	"showname", "poison cloud",
-	"manacost", 25,
+	"manacost", 7,
 	"range", 9,
 	"repeat-cast",
 	"target", "position",
 	"action", {{"area-bombardment", "missile", "missile-poison-cloud",
-		 "fields", 9,
-		 "shards", 20,
-		 "damage", 10}},
+		 "fields", 13,
+		 "shards", 2,
+		 "damage", 6}},
 	"sound-when-cast", "blizzard",
 	"depend-upgrade", "upgrade-poison-cloud",
-    "autocast", {"range", 12, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard},
-	"ai-cast", {"range", 12, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard}
+    "autocast", {"range", 9, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard},
+	"ai-cast", {"range", 9, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard}
 )
 
 DefineSpell("spell-rain-of-fire",
 	"showname", "Rain of Fire",
-	"manacost", 25,
+	"manacost", 20,
 	"range", 9,
 	"repeat-cast",
 	"target", "position",
 	"action", {{"area-bombardment", "missile", "missile-rain-of-fire",
-		 "fields", 9,
-		 "shards", 20,
-		 "damage", 10,
+		 "fields", 8,
+		 "shards", 5,
+		 "damage", 13,
 		 --  128=4*32=4 tiles
 		 "start-offset-x", 0,
 		 "start-offset-y", -32}},
 	"sound-when-cast", "blizzard",
-	"autocast", {"range", 12, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard},
-	"ai-cast", {"range", 12, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard}
+	"autocast", {"range", 9, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard},
+	"ai-cast", {"range", 9, "priority", {"Priority", true}, "condition", {"opponent", "only"}, "position-autocast", SpellBlizzard}
 )
 
 DefineSpell("spell-slow",
