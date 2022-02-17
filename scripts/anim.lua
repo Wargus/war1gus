@@ -430,11 +430,11 @@ DefineAnimations("animations-the-dead", BuildAnimations(frameNumbers_5_5_5_5))
 
 DefineAnimations("animations-archer",
 		 BuildAnimations(frameNumbers_5_5_2_3,
-				 {attackspeed = 14,
+				 {attackspeed = 13,
 				  attacksound = "arrow attack"}))
 DefineAnimations("animations-spearman",
 		 BuildAnimations(frameNumbers_5_5_2_3,
-				 {attackspeed = 13,
+				 {attackspeed = 11,
 				  attacksound = "arrow attack"}))
 
 DefineAnimations("animations-cleric",
