@@ -364,9 +364,12 @@ UI.Resources[FoodCost].IconY = 0
 UI.Resources[FoodCost].TextX = Video.Width - 0 - 13 - 40
 UI.Resources[FoodCost].TextY = 1
 
--- idle workers
-UI.Resources[FreeWorkersCount].TextX = Video.Width - 14
-UI.Resources[FreeWorkersCount].TextY = 1
+-- idle workers -- negative TextX values are used to indicate: only draw when we do have idle workers
+UI.Resources[FreeWorkersCount].TextX = -(Video.Width - 14 - 8)
+UI.Resources[FreeWorkersCount].TextY = 18
+UI.Resources[FreeWorkersCount].IconX = Video.Width - 14 - 8 - 32
+UI.Resources[FreeWorkersCount].IconY = 18
+UI.Resources[FreeWorkersCount].IconFrame = 2
 
 -- mana -- no good icon, but we need this for the info bar
 UI.Resources[ManaResCost].G = CGraphic:New("contrib/graphics/ui/mana_icon_1.png", 9,9)
@@ -498,6 +501,10 @@ UI.EditorButtonAreaTopLeft.y = UI.ButtonPanel.Y
 UI.EditorButtonAreaBottomRight.x = UI.MapArea.X
 UI.EditorButtonAreaBottomRight.y = UI.MenuButton.Y
 
+ForestFreeWorkerIcons = CGraphic:ForceNew("tilesets/forest/portrait_icons.png", 27, 19)
+DungeonFreeWorkerIcons = CGraphic:ForceNew("tilesets/dungeon/portrait_icons.png", 27, 19)
+SwampFreeWorkerIcons = CGraphic:ForceNew("tilesets/swamp/portrait_icons.png", 27, 19)
+
 function LoadUI(race, screen_width, screen_height)
    currentRace = race
    Load("scripts/widgets.lua")
@@ -512,6 +519,21 @@ function LoadUI(race, screen_width, screen_height)
    
    Preference.IconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 31, 24)
    Preference.PressedIconFrameG = CGraphic:New("ui/" .. race .. "/icon_border.png", 31, 24)
+
+   -- free workers
+   if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+      UI.Resources[FreeWorkersCount].G = ForestFreeWorkerIcons
+   elseif war1gus.tileset == "dungeon" or war1gus.tileset == "dungeon_campaign" then
+      UI.Resources[FreeWorkersCount].G = DungeonFreeWorkerIcons
+   else
+      UI.Resources[FreeWorkersCount].G = SwampFreeWorkerIcons
+   end
+   if race == "human" then
+      UI.Resources[FreeWorkersCount].IconFrame = 4
+   else
+      UI.Resources[FreeWorkersCount].IconFrame = 5
+   end
+
 
    local ui = {
       "info-panel", {
