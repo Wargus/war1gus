@@ -60,8 +60,8 @@ DefineUnitType("unit-water-elemental",	{SightRange = 6})
 -- Cost Rebalancing Buildings
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-human-town-hall",		{Costs = {"time", 250, "gold", 500,		"wood", 500},Armor = 10, Supply = 3})
-DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 250, "gold", 500,		"wood", 500},Armor = 10, Supply = 3})
+DefineUnitType("unit-human-town-hall",		{Costs = {"time", 500, "gold", 1000,		"wood", 700},Armor = 10, Supply = 3})
+DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 500, "gold", 1000,		"wood", 700},Armor = 10, Supply = 3})
 
 DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
 DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
