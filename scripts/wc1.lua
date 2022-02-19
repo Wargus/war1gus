@@ -117,11 +117,11 @@ function SetPlayerData(player, data, arg1, arg2)
   elseif (data == "Resources") then
     local res
     if (GameSettings.Resources == 1) then
-      res = {gold = 2000, wood = 1000, lumber = 0}
+      res = {gold = 2000, wood = 1500, lumber = 0}
     elseif (GameSettings.Resources == 2) then
-      res = {gold = 5000, wood = 2000, lumber = 0}
+      res = {gold = 5000, wood = 3000, lumber = 0}
     elseif (GameSettings.Resources == 3) then
-      res = {gold = 10000, wood = 5000, lumber = 0}
+      res = {gold = 10000, wood = 6000, lumber = 0}
 	 elseif (GameSettings.Resources == 4) then
       res = {gold = 30000, wood = 15000, lumber = 0}
     end
@@ -136,7 +136,12 @@ function SetPlayerData(player, data, arg1, arg2)
     if (GameSettings.NumUnits == 1) then
       if (player ~= 15 and Players[player].Type ~= PlayerNobody) then
         local unittype = {human = "unit-peasant", orc = "unit-peon"}
-        OldCreateUnit(unittype[arg1], player, {Players[player].StartPos.x, Players[player].StartPos.y})
+	local i=0
+ 	 while( i < 5 )
+		do
+		   OldCreateUnit(unittype[arg1], player, {Players[player].StartPos.x, Players[player].StartPos.y})
+		   i=i+1
+		end
       end
     end
   end
