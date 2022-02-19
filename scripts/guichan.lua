@@ -530,7 +530,12 @@ function RunSinglePlayerGameMenu()
               end
             end
           end
-          unit = CreateUnit(playerUnitName, 0, {posx - 1, posy - 1})
+	  local i=0
+	  while( i < 5 )
+		do
+		   unit = CreateUnit(playerUnitName, 0, {posx - 1, posy - 1})
+		   i=i+1
+		end
           if FindNextResource(unit, "gold", 6) == nil then
             done = false
           end
