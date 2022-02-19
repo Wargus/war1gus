@@ -365,10 +365,10 @@ UI.Resources[FoodCost].TextX = Video.Width - 0 - 13 - 40
 UI.Resources[FoodCost].TextY = 1
 
 -- idle workers -- negative TextX values are used to indicate: only draw when we do have idle workers
-UI.Resources[FreeWorkersCount].TextX = -(Video.Width - 14 - 8)
-UI.Resources[FreeWorkersCount].TextY = 18
-UI.Resources[FreeWorkersCount].IconX = Video.Width - 14 - 8 - 32
-UI.Resources[FreeWorkersCount].IconY = 18
+UI.Resources[FreeWorkersCount].TextX = -(Video.Width - 14 - 8 -20)
+UI.Resources[FreeWorkersCount].TextY = 28
+UI.Resources[FreeWorkersCount].IconX = Video.Width - 14 - 8 - 21
+UI.Resources[FreeWorkersCount].IconY = 16
 UI.Resources[FreeWorkersCount].IconFrame = 2
 
 -- mana -- no good icon, but we need this for the info bar
