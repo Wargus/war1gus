@@ -35,12 +35,13 @@ SetEditorUnitsIcon("icon-footman")
 SetEditorRandomizeProperties({
   BaseTile = 80, -- grass
   RandomTiles = {
-    {32, 6, 8}, -- water
-    {64, 12, 16}, -- light grass
-    {112, 6, 12}, -- forest
+	{32, 1, 40}, -- water
+	{64, 4, 15}, -- light grass
+	{112, 20, 7}, -- forest	
+	{96, 12, 2}, -- dark grass
   },
   RandomUnits = {
-    {"unit-gold-mine", 2, 50000, 64}
+    {"unit-gold-mine", 1, 20000, 64}
   }
 })
 
@@ -131,13 +132,14 @@ for key,value in ipairs(editor_types) do
 end
 
 local keystrokes = {
-  {"Ctrl-t", "cycle active tool"},
-  {"Ctrl-f", "toggle full screen"},
-  {"Ctrl-m", "cycle mirror editing"},
-  {"Ctrl-x", "exit"},
-  {"Ctrl-q", "quit to menu"},
-  {"Ctrl-z", "undo"},
-  {"Ctrl-y", "redo"},
+  {"Ctrl-R", "randomize map"},  
+  {"Ctrl-T", "cycle active tool"},
+  {"Ctrl-F", "toggle full screen"},
+  {"Ctrl-M", "cycle mirror editing"},
+  {"Ctrl-C", "exit"},
+  {"Ctrl-Q", "quit to menu"},
+  {"Ctrl-Z", "undo"},
+  {"Ctrl-Y", "redo"},
   {"backspace", "remove unit under cursor"},
   {"0", "unit under cursor to last player (neutral)"},
   {"1-9", "unit under cursor to player 1-9"},
