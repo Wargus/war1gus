@@ -60,8 +60,8 @@ DefineUnitType("unit-water-elemental",	{SightRange = 6})
 -- Cost Rebalancing Buildings
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-human-town-hall",		{Costs = {"time", 250, "gold", 500,		"wood", 500},Armor = 10, Supply = 3})
-DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 250, "gold", 500,		"wood", 500},Armor = 10, Supply = 3})
+DefineUnitType("unit-human-town-hall",		{Costs = {"time", 500, "gold", 1000,		"wood", 700},Armor = 10, Supply = 3})
+DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 500, "gold", 1000,		"wood", 700},Armor = 10, Supply = 3})
 
 DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
 DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
@@ -1047,7 +1047,7 @@ DefineButton( { Pos = 2, Level = 1, Icon = "icon-cancel",
 DefineButton( { Pos = 1, Level = 1, Icon = "icon-orc-town-hall-salvage",
    AlwaysShow = true,
    Action = "callback", Value = function(townHall)
-	if (GetPlayerData(GetThisPlayer(), "Resources", "wood") < GetUnitTypeData("unit-orc-town-hall", "Costs", "wood")) then
+	if ((GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-orc-town-hall") < 2) and (GetPlayerData(GetThisPlayer(), "Resources", "wood") < GetUnitTypeData("unit-orc-town-hall", "Costs", "wood"))) then
          AddMessage("Refusing to salvage town hall, not enough wood to rebuild!!!")
          return
 	end			
@@ -1079,7 +1079,7 @@ DefineButton( { Pos = 2, Level = 1, Icon = "icon-cancel",
 DefineButton( { Pos = 1, Level = 1, Icon = "icon-human-town-hall-salvage",
    AlwaysShow = true,
    Action = "callback", Value = function(townHall)
-	if (GetPlayerData(GetThisPlayer(), "Resources", "wood") < GetUnitTypeData("unit-orc-town-hall", "Costs", "wood")) then
+	if ((GetPlayerData(GetThisPlayer(), "UnitTypesCount", "unit-human-town-hall") < 2) and (GetPlayerData(GetThisPlayer(), "Resources", "wood") < GetUnitTypeData("unit-human-town-hall", "Costs", "wood"))) then
          AddMessage("Refusing to salvage town hall, not enough wood to rebuild!!!")
 	return
 	end
@@ -1468,7 +1468,7 @@ CopyUnitType("unit-human-town-hall", "unit-human-first-town-hall")
 UnitTypeFiles["unit-human-first-town-hall"] = UnitTypeFiles["unit-human-town-hall"]
 DefineUnitType("unit-human-first-town-hall", {
    Name = "Town hall",
-   Costs = {"time", 10, "gold", 400, "wood", 400},
+   Costs = {"time", 10, "gold", 1000, "wood", 700},
    AiBuildingRules = townHallBuildingRules,
    BuildingRules = townHallBuildingRules,
    OnReady = function (unit)
@@ -1506,7 +1506,7 @@ CopyUnitType("unit-orc-town-hall", "unit-orc-first-town-hall")
 UnitTypeFiles["unit-orc-first-town-hall"] = UnitTypeFiles["unit-orc-town-hall"]
 DefineUnitType("unit-orc-first-town-hall", {
    Name = "Town hall",
-   Costs = {"time", 10, "gold", 400, "wood", 400},
+   Costs = {"time", 10, "gold", 1000, "wood", 700},
    AiBuildingRules = townHallBuildingRules,
    BuildingRules = townHallBuildingRules,
    OnReady = function (unit)
