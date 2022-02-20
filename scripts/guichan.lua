@@ -530,7 +530,12 @@ function RunSinglePlayerGameMenu()
               end
             end
           end
-          unit = CreateUnit(playerUnitName, 0, {posx - 1, posy - 1})
+	  local i=0
+	  while( i < 5 )
+		do
+		   unit = CreateUnit(playerUnitName, 0, {posx - 1, posy - 1})
+		   i=i+1
+		end
           if FindNextResource(unit, "gold", 6) == nil then
             done = false
           end
@@ -615,7 +620,7 @@ function RunSinglePlayerGameMenu()
   resources:setSize(76, 10)
 
   menu:addLabel("~<Units:~>", offx + 320 - 112 - 8, offy + (5 + 90) - 10, Fonts["game"], false)
-  numunits = menu:addDropDown({"Map Default", "One Peasant Only"}, offx + 320 - 112 - 8, offy + 5 + 90,
+  numunits = menu:addDropDown({"Map Default", "Peasants Only"}, offx + 320 - 112 - 8, offy + 5 + 90,
     function(dd) end)
   numunits:setSize(95, 10)
 
