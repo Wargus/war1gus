@@ -31,16 +31,16 @@
 townHallBuildingRules = nil
 if (preferences.AllowMultipleTownHalls) then
   townHallBuildingRules = {
-     { "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" },
-       "distance", { Distance = 3, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
+     { "distance", { Distance = 4, DistanceType = ">", Type = "unit-gold-mine" },
+       "distance", { Distance = 4, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
 else
   townHallBuildingRules = {
           { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
             "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
 	    "has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
 	    "has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
-            "distance", { Distance = 3, DistanceType = ">", Type = "unit-gold-mine" },
-            "distance", { Distance = 3, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
+            "distance", { Distance = 4, DistanceType = ">", Type = "unit-gold-mine" },
+            "distance", { Distance = 4, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
 end
 
 
