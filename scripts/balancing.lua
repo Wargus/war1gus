@@ -1738,3 +1738,233 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-orc-CatapultSpeed",
   {"Level", 1},
   {"PiercingDamage", 1},
   {"apply-to", "unit-human-archer"}, {"apply-to", "unit-human-guard-tower"})
+
+-----------------------------------------------------------------------
+-- neutral buildings
+-----------------------------------------------------------------------
+
+local DefineMagmaRiftIcon = function()
+   local iconname
+   if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+      iconname = "contrib/graphics/ui/icon-magma-rift.png"
+   else
+      iconname = "contrib/graphics/ui/icon-swamp-magma-rift.png"
+   end
+   local MagmaRiftIcon = CIcon:New("icon-magma-rift")
+   MagmaRiftIcon.G = CPlayerColorGraphic:New(iconname, 27, 19)
+   MagmaRiftIcon.Frame = 0
+end
+DefineMagmaRiftIcon()
+OnTilesetChangeFunctions:add(DefineMagmaRiftIcon)
+
+local DefineSlimePondIcon = function()
+   local iconname
+   if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+      iconname = "contrib/graphics/ui/icon-slime-pond.png"
+   else
+      iconname = "contrib/graphics/ui/icon-swamp-slime-pond.png"
+   end
+   local SlimePondIcon = CIcon:New("icon-slime-pond")
+   SlimePondIcon.G = CPlayerColorGraphic:New(iconname, 27, 19)
+   SlimePondIcon.Frame = 0
+end
+DefineSlimePondIcon()
+OnTilesetChangeFunctions:add(DefineSlimePondIcon)
+
+local DefineWindmillIcon = function()
+   local iconname
+   if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+      iconname = "contrib/graphics/ui/icon-windmill.png"
+   else
+      iconname = "contrib/graphics/ui/icon-swamp-windmill.png"
+   end
+   local WindmillIcon = CIcon:New("icon-windmill")
+   WindmillIcon.G = CPlayerColorGraphic:New(iconname, 27, 19)
+   WindmillIcon.Frame = 0
+end
+DefineWindmillIcon()
+OnTilesetChangeFunctions:add(DefineWindmillIcon)
+
+local DefineRuinIcon = function()
+   local iconname
+   if war1gus.tileset == "forest" or war1gus.tileset == "forest_campaign" then
+      iconname = "contrib/graphics/ui/icon-ruin.png"
+   else
+      iconname = "contrib/graphics/ui/icon-swamp-ruin.png"
+   end
+   local RuinIcon = CIcon:New("icon-ruin")
+   RuinIcon.G = CPlayerColorGraphic:New(iconname, 27, 19)
+   RuinIcon.Frame = 0
+end
+DefineRuinIcon()
+OnTilesetChangeFunctions:add(DefineRuinIcon)
+
+
+
+DefineAnimations(
+   "animations-magma-rift", 
+   {Still = {"frame 0", "wait 9", "frame 1", "wait 9", "frame 2", "wait 9", "frame 3", "wait 9", "frame 4", "wait 9", "frame 5", "wait 9", "frame 6", "wait 9", "frame 7", "wait 9", "frame 8", "wait 9", "frame 9", "wait 9", "frame 10", "wait 9", "frame 11", "wait 9", "frame 12", "wait 9", "frame 13", "wait 9", "frame 14", "wait 9", "frame 15", "wait 9", "frame 16", "wait 9"},
+    Death = {"frame 0", "wait 1"}}
+)
+
+DefineUnitType("unit-magma-rift", { Name = _("Magma Rift"),
+  Image = {
+     "file", "contrib/graphics/buildings/magma_rift.png",
+     "size", {64, 64}
+  },
+  Animations = "animations-magma-rift", Icon = "icon-magma-rift",
+  Costs = {"time", 300, "gold", 500, "wood", 450},
+  RepairHp = 4,
+  RepairCosts = {"gold", 1, "wood", 1},
+  Speed = 0,
+  HitPoints = 13000,
+  DrawLevel = 40,
+  TileSize = {4, 4}, BoxSize = {64, 64},
+  SightRange = 9, ComputerReactionRange = 6, PersonReactionRange = 6,
+  Armor = 25,
+  Priority = 0, AnnoyComputerFactor = 0,
+  Points = 200,
+  Corpse = "unit-destroyed-4x4-place",
+  ExplodeWhenKilled = "missile-building-collapse",
+  Type = "land",
+  CanAttack = false,
+  Building = true, VisibleUnderFog = true,
+  DetectCloak = true,
+  Elevated = true,
+
+  Sounds = {
+    "dead", "building destroyed"} } )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-fire-elemental",
+   --Action = "train-unit", Value = "unit-fire-elemental",
+   Key = "f", Hint = "TRAIN ~!FIRE ELEMENTAL",
+   ForUnit = {"unit-magma-rift"} } )
+ 
+DefineAllow("unit-magma-rift", "AAAAAAAAAAAAAAAA")
+
+
+
+DefineAnimations(
+   "animations-slime-pond", 
+   {Still = {"frame 0", "wait 9", "frame 1", "wait 9", "frame 2", "wait 9", "frame 3", "wait 9", "frame 4", "wait 9", "frame 5", "wait 9", "frame 6", "wait 9", "frame 7", "wait 9", "frame 8", "wait 9", "frame 9", "wait 9", "frame 10", "wait 9", "frame 11", "wait 9", "frame 12", "wait 9", "frame 13", "wait 9", "frame 14", "wait 9", "frame 15", "wait 9", "frame 16", "wait 9","frame 17", "wait 9","frame 18", "wait 9","frame 19", "wait 9","frame 20", "wait 9"},
+    Death = {"frame 0", "wait 1"}}
+)
+
+DefineUnitType("unit-slime-pond", { Name = _("Slime Pond"),
+  Image = {
+     "file", "contrib/graphics/buildings/slime_pond.png",
+     "size", {64, 64}
+  },
+  Animations =   "animations-slime-pond",  Icon = "icon-slime-pond",
+  Costs = {"time", 300, "gold", 500, "wood", 450},
+  RepairHp = 4,
+  RepairCosts = {"gold", 1, "wood", 1},
+  Speed = 0,
+  HitPoints = 13000,
+  DrawLevel = 40,
+  TileSize = {4, 4}, BoxSize = {64, 64},
+  SightRange = 9, ComputerReactionRange = 6, PersonReactionRange = 6,
+  Armor = 25,
+  Priority = 0, AnnoyComputerFactor = 0,
+  Points = 200,
+  Corpse = "unit-destroyed-4x4-place",
+  ExplodeWhenKilled = "missile-building-collapse",
+  Type = "land",
+  CanAttack = false,
+  Building = true, VisibleUnderFog = true,
+  DetectCloak = true,
+  Elevated = true,
+
+  Sounds = {
+    "dead", "building destroyed"} } )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-slime",
+   --Action = "train-unit", Value = "unit-slime",
+   Key = "s", Hint = "TRAIN ~!SLIME",
+   ForUnit = {"unit-slime-pond"} } )
+ 
+DefineAllow("unit-slime-pond", "AAAAAAAAAAAAAAAA")
+
+
+DefineAnimations(
+   "animations-windmill", 
+   {Still = {"frame 0", "wait 9", "frame 1", "wait 9", "frame 2", "wait 9", "frame 3", "wait 9"},
+    Death = {"frame 0", "wait 1"}}
+)
+
+DefineUnitType("unit-windmill", { Name = _("Windmill"),
+  Image = {
+     "file", "contrib/graphics/buildings/windmill.png",
+     "size", {64, 64}
+  },
+  Animations =   "animations-windmill",  Icon = "icon-windmill",
+  Costs = {"time", 300, "gold", 500, "wood", 450},
+  Supply = 25,
+  RepairHp = 4,
+  RepairCosts = {"gold", 1, "wood", 1},
+  Speed = 0,
+  HitPoints = 13000,
+  DrawLevel = 40,
+  TileSize = {4, 4}, BoxSize = {64, 64},
+  SightRange = 9, ComputerReactionRange = 6, PersonReactionRange = 6,
+  Armor = 25,
+  Priority = 0, AnnoyComputerFactor = 0,
+  Points = 200,
+  Corpse = "unit-destroyed-4x4-place",
+  ExplodeWhenKilled = "missile-building-collapse",
+  Type = "land",
+  CanAttack = false,
+  Building = true, VisibleUnderFog = true,
+  DetectCloak = true,
+  Elevated = true,
+
+  Sounds = {
+    "dead", "building destroyed"} } )
+ 
+DefineAllow("unit-windmill", "AAAAAAAAAAAAAAAA")
+
+DefineAnimations(
+   "animations-ruin", 
+   {Still = {"frame 0", "wait 5"},
+    Death = {"frame 0", "wait 1"}}
+)
+
+DefineUnitType("unit-ruin", { Name = _("Ruin"),
+  Image = {
+     "file", "contrib/graphics/buildings/ruin.png",
+     "size", {48, 48}
+  },
+  Animations =   "animations-ruin",  Icon = "icon-ruin",
+  Costs = {"time", 300, "gold", 500, "wood", 450},
+  RepairHp = 4,
+  RepairCosts = {"gold", 1, "wood", 1},
+  Speed = 0,
+  HitPoints = 13000,
+  DrawLevel = 40,
+  TileSize = {2, 2}, BoxSize = {32, 32},
+  SightRange = 9, ComputerReactionRange = 6, PersonReactionRange = 6,
+  Armor = 25,
+  Priority = 0, AnnoyComputerFactor = 0,
+  Points = 200,
+  Corpse = "unit-destroyed-4x4-place",
+  ExplodeWhenKilled = "missile-building-collapse",
+  Type = "land",
+  CanAttack = false,
+  Building = true, VisibleUnderFog = true,
+  DetectCloak = true,
+  Elevated = true,
+
+  Sounds = {
+    "dead", "building destroyed"} } )
+
+DefineButton( { Pos = 1, Level = 0, Icon = "icon-brigand",
+   --Action = "train-unit", Value = "unit-brigand",
+   Key = "b", Hint = "TRAIN ~!BRIGAND",
+   ForUnit = {"unit-ruin"} } )
+   
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-ogre",
+   --Action = "train-unit", Value = "unit-ogre",
+   Key = "b", Hint = "TRAIN ~!BRIGAND",
+   ForUnit = {"unit-ruin"} } )
+
+DefineAllow("unit-ruin", "AAAAAAAAAAAAAAAA")
