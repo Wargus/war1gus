@@ -231,12 +231,16 @@ DefineUnitType("unit-gold-mine", { Name = "Gold Mine",
 --    "attack", "gold-mine-attack"
 }} )
 
+local dungeon = CIcon:New("icon-dungeon-entrance")
+dungeon.G = CPlayerColorGraphic:New("contrib/graphics/ui/icon-dungeon-entrance.png", 27, 19)
+dungeon.Frame = 0
+
 DefineUnitType(
    "unit-dungeon-entrance",
    { Name = "Exit to Forest",
      Image = {"size", {64, 64},
               "file", "graphics/tilesets/dungeon/neutral/buildings/entrance_4x4.png"},
-     Animations = "animations-building", Icon = "icon-gold-mine",
+     Animations = "animations-building", Icon = "icon-dungeon-entrance",
      NeutralMinimapColor = {200, 200, 200},
      Neutral = true,
   Costs = {"time", 150},
