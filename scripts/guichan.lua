@@ -577,7 +577,11 @@ function RunSinglePlayerGameMenu()
       Map.Info.Description = "Random map"
       Map.Info.MapWidth = 128
       Map.Info.MapHeight = 128
-      LoadTileModels("scripts/tilesets/forest.lua")
+      if (math.random(2) > 1) then
+        LoadTileModels("scripts/tilesets/forest.lua")
+      else
+        LoadTileModels("scripts/tilesets/swamp.lua")
+      end 
       StartEditor(nil)
       RunInEditorMenu = OldRunInEditorMenu
       GetMapInfo(mapname)
