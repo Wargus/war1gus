@@ -418,8 +418,8 @@ end
 
 function RunSelectScenarioMenu()
   buttonStatut = 0
-  local menu = WarMenu(nil, panel(5), false)
-  menu:setSize(176, 176)
+  local menu = WarMenu(nil, panel(1), {180,180})
+  menu:setSize(180, 180)
   menu:setPosition((Video.Width - 176) / 2, (Video.Height - 176) / 2)
   menu:setDrawMenusUnder(true)
 
