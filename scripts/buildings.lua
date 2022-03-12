@@ -252,7 +252,7 @@ DefineUnitType(
   SightRange = 1,
   Armor = 20, BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
   Priority = 0,
-  Corpse = "unit-destroyed-4x4-place",
+  Corpse = "unit-destroyed-entrance",
   ExplodeWhenKilled = "missile-explosion",
   Type = "land",
   Building = true, VisibleUnderFog = true,
@@ -265,6 +265,39 @@ DefineUnitType(
     "help", "gold-mine-help",
     "dead", "building destroyed",
 }} )
+
+DefineAnimations(
+"collapse",
+   {Death = {"unbreakable begin", "frame 0", "wait 600", "label loop",
+    "wait 100", "exact-frame 0", "goto loop", "unbreakable end", "wait 1"}})
+
+DefineUnitType("unit-destroyed-entrance",
+{
+	Name = "destroyed-entrance",
+	Image = {"size", {32, 48},
+	   "file", "contrib/graphics/buildings/entrance_collapse_2x3.png"},
+	Animations = "collapse",
+	Icon = "icon-peasant",
+	Speed = 0,
+	HitPoints = 255,
+	DrawLevel = 10,
+	TileSize = {2, 3}, BoxSize = {34, 50},
+	SightRange = 0,
+	Indestructible = 1,
+	IsNotSelectable = true,
+	ComputerReactionRange = 0,
+	PersonReactionRange = 0,
+	AnnoyComputerFactor = -100,
+	AiAdjacentRange = 0,
+	Revealer = false,
+	Decoration = true,
+	BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+	Priority = 0,
+	Type = "land",
+	Building = true,
+	VisibleUnderFog = true,
+	Sounds = {} 
+} )
 
 DefineUnitType(
    "unit-start-location",
