@@ -244,7 +244,8 @@ DefineDefaultResourceNames(
 
 DefineDefaultResourceAmounts(
    _("gold"), 100000,
-   _("wood"), 50000)
+   _("wood"), 50000,
+   _("lumber"), 50000)
 
 DefineDefaultResourceMaxAmounts(-1, -1, -1, -1, -1, -1, -1)
 
