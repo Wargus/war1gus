@@ -404,10 +404,10 @@ Control Todo[] = {
 {CS,0,"dungeons/dungeon2", 103 __},
 {CS,0,"dungeons/dungeon3", 105 __},
 {CS,0,"dungeons/dungeon4", 107 __},
-{CS,0,"dungeons/dungeon5", 109 __},
-{CS,0,"dungeons/dungeon6", 111 __},
-{CS,0,"dungeons/dungeon7", 113 __},
-{CS,0,"dungeons/dungeon8", 115 __},
+//{CS,0,"dungeons/dungeon5", 109 __}, this 4x maps are exactly the same as dungeon4, they clutter maplist providing no benefit
+//{CS,0,"dungeons/dungeon6", 111 __},
+//{CS,0,"dungeons/dungeon7", 113 __},
+//{CS,0,"dungeons/dungeon8", 115 __},
 
 // Tilesets
 {T,0,"forest/terrain",										 190 __},
