@@ -60,25 +60,25 @@ DefineUnitType("unit-water-elemental",	{SightRange = 6})
 -- Cost Rebalancing Buildings
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-human-town-hall",		{Costs = {"time", 500, "gold", 1000,		"wood", 700},Armor = 10, Supply = 3})
-DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 500, "gold", 1000,		"wood", 700},Armor = 10, Supply = 3})
+DefineUnitType("unit-human-town-hall",		{Costs = {"time", 500, "gold", 1000,	"wood", 700},Armor = 10, Supply = 3})
+DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 500, "gold", 1000,	"wood", 700},Armor = 10, Supply = 3})
 
 DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
 DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
 DefineUnitType("unit-human-barracks",		{Costs = {"time", 400, "gold", 600, 	"wood", 500},Armor = 10})
 DefineUnitType("unit-orc-barracks",			{Costs = {"time", 400, "gold", 600, 	"wood", 500},Armor = 10})
-DefineUnitType("unit-human-lumber-mill",	{Costs = {"time", 250, "gold", 600, 	"wood", 150},Armor = 5})
-DefineUnitType("unit-orc-lumber-mill",		{Costs = {"time", 250, "gold", 600, 	"wood", 150},Armor = 5})
+DefineUnitType("unit-human-lumber-mill",	{Costs = {"time", 250, "gold", 600, 	"wood", 150},Armor = 0})
+DefineUnitType("unit-orc-lumber-mill",		{Costs = {"time", 250, "gold", 600, 	"wood", 150},Armor = 0})
 
 DefineUnitType("unit-human-stable",		  	{Costs = {"time", 300, "gold", 1000,	"wood", 400},Armor = 0})
 DefineUnitType("unit-orc-kennel",			{Costs = {"time", 300, "gold", 1000, 	"wood", 400},Armor = 0})
-DefineUnitType("unit-human-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},Armor = 5})
-DefineUnitType("unit-orc-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},Armor = 5})
+DefineUnitType("unit-human-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},Armor = 0})
+DefineUnitType("unit-orc-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},Armor = 0})
 
 DefineUnitType("unit-human-church",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},Armor = 5})
 DefineUnitType("unit-orc-temple",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},Armor = 5})
-DefineUnitType("unit-human-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 10})
-DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 10})
+DefineUnitType("unit-human-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 5})
+DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 5})
 
 DefineUnitType("unit-wall",					{Costs = {"time", 30,  "gold", 0,		"wood", 50}, Armor = 20})
 
@@ -132,11 +132,13 @@ DefineUnitType("unit-grunt", {
 
 DefineUnitType("unit-knight", {
                   Demand = 2,
-                  Armor = 1
+                  Armor = 1,
+				  BasicDamage = 11
 })
 DefineUnitType("unit-raider", {
                   Demand = 2,
                   Armor = 0,
+				  BasicDamage = 11,
 				  PiercingDamage = 2
 })
 
@@ -145,13 +147,15 @@ DefineUnitType("unit-raider", {
 -----------------------------------------------------------------------
 
 DefineUnitType("unit-archer", {
+				  HitPoints = 50,
                   PiercingDamage = 1,
-                  BasicDamage = 6,
+                  BasicDamage = 7,
                   Armor = 0
 })
 DefineUnitType("unit-spearman", {
+				  HitPoints = 50,
                   PiercingDamage = 2,
-                  BasicDamage = 6,
+                  BasicDamage = 7,
                   Armor = 0
 })
 
@@ -166,7 +170,7 @@ DefineUnitType("unit-human-catapult", {
 		  PoisonDrain = 0,
                   organic = false,
 				  Corpse = nil,
-                  BasicDamage = 100,
+                  BasicDamage = 80,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
 				  GroundAttack = true,
@@ -178,7 +182,7 @@ DefineUnitType("unit-orc-catapult", {
 		  PoisonDrain = 0,
                   organic = false,
 				  Corpse = nil,
-                  BasicDamage = 100,
+                  BasicDamage = 80,
                   MaxAttackRange = 8,
                   MinAttackRange = 3,
 				  GroundAttack = true,
@@ -623,10 +627,12 @@ local upgrades = {
    {orc = {"axe1", {"grunt", "raider"}, "axe2"},
     human = {"sword1", {"footman", "knight"}, "sword2"},
     cost = {   1200,   750,     400,     0,     0,     0,     0},
+	modifier = {"PiercingDamage", -1}, -- == 2-1 =+1 this means the benefit is +1, instead +2
     },
    {orc = {"axe2", {"grunt", "raider"}, "axe3"},
     human = {"sword2", {"footman", "knight"}, "sword3"},
     cost = {   1200,   1500,     800,     0,     0,     0,     0},
+	modifier = {"PiercingDamage", -1},
     },
 
    {orc = {"spear1", {"spearman", "watch-tower"}, "spear2"},
@@ -641,10 +647,12 @@ local upgrades = {
    {orc = {"orc-shield1", {"grunt", "raider"}, "orc-shield2"},
     human = {"human-shield1", {"footman", "knight"}, "human-shield2"},
     cost = {   1200,   750, 	400,     0,     0,     0,     0},
+	modifier = {"Armor", -1},
    },  
    {orc = {"orc-shield2", {"grunt", "raider"}, "orc-shield3"},
     human = {"human-shield2", {"footman", "knight"}, "human-shield3"},
     cost = {   1200,   1500,     800,     0,     0,     0,     0}, 
+	modifier = {"Armor", -1},
     },
 
    {orc = {"wolves1", {"raider"}},
@@ -663,7 +671,7 @@ local upgrades = {
 
    {orc = {"unholy-armor", {"necrolyte"}},
     human = {"invisibility", {"cleric"}},
-    cost = {   120,   750,     0,     0,     0,     0,     0}
+    cost = {   200,   1500,     0,     0,     0,     0,     0}
 	},
 }
 
