@@ -418,15 +418,15 @@ end
 
 function RunSelectScenarioMenu()
   buttonStatut = 0
-  local menu = WarMenu(nil, panel(5), false)
-  menu:setSize(176, 176)
+  local menu = WarMenu(nil, panel(1), {180,180})
+  menu:setSize(180, 180)
   menu:setPosition((Video.Width - 176) / 2, (Video.Height - 176) / 2)
   menu:setDrawMenusUnder(true)
 
   menu:addLabel("Select scenario", 88, 4)
 
   local browser = menu:addBrowser("maps/", "^.*%.smp%.?g?z?$",
-    12, 70, 150, 54, mapname)
+    12, 13, 160, 136, mapname)
 
   local l = menu:addLabel(browser:getSelectedItem(), 12, 130, Fonts["game"], false)
 
@@ -488,7 +488,7 @@ function RunSinglePlayerGameMenu()
 
   menu:addLabel("Scenario:", offx + 8, offy + 150, Fonts["game"], false)
   mapl = menu:addLabel(string.sub(mapname, 6), offx + 8, offy + 150 + 12, Fonts["game"], false)
-  descriptionl = menu:addLabel("descriptionl", offx + 8 + 35, offy + 150, Fonts["game"], false)
+  descriptionl = menu:addLabel("descriptionl", offx + 8, offy + 150 + 24, Fonts["game"], false)
 
   menu:addLabel("~<Single Player Game Setup~>", offx + 320/2 + 6, offy + 66)
   menu:addFullButton("~!Random Scenario", "r", offx + 320 - 119 - 8, offy + 150 + 18 * -2,
@@ -577,7 +577,11 @@ function RunSinglePlayerGameMenu()
       Map.Info.Description = "Random map"
       Map.Info.MapWidth = 128
       Map.Info.MapHeight = 128
-      LoadTileModels("scripts/tilesets/forest.lua")
+      if (math.random(2) > 1) then
+        LoadTileModels("scripts/tilesets/forest.lua")
+      else
+        LoadTileModels("scripts/tilesets/swamp.lua")
+      end 
       StartEditor(nil)
       RunInEditorMenu = OldRunInEditorMenu
       GetMapInfo(mapname)
