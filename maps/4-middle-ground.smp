@@ -3,4 +3,4 @@
 -- File licensed under the GNU GPL version 2.
 
 DefinePlayerTypes("person", "person", "person", "person", "nobody", "nobody", "nobody", "nobody", "nobody", "nobody", "nobody", "nobody", "nobody", "computer")
-PresentMap("Middle Ground", 4, 128, 128, 3)
+PresentMap("Middle Ground", 4, 128, 128, 4)
