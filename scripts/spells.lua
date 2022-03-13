@@ -201,7 +201,7 @@ DefineSpell("spell-raise-dead",
 
 DefineSpell("spell-unholy-armor",
 	"showname", "unholyarmor",
-	"manacost", 40,
+	"manacost", 55,
 	"range", 8,
 	"target", "unit",
 	"action", {{"lua-callback", SpellUnholyArmor},
