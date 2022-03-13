@@ -256,11 +256,10 @@ RuinParts TilesetRuinParts[] = {
 	{ "forest-wall-construction",{ 34 _15 } },
 	{ "swamp-wall-construction",{ 34 _15 } },
 	{ "dungeon-wall-construction",{ 22 _15 } },
-	{ "dungeon-entrance-4x4",
-	  {0xb5, 0xcd, 0xce, 0x8a,
-	   0x38, 0x49, 0x4a, 0x9f,
-	   0x47, 0x64, 0x65, 0x88,
-       0x61, 0x75, 0x76, 0x60} },
+	{ "dungeon-entrance-2x3",
+	  {0x49, 0x4a,
+	   0x64, 0x65,
+           0x75, 0x76} },
 };
 
 char* ArchiveDir;
@@ -404,10 +403,10 @@ Control Todo[] = {
 {CS,0,"dungeons/dungeon2", 103 __},
 {CS,0,"dungeons/dungeon3", 105 __},
 {CS,0,"dungeons/dungeon4", 107 __},
-{CS,0,"dungeons/dungeon5", 109 __},
-{CS,0,"dungeons/dungeon6", 111 __},
-{CS,0,"dungeons/dungeon7", 113 __},
-{CS,0,"dungeons/dungeon8", 115 __},
+//{CS,0,"dungeons/dungeon5", 109 __}, this 4x maps are exactly the same as dungeon4, they clutter maplist providing no benefit
+//{CS,0,"dungeons/dungeon6", 111 __},
+//{CS,0,"dungeons/dungeon7", 113 __},
+//{CS,0,"dungeons/dungeon8", 115 __},
 
 // Tilesets
 {T,0,"forest/terrain",										 190 __},
