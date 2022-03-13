@@ -235,7 +235,7 @@ DefineUnitType(
    "unit-dungeon-entrance",
    { Name = "Exit to Forest",
      Image = {"size", {64, 64},
-              "file", "graphics/tilesets/dungeon/neutral/buildings/entrance_4x4.png"},
+              "file", "contrib/graphics/buildings/entrance_2x3.png"},
      Animations = "animations-building", Icon = "icon-gold-mine",
      NeutralMinimapColor = {200, 200, 200},
      Neutral = true,
