@@ -84,8 +84,8 @@ DefineUnitType("unit-wall",					{Costs = {"time", 30,  "gold", 0,		"wood", 50}, 
 
 DefineUnitType("unit-gold-mine",			{MaxOnBoard = 2})
 
---DefineDependency("unit-human-barracks", { "unit-human-farm"} )
---DefineDependency("unit-orc-barracks", { "unit-orc-farm"} )
+DefineDependency("unit-human-stable", { "unit-human-blacksmith"} )
+DefineDependency("unit-orc-kennel", { "unit-orc-blacksmith"} )
 DefineDependency("unit-human-lumber-mill", { "unit-human-barracks"} )
 DefineDependency("unit-orc-lumber-mill", { "unit-orc-barracks"} )
 
