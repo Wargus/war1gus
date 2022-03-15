@@ -264,7 +264,7 @@ function RunJoinIpMenu()
 end
 
 function CreateOnlineLobby(map, numplayers, isserver)
-   war1gus.InCampaign = false
+   war1gus.InCampaign = falses
    local menu
    local playerTable = {}
    local playerNames = {"", "AI"}
@@ -294,6 +294,7 @@ function CreateOnlineLobby(map, numplayers, isserver)
          if name ~= "" then
             local no = Hosts[i - 1].PlyNr
             local dd = menu.player_dropdown[no + 1]
+            menu.player_team[no + 1]:setSelected(ServerSetupState.ServerGameSettings.Presets[no].Team + 1)
             if playerNames[dd:getSelected() + 1] ~= name then
                -- select this name in the appropriate drop down
                local j = 1
@@ -385,9 +386,11 @@ function CreateOnlineLobby(map, numplayers, isserver)
       end
    end
    
+   local teams = {""}
    for i=1,PlayerMax do
       if Map.Info.PlayerType[i - 1] == PlayerPerson then
          playerTable[i] = HBox({
+            LLabel(tostring(i) .. ":", "game"),
             LDropDown(playerNames, function(dd)
                local newIdx = dd:getSelected()
                if newIdx < 2 then
@@ -426,9 +429,20 @@ function CreateOnlineLobby(map, numplayers, isserver)
                assignMissingHumanPlayersToDropdowns()
                calculateAiPlayers()
                NetworkServerResyncClients()
-            end):id("player_dropdown[" .. i .. "]"):withWidth(120),
+            end):id("player_dropdown[" .. i .. "]"):withWidth(100),
+            LDropDown(teams, function(dd)
+               local playerIndex
+               for i=1,PlayerMax do
+                  if menu.player_team[i] == dd then
+                     ServerSetupState.ServerGameSettings.Presets[i - 1].Team = dd:getSelected() - 1
+                     NetworkServerResyncClients()
+                     break
+                  end
+               end
+            end):id("player_team[" .. i .. "]"):withWidth(Fonts["large"]:Width(tostring(PlayerMax))* 2),
             LLabel("", "game"):id("player_status[" .. i .. "]"),
          })
+         teams[#teams + 1] = tostring(#teams)
       else
          playerTable[i] = LLabel(_("Player") .. " " .. i, "game")
       end
@@ -438,114 +452,120 @@ function CreateOnlineLobby(map, numplayers, isserver)
       LFiller(),
       HBox({ -- screen split
       VBox({ -- game properties
-      HBox({ _("Map") }),
-      HBox({ LLabel(_("File:"), "game"), LLabel(map, "game") }),
-      HBox({ LLabel(_("Players:"), "game"), LLabel(numplayers, "game") }),
-      HBox({ LLabel(_("Description:"), "game"), LLabel(_("Unknown map"), "game") }),
-      
-      VBox({ -- game options
-      LCheckBox(_("Fog of war"), function(dd)
-         ServerSetupState.FogOfWar = bool2int(dd:isMarked())
-         NetworkServerResyncClients()
-      end):id("option_fow"),
-      HBox({
-         LLabel(_("Terrain:"), "game"),
-         LDropDown({_("Hidden"), _("Known"), _("Explored")}, function(dd) 
-            ServerSetupState.RevealMap = dd:getSelected()
-            NetworkServerResyncClients()
-         end):id("option_terrain"):withWidth(120),
-      }),
-      HBox({
-         LLabel(_("~<Your Race:~>"), "game"),
-         LDropDown({_("Map Default"), _("Human"), _("Orc")}, function(dd)
-            if isserver then
-               ServerSetupState.Race[0] = dd:getSelected() - 1
+         HBox({ _("Map") }),
+         HBox({ LLabel(_("File:"), "game"), LLabel(map, "game") }),
+         HBox({ LLabel(_("Players:"), "game"), LLabel(numplayers, "game") }),
+         HBox({ LLabel(_("Description:"), "game"), LLabel(_("Unknown map"), "game") }),
+         
+         VBox({ -- game options
+            LCheckBox(_("Fog of war"), function(dd)
+               ServerSetupState.FogOfWar = bool2int(dd:isMarked())
                NetworkServerResyncClients()
+            end):id("option_fow"),
+            HBox({
+               LLabel(_("Terrain:"), "game"),
+               LDropDown({_("Hidden"), _("Known"), _("Explored")}, function(dd) 
+                  ServerSetupState.RevealMap = dd:getSelected()
+                  NetworkServerResyncClients()
+               end):id("option_terrain"):withWidth(120),
+            }),
+            HBox({
+               LLabel(_("~<Your Race:~>"), "game"),
+               LDropDown({_("Map Default"), _("Human"), _("Orc")}, function(dd)
+                  if isserver then
+                     ServerSetupState.Race[0] = dd:getSelected() - 1
+                     NetworkServerResyncClients()
+                  else
+                     LocalSetupState.Race[Hosts[NetLocalHostsSlot].PlyNr] = race:getSelected() - 1
+                  end
+               end):id("option_race"):withWidth(120),
+            }),
+            HBox({
+               LLabel(_("Units:"), "game"),
+               LDropDown({_("Map Default"), _("One Peasant Only")}, function(dd)
+                  ServerSetupState.UnitsOption = dd:getSelected() - 1
+                  NetworkServerResyncClients()
+               end):id("option_units"):withWidth(120),
+            }),
+            HBox({
+               LLabel(_("Resources:"), "game"),
+               LDropDown({_("Map Default"), _("Low"), _("Medium"), _("High")}, function(dd)
+                  ServerSetupState.ResourcesOption = dd:getSelected() - 1
+                  NetworkServerResyncClients()
+               end):id("option_resources"):withWidth(120),
+            }),
+            LCheckBox(_("Dedicated AI Server"), function (dd)
+               if dd:isMarked() then
+                  -- 2 == closed
+                  ServerSetupState.CompOpt[0] = 2
+               else
+                  -- 0 == available
+                  ServerSetupState.CompOpt[0] = 0
+               end
+               NetworkServerResyncClients()
+            end):id("option_dedicated_ai_server"),
+         }), -- end of game options
+      }), -- end of game properties
+      VBox(playerTable)
+      }):withPadding(2, true), -- end of screen split
+      HBox({
+         LButton(_("Cancel (~<Esc~>)"), "escape", function()
+            InitGameSettings()
+            if isserver then
+               OnlineService.stopadvertising()
             else
-               LocalSetupState.Race[Hosts[NetLocalHostsSlot].PlyNr] = race:getSelected() - 1
+               NetworkDetachFromServer()
             end
-         end):id("option_race"):withWidth(120),
+            menu:stop()
+         end),
+         LCheckBox(_("~!Ready"), function(dd)
+            LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(dd:isMarked())
+         end):id("checkbox_ready"),
+         LButton(_("~!Start Game"), "s", function()
+            NetworkServerStartGame()
+            NetworkGamePrepareGameSettings()
+            RunMap(map)
+            menu:stop()
+         end):id("button_start_game"),
       }),
-      HBox({
-         LLabel(_("Units:"), "game"),
-         LDropDown({_("Map Default"), _("One Peasant Only")}, function(dd)
-            ServerSetupState.UnitsOption = dd:getSelected() - 1
-            NetworkServerResyncClients()
-         end):id("option_units"):withWidth(120),
-      }),
-      HBox({
-         LLabel(_("Resources:"), "game"),
-         LDropDown({_("Map Default"), _("Low"), _("Medium"), _("High")}, function(dd)
-            ServerSetupState.ResourcesOption = dd:getSelected() - 1
-            NetworkServerResyncClients()
-         end):id("option_resources"):withWidth(120),
-      }),
-      LCheckBox(_("Dedicated AI Server"), function (dd)
-         if dd:isMarked() then
-            -- 2 == closed
-            ServerSetupState.CompOpt[0] = 2
-         else
-            -- 0 == available
-            ServerSetupState.CompOpt[0] = 0
-         end
-         NetworkServerResyncClients()
-      end):id("option_dedicated_ai_server"),
-   }), -- end of game options
-}), -- end of game properties
-VBox(playerTable)
-}), -- end of screen split
-HBox({
-   LButton(_("Cancel (~<Esc~>)"), "escape", function()
-      InitGameSettings()
-      if isserver then
-         OnlineService.stopadvertising()
-      else
-         NetworkDetachFromServer()
-      end
-      menu:stop()
-   end),
-   LCheckBox(_("~!Ready"), function(dd)
-      LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(dd:isMarked())
-   end):id("checkbox_ready"),
-   LButton(_("~!Start Game"), "s", function()
-      NetworkServerStartGame()
-      NetworkGamePrepareGameSettings()
-      RunMap(map)
-      menu:stop()
-   end):id("button_start_game"),
-}),
-LFiller(),
-}):withPadding(4, true))
+      LFiller(),
+   }):withPadding(4, true))
 
-menu.button_start_game:setEnabled(false)
-if isserver then
-   menu.checkbox_ready:setEnabled(false)
-   menu.checkbox_ready:setVisible(false)
-else
    for i=1,PlayerMax do
-      if menu.player_dropdown[i] then
-         menu.player_dropdown[i]:setEnabled(false)
+      if menu.player_team[i] then
+         menu.player_team[i]:setList(teams)
       end
    end
-   menu.checkbox_ready:setVisible(true)
-   menu.button_start_game:setVisible(false)
-   menu.option_fow:setEnabled(false)
-   menu.option_terrain:setEnabled(false)
-   menu.option_units:setEnabled(false)
-   menu.option_resources:setEnabled(false)
-   menu.option_dedicated_ai_server:setEnabled(false)
-end
 
-function menu:updateOptions()
-   self.option_fow:setMarked(int2bool(ServerSetupState.FogOfWar))
-   self.option_terrain:setSelected(ServerSetupState.RevealMap)
-   self.option_units:setSelected(ServerSetupState.UnitsOption + 1)
-   self.option_resources:setSelected(ServerSetupState.ResourcesOption + 1)
-   self.option_dedicated_ai_server:setMarked(ServerSetupState.CompOpt[0] == 2) -- host is closed
-   updatePlayerListFromHosts()
-end
+   menu.button_start_game:setEnabled(false)
+   if isserver then
+      menu.checkbox_ready:setEnabled(false)
+      menu.checkbox_ready:setVisible(false)
+   else
+      for i=1,PlayerMax do
+         if menu.player_dropdown[i] then
+            menu.player_dropdown[i]:setEnabled(false)
+         end
+      end
+      menu.checkbox_ready:setVisible(true)
+      menu.button_start_game:setVisible(false)
+      menu.option_fow:setEnabled(false)
+      menu.option_terrain:setEnabled(false)
+      menu.option_units:setEnabled(false)
+      menu.option_resources:setEnabled(false)
+      menu.option_dedicated_ai_server:setEnabled(false)
+   end
 
-return menu
+   function menu:updateOptions()
+      self.option_fow:setMarked(int2bool(ServerSetupState.FogOfWar))
+      self.option_terrain:setSelected(ServerSetupState.RevealMap)
+      self.option_units:setSelected(ServerSetupState.UnitsOption + 1)
+      self.option_resources:setSelected(ServerSetupState.ResourcesOption + 1)
+      self.option_dedicated_ai_server:setMarked(ServerSetupState.CompOpt[0] == 2) -- host is closed
+      updatePlayerListFromHosts()
+   end
+
+   return menu
 end
 
 function RunServerMultiGameMenu(map, description, numplayers, options)
