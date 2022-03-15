@@ -336,89 +336,16 @@ DefaultPreference("OriginalPixelRatio", true)
 
 wc1.preferences = preferences
 
-function StoreSharedSettingsInBits()
-   local bits = 0
-   if preferences.AllowMultipleTownHalls then
-      bits = bits + 1 -- bit 0
-   end
-   if preferences.AllowTownHallUpgrade then
-      bits = bits + 2 -- bit 1
-   end
-   if preferences.FieldOfViewType == "simple-radial" then
-      bits = bits + 4 -- bit 2
-   end
-   if preferences.SimplifiedAutoTargeting then
-      bits = bits + 8 -- bit 3
-   end
-   if preferences.DungeonSightBlocking then
-      bits = bits + 16 -- bit 4
-   end
-   if preferences.TrainingQueue then
-      bits = bits + 32 -- bit 5
-   end
-   if preferences.RebalancedStats then
-      bits = bits + 64 -- bit 6
-   end
-   return bits
+function StoreSharedSettingsInBits(settings)
+   settings:SetUserGameSetting(0, preferences.AllowMultipleTownHalls)
+   settings:SetUserGameSetting(1, preferences.AllowTownHallUpgrade)
+   settings:SetUserGameSetting(2, preferences.DungeonSightBlocking)
+   settings:SetUserGameSetting(3, preferences.TrainingQueue)
+   settings:SetUserGameSetting(4, preferences.RebalancedStats)
 end
 
-function RestoreSharedSettingsFromBits(bits, errorCb)
-   if bits >= 64 then
-      if not preferences.RebalancedStats then
-         Load("scripts/balancing.lua")
-         preferences.RebalancedStats = true
-      end
-      bits = bits - 64
-   else
-      if preferences.RebalancedStats then
-         if errorCb then
-            errorCb("Rebalanced stats must be disabled manually and the game restartet to continue")
-         end
-      end
-   end
-   if bits >= 32 then
-      preferences.TrainingQueue = true
-      SetTrainingQueue(true)
-      bits = bits - 32
-   else
-      preferences.TrainingQueue = false
-      SetTrainingQueue(false)
-   end
-   if bits >= 16 then
-      preferences.DungeonSightBlocking = true
-      bits = bits - 16
-   else
-      preferences.DungeonSightBlocking = false
-   end
-   if bits >= 8 then
-      -- bit 3 is set
-      preferences.SimplifiedAutoTargeting = true
-      Preference.SimplifiedAutoTargeting = true
-      bits = bits - 8
-   else
-      preferences.SimplifiedAutoTargeting = false
-      Preference.SimplifiedAutoTargeting = false
-   end
-   if bits >= 4 then
-      if preferences.FieldOfViewType ~= "simple-radial" then
-         preferences.FieldOfViewType = "simple-radial"
-         SetFieldOfViewType("simple-radial")
-      end
-      bits = bits - 4
-   else
-      if preferences.FieldOfViewType ~= "shadow-casting" then
-         preferences.FieldOfViewType = "shadow-casting"
-         SetFieldOfViewType("shadow-casting")
-         SetFogOfWarType("enhanced")
-      end
-   end
-   if bits >= 2 then
-      preferences.AllowTownHallUpgrade = true
-      bits = bits - 2
-   else
-      preferences.AllowTownHallUpgrade = false
-   end
-   if bits >= 1 then
+function RestoreSharedSettingsFromBits(settings, errorCb)
+   if settings:GetUserGameSetting(0) then
       if not preferences.AllowMultipleTownHalls then
          preferences.AllowMultipleTownHalls = true
          Load("scripts/buttons.lua")
@@ -437,10 +364,31 @@ function RestoreSharedSettingsFromBits(bits, errorCb)
          end
       end
    end
+   preferences.AllowTownHallUpgrade = settings:GetUserGameSetting(1)
+   preferences.DungeonSightBlocking = settings:GetUserGameSetting(2)
+   preferences.TrainingQueue = settings:GetUserGameSetting(3)
+   if settings:GetUserGameSetting(4) then
+      if not preferences.RebalancedStats then
+         Load("scripts/balancing.lua")
+         preferences.RebalancedStats = true
+      end
+   else
+      if preferences.RebalancedStats then
+         if errorCb then
+            errorCb("Rebalanced stats must be disabled manually and the game restartet to continue")
+         end
+      end
+   end
+end
+
+function MapLoaded()
+   RestoreSharedSettingsFromBits(GameSettings, function(s)
+      print("ERROR RESTORING GAME SETTINGS! " .. s)
+   end)
 end
 
 InitFuncs:add(function()
-      GameSettings.MapRichness = StoreSharedSettingsInBits()
+   StoreSharedSettingsInBits(GameSettings)
 end)
 
 SetVideoResolution(preferences.VideoWidth, preferences.VideoHeight)

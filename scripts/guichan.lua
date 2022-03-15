@@ -12,6 +12,12 @@ bckground = CGraphic:New("ui/title_screen.png")
 bckground:Load()
 bckground:Resize(Video.Width, Video.Height)
 backgroundWidget = ImageWidget(bckground)
+
+bckgroundGray = CGraphic:ForceNew("ui/title_screen.png")
+bckgroundGray:Load(true)
+bckgroundGray:Resize(Video.Width, Video.Height)
+backgroundGrayWidget = ImageWidget(bckgroundGray)
+
 local hpanels = {
   "ui/human/panel_1.png",
   "ui/human/panel_2.png"
@@ -291,7 +297,7 @@ function WarMenu(title, background, resize)
 
   if background == nil then
     bg = backgroundWidget
-  else
+  elseif type(background) == "string" then
     bgg = CGraphic:ForceNew(background)
     bgg:Load()
     if (resize == nil or resize == true) then
@@ -301,6 +307,8 @@ function WarMenu(title, background, resize)
       menu:resize(resize[1], resize[2])
     end
     bg = ImageWidget(bgg)
+  else
+    bg = background
   end
   menu:add(bg, 0, 0)
 
@@ -717,14 +725,32 @@ Load("scripts/menus/results.lua")
 
 Load("scripts/lib/layouts.lua")
 
-function WarMenuWithLayout(background, box)
-   box:calculateMinExtent()
-   local menu = WarMenu(title, background, {box.width, box.height})
-   menu:setSize(box.width, box.height)
-   menu:setPosition((Video.Width - menu:getWidth()) / 2, (Video.Height - menu:getHeight()) / 2)
-   menu:setDrawMenusUnder(true)
-   box:addWidgetTo(menu)
-   return menu
+-- create a menu with layout. takes 1, 2, or 3 arguments
+function WarMenuWithLayout(title_or_background_or_box, background_or_box, box)
+  local background, title
+  if not box then
+    box = background_or_box
+    background = title_or_background_or_box
+    title = nil
+  end
+  if not box then
+    box = background_or_box
+    background = title_or_background_or_box
+    title = nil
+  end
+
+  box:calculateMinExtent()
+  local menu
+  menu = WarMenu(title, background or backgroundGrayWidget, {box.width, box.height})
+  if background then
+    menu:setSize(box.width, box.height)
+    menu:setPosition((Video.Width - menu:getWidth()) / 2, (Video.Height - menu:getHeight()) / 2)
+    menu:setDrawMenusUnder(true)
+    box:addWidgetTo(menu)
+  else
+    box:addWidgetTo(menu, {(Video.Width - box.width) / 2, (Video.Height - box.height) / 2})
+  end
+  return menu
 end
 
 --[[
