@@ -340,7 +340,7 @@ DefineUnitType(
 	   SetUnitVariable(unit, "Player", 15);
 	 end,
      BuildingRules = {
-	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Diagonal = true}},
+	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Diagonal = false}},
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
         {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}}},
      AiBuildingRules = {-- these are silly, but what can you do
