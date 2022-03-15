@@ -75,13 +75,20 @@ Box = class(Element,
             end
 )
 
-function Box:withPadding(p)
+function Box:withPadding(p, recursive)
    if type(p) == "number" then
       self.paddingX = p
       self.paddingY = p
    else
       self.paddingX = p[1]
       self.paddingY = p[2]
+   end
+   if recursive then
+      for i,child in ipairs(self.children) do
+         if child.withPadding then
+            child:withPadding(p, recursive)
+         end
+      end
    end
    return self
 end
@@ -241,8 +248,13 @@ end
 
 function Box:addWidgetTo(container, sizeFromContainer)
    if sizeFromContainer then
-      self.x = 0 -- containers are relative inside
-      self.y = 0
+      if sizeFromContainer == true then
+         self.x = 0 -- containers are relative inside
+         self.y = 0
+      else
+         self.x = sizeFromContainer[1]
+         self.y = sizeFromContainer[2]
+      end
       self.width = container:getWidth()
       self.height = container:getHeight()
       dbgPrint("startsize:" .. self.width .. "x" .. self.height .. "+" .. self.x .. "+" .. self.y)
@@ -271,7 +283,11 @@ LLabel = class(Element,
                function(instance, text, font, center, vCenter)
                   Element.init(instance)
                   instance.label = Label(text)
-                  instance.label:setFont(font or Fonts["large"])
+                  if type(font) == "string" then
+                     instance.label:setFont(Fonts[font])
+                  else
+                     instance.label:setFont(font or Fonts["large"])
+                  end
                   instance.label:adjustSize()
                   instance.center = center
                   instance.vCenter = vCenter
@@ -328,6 +344,7 @@ LButton = class(Element,
                    Element.init(instance)
                    instance.b = ButtonWidget(caption)
                    instance.b:setHotKey(hotkey)
+                   instance.b.callback = callback
                    if callback then
                       instance.b:setActionCallback(callback)
                    end
@@ -355,6 +372,7 @@ LImageButton = class(Element,
                         Element.init(instance)
                         instance.b = ImageButton(caption)
                         instance.b:setHotKey(hotkey)
+                        instance.b.callback = callback
                         if callback then
                            instance.b:setActionCallback(callback)
                         end
@@ -392,6 +410,7 @@ LSlider = class(Element,
                    instance.s:setBaseColor(dark)
                    instance.s:setForegroundColor(clear)
                    instance.s:setBackgroundColor(clear)
+                   instance.s.callback = callback
                    if callback then
                       instance.s:setActionCallback(function(s) callback(instance.s, s) end)
                    end
@@ -453,6 +472,7 @@ LCheckBox = class(Element,
                      instance.b = CheckBox(caption)
                      instance.b:setForegroundColor(clear)
                      instance.b:setBackgroundColor(dark)
+                     instance.b.callback = callback
                      if callback then
                         instance.b:setActionCallback(function(s) callback(instance.b, s) end)
                      end
@@ -484,6 +504,7 @@ LTextInputField = class(Element,
                         function(instance, text, callback)
                            Element.init(instance)
                            instance.b = TextField(text)
+                           instance.b.callback = callback
                            if callback then
                               instance.b:setActionCallback(callback)
                            end
@@ -524,8 +545,13 @@ LDropDown = class(Element,
                   end
 )
 
+function LDropDown:withWidth(value)
+   self.width = value
+   return self
+end
+
 function LDropDown:getWidth()
-   return 60
+   return self.width or 60
 end
 
 function LDropDown:getHeight()

@@ -83,201 +83,66 @@ function addPlayersList(menu, numplayers)
   return updatePlayers
 end
 
-
 joincounter = 0
 
-function RunJoiningMapMenu(s)
-  local menu
-  local listener
-  local sx = Video.Width / 10
-  local sy = Video.Height / 10
-  local numplayers = 3
-  local state
-  local d
-
-  menu = WarMenu("Joining game: Map")
-  
-  local menubox = HBox({
-        LFiller(),
-        VBox({
-              LFiller(),
-              HBox({
-                    "~<File: ",
-                    LLabel("~<" .. NetworkMapName):id("maptext")
-              }):withPadding(5),
-              HBox({
-                    "~<Players: ",
-                    LLabel("~<" .. numplayers):id("players")
-              }):withPadding(5),
-              HBox({
-                    "~<Description: ",
-                    LLabel(description):id("description")
-              }):withPadding(5),
-              HBox({
-                    VBox({
-                          "Fog of war",
-                          "Resources",
-                          "Number of units",
-                          "Terrain",
-                          "Auto targeting",
-                          "Allow multiple townhalls",
-                          "Allow townhall upgrades",
-                          "Enable training queue",
-                          "Unit stats",
-                          "Unit vision",
-                    }):withPadding(5),
-                    VBox({
-                          LCheckBox(""):id("fow"),
-                          LLabel("Map default"):id("resources"),
-                          LLabel("Map default"):id("numunits"),
-                          LLabel("Map default"):id("revealmap"),
-                          LCheckBox(""):id("autotarget"),
-                          LCheckBox(""):id("multitown"),
-                          LCheckBox(""):id("towncastle"),
-                          LLabel(""):id("rebalancedstats"),
-                          LCheckBox(""):id("trainingqueue"),
-                          LLabel(""):id("fieldofviewtype")
-                    }):withPadding(5)
-              }),
-              LFiller()
-        }):withPadding(5),
-        LFiller(),
-        VBox({
-              LFiller(),
-              VBox({
-                    LListBox(Video.Width / 3, Video.Height / 3):id("chat"),
-                    HBox({
-                          "Chat: ",
-                          LTextInputField("", function()
-                           OnlineService.sendmessage(menu.chatinput:getText())
-                           menu.chatinput:setText("")
-                          end):id("chatinput")
-                    })
-              }):withPadding(1),
-              HBox({
-                    "~<Your Race:~> ",
-                    LDropDown({"Map Default", "Human", "Orc"}, function(dd)
-                          GameSettings.Presets[NetLocalHostsSlot].Race = dd:getSelected()
-                          LocalSetupState.Race[NetLocalHostsSlot] = dd:getSelected()
-                    end)
-              }),
-              LCheckBox("Ready", function(dd)
-                           LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(dd:isMarked())
-              end),
-              LButton("~!Cancel", "c", function() NetworkDetachFromServer(); menu:stop() end),
-              LFiller()
-        }):withPadding(10),
-        LFiller()
-  }):withPadding(5)
-
-  menubox.width = Video.Width
-  menubox.height = Video.Height
-  menubox.x = 0
-  menubox.y = 0
-  menubox:addWidgetTo(menu)
-  
-  local chatList = {}
-  local AddMessage = AddOnlineChatMessage(chatList, menu.chat, menu)
-  OnlineService.setup({ShowChat = AddMessage})
-
-  menu.fow:setEnabled(false)
-  menu.revealmap:setEnabled(false)
-  menu.autotarget:setEnabled(false)
-  menu.multitown:setEnabled(false)
-  menu.towncastle:setEnabled(false)
-  menu.trainingqueue:setEnabled(false)
-  if preferences.RebalancedStats then
-     menu.rebalancedstats:setCaption("Rebalanced")
-  else
-     menu.rebalancedstats:setCaption("Original")
-  end
-  menu.rebalancedstats:adjustSize()
-  local OldPresentMap = PresentMap
-  PresentMap = function(desc, nplayers, w, h, id)
-    numplayers = nplayers
-    menu.players:setCaption("~<"..nplayers)
-    menu.players:adjustSize()
-    menu.description:setCaption("~<" .. desc)
-    menu.description:adjustSize()
-    OldPresentMap(desc, nplayers, w, h, id)
-  end
-
-  -- Security: The map name is checked by the stratagus engine.
-  Load(NetworkMapName)
-
-  local updatePlayersList = addPlayersList(menu, numplayers)
-
-  joincounter = 0
-  local function listen()
-    NetworkProcessClientRequest()
-    menu.fow:setMarked(int2bool(ServerSetupState.FogOfWar))
-    GameSettings.NoFogOfWar = not int2bool(ServerSetupState.FogOfWar)
-    
-    local revealTypes = {"Hidden", "Known", "Explored"}
-    menu.revealmap:setCaption(revealTypes[ServerSetupState.RevealMap + 1])
-    GameSettings.RevealMap = ServerSetupState.RevealMap
-
-    GameSettings.NumUnits = ServerSetupState.UnitsOption
-    if ServerSetupState.UnitsOption == 0 then
-       menu.numunits:setCaption("Map default")
-       GameSettings.NumUnits = -1
-    elseif ServerSetupState.UnitsOption == 1 then
-       menu.numunits:setCaption("Only 1 peasant")
-    else
-       menu.numunits:setCaption("Only " .. ServerSetupState.UnitsOption .. " units")
-    end
-
-    if ServerSetupState.ResourcesOption == 0 then
-       menu.resources:setCaption("Map default")
-       GameSettings.Resources = -1
-    else
-       menu.resources:setCaption("Level " .. ServerSetupState.ResourcesOption)
-       GameSettings.Resources = ServerSetupState.ResourcesOption
-    end
-
-    GameSettings.MapRichness = ServerSetupState.MapRichness
-    RestoreSharedSettingsFromBits(ServerSetupState.MapRichness)
-    menu.autotarget:setMarked(preferences.SimplifiedAutoTargeting)
-    menu.multitown:setMarked(preferences.AllowMultipleTownHalls)
-    menu.towncastle:setMarked(preferences.AllowTownHallUpgrade)
-    menu.trainingqueue:setMarked(preferences.TrainingQueue)
-    if preferences.FieldOfViewType == "simple-radial" then
-       menu.fieldofviewtype:setCaption("Radial")
-    else
-       menu.fieldofviewtype:setCaption("Shadow Casting")
-    end
-    menu.fieldofviewtype:adjustSize()
-
-    updatePlayersList()
-    state = GetNetworkState()
-    -- FIXME: don't use numbers
-    if (state == 15) then -- ccs_started, server started the game
-      SetThisPlayer(1)
-      joincounter = joincounter + 1
-      if (joincounter == 30) then
-        if StoreSharedSettingsInBits() ~= GameSettings.MapRichness then
-           -- try one more time, then give up
-           RestoreSharedSettingsFromBits(GameSettings.MapRichness, function(msg)
-                 ErrorMenu(msg)
-                 menu:stop()
-           end)
-        end
-        NetworkGamePrepareGameSettings()
-        war1gus.InCampaign = false
-        RunMap(NetworkMapName, menu.fow:isMarked(), GameSettings.RevealMap)
-        PresentMap = OldPresentMap
-        menu:stop()
+function RunJoiningMapMenu(optRace, optReady)
+   -- Security: The map name is checked by the stratagus engine.
+   Load(NetworkMapName)
+   local numplayers = 0
+   for i,v in ipairs(Map.Info.PlayerType) do
+      if v == PlayerPerson then
+         numplayers = numplayers + 1
       end
-    elseif (state == 10) then -- ccs_unreachable
-      ErrorMenu("Cannot reach server")
-      menu:stop()
-    end
-  end
-  listener = LuaActionListener(listen)
-  menu:addLogicCallback(listener)
-
-  menu:run()
-end
+   end
+   
+   local menu = CreateOnlineLobby(NetworkMapName, numplayers, false)
+   
+   local joincounter = 0
+   local delay = 4
+   local function listen()
+      NetworkProcessClientRequest()
+      menu:updateOptions()
+      RestoreSharedSettingsFromBits(ServerSetupState.ServerGameSettings, function(s)
+         ErrorMenu(s)
+         menu:stop()
+      end)
+      state = GetNetworkState()
+      -- FIXME: don't use numbers
+      if delay > 0 then
+         delay = delay - 1
+      elseif delay == 0 then
+         if (optRace == "human" or optRace == "Human") then
+            menu.option_race:setSelected(1)
+            menu.option_race.callback(menu.option_race)
+            optRace = ""
+         elseif (optRace == "orc" or optRace == "Orc") then
+            menu.option_race:setSelected(2)
+            menu.option_race.callback(menu.option_race)
+            optRace = ""
+         end
+      end
+      if (state == 15) then -- ccs_started, server started the game
+         joincounter = joincounter + 1
+         if (joincounter == 30) then
+            NetworkGamePrepareGameSettings()
+            RunMap(NetworkMapName)
+            menu:stop()
+         end
+      elseif (state == 10) then -- ccs_unreachable
+         ErrorMenu(_("Cannot reach server"))
+         menu:stop()
+      end
+   end
+   local listener = LuaActionListener(listen)
+   menu:addLogicCallback(listener)
+   
+   if optReady then
+      LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(true)
+      menu.checkbox_ready:setMarked(true)
+   end
+   
+   menu:run()
+end 
 
 function RunJoiningGameMenu(s)
   local menu = WarMenu(nil, panel(4), false)
@@ -398,206 +263,428 @@ function RunJoinIpMenu()
   menu:run()
 end
 
-function RunServerMultiGameMenu(map, description, numplayers)
-  local menu
-  local sx = Video.Width / 10
-  local sy = Video.Height / 10
-  local startgame
-  local d
+function CreateOnlineLobby(map, numplayers, isserver)
+   war1gus.InCampaign = false
+   local menu
+   local playerTable = {}
+   local playerNames = {"", "AI"}
+   
+   local function updatePlayerNamesFromHosts()
+      local changed = false
+      for i=0,PlayerMax-1 do
+         if (playerNames[i + 3] or Hosts[i].PlyName ~= "") and playerNames[i + 3] ~= Hosts[i].PlyName then
+            changed = true
+            playerNames[i + 3] = Hosts[i].PlyName
+         end
+      end
+      if changed then
+         for i=1,PlayerMax do
+            if menu.player_dropdown[i] then
+               local idx = menu.player_dropdown[i]:getSelected()
+               menu.player_dropdown[i]:setList(playerNames)
+               menu.player_dropdown[i]:setSelected(idx)
+            end
+         end
+      end
+   end
+   
+   local function updatePlayerSelectionFromHosts()
+      for i=1,PlayerMax do
+         local name = Hosts[i - 1].PlyName
+         if name ~= "" then
+            local no = Hosts[i - 1].PlyNr
+            local dd = menu.player_dropdown[no + 1]
+            if playerNames[dd:getSelected() + 1] ~= name then
+               -- select this name in the appropriate drop down
+               local j = 1
+               while j <= #playerNames do
+                  if playerNames[j] == name then
+                     dd:setSelected(j - 1)
+                     break
+                  end
+                  j = j + 1
+               end
+               -- deselect this name in any other drop down
+               for k=1,PlayerMax do
+                  local ddo = menu.player_dropdown[k]
+                  if ddo and ddo ~= dd and ddo:getSelected() == j - 1 then
+                     ddo:setSelected(0)
+                  end
+               end
+            end
+         end
+      end
+   end
+   
+   local function updateAIPlayersSelection()
+      local opponents = ServerSetupState.Opponents
+      for i,dd in ipairs(menu.player_dropdown) do
+         if dd and dd:getSelected() < 2 then
+            if opponents > 0 then
+               dd:setSelected(1)
+               opponents = opponents - 1
+            else
+               dd:setSelected(0)
+            end
+         end
+      end
+   end
+   
+   local function updatePlayerListFromHosts()
+      updatePlayerNamesFromHosts()
+      updatePlayerSelectionFromHosts()
+      updateAIPlayersSelection()
+   end
+   
+   local function assignMissingHumanPlayersToDropdowns()
+      -- figure out which human players are not assigned to a visible dropdown
+      local playerNameSet = {}
+      for i=1,PlayerMax do
+         local dd = menu.player_dropdown[i]
+         if dd then
+            playerNameSet[playerNames[dd:getSelected() + 1]] = true
+         end
+      end
+      local missingPlayers = {}
+      for i=3,#playerNames do
+         if not playerNameSet[playerNames[i]] then
+            missingPlayers[#missingPlayers + 1] = playerNames[i]
+         end
+      end
+      
+      -- assign an non-assigned players to some dropdown that has one
+      for i=1,#missingPlayers do
+         local missingPlayerName = missingPlayers[i]
+         for j=1,PlayerMax do
+            local dd = menu.player_dropdown[j]
+            if dd and dd:getSelected() < 2 then
+               -- this one is open or AI, assign the missing player here
+               for k=0,PlayerMax do
+                  if Hosts[k].PlyName == missingPlayerName then
+                     Hosts[k].PlyNr = j
+                     break
+                  end
+               end
+               break
+            end
+         end
+      end
+   end
+   
+   local function calculateAiPlayers()
+      local ai_players = 0
+      for i=1,PlayerMax do
+         local dd = menu.player_dropdown[i]
+         if dd and dd:getSelected() == 1 then
+            ai_players = ai_players + 1
+         end
+      end
+      if ServerSetupState.Opponents ~= ai_players then
+         ServerSetupState.Opponents = ai_players
+         NetworkServerResyncClients()
+      end
+   end
+   
+   for i=1,PlayerMax do
+      if Map.Info.PlayerType[i - 1] == PlayerPerson then
+         playerTable[i] = HBox({
+            LDropDown(playerNames, function(dd)
+               local newIdx = dd:getSelected()
+               if newIdx < 2 then
+                  -- nothing to do, this is now an open slot or an AI
+               else
+                  local newName = playerNames[newIdx + 1]
+                  -- figure out our own player index
+                  local playerIndex
+                  for i=1,PlayerMax do
+                     if menu.player_dropdown[i] == dd then
+                        playerIndex = i
+                        break
+                     end
+                  end
+                  
+                  -- figure out which host to assign this new player index to
+                  for i=0,PlayerMax-1 do
+                     if Hosts[i].PlyName == newName then
+                        Hosts[i].PlyNr = playerIndex - 1
+                        break
+                     end
+                  end
+                  
+                  -- deselect this human player from all other dropdowns
+                  for i=1,PlayerMax do
+                     if i ~= playerIndex then -- not ourselves
+                        local dd = menu.player_dropdown[i]
+                        if dd and dd:getSelected() > 1 then -- a human player
+                           if playerNames[dd:getSelected() + 1] == newName then -- same human player
+                              dd:setSelected(0) -- just open this slot again
+                           end
+                        end
+                     end
+                  end
+               end
+               assignMissingHumanPlayersToDropdowns()
+               calculateAiPlayers()
+               NetworkServerResyncClients()
+            end):id("player_dropdown[" .. i .. "]"):withWidth(120),
+            LLabel("", "game"):id("player_status[" .. i .. "]"),
+         })
+      else
+         playerTable[i] = LLabel(_("Player") .. " " .. i, "game")
+      end
+   end
+   
+   menu = WarMenuWithLayout(_("Create MultiPlayer game"), nil, VBox({
+      LFiller(),
+      HBox({ -- screen split
+      VBox({ -- game properties
+      HBox({ _("Map") }),
+      HBox({ LLabel(_("File:"), "game"), LLabel(map, "game") }),
+      HBox({ LLabel(_("Players:"), "game"), LLabel(numplayers, "game") }),
+      HBox({ LLabel(_("Description:"), "game"), LLabel(_("Unknown map"), "game") }),
+      
+      VBox({ -- game options
+      LCheckBox(_("Fog of war"), function(dd)
+         ServerSetupState.FogOfWar = bool2int(dd:isMarked())
+         NetworkServerResyncClients()
+      end):id("option_fow"),
+      HBox({
+         LLabel(_("Terrain:"), "game"),
+         LDropDown({_("Hidden"), _("Known"), _("Explored")}, function(dd) 
+            ServerSetupState.RevealMap = dd:getSelected()
+            NetworkServerResyncClients()
+         end):id("option_terrain"):withWidth(120),
+      }),
+      HBox({
+         LLabel(_("~<Your Race:~>"), "game"),
+         LDropDown({_("Map Default"), _("Human"), _("Orc")}, function(dd)
+            if isserver then
+               ServerSetupState.Race[0] = dd:getSelected() - 1
+               NetworkServerResyncClients()
+            else
+               LocalSetupState.Race[Hosts[NetLocalHostsSlot].PlyNr] = race:getSelected() - 1
+            end
+         end):id("option_race"):withWidth(120),
+      }),
+      HBox({
+         LLabel(_("Units:"), "game"),
+         LDropDown({_("Map Default"), _("One Peasant Only")}, function(dd)
+            ServerSetupState.UnitsOption = dd:getSelected() - 1
+            NetworkServerResyncClients()
+         end):id("option_units"):withWidth(120),
+      }),
+      HBox({
+         LLabel(_("Resources:"), "game"),
+         LDropDown({_("Map Default"), _("Low"), _("Medium"), _("High")}, function(dd)
+            ServerSetupState.ResourcesOption = dd:getSelected() - 1
+            NetworkServerResyncClients()
+         end):id("option_resources"):withWidth(120),
+      }),
+      LCheckBox(_("Dedicated AI Server"), function (dd)
+         if dd:isMarked() then
+            -- 2 == closed
+            ServerSetupState.CompOpt[0] = 2
+         else
+            -- 0 == available
+            ServerSetupState.CompOpt[0] = 0
+         end
+         NetworkServerResyncClients()
+      end):id("option_dedicated_ai_server"),
+   }), -- end of game options
+}), -- end of game properties
+VBox(playerTable)
+}), -- end of screen split
+HBox({
+   LButton(_("Cancel (~<Esc~>)"), "escape", function()
+      InitGameSettings()
+      if isserver then
+         OnlineService.stopadvertising()
+      else
+         NetworkDetachFromServer()
+      end
+      menu:stop()
+   end),
+   LCheckBox(_("~!Ready"), function(dd)
+      LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(dd:isMarked())
+   end):id("checkbox_ready"),
+   LButton(_("~!Start Game"), "s", function()
+      NetworkServerStartGame()
+      NetworkGamePrepareGameSettings()
+      RunMap(map)
+      menu:stop()
+   end):id("button_start_game"),
+}),
+LFiller(),
+}):withPadding(4, true))
 
-  menu = WarMenu("Create MultiPlayer game")
+menu.button_start_game:setEnabled(false)
+if isserver then
+   menu.checkbox_ready:setEnabled(false)
+   menu.checkbox_ready:setVisible(false)
+else
+   for i=1,PlayerMax do
+      if menu.player_dropdown[i] then
+         menu.player_dropdown[i]:setEnabled(false)
+      end
+   end
+   menu.checkbox_ready:setVisible(true)
+   menu.button_start_game:setVisible(false)
+   menu.option_fow:setEnabled(false)
+   menu.option_terrain:setEnabled(false)
+   menu.option_units:setEnabled(false)
+   menu.option_resources:setEnabled(false)
+   menu.option_dedicated_ai_server:setEnabled(false)
+end
 
-  local menubox = HBox({
-        LFiller(),
-        VBox({
-              LFiller(),
-              HBox({
-                    "~<File: ",
-                    LLabel("~<" .. map):id("maptext")
-              }):withPadding(5),
-              HBox({
-                    "~<Players: ",
-                    LLabel("~<" .. numplayers):id("players")
-              }):withPadding(5),
-              HBox({
-                    "~<Description: ",
-                    LLabel(description):id("description")
-              }):withPadding(5),
-              HBox({
-                    VBox({
-                          "Fog of war",
-                          "Resources",
-                          "Number of units",
-                          "Terrain",
-                          "Auto targeting",
-                          "Allow multiple townhalls",
-                          "Allow townhall upgrades",
-                          "Enable training queue",
-                          "Unit stats",
-                          "Unit vision",
-                    }):withPadding(5),
-                    VBox({
-                          LCheckBox("", function(dd)
-                                       ServerSetupState.FogOfWar = bool2int(dd:isMarked())
-                                       NetworkServerResyncClients()
-                                       GameSettings.NoFogOfWar = not dd:isMarked()
-                          end
-                          ):id("fow"),
-                          LDropDown({"Map Default", "Low", "Medium", "High"}, function(dd)
-                                GameSettings.Resources = dd:getSelected()
-                                ServerSetupState.ResourcesOption = GameSettings.Resources
-                                if GameSettings.Resources == 0 then
-                                   GameSettings.Resources = -1
-                                end
-                                NetworkServerResyncClients()
-                          end):id("resources"),
-                          LDropDown({"Map Default", "One Peasant Only"}, function(dd)
-                                GameSettings.NumUnits = dd:getSelected()
-                                ServerSetupState.UnitsOption = GameSettings.NumUnits
-                                if GameSettings.NumUnits == 0 then
-                                   GameSettings.NumUnits = -1
-                                end
-                                NetworkServerResyncClients()
-                          end):id("numunits"),
-                          LDropDown({"Hidden", "Known", "Explored"}, function(dd)
-                                       ServerSetupState.RevealMap = dd:getSelected()
-                                       NetworkServerResyncClients()
-                                       GameSettings.RevealMap = dd:getSelected()
-                          end):id("revealmap"),
-                          LCheckBox("", function(dd)
-                                       preferences.SimplifiedAutoTargeting = dd:isMarked()
-                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                       NetworkServerResyncClients()
-                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("autotarget"),
-                          LCheckBox("", function(dd)
-                                       preferences.AllowMultipleTownHalls = dd:isMarked()
-                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                       NetworkServerResyncClients()
-                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("multitown"),
-                          LCheckBox("", function(dd)
-                                       preferences.AllowTownHallUpgrade = dd:isMarked()
-                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                       NetworkServerResyncClients()
-                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("towncastle"),
-                          LCheckBox("", function(dd)
-                                       preferences.TrainingQueue = dd:isMarked()
-                                       ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                       GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                       NetworkServerResyncClients()
-                                       RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("trainingqueue"),
-                          LLabel(""):id("rebalancedstats"),
-                          LDropDown({"Radial", "Shadow Casting"}, function(dd)
-                                if dd:getSelected() == 0 then
-                                   preferences.FieldOfViewType = "simple-radial"
-                                   preferences.DungeonSightBlocking = false
-                                else
-                                   preferences.FieldOfViewType = "shadow-casting"
-                                   preferences.DungeonSightBlocking = true
-                                end
-                                ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-                                GameSettings.MapRichness = StoreSharedSettingsInBits()
-                                NetworkServerResyncClients()
-                                RestoreSharedSettingsFromBits(GameSettings.MapRichness)
-                          end):id("fieldofviewtype"),
-                    }):withPadding(5)
-              }),
-              LFiller()
-        }):withPadding(5),
-        LFiller(),
-        VBox({
-              LFiller(),
-              VBox({
-                    LListBox(Video.Width / 3, Video.Height / 3):id("chat"),
-                    HBox({
-                          "Chat: ",
-                          LTextInputField("", function()
-                           OnlineService.sendmessage(menu.chatinput:getText())
-                           menu.chatinput:setText("")
-                          end):id("chatinput")
-                    })
-              }):withPadding(1),
-              HBox({
-                    "~<Your Race:~> ",
-                    LDropDown({"Map Default", "Human", "Orc"}, function(dd)
-                          GameSettings.Presets[0].Race = dd:getSelected()
-                          ServerSetupState.Race[0] = dd:getSelected()
-                          LocalSetupState.Race[0] = dd:getSelected()
-                          NetworkServerResyncClients()
-                    end)
-              }),
-              LButton("~!Start Game", "s", function(s)
-                        NetworkServerStartGame()
-                        NetworkGamePrepareGameSettings()
-                        war1gus.InCampaign = false
-                        RunMap(map, menu.fow:isMarked(), GameSettings.RevealMap)
-                        menu:stop()
-              end):id("startgame"),
-              LLabel("Waiting for players"):id("waitingtext"),
-              LButton("~!Cancel", "c", function()
-                         InitGameSettings()
-                         OnlineService.stopadvertising()
-                         menu:stop()
-              end),
-              LFiller()
-        }):withPadding(10),
-        LFiller()
-  }):withPadding(5)
+function menu:updateOptions()
+   self.option_fow:setMarked(int2bool(ServerSetupState.FogOfWar))
+   self.option_terrain:setSelected(ServerSetupState.RevealMap)
+   self.option_units:setSelected(ServerSetupState.UnitsOption + 1)
+   self.option_resources:setSelected(ServerSetupState.ResourcesOption + 1)
+   self.option_dedicated_ai_server:setMarked(ServerSetupState.CompOpt[0] == 2) -- host is closed
+   updatePlayerListFromHosts()
+end
 
+return menu
+end
 
-  menubox.width = Video.Width
-  menubox.height = Video.Height
-  menubox.x = 0
-  menubox.y = 0
-  menubox:addWidgetTo(menu)
-
-  local chatList = {}
-  local AddMessage = AddOnlineChatMessage(chatList, menu.chat, menu)
-  OnlineService.setup({ShowChat = AddMessage})
-
-  menu.fow:setMarked(true)
-  menu.startgame:setVisible(false)
-
-  local updatePlayers = addPlayersList(menu, numplayers)
-
-  NetworkMapName = map
-  NetworkInitServerConnect(numplayers)
-  ServerSetupState.MapRichness = StoreSharedSettingsInBits()
-  GameSettings.MapRichness = StoreSharedSettingsInBits()
-  ServerSetupState.FogOfWar = 1
-
-  menu.autotarget:setMarked(preferences.SimplifiedAutoTargeting)
-  menu.multitown:setMarked(preferences.AllowMultipleTownHalls)
-  menu.towncastle:setMarked(preferences.AllowTownHallUpgrade)
-  menu.trainingqueue:setMarked(preferences.TrainingQueue)
-  if preferences.RebalancedStats then
-     menu.rebalancedstats:setCaption("Rebalanced")
-  else
-     menu.rebalancedstats:setCaption("Original")
-  end
-  menu.rebalancedstats:adjustSize()
-  if preferences.FieldOfViewType == "simple-radial" then
-     menu.fieldofviewtype:setSelected(0)
-  else
-     menu.fieldofviewtype:setSelected(1)
-  end
-
-  local function updateStartButton(ready)
-     menu.startgame:setVisible(ready)
-     menu.waitingtext:setVisible(not ready)
-  end
-
-  local listener = LuaActionListener(function(s) updateStartButton(updatePlayers()) end)
-  menu:addLogicCallback(listener)
-  OnlineService.startadvertising()
-
-  menu:run()
+function RunServerMultiGameMenu(map, description, numplayers, options)
+   local menu = CreateOnlineLobby(map, numplayers, true)
+   
+   NetworkMapName = map
+   
+   options = options or {fow = 1}
+   local optRace = options.race
+   local optResources = options.resources
+   local optUnits = options.units
+   local optAiPlayerNum = options.aiPlayerNum or 0
+   local optAutostartNum = options.autostartNum
+   local optDedicated = options.dedicated
+   
+   NetworkInitServerConnect(numplayers)
+   
+   ServerSetupState.FogOfWar = 1
+   ServerSetupState.Opponents = optAiPlayerNum
+   
+   local startIn = -10
+   local function updateStartButton(ready)
+      local readyplayers = 1
+      for i=2,PlayerMax do
+         if ServerSetupState.Ready[i-1] == 1 then
+            readyplayers = readyplayers + 1
+         end
+      end
+      if startIn < -1 then
+         startIn = startIn + 1
+      else
+         if optDedicated then
+            menu.option_dedicated_ai_server:setMarked(true)
+            menu.option_dedicated_ai_server.callback(menu.option_dedicated_ai_server)
+            optDedicated = false
+         elseif (optRace == "human" or optRace == "Human") then
+            menu.option_race:setSelected(1)
+            menu.option_race.callback(menu.option_race)
+            optRace = ""
+         elseif (optRace == "orc" or optRace == "Orc") then
+            menu.option_race:setSelected(2)
+            menu.option_race.callback(menu.option_race)
+            optRace = ""
+         elseif (optResources == "low" or optResources == "Low") then
+            menu.option_resources:setSelected(1)
+            menu.option_resources.callback(menu.option_resources)
+            optResources = ""
+         elseif (optResources == "medium" or optResources == "Medium") then
+            menu.option_resources:setSelected(2)
+            menu.option_resources.callback(menu.option_resources)
+            optResources = ""
+         elseif (optResources == "high" or optResources == "High") then
+            menu.option_resources:setSelected(3)
+            menu.option_resources.callback(menu.option_resources)
+            optResources = ""
+         elseif (optUnits == "1") then
+            menu.option_units:setSelected(1)
+            menu.option_units.callback(menu.option_units)
+            optUnits= ""
+         elseif (options.fow == 0) then
+            menu.option_fow:setMarked(options.fow)
+            menu.option_fow.callback(options.fow)
+            options.fow = -1
+         elseif options.revealmap and options.revealmap ~= -1 then
+            menu.option_terrain:setSelected(options.revealmap)
+            menu.option_terrain.callback(menu.option_terrain)
+            options.revealmap = -1
+         elseif (optAutostartNum) then
+            if (optAutostartNum <= readyplayers) then
+               if (startIn < 0) then
+                  startIn = 100
+               else
+                  startIn = startIn - 1
+                  if (startIn == 0) then
+                     startFunc()
+                  end
+               end
+               menu.button_start_game:setCaption("Start in " .. startIn / 2)
+               print("Starting in " .. startIn / 2)
+            end
+         else
+            menu.button_start_game:setEnabled(ready)
+         end
+      end
+   end
+   
+   local function updateFromNetwork()
+      local connected_players = 0
+      local ready_players = 0
+      local ai_players = 0
+      
+      for i=0,PlayerMax-1 do
+         if Hosts[i].PlyName ~= "" then
+            if i > 0 then
+               connected_players = connected_players + 1
+            end
+            local label = menu.player_status[Hosts[i].PlyNr + 1]
+            if i == 0 then
+               label:setCaption(_("Creator"))
+            elseif ServerSetupState.Ready[i] == 1 then
+               ready_players = ready_players + 1
+               label:setCaption(_("Ready"))
+            else
+               label:setCaption(_("Preparing"))
+            end
+            label:adjustSize()
+         end
+         
+         local dd = menu.player_dropdown[i + 1]
+         if dd then
+            local selIdx = dd:getSelected()
+            if selIdx < 2 then
+               menu.player_status[i + 1]:setCaption("")
+               if selIdx == 1 then
+                  ai_players = ai_players + 1
+               end
+            end
+         end
+      end
+      -- only 1 player in this map or
+      -- all connected players are ready or
+      -- we could play against AI
+      return numplayers == 1 or (connected_players > 0 and ready_players == connected_players) or (connected_players == 0 and ai_players > 0)
+   end
+   
+   local counter = 10
+   local listener = LuaActionListener(function(s)
+      if counter == 0 then
+         counter = 10
+         menu:updateOptions()
+         updateStartButton(updateFromNetwork())
+      else
+         counter = counter - 1
+      end
+   end)
+   menu:addLogicCallback(listener)
+   OnlineService.startadvertising()
+   
+   menu:run()
 end
 
 function RunCreateMultiGameMenu(s)
