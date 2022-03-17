@@ -98,11 +98,13 @@ for idx,spec in ipairs(upgrades) do
    DefineUpgradeFromSpec(spec)
 end
 
-function DefineAllowExtraUnits()
+function DefineAllowExtraUnits(allowWalls)
    DefineAllow("unit-gold-mine",           "AAAAAAAAAAAAAAAA")
    DefineAllow("unit-dungeon-entrance",    "AAAAAAAAAAAAAAAA")
    DefineAllow("unit-road",                "AAAAAAAAAAAAAAAA")
-   DefineAllow("unit-wall",                "AAAAAAAAAAAAAAAA")
+   if allowWalls then
+      DefineAllow("unit-wall",                "AAAAAAAAAAAAAAAA")
+   end
    DefineAllow("unit-dead-body",           "AAAAAAAAAAAAAAAA")
    DefineAllow("unit-destroyed-1x1-place",	"AAAAAAAAAAAAAAAA")
    DefineAllow("unit-destroyed-2x2-place",	"AAAAAAAAAAAAAAAA")
@@ -110,7 +112,7 @@ function DefineAllowExtraUnits()
    DefineAllow("unit-destroyed-4x4-place",	"AAAAAAAAAAAAAAAA")
 end
 
-DefineAllowExtraUnits()
+DefineAllowExtraUnits(true)
 
 DefineAllowOrcUnits = CreateAllowanceFunction("orc")
 DefineAllowOrcUnits("AAAAAAAAAAAAAAAA")
@@ -119,9 +121,9 @@ DefineAllowHumanUnits = CreateAllowanceFunction("human")
 DefineAllowHumanUnits("AAAAAAAAAAAAAAAA")
 
 InitFuncs:add(function()
-      if not war1gus.InCampaign then
-         DefineAllowOrcUnits("AAAAAAAAAAAAAAAA")
-         DefineAllowHumanUnits("AAAAAAAAAAAAAAAA")
-         DefineAllowExtraUnits()
-      end
+   if not war1gus.InCampaign then
+      DefineAllowOrcUnits("AAAAAAAAAAAAAAAA")
+      DefineAllowHumanUnits("AAAAAAAAAAAAAAAA")
+   end
+   DefineAllowExtraUnits(not war1gus.InCampaign)
 end)
