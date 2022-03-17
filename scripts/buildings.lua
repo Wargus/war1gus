@@ -320,8 +320,8 @@ DefineUnitType(
 UnitTypeFiles["unit-road"] = {
   forest = "tilesets/forest/neutral/buildings/road.png",
   swamp = "tilesets/swamp/neutral/buildings/road.png",
-  dungeon = "tilesets/dungeon/neutral/buildings/road.png",
-  dungeon_campaign = "tilesets/dungeon/neutral/buildings/road.png",
+  dungeon = "contrib/graphics/buildings/dungeon_road.png",
+  dungeon_campaign = "contrib/graphics/buildings/dungeon_road.png",
   forest_campaign = "tilesets/forest/neutral/buildings/road.png",
   swamp_campaign = "tilesets/swamp/neutral/buildings/road.png"
 }
