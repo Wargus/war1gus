@@ -340,9 +340,12 @@ DefineUnitType(
 	   SetUnitVariable(unit, "Player", 15);
 	 end,
      BuildingRules = {
-	{"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Diagonal = false}},
-        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true}},
-        {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true}}},
+	    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Diagonal = false},
+       "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}},
+      {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true},
+       "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}},
+      {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true},
+       "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}}},
      AiBuildingRules = {-- these are silly, but what can you do
 --	-- the first road is next to a town hall
 --	{"has-unit", { Type = "unit-road", Count = 4, CountType = "<=", Owner = "any" },
