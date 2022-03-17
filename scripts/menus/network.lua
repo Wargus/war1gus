@@ -264,7 +264,6 @@ function RunJoinIpMenu()
 end
 
 function CreateOnlineLobby(map, numplayers, isserver)
-   war1gus.InCampaign = falses
    local menu
    local playerTable = {}
    local playerNames = {"", "AI"}

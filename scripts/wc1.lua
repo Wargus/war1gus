@@ -51,7 +51,7 @@ currentRace = "human"
 war1gus.music_extension = ".mid"
 
 -- campaign detection
-war1gus.InCampaign = true
+war1gus.InCampaign = false
 
 -- unit type conversions for solo and multiplayer games
 ShouldTogglePlayerRace = {}

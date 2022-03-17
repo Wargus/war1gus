@@ -24,8 +24,6 @@ function RunReplayGameMenu()
           war1gus.InCampaign = true
           pcall(function () Load(map .. "_prerun.lua") end)
           Load(map .. "_c2.sms")
-        else
-          war1gus.InCampaign = false
         end
       end
       local logfile = "~logs/" .. browser:getSelectedItem()
@@ -40,6 +38,7 @@ function RunReplayGameMenu()
         SetColorScheme()
       end
       StartReplay(logfile, reveal:isMarked())
+      war1gus.InCampaign = false
       InitGameSettings()
       SetPlayerData(GetThisPlayer(), "RaceName", "orc")
       menu:stop()

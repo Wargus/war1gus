@@ -608,7 +608,6 @@ function RunSinglePlayerGameMenu()
       RunInEditorMenu = OldRunInEditorMenu
       GetMapInfo(mapname)
       SetColorScheme()
-      war1gus.InCampaign = false
       GameSettings.RevealMap = 1
       RunMap(mapname)
     end)
@@ -631,7 +630,6 @@ function RunSinglePlayerGameMenu()
         GameSettings.NumUnits = 5
       end
       GameSettings.GameType = gametype:getSelected() - 1
-      war1gus.InCampaign = false
       RunMap(mapname, preferences.FogOfWar)
       menu:stop()
     end)

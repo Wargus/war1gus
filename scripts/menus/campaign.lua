@@ -349,6 +349,7 @@ function CreateMapStep(race, map)
     war1gus.InCampaign = true
     Load(prefix .. map .. ".smp")
     RunMap(prefix .. map .. ".smp", preferences.FogOfWar)
+    war1gus.InCampaign = false
     if (GameResult == GameVictory) then
       IncreaseCampaignState(currentRace, currentState)
     end
