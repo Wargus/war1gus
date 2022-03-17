@@ -14,9 +14,32 @@ function RunReplayGameMenu()
       if (browser:getSelected() < 0) then
         return
       end
-      war1gus.InCampaign = false
+
+      -- figure out if this is a campaign replay
+      local oldreplaylog = ReplayLog
+      function ReplayLog(tbl)
+        if tbl["MapPath"] and tbl["MapPath"]:sub(1, #"campaigns") == "campaigns" then
+          local map = tbl["MapPath"]
+          map = map:sub(1, #map - #".smp")
+          war1gus.InCampaign = true
+          pcall(function () Load(map .. "_prerun.lua") end)
+          Load(map .. "_c2.sms")
+        else
+          war1gus.InCampaign = false
+        end
+      end
+      local logfile = "~logs/" .. browser:getSelectedItem()
+      Load(logfile)
+      ReplayLog = oldreplaylog
+
       InitGameVariables()
-      StartReplay("~logs/" .. browser:getSelectedItem(), reveal:isMarked())
+      if war1gus.InCampaign then
+        if not currentRace then
+          currentRace = "orc"
+        end
+        SetColorScheme()
+      end
+      StartReplay(logfile, reveal:isMarked())
       InitGameSettings()
       SetPlayerData(GetThisPlayer(), "RaceName", "orc")
       menu:stop()

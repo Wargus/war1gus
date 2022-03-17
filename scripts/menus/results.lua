@@ -58,6 +58,7 @@ function RunResultsMenu()
   menu:add(scenew, movieX, movieY)
 
   local scenem = Movie()
+  local listener
   if scenem:Load("videos/"..video.."1.ogv", movieW, movieH) then
      local movieWidget = ImageWidget(scenem)
      menu:add(movieWidget, movieX, movieY)
@@ -72,7 +73,7 @@ function RunResultsMenu()
            end
         end
      end
-     local listener = LuaActionListener(playLoop)
+     listener = LuaActionListener(playLoop)
      menu:addLogicCallback(listener)
   end
 

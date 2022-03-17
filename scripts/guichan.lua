@@ -360,14 +360,28 @@ function RunMap(map, fow, revealmap)
       SetFogOfWar(fow)
     end
     if revealmap ~= nil then
-      local revealTypes = {"hidden", "known", "explored"}
-      RevealMap(revealTypes[revealmap + 1])      
+        local revealTypes = {"hidden", "known", "explored"}
+        RevealMap(revealTypes[revealmap + 1])
+    else
+      if GameSettings.RevealMap >= 2 then
+        if fow == nil and not IsNetworkGame() then
+          SetFogOfWar(false)
+        end
+        RevealMap("explored")
+      elseif GameSettings.RevealMap == 1 then
+        RevealMap("known")
+      elseif GameSettings.RevealMap == 0 and fow == nil and not IsNetworkGame() then
+        SetFogOfWar(wc2.preferences.FogOfWar)
+      end
+      if GameSettings.NoFogOfWar then
+        SetFogOfWar(false)
+      end
     end
     StartMap(map)
     if GameResult ~= GameRestart then
       loop = false
     end
-  end
+	end
   ResetColorSchemes()
   RunResultsMenu(s)
   InitGameSettings()

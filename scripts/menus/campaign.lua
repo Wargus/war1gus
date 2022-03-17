@@ -149,6 +149,7 @@ function Briefing(title, objs, bgImg, mapbg, mapVideo, text, voices)
   sw:setBackgroundColor(Color(0,0,0,0))
   sw:setSpeed(0.28)
 
+  local listener
   local l = MultiLineLabel(t)
   l:setForegroundColor(Color(0, 0, 0, 255))
   l:setFont(Fonts["large"])
@@ -194,7 +195,7 @@ function Briefing(title, objs, bgImg, mapbg, mapVideo, text, voices)
               menu:stop()
            end
         end
-        local listener = LuaActionListener(playEnd)
+        listener = LuaActionListener(playEnd)
         menu:addLogicCallback(listener)
      end
   end
