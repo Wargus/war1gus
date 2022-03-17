@@ -104,3 +104,9 @@ InitFuncs:add(function()
          SetColorScheme()
       end
 end)
+
+MapLoadedFuncs:add(function()
+  if not war1gus.InCampaign then
+    SetColorScheme()
+  end
+end)

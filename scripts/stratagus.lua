@@ -64,6 +64,17 @@ function InitGameVariables()
   end
 end
 
+MapLoadedFuncs = {}
+function MapLoadedFuncs:add(f)
+   table.insert(self, f)
+end
+
+function MapLoaded()
+   for i=1,#MapLoadedFuncs do
+      MapLoadedFuncs[i]()
+   end
+end
+
 -- Config file version
 --(define media-version (list 'wc1 'class 'wc1 'version '(1 18 0)))
 
@@ -381,11 +392,11 @@ function RestoreSharedSettingsFromBits(settings, errorCb)
    end
 end
 
-function MapLoaded()
+MapLoadedFuncs:add(function()
    RestoreSharedSettingsFromBits(GameSettings, function(s)
       print("ERROR RESTORING GAME SETTINGS! " .. s)
    end)
-end
+end)
 
 InitFuncs:add(function()
    StoreSharedSettingsInBits(GameSettings)
