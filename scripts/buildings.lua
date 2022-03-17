@@ -328,46 +328,48 @@ UnitTypeFiles["unit-road"] = {
 DefineConstruction(
    "construction-none",
    {Constructions = {{Percent = 0, File = "main", Frame = 0}}})
-DefineUnitType(
+   DefineUnitType(
    "unit-road",
    { Name = "Road",
-     Image = {"size", {16, 16}},
-     Costs = {"time", 1, "gold", 50},
-     Animations = "animations-building",
-     Construction = "construction-none",
-	 NeutralMinimapColor = {100, 100, 100},
-	 OnInit = function(unit)
-	   SetUnitVariable(unit, "Player", 15);
-	 end,
-     BuildingRules = {
-	    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Diagonal = false},
-       "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}},
-      {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true},
-       "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}},
-      {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true},
-       "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}}},
-     BuilderOutside = true,
-     Priority = 0,
-     HitPoints = 0,
-     Icon = "icon-road",
-     TileSize = {1, 1}, BoxSize = {16, 16},
-     SightRange = 0,
-     Indestructible = 1,
-     DrawLevel = 0,
-     IsNotSelectable = true,
-     NonSolid = true,
-     Wall = true,
-     NoRandomPlacing = false,
-	 -- as good as neutral
-	 ComputerReactionRange = 0,
-	 PersonReactionRange = 0,
-	 AnnoyComputerFactor = -100,
-	 AiAdjacentRange = 0,
-	 Revealer = false,
-	 Decoration = true,
-	 -- 
-     Type = "land", Building = true,
-     VisibleUnderFog = true })
+   Image = {"size", {16, 16}},
+   Costs = {"time", 1, "gold", 50},
+   Animations = "animations-building",
+   Construction = "construction-none",
+   NeutralMinimapColor = {100, 100, 100},
+   OnInit = function(unit)
+    SetUnitVariable(unit, "Player", 15);
+  end,
+  BuildingRules = {
+    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-road", Diagonal = false},
+    "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}},
+    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-human-town-hall", Owner = "self", CheckBuilder = true},
+    "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}},
+    {"distance", {Distance = 1, DistanceType = "=", Type = "unit-orc-town-hall", Owner = "self", CheckBuilder = true},
+    "distance", {Distance = 0, DistanceType = "!=", Type = "unit-road"}}},
+    BuilderOutside = true,
+    Priority = 0,
+    HitPoints = 0,
+    Icon = "icon-road",
+    TileSize = {1, 1}, BoxSize = {16, 16},
+    SightRange = 0,
+    Indestructible = 1,
+    DrawLevel = 0,
+    Flip = false,
+    NumDirections = 16,
+    IsNotSelectable = true,
+    NonSolid = true,
+    Wall = true,
+    NoRandomPlacing = false,
+    -- as good as neutral
+    ComputerReactionRange = 0,
+    PersonReactionRange = 0,
+    AnnoyComputerFactor = -100,
+    AiAdjacentRange = 0,
+    Revealer = false,
+    Decoration = true,
+    -- 
+    Type = "land", Building = true,
+    VisibleUnderFog = true })
 
 UnitTypeFiles["unit-wall"] = {
   forest = "tilesets/forest/neutral/buildings/wall.png",
@@ -400,6 +402,8 @@ DefineUnitType(
      Construction = "construction-wall",
      Priority = 0,
      HitPoints = 60,
+     Flip = false,
+     NumDirections = 16, 
      Icon = "icon-wall",
      TileSize = {1, 1}, BoxSize = {16, 16},
      SightRange = 0,
