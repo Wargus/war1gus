@@ -347,6 +347,7 @@ function InitGameSettings()
   GameSettings.RevealMap = 0
   SetFieldOfViewType(preferences.FieldOfViewType) -- Reload Default FOV settings because some maps|tilesets could change it
   SetFogOfWarType(preferences.FogOfWarType) -- Reload default FOW type because changing fov type may cause to change it too
+  StoreSharedSettingsInBits(GameSettings)
 end
 InitGameSettings()
 
