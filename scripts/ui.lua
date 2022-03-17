@@ -478,14 +478,13 @@ UI.MenuButton:SetCallback(
       end
 end)
 
-
-UI.NetworkMenuButton.X = 3
-UI.NetworkMenuButton.Y = 1
-UI.NetworkMenuButton.Text = "Menu"
-UI.NetworkMenuButton.Style = FindButtonStyle("network")
+UI.NetworkMenuButton.X = UI.MenuButton.X
+UI.NetworkMenuButton.Y = UI.MenuButton.Y
+UI.NetworkMenuButton.Text = UI.MenuButton.Text
+UI.NetworkMenuButton.Style = UI.MenuButton.Style
 UI.NetworkMenuButton:SetCallback(function() RunGameMenu() end)
 
-UI.NetworkDiplomacyButton.X = 45
+UI.NetworkDiplomacyButton.X = UI.Minimap.W + 6
 UI.NetworkDiplomacyButton.Y = 1
 UI.NetworkDiplomacyButton.Text = "Diplomacy"
 UI.NetworkDiplomacyButton.Style = FindButtonStyle("network")
