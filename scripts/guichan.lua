@@ -610,11 +610,13 @@ function RunSinglePlayerGameMenu()
   menu:addFullButton("~!Start Game", "s", offx + 320 - 119 - 8, offy + 150 + 18*0,
     function()
       SetColorScheme()
-      GameSettings.Presets[0].Race = race:getSelected()
-      GameSettings.Resources = resources:getSelected()
-      GameSettings.Opponents = opponents:getSelected()
-      GameSettings.NumUnits = numunits:getSelected()
-      -- GameSettings.GameType = gametype:getSelected() - 1
+      GameSettings.Presets[0].Race = race:getSelected() - 1
+      GameSettings.Resources = resources:getSelected() - 1
+      GameSettings.Opponents = opponents:getSelected() - 1
+      if numunits:getSelected() == 1 then
+        GameSettings.NumUnits = 5
+      end
+      GameSettings.GameType = gametype:getSelected() - 1
       war1gus.InCampaign = false
       RunMap(mapname, preferences.FogOfWar)
       menu:stop()
@@ -644,10 +646,10 @@ function RunSinglePlayerGameMenu()
     function(dd) end)
   opponents:setSize(76, 10)
 
-  --menu:addLabel("~<Game Type:~>", offx + 220, offy + (10 + 300) - 20, Fonts["game"], false)
-  --gametype = menu:addDropDown({"Use map settings", "Melee", "Free for all", "Top vs bottom", "Left vs right", "Man vs Machine"}, offx + 220, offy + 10 + 300,
-  --  function(dd) end)
-  --gametype:setSize(152, 20)
+  menu:addLabel("~<Game Type:~>", offx + 220, offy + (10 + 300) - 20, Fonts["game"], false)
+  gametype = menu:addDropDown({"Use map settings", "Melee", "Free for all", "Top vs bottom", "Left vs right", "Man vs Machine"}, offx + 220, offy + 10 + 300,
+   function(dd) end)
+  gametype:setSize(152, 20)
 
   function MapChanged()
     mapl:setCaption(string.sub(mapname, 6))
