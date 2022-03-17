@@ -32,9 +32,6 @@ for i=1,table.getn(OnTilesetChangeFunctions) do
     OnTilesetChangeFunctions[i]()
 end
 
--- XXX: make sure walls and roads have their directions
-DefineUnitType("unit-wall", {NumDirections = 16, Flip = false})
-DefineUnitType("unit-road", {NumDirections = 16, Flip = false})
 -- Hardcoded unit-types, moved from Stratagus to games
 if war1gus.tileset == "dungeon_campaign" then
     UnitTypeHumanWall = UnitTypeByIdent("unit-wall");
