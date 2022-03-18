@@ -254,7 +254,7 @@ DefineUnitType(
   Priority = 0,
   Corpse = "unit-destroyed-entrance",
   ExplodeWhenKilled = "missile-explosion",
-  Type = "land",
+  Type = "naval",
   Building = true, VisibleUnderFog = true,
   GivesResource = "lumber", CanHarvest = true,
   MaxOnBoard = 5,

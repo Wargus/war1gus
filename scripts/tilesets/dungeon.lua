@@ -35,7 +35,7 @@
 --
 local slots = {
    "special", {		-- Can't be in pud
-      "top-one-tree", 91, "mid-one-tree", 91, "bot-one-tree", 91,
+      "top-one-tree", 90, "mid-one-tree", 91, "bot-one-tree", 90,
       "removed-tree", 253 },
    "solid", { "unused",
               {}},								-- 000
@@ -46,7 +46,7 @@ local slots = {
    "solid", { "unused",
               { }},	                     -- 030
    "solid", { "earth", "land",
-              { 172, 173, 174, 175 }},	   -- 040
+              { 172, 173, 174, 175, 0, 112, 132, 135 }},	   -- 040
    "solid", { "treasure", "land", "cost4", "unpassable", -- cost4 == treasure in our case
               { 90 }},	   -- 050
    "solid", { "light-earth", "land",
@@ -56,9 +56,9 @@ local slots = {
    "solid", { "unused",
               { }},						   -- 080
    "solid", { "stone-floor", "land", "no-building",
-              { 75 }},				-- 090
+              { 75, 0, 211, 212, 262, 263, 264, 265, 274, 277, 282, 284, 285, 286, 287 }},				-- 090
    "solid", { "rug", "land", "no-building",
-              { 144 }},					      -- 0A0
+              { 144, 0, 210 }},					      -- 0A0
    "solid", { "unused",
               {}},					         -- 0B0
    "solid", { "unused",
