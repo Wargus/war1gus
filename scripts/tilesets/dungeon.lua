@@ -35,8 +35,8 @@
 --
 local slots = {
    "special", {		-- Can't be in pud
-      "top-one-tree", 90, "mid-one-tree", 91, "bot-one-tree", 90,
-      "removed-tree", 253 },
+      "top-one-tree", 253, "mid-one-tree", 253, "bot-one-tree", 253,
+      "removed-tree", 300 },
    "solid", { "unused",
               {}},								-- 000
    "solid", { "darkness", "water",
@@ -47,8 +47,8 @@ local slots = {
               { }},	                     -- 030
    "solid", { "earth", "land",
               { 172, 173, 174, 175, 0, 112, 132, 135 }},	   -- 040
-   "solid", { "treasure", "land", "cost4", "unpassable", -- cost4 == treasure in our case
-              { 90 }},	   -- 050
+   "solid", { "treasure", "land", "cost4", "unpassable", "non-mixing", -- cost4 == treasure in our case
+              { 253 }},	   -- 050
    "solid", { "light-earth", "land",
               { 247 }},	            -- 060
    "solid", { "unused",
@@ -56,7 +56,7 @@ local slots = {
    "solid", { "unused",
               { }},						   -- 080
    "solid", { "stone-floor", "land", "no-building",
-              { 75, 0, 211, 212, 262, 263, 264, 265, 274, 277, 282, 284, 285, 286, 287 }},				-- 090
+              { 75, 76, 77 }},				-- 090
    "solid", { "rug", "land", "no-building",
               { 144, 0, 210 }},					      -- 0A0
    "solid", { "unused",
@@ -155,20 +155,20 @@ local slots = {
              { 0 },							-- 6D0
              {},									-- 6E0
              {}},								-- 6F0
-   "mixed", { "stone-floor", "treasure", "land",
-              { 283 },							-- 700 upper left stone
-              { 279 },							-- 710 upper right stone
-              { 76 },							-- 720 upper half stone
-              { 280 },							-- 730 lower left stone
-              { 203 }, 							-- 740 left half stone 
-              { 32 },							-- 750 upper left, lower right stone
-              { 35 },							-- 760 lower right treasure
-              { 281 },							-- 770 lower right stone
-              { 104 },							-- 780 upper left, lower right stone
-              { 33 },							-- 790 right half stone
-              { 77 },							-- 7A0 lower left treasure
-              { 58 },							-- 7B0 upper half treasure
-              { 200 },							-- 7C0 upper right treasure
+   "mixed", { "stone-floor", "treasure", "land", "non-mixing",
+              { 300 },							-- 700 upper left stone
+              { 300 },							-- 710 upper right stone
+              { 300 },							-- 720 upper half stone
+              { 300 },							-- 730 lower left stone
+              { 300 }, 							-- 740 left half stone 
+              { 300 },							-- 750 upper left, lower right stone
+              { 300 },							-- 760 lower right treasure
+              { 300 },							-- 770 lower right stone
+              { 300 },							-- 780 upper left, lower right stone
+              { 300 },							-- 790 right half stone
+              { 300 },							-- 7A0 lower left treasure
+              { 300 },							-- 7B0 upper half treasure
+              { 300 },							-- 7C0 upper right treasure
               { 300 },							-- 7D0 upper left treasure
               {},									-- 7E0
               {}},								-- 7F0
