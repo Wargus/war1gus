@@ -48,7 +48,7 @@ local slots = {
    "solid", { "earth", "land",
               { 172, 173, 174, 175, 0, 112, 132, 135 }},	   -- 040
    "solid", { "treasure", "land", "cost4", "unpassable", "non-mixing", -- cost4 == treasure in our case
-              { 253 }},	   -- 050
+              { 253, 90, 91 }},	   -- 050
    "solid", { "light-earth", "land",
               { 247 }},	            -- 060
    "solid", { "unused",
