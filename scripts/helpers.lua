@@ -322,7 +322,10 @@ function DefineUnitFromSpec(unit)
                     end
                 end
                 if resource == "lumber" then
-                   resource = "wood"
+                    resource = "wood"
+                end
+                if resource == "treasure" then
+                    resource = "gold"
                 end
                 tbl[table.getn(tbl) + 1] = "file-when-loaded"
                 tbl[table.getn(tbl) + 1] = race .. "/units/" .. unitname ..

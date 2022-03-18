@@ -131,7 +131,7 @@ local buildings = {
    {Names = {orc = "Town hall", human = "Town hall"},
     Costs = {"time", 100, "gold", 400, "wood", 400},
     HitPoints = 2500,
-    CanStore = {"wood", "gold", "lumber"},
+    CanStore = {"wood", "gold", "lumber", "treasure"},
     Supply = 5,
     RepairRange = InfiniteRepairRange,
     BuildingRules = townHallBuildingRules,
@@ -147,7 +147,7 @@ local buildings = {
    {Names = {orc = "Lumber Mill", human = "Lumber Mill"},
     Costs = {"time", 150, "gold", 600, "wood", 500},
     HitPoints = 600,
-    CanStore = {"wood"},
+    CanStore = {"wood", "lumber"},
     Size = {64, 64}},
 
    {Names = {orc = "Kennel", human = "Stable"},

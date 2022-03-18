@@ -315,7 +315,8 @@ local function BuildAnimations(frames, ...)
       Move = options.Move or BuildMoveAnimation(frames[1]),
       Attack = options.Attack or BuildAttackAnimation(frames[2], attackspeed, coolofftime, attacksound),
       Death = options.Death or BuildDeathAnimation(frames[3]),
-      Harvest_wood = options.Harvest_wood
+      Harvest_wood = options.Harvest_wood,
+      Harvest_treasure = options.Harvest_wood,
    }
    if options.RepairAsAttack then
      returnvalue.Repair = returnvalue.Attack
