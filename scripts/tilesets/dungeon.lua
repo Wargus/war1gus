@@ -40,7 +40,7 @@ local slots = {
    "solid", { "unused",
               {}},								-- 000
    "solid", { "darkness", "water",
-              { 52 }},							-- 010
+              { 52, 0, 54, 55}},							-- 010
    "solid", { "unused",
               { }},	                      
    "solid", { "earth", "land",
@@ -55,15 +55,15 @@ local slots = {
               { 172, 236, 0, 132, 133 }},
    "solid", { "brighter", "land",
               { 233, 231, 0, 155, 156 }},			   
-   "solid", { "stone-floor", "land", "no-building",
-              { 75, 76, 77, 300, 0, 200, 201, 202, 203, 262, 263, 286, 287, 279, 280, 281, 283}},				
-   -- after 0 are decorations, pentagram 262, 263, 286, 287 is here, but its a bad filler
+   "solid", { "stone-floor", "land",
+              { 75, 76, 77, 300, 0, 200, 201, 202, 203, 279, 280, 281, 283}},				
+   -- after 0 are decorations, used with filler
    "solid", { "rug", "land", "no-building",
               { 144, 0, 210 }},			    -- 0A0
    "solid", { "unused",
               {}},					        -- 0B0
    "solid", { "unused",
-              {}},					        -- 0C0
+              {}}, 				       		-- 0C0
    "solid", { "unused",
               {}},							-- 0D0				
    "solid", { "unused",
@@ -71,41 +71,41 @@ local slots = {
    "solid", { "unused",
               { }},				  			-- 0F0
 			  
-	--you cannot use the same tile twice
-   "mixed", { "darkness", "earth", "water",
-              { 95 },							-- 100 upper left dark
-              { 98 },							-- 110 upper right dark
-              { 54, 55 },                		-- 120 upper half dark
-              { 138 },							-- 130 lower left dark
-              { 159 },                   		-- 140 left half dark
-					{ 204 },							-- 150 upper left, lower right dark
-              { 290 },							-- 160 lower right wall
-              { 181 },							-- 170 lower right dark
+	--you cannot use the same tile twice	
+   "mixed", { "earth", "darkness", "water",
+              { 182 },							-- 100 upper left dark
+              { 204 },							-- 110 upper right dark
+        { 206, 205 },                		-- 120 upper half dark
+              { 72 },							-- 130 lower left dark
+        { 137, 116, 160 },                   		-- 140 left half dark
+					{ 180 },							-- 150 upper left, lower right dark
+              { 181 },							-- 160 lower right wall
+              { 67 },							-- 170 lower right dark
 					{ 207 },							-- 180 upper left, lower right wall
-              { 160 },							-- 190 right half dark
-              { 295 },							-- 1A0 lower left wall
-              { 205, 206 },						-- 1B0 upper half wall
-              { 180 },							-- 1C0 upper right wall
-              { 182 },							-- 1D0 upper left wall
+        { 136, 113, 159 },							-- 190 right half dark 
+              { 138 },							-- 1A0 lower left wall
+        { 69,70 },						-- 1B0 upper half wall
+              { 115, 97 },							-- 1C0 upper right wall
+              { 114, 96 },							-- 1D0 upper left wall
               {},								-- 1E0
               {}},	
-   "mixed", { "darkness", "stone-floor", "water",
-              { 313},							-- 100 upper left dark
-              { 316 },							-- 110 upper right dark
-              { 242, 243 },                		-- 120 upper half dark
-              { 328 },							-- 130 lower left dark
-              { 321 },                    		-- 140 left half dark
-					{ 327},							-- 150 upper left, lower right dark
-              { 240 },							-- 160 lower right wall
-              { 329 },							-- 170 lower right dark
-					{ 330},							-- 180 upper left, lower right wall
-              { 322 },							-- 190 right half dark
-              { 245},							-- 1A0 lower left wall
-              { 336 },							-- 1B0 upper half wall
-              { 335 },							-- 1C0 upper right wall
-              { 337 },							-- 1D0 upper left wall
-              {},								-- 1E0
-              {}},				  				-- 1F0
+  -- "mixed", { "darkness", "stone-floor", "water", -- CTD when you go from earth to stone floor
+    --          { 313},							-- 100 upper left dark
+      --        { 316 },							-- 110 upper right dark
+        --      { 242, 243 },                		-- 120 upper half dark
+          --    { 328 },							-- 130 lower left dark
+            --  { 321 },                    		-- 140 left half dark
+				--	{ 327},							-- 150 upper left, lower right dark
+              --{ 240 },							-- 160 lower right wall
+              --{ 329 },							-- 170 lower right dark
+		--			{ 330},							-- 180 upper left, lower right wall
+          --    { 322 },							-- 190 right half dark
+            --  { 245},							-- 1A0 lower left wall
+            --  { 336 },							-- 1B0 upper half wall
+             -- { 335 },							-- 1C0 upper right wall
+             -- { 337 },							-- 1D0 upper left wall
+              --{},								-- 1E0
+              --{}},				  				-- 1F0
    "mixed", { "earth", "light-earth", "land",
               { 140 },							-- 200 upper left earth
               { 141 },							-- 210 upper right earth
@@ -245,38 +245,37 @@ local slots = {
               {}},								-- 7F0
    "mixed", { "human-wall", "dark-earth", "land", "human", "wall", "unpassable",   
    -- this 2x walls are required by engine to be. They are used in war1gus to initiate all dungeon tiles in Manual mode, so they can be used
-              {  10,   11,  12,  13,  14},						-- 800
-              {  15,   16,  17,  18,  19},						-- 810
-              {  20,   21,  22,  23,  24},						-- 820
-              {  25,   26,  27,  28,  29},						-- 830
-              {  30,   31,  32,  33,  34, 35 , 36 , 37 },		-- 840
-              {  38,   39,  40,  41,  42},						-- 850
-              {  43,   44,  45,  47,  48},						-- 860
-              {  49,   50,  51,  57,  58},						-- 870
-              {  59,   60,  61,  62,  63},						-- 880
-              {  64,   65,  66,  88,  89,  90 , 91 , 92 },		-- 890
-              {  93,  111, 177, 178, 199},						-- 8A0
-              {  211, 212, 219, 220, 221},						-- 8B0
-              {  222, 238, 239, 260, 261},						-- 8C0
-              {  284, 285, 288, 289, 323},						-- 8D0
+     { 46, 46, 46, 46, 46},			  
+			  {  12,   14,  16,  18 },						-- doors
+              {  13,   15,  17,  19 },
+			  {  22,   24,  26,  28 ,  23,  25,  27,  29 },			  
+			  {  32,   34,  36,  38 ,  31,  35,  37,  39 },
+			  {  11,   21,  31,  222,  10,  20,  30,  46 },			  
+			  {  40,   41,  42,  221,  43,  44,  45,  46 },				  
+	 { 46, 46, 46, 46},	 
+              { 47, 48, 49, 50},  
+			  { 60, 61, 62, 63},			  			  
+			  { 64, 65, 111, 51},  --66 wall top
+			  { 57, 58, 88, 89},			  
+			  { 90,91,92,93},
+			  { 177,178,199,288},			 
+			  { 219, 220, 260,261,238,239,284,285},			  
+			  { 323, 324, 325, 326, 331, 332, 333, 334}, 			  
               {},												-- 8E0
               {}},												-- 8F0
    "mixed", { "orc-wall", "dark-earth", "land", "wall", "unpassable",
-              {  324, 325, 326, 331, 332 },						-- 900
-              {  333, 334,  52,  53,  54 },						-- 910
-              {  55,  56,   67,  68,  69 },						-- 920
-              {  70,  71,   72,  73,  74 },						-- 930
-              {  95,  96,   97,  98,  99, 100, 101, 113 },		-- 940
-              {  114, 115, 116, 117, 118 },						-- 950
-              {  119, 136, 137, 138, 139 },						-- 960
-              {  142, 159, 160, 240, 241 },						-- 970
-              {  242, 243, 244, 245, 266 },						-- 980
-              {  267, 268, 269, 270, 271, 290, 291, 292 },		-- 990
-              {  293, 294, 295, 301, 302 },						-- 9A0
-              {  303, 304, 309, 310, 311 },						-- 9B0
-              {  312, 313, 314, 315, 316 },						-- 9C0
-              {  317, 318, 319, 320, 321 },						-- 9D0
-              {  322, 327, 328, 329, 330, 335, 336, 337 },		-- 9E0
+     { 46, 46, 46, 46},			  
+			  {211, 212, 46, 46, 264, 265, 282, 277, 274, 275, 278, 276}, 
+			  {53,54,55,56},
+			  {8,69,70,71},
+			  {95,96,97,98},
+			  {113,114,115,116},			  
+     { 46, 46, 46, 46},
+              { 241, 242, 243, 244 },		--cave with web
+              { 267, 268, 269, 270, 291, 292, 293, 294 , 301, 302, 303, 304 },
+     { 46, 46, 46, 46},
+              {  309, 310, 311, 312, 313, 314, 315, 316 , 317, 318, 319, 320 },						-- 9D0
+              {  327, 328, 329, 330, 335, 336, 337, 46, 321, 322 },		-- 9E0
               {}},												-- 9F0
 }
 
