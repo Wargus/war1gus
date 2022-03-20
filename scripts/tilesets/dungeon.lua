@@ -71,17 +71,17 @@ local slots = {
    "solid", { "unused",
               { }},				  			-- 0F0
 			  
-	--you cannot use the same tile in the same "mixed", but you can use the same tile in many different "mixed"'s	- like 327 is used mixing darkness with earth and stone floor.	  
+	--you cannot use the same tile twice
    "mixed", { "darkness", "earth", "water",
               { 95 },							-- 100 upper left dark
               { 98 },							-- 110 upper right dark
               { 54, 55 },                		-- 120 upper half dark
               { 138 },							-- 130 lower left dark
               { 159 },                   		-- 140 left half dark
-					{ 327 },							-- 150 upper left, lower right dark
+					{ 204 },							-- 150 upper left, lower right dark
               { 290 },							-- 160 lower right wall
               { 181 },							-- 170 lower right dark
-					{ 330 },							-- 180 upper left, lower right wall
+					{ 207 },							-- 180 upper left, lower right wall
               { 160 },							-- 190 right half dark
               { 295 },							-- 1A0 lower left wall
               { 205, 206 },						-- 1B0 upper half wall
