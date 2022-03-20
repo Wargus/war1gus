@@ -260,6 +260,11 @@ RuinParts TilesetRuinParts[] = {
 	  {0x49, 0x4a,
 	   0x64, 0x65,
            0x75, 0x76} },
+	{ "pentagram", { 262, 263, 286, 287 _12 }},
+	{ "north-wall", { 64, 65, 88, 89 _12 }},
+	{ "north-wall-barrels", { 64, 64, 92, 93 _12 }},
+	{ "north-wall-wardrobe", { 219, 220, 238, 239 _12 }},
+	{ "north-wall-cupboard", { 260, 261, 284, 285 _12 }},
 };
 
 char* ArchiveDir;
@@ -610,6 +615,11 @@ Control Todo[] = {
 {RP,0,"dungeon/neutral/buildings/wall",196,14,1 _1 },
 
 {LM,0,"dungeon/neutral/buildings/entrance",196,15,4 _1 },
+{LM,0,"dungeon/neutral/buildings/pentagram",196,16,2 _1 },
+{LM,0,"dungeon/neutral/buildings/north-wall",196,17,2 _1 },
+{LM,0,"dungeon/neutral/buildings/north-wall-barrels",196,18,2 _1 },
+{LM,0,"dungeon/neutral/buildings/north-wall-wardrobe",196,19,2 _1 },
+{LM,0,"dungeon/neutral/buildings/north-wall-cupboard",196,20,2 _1 },
 
 // Missiles
 {U,0,"missiles/fireball",									 217, 347 _2},
