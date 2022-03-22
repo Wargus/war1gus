@@ -1839,15 +1839,22 @@ DefineUnitType("unit-magma-rift", { Name = _("Magma Rift"),
   Building = true, VisibleUnderFog = true,
   DetectCloak = true,
   Elevated = true,
-
+  OnEachSecond = function(unit)
+   local cnt = GetUnitVariable(unit, "Supply", "Max")
+   if cnt > 150 then
+      local ply = GetUnitVariable(unit, "Player")
+      SetUnitVariable(unit, "Supply", 0, "Max")
+      local x = GetUnitVariable(unit, "PosX")
+      local y = GetUnitVariable(unit, "PosY")
+      local newUnit = CreateUnit("unit-fire-elemental", ply, {x, y})
+      OrderUnit(ply, "unit-fire-elemental", {x - 5, y - 5, x + 9, y + 9}, {0, 0}, "explore")
+   else
+      SetUnitVariable(unit, "Supply", cnt + 1, "Max")
+   end
+  end,
   Sounds = {
     "dead", "building destroyed"} } )
 
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-fire-elemental",
-   --Action = "train-unit", Value = "unit-fire-elemental",
-   Key = "f", Hint = "TRAIN ~!FIRE ELEMENTAL",
-   ForUnit = {"unit-magma-rift"} } )
- 
 DefineAllow("unit-magma-rift", "AAAAAAAAAAAAAAAA")
 
 
@@ -1882,15 +1889,29 @@ DefineUnitType("unit-slime-pond", { Name = _("Slime Pond"),
   Building = true, VisibleUnderFog = true,
   DetectCloak = true,
   Elevated = true,
+  OnEachSecond = function(unit)
+   local cnt = GetUnitVariable(unit, "Supply", "Max")
+   if cnt > 80 then
+      local ply = GetUnitVariable(unit, "Player")
+      SetUnitVariable(unit, "Supply", 0, "Max")
+      local x = GetUnitVariable(unit, "PosX")
+      local y = GetUnitVariable(unit, "PosY")
+      local newUnit = CreateUnit("unit-slime", ply, {x, y})
 
+      local demand = GetUnitVariable(unit, "Demand", "Max")
+      if demand < 5 then
+         SetUnitVariable(unit, "Demand", demand + 1, "Max")
+      else
+         SetUnitVariable(unit, "Demand", 0, "Max")
+         OrderUnit(ply, "unit-slime", {x - 5, y - 5, x + 9, y + 9}, {0, 0}, "explore")
+      end
+   else
+      SetUnitVariable(unit, "Supply", cnt + 1, "Max")
+   end
+  end,
   Sounds = {
     "dead", "building destroyed"} } )
 
-DefineButton( { Pos = 1, Level = 0, Icon = "icon-slime",
-   --Action = "train-unit", Value = "unit-slime",
-   Key = "s", Hint = "TRAIN ~!SLIME",
-   ForUnit = {"unit-slime-pond"} } )
- 
 DefineAllow("unit-slime-pond", "AAAAAAAAAAAAAAAA")
 
 
