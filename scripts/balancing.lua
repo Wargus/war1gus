@@ -1937,6 +1937,50 @@ DefineAnimations(
     Death = {"frame 0", "wait 1"}}
 )
 
+for i,spec in ipairs({
+   { Var = "Supply", Gold = 700, Unit = "brigand" },
+   { Var = "Demand", Gold = 1200, Unit = "ogre" },
+}) do
+   DefineSpell("spell-hire-" .. spec.Unit,
+      "manacost", 0, "range", 0, "target", "self", "cooldown", 5, "action", {
+         { "lua-callback", function(ident, caster, goalX, goalY, target)
+            local value = GetUnitVariable(caster, spec.Var, "Max")
+            if value < 40 then
+               AddMessage("No one here looking for a job right now...")
+               return false
+            end
+            SetUnitVariable(caster, spec.Var, value - 40, "Max")
+
+            local neighbours = GetUnitsAroundUnit(caster, 2, true)
+            local ply = -1
+            for i,u in ipairs(neighbours) do
+               local uPly = GetUnitVariable(u, "Player")
+               if ply >= 0 then
+                  if uPly ~= ply then
+                     AddMessage("You are not the only one looking to hire...")
+                     AddMessage("Get rid of the competition first!")
+                     return false
+                  end
+               else
+                  ply = uPly
+               end
+            end
+            if ply ~= GetThisPlayer() then
+               AddMessage("None of your troops are near to conclude the deal...")
+            end
+            local gold = GetPlayerData(ply, "Resources", "gold")
+            if gold < spec.Gold then
+               AddMessage(_("Not enough gold...mine more gold."))
+               return false
+            end
+            CreateUnit("unit-" .. spec.Unit, ply, {goalX, goalY})
+            SetPlayerData(ply, "Resources", "gold", gold - spec.Gold)
+            return false
+         end }
+      }
+   )
+end
+
 DefineUnitType("unit-ruin", { Name = _("Ruin"),
   Image = {
      "file", "contrib/graphics/buildings/ruin.png",
@@ -1961,18 +2005,33 @@ DefineUnitType("unit-ruin", { Name = _("Ruin"),
   Building = true, VisibleUnderFog = true,
   DetectCloak = true,
   Elevated = true,
-
+  CanCastSpell = {"spell-hire-brigand", "spell-hire-ogre"},
+  OnEachSecond = function(ruin)
+   local supply = GetUnitVariable(ruin, "Supply", "Max")
+   if supply < 240 then
+      SetUnitVariable(ruin, "Supply", supply + 1, "Max")
+   end
+   local demand = GetUnitVariable(ruin, "Demand", "Max")
+   if demand < 240 then
+      SetUnitVariable(ruin, "Demand", demand + 1, "Max")
+   end
+  end,
   Sounds = {
     "dead", "building destroyed"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-brigand",
-   --Action = "train-unit", Value = "unit-brigand",
-   Key = "b", Hint = "TRAIN ~!BRIGAND",
-   ForUnit = {"unit-ruin"} } )
-   
-DefineButton( { Pos = 2, Level = 0, Icon = "icon-ogre",
-   --Action = "train-unit", Value = "unit-ogre",
-   Key = "b", Hint = "TRAIN ~!BRIGAND",
+   Action = "cast-spell", Value = "spell-hire-brigand",
+   -- Allowed = "check-unit-variable", AllowArg = {"Supply", "Max", ">", "40"},
+   Key = "b", Hint = "HIRE ~!BRIGAND",
    ForUnit = {"unit-ruin"} } )
 
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-ogre",
+   Action = "cast-spell", Value = "spell-hire-ogre",
+   -- Allowed = "check-unit-variable", AllowArg = {"Demand", "Max", ">", "40"},
+   Key = "o", Hint = "HIRE ~!OGRE",
+   ForUnit = {"unit-ruin"} } )
+DefineUnitType("unit-ogre",			{Costs = {"time", 1, "gold", 3000, "wood", 0},})
+
 DefineAllow("unit-ruin", "AAAAAAAAAAAAAAAA")
+DefineAllow("unit-brigand", "AAAAAAAAAAAAAAAA")
+DefineAllow("unit-ogre", "AAAAAAAAAAAAAAAA")
