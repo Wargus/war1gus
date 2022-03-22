@@ -17,7 +17,9 @@ function RunReplayGameMenu()
 
       -- figure out if this is a campaign replay
       local oldreplaylog = ReplayLog
-      function ReplayLog(tbl)
+      local oldlog = Log
+      Log = function(tbl) end
+      ReplayLog = function(tbl)
         if tbl["MapPath"] and tbl["MapPath"]:sub(1, #"campaigns") == "campaigns" then
           local map = tbl["MapPath"]
           map = map:sub(1, #map - #".smp")
@@ -26,9 +28,10 @@ function RunReplayGameMenu()
           Load(map .. "_c2.sms")
         end
       end
-      local logfile = "~logs/" .. browser:getSelectedItem()
+      local logfile = "logs/" .. browser:getSelectedItem()
       Load(logfile)
       ReplayLog = oldreplaylog
+      Log = oldlog
 
       InitGameVariables()
       if war1gus.InCampaign then
@@ -37,7 +40,7 @@ function RunReplayGameMenu()
         end
         SetColorScheme()
       end
-      StartReplay(logfile, reveal:isMarked())
+      StartReplay("~" .. logfile, reveal:isMarked())
       war1gus.InCampaign = false
       InitGameSettings()
       SetPlayerData(GetThisPlayer(), "RaceName", "orc")
