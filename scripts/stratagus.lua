@@ -339,7 +339,7 @@ DefaultPreference("ShowOrders", false)
 DefaultPreference("OnlineServer", "network.stratagus.de")
 DefaultPreference("OnlinePort", 6112)
 DefaultPreference("SimplifiedAutoTargeting", true)
-DefaultPreference("FogOfWarType", "enhanced")      -- "enhanced", "tiled" or "fast". Tiled and fast types of FOW don't work with shadow casting FOV.
+DefaultPreference("FogOfWarType", "fast")      -- "enhanced", "tiled" or "fast". Tiled and fast types of FOW don't work with shadow casting FOV.
 DefaultPreference("FogOfWarBilinear", false)       -- Enable/Disable bilinear filtration for fog of war
 DefaultPreference("DungeonSightBlocking", true)    -- Enable/Disable sight blocking in the dungeons
 DefaultPreference("FieldOfViewType", "simple-radial")    -- default field of view type (possibe values: "simple-radial" and "shadow-casting" )
