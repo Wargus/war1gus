@@ -1950,18 +1950,20 @@ DefineUnitType("unit-windmill", { Name = _("Windmill"),
    local neighbours = GetUnitsAroundUnit(windmill, 1, true)
    local ply = -1
    for i,u in ipairs(neighbours) do
-      local uPly = GetUnitVariable(u, "Player")
-      if ply < 0 then
-         ply = uPly
-      elseif ply ~= uPly then
-         return
-      end
-      if ply >= 0  then
-         local curP = GetUnitVariable(windmill, "Player")
-         if curP ~= ply then
-            local x = GetUnitVariable(windmill, "PosX")
-            local y = GetUnitVariable(windmill, "PosY")
-            ChangeUnitsOwner({x, y}, {x + 4, y + 4}, curP, ply, "unit-windmill")
+      if not GetUnitBoolFlag(u, "Building") then
+         local uPly = GetUnitVariable(u, "Player")
+         if ply < 0 then
+            ply = uPly
+         elseif ply ~= uPly then
+            return
+         end
+         if ply >= 0  then
+            local curP = GetUnitVariable(windmill, "Player")
+            if curP ~= ply then
+               local x = GetUnitVariable(windmill, "PosX")
+               local y = GetUnitVariable(windmill, "PosY")
+               ChangeUnitsOwner({x, y}, {x + 4, y + 4}, curP, ply, "unit-windmill")
+            end
          end
       end
    end
@@ -1989,30 +1991,33 @@ for i,spec in ipairs({
                AddMessage("No one here looking for a job right now...")
                return false
             end
-            SetUnitVariable(caster, spec.Var, value - 40, "Max")
 
             local neighbours = GetUnitsAroundUnit(caster, 2, true)
             local ply = -1
             for i,u in ipairs(neighbours) do
-               local uPly = GetUnitVariable(u, "Player")
-               if ply >= 0 then
-                  if uPly ~= ply then
-                     AddMessage("You are not the only one looking to hire...")
-                     AddMessage("Get rid of the competition first!")
-                     return false
+               if not GetUnitBoolFlag(u, "Building") then
+                  local uPly = GetUnitVariable(u, "Player")
+                  if ply >= 0 then
+                     if uPly ~= ply then
+                        AddMessage("You are not the only one looking to hire...")
+                        AddMessage("Get rid of the competition first!")
+                        return false
+                     end
+                  else
+                     ply = uPly
                   end
-               else
-                  ply = uPly
                end
             end
             if ply ~= GetThisPlayer() then
                AddMessage("None of your troops are near to conclude the deal...")
+               return false
             end
             local gold = GetPlayerData(ply, "Resources", "gold")
             if gold < spec.Gold then
                AddMessage(_("Not enough gold...mine more gold."))
                return false
             end
+            SetUnitVariable(caster, spec.Var, value - 40, "Max")
             CreateUnit("unit-" .. spec.Unit, ply, {goalX, goalY})
             SetPlayerData(ply, "Resources", "gold", gold - spec.Gold)
             return false
