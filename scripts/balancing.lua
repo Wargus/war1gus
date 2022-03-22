@@ -1925,7 +1925,26 @@ DefineUnitType("unit-windmill", { Name = _("Windmill"),
   Building = true, VisibleUnderFog = true,
   DetectCloak = true,
   Elevated = true,
-
+  OnEachSecond = function(windmill)
+   local neighbours = GetUnitsAroundUnit(windmill, 1, true)
+   local ply = -1
+   for i,u in ipairs(neighbours) do
+      local uPly = GetUnitVariable(u, "Player")
+      if ply < 0 then
+         ply = uPly
+      elseif ply ~= uPly then
+         return
+      end
+      if ply >= 0  then
+         local curP = GetUnitVariable(windmill, "Player")
+         if curP ~= ply then
+            local x = GetUnitVariable(windmill, "PosX")
+            local y = GetUnitVariable(windmill, "PosY")
+            ChangeUnitsOwner({x, y}, {x + 4, y + 4}, curP, ply, "unit-windmill")
+         end
+      end
+   end
+  end,
   Sounds = {
     "dead", "building destroyed"} } )
  
