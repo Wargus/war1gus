@@ -1807,8 +1807,6 @@ end
 DefineRuinIcon()
 OnTilesetChangeFunctions:add(DefineRuinIcon)
 
-
-
 DefineAnimations(
    "animations-magma-rift", 
    {Still = {"frame 0", "wait 9", "frame 1", "wait 9", "frame 2", "wait 9", "frame 3", "wait 9", "frame 4", "wait 9", "frame 5", "wait 9", "frame 6", "wait 9", "frame 7", "wait 9", "frame 8", "wait 9", "frame 9", "wait 9", "frame 10", "wait 9", "frame 11", "wait 9", "frame 12", "wait 9", "frame 13", "wait 9", "frame 14", "wait 9", "frame 15", "wait 9", "frame 16", "wait 9"},
@@ -1982,7 +1980,60 @@ DefineAnimations(
 for i,spec in ipairs({
    { Var = "Supply", Gold = 700, Unit = "brigand" },
    { Var = "Demand", Gold = 1200, Unit = "ogre" },
-}) do
+}) do   
+   DefinePopup({
+      Ident = "popup-" .. spec.Unit,
+      BackgroundColor = PopupBackgroundColor,
+      BorderColor = PopupBorderColor,
+      Contents = {
+         { 
+            Margin = {1, 1}, HighlightColor = "yellow",
+            More = {"ButtonInfo", {InfoType = "Hint", Font = PopupFont}}
+         },
+         {
+            Margin = {1, 1},
+            More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
+         },
+         {
+            Margin = {1, 1}, HighlightColor = "yellow",
+            More = {
+               "Variable", {
+                  Text = function()
+                     local avail = math.floor(GetUnitVariable(-1, spec.Var, "Max") / 40)
+                     if avail == 0 then
+                        return "No " .. spec.Unit .. " currently looking for work."
+                     else
+                        local name = spec.Unit
+                        if avail > 1 then
+                           name = name .. "s"
+                        end
+                        return "~<" .. avail .. "~> " .. name .. " currently looking for work."
+                     end
+                  end,
+                  Font = PopupFont
+               }
+            }
+         },
+         {
+            Margin = {1, 1}, HighlightColor = "yellow",
+            More = {
+               "Variable", {
+                  Text = function()
+                     local avail = math.floor(GetUnitVariable(-1, spec.Var, "Max") / 40)
+                     if avail == 0 then
+                        return ""
+                     elseif avail > 1 then
+                        return "They want ~<" .. spec.Gold .. " gold~> each."
+                     else
+                        return "He wants ~<" .. spec.Gold .. " gold~>."
+                     end
+                  end,
+                  Font = PopupFont
+               }
+            }
+         },
+      }
+   })
    DefineSpell("spell-hire-" .. spec.Unit,
       "manacost", 0, "range", 0, "target", "self", "cooldown", 5, "action", {
          { "lua-callback", function(ident, caster, goalX, goalY, target)
@@ -2065,14 +2116,14 @@ DefineUnitType("unit-ruin", { Name = _("Ruin"),
     "dead", "building destroyed"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-brigand",
+   Popup = "popup-brigand",
    Action = "cast-spell", Value = "spell-hire-brigand",
-   -- Allowed = "check-unit-variable", AllowArg = {"Supply", "Max", ">", "40"},
    Key = "b", Hint = "HIRE ~!BRIGAND",
    ForUnit = {"unit-ruin"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-ogre",
+   Popup = "popup-ogre",
    Action = "cast-spell", Value = "spell-hire-ogre",
-   -- Allowed = "check-unit-variable", AllowArg = {"Demand", "Max", ">", "40"},
    Key = "o", Hint = "HIRE ~!OGRE",
    ForUnit = {"unit-ruin"} } )
 DefineUnitType("unit-ogre",			{Costs = {"time", 1, "gold", 3000, "wood", 0},})

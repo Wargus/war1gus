@@ -551,8 +551,8 @@ PopupFont = "small"
 local GetRGBA = function(r, g, b, a)
    return b + g*0x100 + r*0x10000 + a*0x1000000
 end
-local PopupBackgroundColor = GetRGBA(0,32,96, 208)
-local PopupBorderColor = GetRGBA(192,192,255, 160)
+PopupBackgroundColor = GetRGBA(0,32,96, 208)
+PopupBorderColor = GetRGBA(192,192,255, 160)
 
 if (wc1.preferences.ShowButtonPopups) then
    local OldDefineButton = DefineButton
