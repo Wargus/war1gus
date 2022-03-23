@@ -988,7 +988,7 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 
 	// last second fix for some palettes
 #define SET_PAL_RGB(idx, r, g, b) pal[idx * 3] = r; pal[idx * 3 + 1] = g; pal[idx * 3 + 2] = b
-	if (strstr(name, "poison_cloud")) {
+	if (strstr(name, "missiles") || strstr(name, "tilesets")|| strstr(name, "units")) {
 		newpal = (unsigned char*)malloc(256 * 3);
 		memcpy(newpal, pal, 256 * 3);
 		pal = newpal;
