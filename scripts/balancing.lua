@@ -1395,17 +1395,17 @@ humanHoldfire.Frame = 0
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-human-patrol",
   Action = "patrol",
   Key = "r", Hint = "PAT~!ROL",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group", "unit-brigand", "unit-ogre"}}) 
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-explore",
   Action = "explore",
   Key = "e", Hint = "~!EXPLORE",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group", "unit-brigand", "unit-ogre"}}) 
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-standground",
   Action = "stand-ground",
   Key = "t", Hint = "S~!TAND GROUND",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-lothar", "human-group", "unit-brigand", "unit-ogre"}}) 
   
 -----------------------------------------------------------------------
 -- New Orders Buttons Orcs
@@ -1980,17 +1980,17 @@ DefineAnimations(
 )
 
 for i,spec in ipairs({
-   { Var = "Supply", Gold = 700, Unit = "brigand" },
-   { Var = "Demand", Gold = 1200, Unit = "ogre" },
+   { Var = "Supply", Gold = 1000, Wood = 4000, Unit = "brigand" }, --wood is used for cooldown. So long to reduce micro.
+   { Var = "Demand", Gold = 1200, Wood = 6000, Unit = "ogre" }, -- 1000 cooldown time = 200 production time (footman)
 }) do
    DefineSpell("spell-hire-" .. spec.Unit,
-      "manacost", 0, "range", 0, "target", "self", "cooldown", 5, "action", {
+      "manacost", 0, "range", 0, "target", "self", "cooldown", spec.Wood, "action", {
          { "lua-callback", function(ident, caster, goalX, goalY, target)
-            local value = GetUnitVariable(caster, spec.Var, "Max")
-            if value < 40 then
-               AddMessage("No one here looking for a job right now...")
-               return false
-            end
+            --local value = GetUnitVariable(caster, spec.Var, "Max")
+            --if value < 40 then
+            --   AddMessage("No one here looking for a job right now...") --not sure how to use this message with spell cooldown
+            --   return false
+            --end
 
             local neighbours = GetUnitsAroundUnit(caster, 2, true)
             local ply = -1
@@ -2008,7 +2008,7 @@ for i,spec in ipairs({
                   end
                end
             end
-            if ply ~= GetThisPlayer() then
+            if ply ~= GetThisPlayer() then --this is annoying because you trigger cooldown again, if not troops around
                AddMessage("None of your troops are near to conclude the deal...")
                return false
             end
@@ -2017,8 +2017,11 @@ for i,spec in ipairs({
                AddMessage(_("Not enough gold...mine more gold."))
                return false
             end
-            SetUnitVariable(caster, spec.Var, value - 40, "Max")
+            --SetUnitVariable(caster, spec.Var, value - 40, "Max")
             CreateUnit("unit-" .. spec.Unit, ply, {goalX, goalY})
+			if spec.Unit == "brigand" then
+			CreateUnit("unit-" .. spec.Unit, ply, {goalX, goalY})
+			end
             SetPlayerData(ply, "Resources", "gold", gold - spec.Gold)
             return false
          end }
@@ -2067,15 +2070,30 @@ DefineUnitType("unit-ruin", { Name = _("Ruin"),
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-brigand",
    Action = "cast-spell", Value = "spell-hire-brigand",
    -- Allowed = "check-unit-variable", AllowArg = {"Supply", "Max", ">", "40"},
-   Key = "b", Hint = "HIRE ~!BRIGAND",
+   Key = "b", Hint = "HIRE 2x B~!RIGANDS - 1000 gold",
    ForUnit = {"unit-ruin"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-ogre",
    Action = "cast-spell", Value = "spell-hire-ogre",
    -- Allowed = "check-unit-variable", AllowArg = {"Demand", "Max", ">", "40"},
-   Key = "o", Hint = "HIRE ~!OGRE",
+   Key = "g", Hint = "HIRE O~!GRE - 1200 gold",
    ForUnit = {"unit-ruin"} } )
-DefineUnitType("unit-ogre",			{Costs = {"time", 1, "gold", 3000, "wood", 0},})
+
+DefineUnitType("unit-brigand", {
+				Speed = 5,
+				HitPoints = 60,
+				Armor = 1, 
+				BasicDamage = 8,
+})
+
+DefineUnitType("unit-ogre", {
+	--Costs = {"time", 1, "gold", 3000, "wood", 0},
+				Speed = 3,
+				HitPoints = 100,
+				Demand = 2,
+				Armor = 0,
+				BasicDamage = 29,
+})
 
 DefineAllow("unit-ruin", "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-brigand", "AAAAAAAAAAAAAAAA")
