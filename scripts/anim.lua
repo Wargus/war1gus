@@ -422,7 +422,9 @@ DefineAnimations("animations-raider", anim_rider)
 DefineAnimations("animations-daemon", BuildAnimations(frameNumbers_5_5_5_5, {coolofftime = 50}))
 DefineAnimations("animations-ogre",
 		 BuildAnimations(frameNumbers_5_5_5_5,
-				 {attacksound = "fist attack"}))
+				 {attackspeed = 10,
+				 coolofftime = 50,
+				 attacksound = "fist attack"}))
 DefineAnimations("animations-skeleton", BuildAnimations(frameNumbers_5_5_5_5))
 DefineAnimations("animations-scorpion",
 		 BuildAnimations(frameNumbers_5_5_5_5,
