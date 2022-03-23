@@ -2070,7 +2070,7 @@ DefineUnitType("unit-ruin", { Name = _("Ruin"),
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-brigand",
    Action = "cast-spell", Value = "spell-hire-brigand",
    -- Allowed = "check-unit-variable", AllowArg = {"Supply", "Max", ">", "40"},
-   Key = "b", Hint = "HIRE 2x B~!RIGANDS - 1000 gold",
+   Key = "r", Hint = "HIRE 2x B~!RIGANDS - 1000 gold",
    ForUnit = {"unit-ruin"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-ogre",
