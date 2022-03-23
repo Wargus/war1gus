@@ -44,7 +44,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peasant",
     "unit-human-catapult", "unit-human-catapult-noattack", "unit-peasant",
     "unit-water-elemental", "unit-scorpion",
     "unit-cleric", "unit-conjurer", "unit-medivh", "unit-lothar",
-    "human-group" } } )
+    "human-group", "unit-brigand", "unit-ogre" } } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-horse1",
   Action = "move",
@@ -66,7 +66,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield1",
     "unit-human-catapult", "unit-human-catapult-noattack", "unit-peasant",
     "unit-water-elemental", "unit-scorpion",
     "unit-cleric", "unit-conjurer", "unit-medivh", "unit-lothar",
-    "human-group"} } )
+    "human-group", "unit-brigand", "unit-ogre"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-shield2",
   Action = "stop",
@@ -90,7 +90,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword1",
   ForUnit = {"unit-footman", "unit-archer",
     "unit-knight",
     "unit-scorpion", "unit-lothar",
-    "unit-human-catapult", "human-group"} } )
+    "unit-human-catapult", "human-group", "unit-brigand", "unit-ogre"} } )
 
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-sword2",
   Action = "attack",
