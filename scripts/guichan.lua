@@ -781,7 +781,10 @@ function StartEditor(mapname)
   CStartEditor(mapname)
 end
 
+EditorStartedFromCommandline = false
+
 if (Editor.Running == EditorCommandLine) then
+  EditorStartedFromCommandline = true
   if (CliMapName and CliMapName ~= "") then
     StartEditor(CliMapName)
   else

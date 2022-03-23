@@ -51,7 +51,7 @@ local function RunEditorNewMapMenu()
       menu:stop()
       StartEditor(nil)
     end)
-  menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() RunEditorMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() menu:stop(1) end)
   return menu:run()
 end
 
@@ -96,7 +96,7 @@ local function RunEditorLoadMapMenu()
     end)
 
   menu:addFullButton("~!Edit map", "e", offx + 96, offy + 52 + 18 * 5, function() menu:stop(); StartEditor(mapname);  end)
-  menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() RunEditorMenu(); menu:stop(1) end)
+  menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() menu:stop(1) end)
 
   GetMapInfo(mapname)
   MapChanged()
@@ -110,8 +110,18 @@ function RunEditorMenu()
   local offy = (Video.Height - 200) / 2
 
   local buttonNewMap =
-  menu:addFullButton("~!New map", "n", offx + 96, offy + 52 + 18*3, function() RunEditorNewMapMenu(); menu:stop() end)
-  menu:addFullButton("~!Load map", "l", offx + 96, offy + 52 + 18*4, function() RunEditorLoadMapMenu(); menu:stop() end)
+  menu:addFullButton("~!New map", "n", offx + 96, offy + 52 + 18*3, function()
+    RunEditorNewMapMenu()
+    if not EditorStartedFromCommandline then
+      menu:stop()
+    end
+  end)
+  menu:addFullButton("~!Load map", "l", offx + 96, offy + 52 + 18*4, function()
+    RunEditorLoadMapMenu()
+    if not EditorStartedFromCommandline then
+      menu:stop()
+    end
+  end)
   menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18*5, function() menu:stop() end)
   return menu:run()
 end
@@ -350,13 +360,16 @@ function RunInEditorMenu()
   buttonEditorLoad:setEnabled(false) -- To be removed when enabled.
 
   menu:addFullButton(
-     "E~!xit to Menu", "x", 12, 20 + 18 * 4,
-     function()
-	Load("scripts/ui.lua")
-	Editor.Running = EditorNotRunning;
-	menu:stopAll();			
-	RunEditorMenu();
-     end
+    "E~!xit to Menu", "x", 12, 20 + 18 * 4,
+    function()
+      Load("scripts/ui.lua")
+      Editor.Running = EditorNotRunning
+      if EditorStartedFromCommandline then
+        menu:stop()
+      else
+        menu:stopAll()
+      end
+    end
   )
   menu:addFullButton("Return to Editor (~<Esc~>)", "escape", 12, 144 - 30, function() menu:stop() end)
 
