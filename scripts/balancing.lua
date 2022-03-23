@@ -1977,6 +1977,8 @@ DefineAnimations(
     Death = {"frame 0", "wait 1"}}
 )
 
+DefineUnitType("unit-brigand", { Image = { "file", "neutral/units/colored-brigand.png", "size", { 32, 32 } } })
+
 for i,spec in ipairs({
    { Var = "Supply", Gold = 700, Unit = "brigand" },
    { Var = "Demand", Gold = 1200, Unit = "ogre" },

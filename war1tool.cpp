@@ -506,6 +506,7 @@ Control Todo[] = {
 {U,0,"neutral/units/fire_elemental",						 191, 300 _2},
 {U,0,"neutral/units/scorpion",								 191, 301 _2},
 {U,0,"neutral/units/brigand",								 191, 302 _2},
+{U,0,"neutral/units/colored-brigand",						 191, 302 _2},
 {U,0,"neutral/units/the_dead",								 191, 303 _2},
 {U,0,"neutral/units/skeleton",								 191, 304 _2},
 {U,0,"neutral/units/daemon",								 191, 305 _2},
@@ -2539,6 +2540,16 @@ int ConvertGfu(const char* file, int pale, int gfue)
 		while (p < end) {
 			if (*p >= 99 && *p <= 102) {
 				*p = *p + 104;
+			}
+			++p;
+		}
+	}
+	if (strstr(file, "colored-brigand") != NULL) {
+		unsigned char* p = image;
+		unsigned char* end = image + (w * h);
+		while (p < end) {
+			if (*p >= 168 && *p <= 175) {
+				*p = *p + (200 - 168);
 			}
 			++p;
 		}
