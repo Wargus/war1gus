@@ -1395,17 +1395,17 @@ humanHoldfire.Frame = 0
 DefineButton( { Pos = 5, Level = 0, Icon = "icon-human-patrol",
   Action = "patrol",
   Key = "r", Hint = "PAT~!ROL",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group", "unit-brigand", "unit-ogre"}}) 
 
 DefineButton( { Pos = 6, Level = 0, Icon = "icon-human-explore",
   Action = "explore",
   Key = "e", Hint = "~!EXPLORE",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-water-elemental", "unit-scorpion", "unit-lothar", "human-group", "unit-brigand", "unit-ogre"}}) 
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-standground",
   Action = "stand-ground",
   Key = "t", Hint = "S~!TAND GROUND",
-  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-lothar", "human-group"}}) 
+  ForUnit = {"unit-footman", "unit-archer", "unit-knight", "unit-human-catapult", "unit-human-catapult-noattack", "unit-water-elemental", "unit-lothar", "human-group", "unit-brigand", "unit-ogre"}}) 
   
 -----------------------------------------------------------------------
 -- New Orders Buttons Orcs
@@ -2126,9 +2126,24 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-brigand",
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-ogre",
    Popup = "popup-ogre",
    Action = "cast-spell", Value = "spell-hire-ogre",
-   Key = "o", Hint = "HIRE ~!OGRE",
+   Key = "g", Hint = "HIRE O~!GRE",
    ForUnit = {"unit-ruin"} } )
-DefineUnitType("unit-ogre",			{Costs = {"time", 1, "gold", 3000, "wood", 0},})
+
+DefineUnitType("unit-brigand", {
+	Speed = 5,
+	HitPoints = 60,
+	Armor = 1, 
+	BasicDamage = 8,
+})
+
+DefineUnitType("unit-ogre", {
+	Speed = 3,
+    HitPoints = 100,
+    Demand = 3,
+	Armor = 0, 
+    BasicDamage = 29,
+})
+
 
 DefineAllow("unit-ruin", "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-brigand", "AAAAAAAAAAAAAAAA")
