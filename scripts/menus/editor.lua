@@ -51,7 +51,7 @@ local function RunEditorNewMapMenu()
       menu:stop()
       StartEditor(nil)
     end)
-  menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() menu:stop(1) end)
+  menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() RunEditorMenu(); menu:stop(1) end)
   return menu:run()
 end
 
@@ -96,7 +96,7 @@ local function RunEditorLoadMapMenu()
     end)
 
   menu:addFullButton("~!Edit map", "e", offx + 96, offy + 52 + 18 * 5, function() menu:stop(); StartEditor(mapname);  end)
-  menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() menu:stop(1) end)
+  menu:addFullButton("~!Cancel", "c", offx + 96, offy + 52 + 18 * 6, function() RunEditorMenu(); menu:stop(1) end)
 
   GetMapInfo(mapname)
   MapChanged()
@@ -354,7 +354,8 @@ function RunInEditorMenu()
      function()
 	Load("scripts/ui.lua")
 	Editor.Running = EditorNotRunning;
-	menu:stopAll();
+	menu:stopAll();			
+	RunEditorMenu();
      end
   )
   menu:addFullButton("Return to Editor (~<Esc~>)", "escape", 12, 144 - 30, function() menu:stop() end)
