@@ -2144,6 +2144,11 @@ DefineUnitType("unit-ogre", {
     BasicDamage = 29,
 })
 
+DefineAnimations("animations-ogre",
+		 BuildAnimations(GetFrameNumbers(5, {5, 5, 5}),
+				 {attackspeed = 10,
+				 coolofftime = 50,
+				 attacksound = "fist attack"}))
 
 DefineAllow("unit-ruin", "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-brigand", "AAAAAAAAAAAAAAAA")

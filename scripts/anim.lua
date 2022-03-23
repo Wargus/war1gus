@@ -277,7 +277,7 @@ local function BuildDeathAnimation(frames)
 end
 
 
-local function GetFrameNumbers(nbdir, initCounter)
+function GetFrameNumbers(nbdir, initCounter)
    initCounter[1] = initCounter[1] - 1
    local total = initCounter[1] + initCounter[2] + initCounter[3];
    local counter = {initCounter[1] + 1, initCounter[2], initCounter[3]}
@@ -305,7 +305,7 @@ local function GetFrameNumbers(nbdir, initCounter)
    return res;
 end
 
-local function BuildAnimations(frames, ...)
+function BuildAnimations(frames, ...)
    options = select(1, ...) or {}
    attackspeed = options.attackspeed or 7
    coolofftime = options.coolofftime or 20
@@ -422,9 +422,7 @@ DefineAnimations("animations-raider", anim_rider)
 DefineAnimations("animations-daemon", BuildAnimations(frameNumbers_5_5_5_5, {coolofftime = 50}))
 DefineAnimations("animations-ogre",
 		 BuildAnimations(frameNumbers_5_5_5_5,
-				 {attackspeed = 10,
-				 coolofftime = 50,
-				 attacksound = "fist attack"}))
+				 {attacksound = "fist attack"}))
 DefineAnimations("animations-skeleton", BuildAnimations(frameNumbers_5_5_5_5))
 DefineAnimations("animations-scorpion",
 		 BuildAnimations(frameNumbers_5_5_5_5,
