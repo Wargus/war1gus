@@ -950,6 +950,7 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	FILE* fp;
 	png_structp png_ptr;
 	png_infop info_ptr;
+	unsigned char* newpal = NULL;
 	unsigned char** lines;
 	int i;
 	const int bit_depth = 8;
@@ -984,6 +985,27 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 
 	// zlib parameters
 	png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
+
+	// last second fix for some palettes
+#define SET_PAL_RGB(idx, r, g, b) pal[idx * 3] = r; pal[idx * 3 + 1] = g; pal[idx * 3 + 2] = b
+	if (strstr(name, "poison_cloud")) {
+		newpal = (unsigned char*)malloc(256 * 3);
+		memcpy(newpal, pal, 256 * 3);
+		pal = newpal;
+		SET_PAL_RGB(127, 60, 0, 121);
+		SET_PAL_RGB(128, 81, 0, 146);
+		SET_PAL_RGB(129, 109, 0, 174);
+		SET_PAL_RGB(130, 142, 0, 203);
+		SET_PAL_RGB(131, 174, 0, 219);
+		SET_PAL_RGB(132, 211, 0, 235);
+		SET_PAL_RGB(133, 247, 4, 255);
+		// needed for more than just this one??
+		SET_PAL_RGB(146, 255, 211, 65);
+		SET_PAL_RGB(147, 255, 166, 28);
+		SET_PAL_RGB(148, 178, 134, 0);
+		SET_PAL_RGB(150, 40, 48, 48);
+	}
+#undef SET_PAL_RGB
 
 	// prepare the file information
 #if PNG_LIBPNG_VER >= 10504
@@ -1043,6 +1065,9 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	png_destroy_write_struct(&png_ptr, &info_ptr);
 	fclose(fp);
 
+	if (newpal) {
+		free(newpal);
+	}
 	free(lines);
 
 	return 0;
