@@ -451,7 +451,7 @@ function RunSelectScenarioMenu()
   local browser = menu:addBrowser("maps/", "^.*%.smp%.?g?z?$",
     12, 13, 160, 136, mapname)
 
-  local l = menu:addLabel(browser:getSelectedItem(), 12, 130, Fonts["game"], false)
+  local l = menu:addLabel(browser:getSelectedItem(), 12, 150, Fonts["game"], false)
 
   local function cb(s)
     l:setCaption(browser:getSelectedItem())
