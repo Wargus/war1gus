@@ -61,6 +61,9 @@ local second_line = {info_text_off_x, 41}
 local third_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 7, 35}
 local fourth_line = {(info_text_off_x * 2) + (info_panel_w / 2) + 7, 41}
 
+CompleteBarText = CGraphic:New("ui/percent_complete.png", 40, 5)
+CompleteBarText:Load()
+
 local function MakeCompleteBar(condition, variable)
    return { Pos = {1, 36}, Condition = condition,
             More = {"CompleteBar", {Variable = variable, Width = 61, Height = 7, Color = "green", Border = true}}
@@ -160,7 +163,11 @@ DefinePanelContents(
          MakeCompleteBar({Build = "only"}, "Build"),
          MakeCompleteBar({Research = "only"}, "Research"),
          MakeCompleteBar({Training = "only"}, "Training"),
-         MakeCompleteBar({UpgradeTo = "only"}, "UpgradeTo")
+         MakeCompleteBar({UpgradeTo = "only"}, "UpgradeTo"),
+         { Pos = {13, 37}, Condition = {Build = "only"}, More = {"Graphic", "ui/percent_complete.png"} },
+         { Pos = {13, 37}, Condition = {Research = "only"}, More = {"Graphic", "ui/percent_complete.png"} },
+         { Pos = {13, 37}, Condition = {Training = "only"}, More = {"Graphic", "ui/percent_complete.png"} },
+         { Pos = {13, 37}, Condition = {UpgradeTo = "only"}, More = {"Graphic", "ui/percent_complete.png"} },
       }
    }
 )
