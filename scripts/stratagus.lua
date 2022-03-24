@@ -104,6 +104,7 @@ SetFullGameName(war1gus.Name)
 --  set the default map file.
 --SetDefaultMap("campaigns/human/01.cm")
 
+SetColorCycleSpeed(10)
 
 SetSelectionStyle("rectangle")
 Preference.ShowSightRange = false
