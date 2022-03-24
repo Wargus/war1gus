@@ -2477,7 +2477,7 @@ int ConvertGfu(const char* file, int pale, int gfue)
 		}
 	}
 	if (strstr(file, "neutral/")) {
-		if (strstr(file, "fire_elemental")) {
+		if (strstr(file, "fire_elemental") || strstr(file, "daemon")) {
 			// pass
 		} else if (strstr(file, "water_elemental")) {
 			// modify palette so we don't swap out all those colors
@@ -2619,7 +2619,8 @@ int ConvertImage(const char* file, int pale, int imge)
 		}
 	}
 
-	SavePNG(buf, image, w, h, palp, -1);
+	bool transparent = strstr(file, "_icon_1") || strstr(file, "percent_complete");
+	SavePNG(buf, image, w, h, palp, transparent ? 1 : -1);
 
 	free(image);
 	free(palp);
