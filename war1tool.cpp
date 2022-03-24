@@ -950,7 +950,6 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	FILE* fp;
 	png_structp png_ptr;
 	png_infop info_ptr;
-	unsigned char* newpal = NULL;
 	unsigned char** lines;
 	int i;
 	const int bit_depth = 8;
@@ -985,27 +984,6 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 
 	// zlib parameters
 	png_set_compression_level(png_ptr, Z_BEST_COMPRESSION);
-
-	// last second fix for some palettes
-#define SET_PAL_RGB(idx, r, g, b) pal[idx * 3] = r; pal[idx * 3 + 1] = g; pal[idx * 3 + 2] = b
-	if (strstr(name, "missiles") || strstr(name, "tilesets")|| strstr(name, "units")) {
-		newpal = (unsigned char*)malloc(256 * 3);
-		memcpy(newpal, pal, 256 * 3);
-		pal = newpal;
-		SET_PAL_RGB(127, 60, 0, 121);
-		SET_PAL_RGB(128, 81, 0, 146);
-		SET_PAL_RGB(129, 109, 0, 174);
-		SET_PAL_RGB(130, 142, 0, 203);
-		SET_PAL_RGB(131, 174, 0, 219);
-		SET_PAL_RGB(132, 211, 0, 235);
-		SET_PAL_RGB(133, 247, 4, 255);
-		// needed for more than just this one??
-		SET_PAL_RGB(146, 255, 211, 65);
-		SET_PAL_RGB(147, 255, 166, 28);
-		SET_PAL_RGB(148, 178, 134, 0);
-		SET_PAL_RGB(150, 40, 48, 48);
-	}
-#undef SET_PAL_RGB
 
 	// prepare the file information
 #if PNG_LIBPNG_VER >= 10504
@@ -1065,9 +1043,6 @@ int SavePNG(const char* name, unsigned char* image, int w, int h,
 	png_destroy_write_struct(&png_ptr, &info_ptr);
 	fclose(fp);
 
-	if (newpal) {
-		free(newpal);
-	}
 	free(lines);
 
 	return 0;
@@ -2050,6 +2025,49 @@ void DecodeMiniTile(unsigned char* image, int ix, int iy, int iadd,
 	}
 }
 
+static void FixupPalette(unsigned char* palp, int paletteIndex)
+{
+	if (paletteIndex == 191 || paletteIndex == 194 || paletteIndex == 197) {
+		unsigned char* gpalp;
+		int i;
+		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
+		for (i = 0; i < 128; ++i) {
+			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
+					palp[i * 3 + 2] == 63) {
+				palp[i * 3 + 0] = gpalp[i * 3 + 0];
+				palp[i * 3 + 1] = gpalp[i * 3 + 1];
+				palp[i * 3 + 2] = gpalp[i * 3 + 2];
+			}
+		}
+		for (i = 128; i < 256; ++i) {
+			if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
+					gpalp[i * 3 + 2] == 63)) {
+				palp[i * 3 + 0] = gpalp[i * 3 + 0];
+				palp[i * 3 + 1] = gpalp[i * 3 + 1];
+				palp[i * 3 + 2] = gpalp[i * 3 + 2];
+			}
+		}
+		free(gpalp);
+	}
+	ConvertPalette(palp);
+	if (paletteIndex == 191 || paletteIndex == 194 || paletteIndex == 197) {
+		// timfel: fixup some colors, because I don't understand how these palettes really work
+#define SET_PAL_RGB(idx, r, g, b) palp[idx * 3] = r; palp[idx * 3 + 1] = g; palp[idx * 3 + 2] = b
+		SET_PAL_RGB(127, 60, 0, 121);
+		SET_PAL_RGB(128, 81, 0, 146);
+		SET_PAL_RGB(129, 109, 0, 174);
+		SET_PAL_RGB(130, 142, 0, 203);
+		SET_PAL_RGB(131, 174, 0, 219);
+		SET_PAL_RGB(132, 211, 0, 235);
+		SET_PAL_RGB(133, 247, 4, 255);
+		SET_PAL_RGB(146, 255, 211, 65);
+		SET_PAL_RGB(147, 255, 166, 28);
+		SET_PAL_RGB(148, 178, 134, 0);
+		SET_PAL_RGB(150, 40, 48, 48);
+#undef SET_PAL_RGB
+	}
+}
+
 /**
 **  Convert a tileset to my format.
 */
@@ -2081,28 +2099,7 @@ int ConvertTileset(const char* file,int index)
 		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
-	if (pale == 191 || pale == 194 || pale == 197) {
-		unsigned char* gpalp;
-		int i;
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
-		for (i = 0; i < 128; ++i) {
-			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
-					palp[i * 3 + 2] == 63) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		for (i = 128; i < 256; ++i) {
-			if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
-					gpalp[i * 3 + 2] == 63)) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		free(gpalp);
-	}
+	FixupPalette(palp, pale);
 	mini = ExtractEntry(ArchiveOffsets[index], NULL);
 	if (!mini) {
 		free(palp);
@@ -2132,8 +2129,6 @@ int ConvertTileset(const char* file,int index)
 			}
 		}
 	}
-
-	ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
@@ -2185,28 +2180,7 @@ int ConvertTilesetUnit(const char* file, int index, int directions_idx)
 		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
-	if (pale == 191 || pale == 194 || pale == 197) {
-		unsigned char* gpalp;
-		int i;
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
-		for (i = 0; i < 128; ++i) {
-			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
-					palp[i * 3 + 2] == 63) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		for (i = 128; i < 256; ++i) {
-			if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
-					gpalp[i * 3 + 2] == 63)) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		free(gpalp);
-	}
+	FixupPalette(palp, pale);
 	mini = ExtractEntry(ArchiveOffsets[index], NULL);
 	if (!mini) {
 		free(palp);
@@ -2237,8 +2211,6 @@ int ConvertTilesetUnit(const char* file, int index, int directions_idx)
 			}
 		}
 	}
-
-	ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, TILESET_PATH, file);
 	CheckPath(buf);
@@ -2279,28 +2251,7 @@ int ConvertRuin(const char* file, int index, int partsidx, int dimensions)
 		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
-	if (pale == 191 || pale == 194 || pale == 197) {
-		unsigned char* gpalp;
-		int i;
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
-		for (i = 0; i < 128; ++i) {
-			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
-				palp[i * 3 + 2] == 63) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		for (i = 128; i < 256; ++i) {
-			if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
-				gpalp[i * 3 + 2] == 63)) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		free(gpalp);
-	}
+	FixupPalette(palp, pale);
 	mini = ExtractEntry(ArchiveOffsets[index], NULL);
 	if (!mini) {
 		free(palp);
@@ -2326,7 +2277,6 @@ int ConvertRuin(const char* file, int index, int partsidx, int dimensions)
 			}
 		}
 	}
-	ConvertPalette(palp);
 	sprintf(buf, "%s/%s/%s_%dx%d.png", Dir, TILESET_PATH, file, dimensions, dimensions);
 	CheckPath(buf);
 	SavePNG(buf, image, width, height, palp, 0);
@@ -2469,29 +2419,7 @@ int ConvertGfu(const char* file, int pale, int gfue)
 		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
-	if (pale == 191 || pale == 194 || pale == 197) {
-		unsigned char* gpalp;
-		int i;
-
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
-		for (i = 0; i < 128; ++i) {
-			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
-					palp[i * 3 + 2] == 63) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		for (i = 128; i < 256; ++i) {
-			if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
-					gpalp[i * 3 + 2] == 63)) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		free(gpalp);
-	}
+	FixupPalette(palp, pale);
 
 	gfup = ExtractEntry(ArchiveOffsets[gfue], NULL);
 	if (!gfup) {
@@ -2532,7 +2460,6 @@ int ConvertGfu(const char* file, int pale, int gfue)
 	}
 
 	free(gfup);
-	ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, UNIT_PATH, file);
 	CheckPath(buf);
@@ -2549,14 +2476,33 @@ int ConvertGfu(const char* file, int pale, int gfue)
 			++p;
 		}
 	}
-	if (strstr(file, "neutral/") != NULL) {
-		unsigned char* p = image;
-		unsigned char* end = image + (w * h);
-		while (p < end) {
-			if (*p >= 176 && *p <= 183) {
-				*p = *p + 24;
+	if (strstr(file, "neutral/")) {
+		if (strstr(file, "fire_elemental")) {
+			// pass
+		} else if (strstr(file, "water_elemental")) {
+			// modify palette so we don't swap out all those colors
+			for (int i = 8; i <= 15; i++) {
+				palp[i * 3] = palp[(i + 192) * 3];
+				palp[i * 3 + 1] = palp[(i + 192) * 3 + 1];
+				palp[i * 3 + 2] = palp[(i + 192) * 3 + 2];
 			}
-			++p;
+			unsigned char* p = image;
+			unsigned char* end = image + (w * h);
+			while (p < end) {
+				if (*p >= 200 && *p <= 207) {
+					*p = *p - 192;
+				}
+				++p;
+			}
+		} else {
+			unsigned char* p = image;
+			unsigned char* end = image + (w * h);
+			while (p < end) {
+				if (*p >= 176 && *p <= 183) {
+					*p = *p + 24;
+				}
+				++p;
+			}
 		}
 	}
 	if (strstr(file, "spider") != NULL) {
@@ -2645,28 +2591,7 @@ int ConvertImage(const char* file, int pale, int imge)
 		palp = (unsigned char*)realloc(palp, 768);
 		memset(palp + len, 0, 768 - len);
 	}
-	if (pale == 191 || pale == 194 || pale == 197) {
-		unsigned char* gpalp;
-		int i;
-		gpalp = ExtractEntry(ArchiveOffsets[217], NULL);
-		for (i = 0; i < 128; ++i) {
-			if (palp[i * 3 + 0] == 63 && palp[i * 3 + 1] == 0 &&
-					palp[i * 3 + 2] == 63) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		for (i = 128; i < 256; ++i) {
-			if (!(gpalp[i * 3 + 0] == 63 && gpalp[i * 3 + 1] == 0 &&
-					gpalp[i * 3 + 2] == 63)) {
-				palp[i * 3 + 0] = gpalp[i * 3 + 0];
-				palp[i * 3 + 1] = gpalp[i * 3 + 1];
-				palp[i * 3 + 2] = gpalp[i * 3 + 2];
-			}
-		}
-		free(gpalp);
-	}
+	FixupPalette(palp, pale);
 
 	imgp = ExtractEntry(ArchiveOffsets[imge], NULL);
 	if (!imgp) {
@@ -2677,7 +2602,6 @@ int ConvertImage(const char* file, int pale, int imge)
 	image = ConvertImg(imgp, &w, &h);
 
 	free(imgp);
-	ConvertPalette(palp);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, GRAPHIC_PATH, file);
 	CheckPath(buf);
@@ -2739,7 +2663,7 @@ int ConvertCursor(const char* file, int pale, int cure)
 	image = (unsigned char*)calloc(sizeof(unsigned char*), w * h);
 	memcpy(image, p, w * h);
 
-	ConvertPalette(palp);
+	FixupPalette(palp, pale);
 
 	sprintf(buf, "%s/%s/%s.png", Dir, CURSOR_PATH, file);
 	CheckPath(buf);
