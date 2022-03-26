@@ -778,7 +778,9 @@ end
 CStartEditor = StartEditor
 function StartEditor(mapname)
   SetColorScheme()
+  SetScrollMargins(2, 2, 2, 2)
   CStartEditor(mapname)
+  SetScrollMargins(15, 15, 15, 15)
 end
 
 EditorStartedFromCommandline = false
