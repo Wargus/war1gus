@@ -174,7 +174,7 @@ local slots = {
               { 216 },							-- 2D0 upper left light
               {},								-- 2E0
               {}},								-- 2F0				  
-   "mixed", { "earth", "stone-floor", "land", "no-building",
+   "mixed", { "earth", "stone-floor", "land",
               { 125 },							-- 300
               { 123 },							-- 310
               { 124, 147 },						-- 320
