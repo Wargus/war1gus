@@ -703,7 +703,81 @@ function BuildProgramStartMenu()
   menu:addFullButton("S~!how Credits", "h", offx + 96, offy + 52 + 17*6, RunShowCreditsMenu)
   menu:addFullButton("E~!xit Program", "x", offx + 96, offy + 52 + 17*7, function() menu:stop() end)
 
+  local time = 0
+  function checkRunDemo()
+    time = time +1
+    if (time > 2000) then
+      time = 0
+      RunDemo()
+    end
+  end
+  local listener = LuaActionListener(function(s) checkRunDemo() end)
+  menu:addLogicCallback(listener)
+
   return menu:run()
+end
+
+function RunDemo()
+  Video:ResizeScreen(1024, 768)
+  Load("scripts/ui.lua")
+  local prefix = "campaigns/orc/"
+  currentRace = "orc"
+  if math.random(1, 2) == 1 then
+    prefix = "campaigns/human/"
+    currentRace = "human"
+  end
+  InitGameVariables()
+  SetFogOfWar(false)
+  RevealMap("explored")
+  SetColorScheme()
+  local OldShowTips = preferences.ShowTips
+  preferences.ShowTips = false
+  pcall(function () Load(prefix .. "12_prerun.lua") end)
+  Load(prefix .. "12_c2.sms")
+  Load(prefix .. "campaign_titles.lua")
+  local race_prefix = "o"
+  war1gus.InCampaign = true
+  Load(prefix .. "12.smp")
+  for i = 0,4 do
+    SetSpeedResourcesHarvest(i, "gold", 1000)
+    SetSpeedResourcesReturn(i, "gold", 1000)
+    SetSpeedResourcesHarvest(i, "wood", 1000)
+    SetSpeedResourcesReturn(i, "wood", 1000)
+    SetSpeedBuild(i, 1000)
+    SetSpeedTrain(i, 1000)
+    SetSpeedUpgrade(i, 1000)
+    SetSpeedResearch(i, 1000)
+  end
+  GameSettings.Presets[0].Team = 1
+  GameSettings.Presets[0].Type = PlayerComputer
+  GameSettings.Presets[1].Team = 2
+  GameSettings.Presets[2].Team = 2
+  GameSettings.Presets[3].Team = 2
+  GameSettings.Presets[5].Type = PlayerNobody
+  local OldDemoPlayer = Player
+  function Player(idx, ...)
+    if idx == 0 then
+      arg[#arg + 1] = "ai-name"
+      arg[#arg + 1] = "wc1-land-attack"
+    end
+    return OldDemoPlayer(idx, unpack(arg))
+  end
+  local OldGetThisPlayer = GetThisPlayer
+  function GetThisPlayer() return 1 end
+  AddTrigger(function() return GameCycle > 5000 end, function() return ActionDraw() end)
+  AddTrigger(function()
+    return CenterMap(32, 32) end,
+    function() return false end)
+  StartMap(prefix .. "12.smp")
+  war1gus.InCampaign = false
+  Player = OldDemoPlayer
+  GetThisPlayer = OldGetThisPlayer
+  preferences.ShowTips = OldShowTips
+  Video:ResizeScreen(preferences.VideoWidth, preferences.VideoHeight)
+  Load("scripts/ui.lua")
+  ResetColorSchemes()
+  InitGameSettings()
+  SetDefaultRaceView()
 end
 
 LoadGameFile = nil
