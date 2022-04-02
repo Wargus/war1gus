@@ -16465,6 +16465,15 @@ unit = CreateUnit("unit-human-town-hall", 2, {103, 15})
 unit = CreateUnit("unit-peasant", 2, {105, 14})
 unit = CreateUnit("unit-peasant", 2, {106, 14})
 unit = CreateUnit("unit-peasant", 2, {106, 15})
+unit = CreateUnit("unit-peasant", 0, {18, 16})
+unit = CreateUnit("unit-peasant", 0, {20, 14})
+unit = CreateUnit("unit-peon", 1, {106, 109})
+unit = CreateUnit("unit-peon", 1, {105, 112})
+unit = CreateUnit("unit-peasant", 2, {104, 14})
+unit = CreateUnit("unit-peasant", 2, {106, 16})
+unit = CreateUnit("unit-peon", 3, {19, 113})
+unit = CreateUnit("unit-peon", 3, {21, 111})
+
 
 
 
