@@ -516,6 +516,7 @@ function CreateOnlineLobby(map, numplayers, isserver)
                NetworkDetachFromServer()
             end
             menu:stop()
+            RunCreateMultiGameMenu()
          end),
          LCheckBox(_("~!Ready"), function(dd)
             LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(dd:isMarked())
@@ -756,7 +757,7 @@ function RunCreateMultiGameMenu(s)
   )
 
   menu:addFullButton("Cancel (~<Esc~>)", "escape", sx,  sy*7+12,
-    function() menu:stop() end)
+    function() menu:stop() RunMultiPlayerGameMenu() end)
 
   menu:run()
   PresentMap = OldPresentMap
