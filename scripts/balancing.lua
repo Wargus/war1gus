@@ -2153,3 +2153,13 @@ DefineAnimations("animations-ogre",
 DefineAllow("unit-ruin", "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-brigand", "AAAAAAAAAAAAAAAA")
 DefineAllow("unit-ogre", "AAAAAAAAAAAAAAAA")
+
+-----------------------------------------------------------------------
+-- Low health sprites
+-----------------------------------------------------------------------
+
+local g = CPlayerColorGraphic:New("contrib/graphics/units/conjurer-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("human/units/conjurer.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-hair.png"))
+DefineUnitType("unit-conjurer", {Image = {"alt-file", "contrib/graphics/units/conjurer-alt.png"}})
