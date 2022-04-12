@@ -146,7 +146,7 @@ local units = {
         "terrain-harvester"},
        {"resource-id", "lumber", -- dungeon's harvest wood outside
         "resource-capacity", 100,
-        "wait-at-resource", 150,
+        "wait-at-resource", 1200,
         "wait-at-depot", 150,
         "final-resource", "wood"},
        {"resource-id", "treasure", -- dungeon's have treasure chests to plunder
