@@ -2163,3 +2163,70 @@ g:OverlayGraphic(CGraphic:New("human/units/conjurer.png"))
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-mask.png"), true)
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-hair.png"))
 DefineUnitType("unit-conjurer", {Image = {"alt-file", "contrib/graphics/units/conjurer-alt.png"}})
+
+-----------------------------------------------------------------------
+-- Low health icons
+-----------------------------------------------------------------------
+
+local humanPaletteSwap = {
+   "HitPoints", {
+     142, -- some skin part
+     { -- # health steps
+       { -- # of alternatives for step
+         {{191, 47, 27}},
+       },
+       {
+         {{224, 141, 104}},
+       },
+       {
+         {{224, 141, 104}},
+       },
+       {
+         {{224, 141, 104}},
+       },
+     },
+   },
+ }
+ 
+ local orcPaletteSwap = {
+   "HitPoints", {
+     172, -- some skin part
+     {
+       {
+         {{124, 0, 0}}
+       },
+       {
+         {{24, 84, 16}}
+       },
+       {
+         {{24, 84, 16}}
+       },
+       {
+         {{24, 84, 16}}
+       }
+     }
+   },
+ }
+ 
+for idx,icon in ipairs(icons) do
+   local nameToSwap = {
+      {"icon-footman", humanPaletteSwap},
+      {"icon-grunt", orcPaletteSwap},
+      {"icon-conjurer", humanPaletteSwap},
+      {"icon-warlock", orcPaletteSwap},
+      {"icon-peasant", humanPaletteSwap},
+      {"icon-peon", orcPaletteSwap},
+      {"icon-knight", humanPaletteSwap},
+      {"icon-raider", orcPaletteSwap},
+      {"icon-archer", humanPaletteSwap},
+      {"icon-spearman", orcPaletteSwap},
+      {"icon-cleric", humanPaletteSwap},
+      {"icon-necrolyte", orcPaletteSwap},
+   }
+   for idx2,pair in ipairs(nameToSwap) do
+      if pair[1] == icon[1] then
+         icon[3] = pair[2]
+         break
+      end
+   end
+end

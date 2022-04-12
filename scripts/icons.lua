@@ -29,20 +29,20 @@
 --      $Id$
 
 icons = {
-  {"icon-footman", 0},
-  {"icon-grunt", 1},
-  {"icon-conjurer", 2},
-  {"icon-warlock", 3},
-  {"icon-peasant", 4},
-  {"icon-peon", 5},
+  {"icon-footman", 0, humanPaletteSwap},
+  {"icon-grunt", 1, orcPaletteSwap},
+  {"icon-conjurer", 2, humanPaletteSwap},
+  {"icon-warlock", 3, orcPaletteSwap},
+  {"icon-peasant", 4, humanPaletteSwap},
+  {"icon-peon", 5, orcPaletteSwap},
   {"icon-human-catapult", 6},
   {"icon-orc-catapult", 7},
-  {"icon-knight", 8},
-  {"icon-raider", 9},
-  {"icon-archer", 10},
-  {"icon-spearman", 11},
-  {"icon-cleric", 12},
-  {"icon-necrolyte", 13},
+  {"icon-knight", 8, humanPaletteSwap},
+  {"icon-raider", 9, orcPaletteSwap},
+  {"icon-archer", 10, humanPaletteSwap},
+  {"icon-spearman", 11, orcPaletteSwap},
+  {"icon-cleric", 12, humanPaletteSwap},
+  {"icon-necrolyte", 13, orcPaletteSwap},
   {"icon-human-farm", 14},
   {"icon-orc-farm", 15},
   {"icon-human-barracks", 16},
@@ -193,6 +193,9 @@ local DefineIcons = function()
     icon = CIcon:New(icons[i][1])
     icon.G = CPlayerColorGraphic:New(iconname, 27, 19)
     icon.Frame = icons[i][2]
+    if icons[i][3] then
+      DefinePaletteSwap(icons[i][1], icons[i][3])
+    end
   end
 end
 DefineIcons()
