@@ -2164,6 +2164,12 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-mask.png"), t
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-hair.png"))
 DefineUnitType("unit-conjurer", {Image = {"alt-file", "contrib/graphics/units/conjurer-alt.png"}})
 
+local g = CPlayerColorGraphic:New("contrib/graphics/units/catapult-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("human/units/catapult.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/catapult-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/catapult-alt-pin.png"))
+DefineUnitType("unit-human-catapult", {Image = {"alt-file", "contrib/graphics/units/catapult-alt.png"}})
+DefineUnitType("unit-orc-catapult", {Image = {"alt-file", "contrib/graphics/units/catapult-alt.png"}})
 -----------------------------------------------------------------------
 -- Low health icons
 -----------------------------------------------------------------------
