@@ -117,7 +117,7 @@ if(STRATAGUS_FOUND)
     set(DATA_PATH "${SHAREDIR}")
   endif()
 
-  include_directories(${X11_INCLUDE_DIR} ${STRATAGUS_INCLUDE_DIR})
+  include_directories(${STRATAGUS_INCLUDE_DIR})
   if (NOT WIN32)
     add_definitions(-DDATA_PATH="${DATA_PATH}")
     add_definitions(-DSCRIPTS_PATH="${DATA_PATH}")
