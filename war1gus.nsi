@@ -82,7 +82,7 @@
 !ifdef x86_64
 ${redefine} INSTALLER "${NAME}-${VERSION}-x86_64.exe"
 ${redefine} INSTALLDIR "$PROGRAMFILES64\${NAME}\"
-${redefine} NAME "Wargus (64 bit)"
+${redefine} NAME "War1gus (64 bit)"
 ${redefine} STRATAGUS_NAME "Stratagus (64 bit)"
 ${redefine} VCREDIST "vc_redist.x64.exe"
 ${redefine} VCREDISTREGKEY "SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\x64"
