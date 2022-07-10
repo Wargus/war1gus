@@ -92,15 +92,15 @@ endif()
 include_directories(${PNG_INCLUDE_DIR} ${ZLIB_INCLUDE_DIRS})
 set(war1tool_LIBS ${war1tool_LIBS} ${PNG_LIBRARIES} ${ZLIB_LIBRARIES})
 
+set(BINDIR "bin" CACHE PATH "Where to install user binaries")
 add_executable(war1tool ${war1tool_SRCS} ${war1tool_HDRS})
 target_link_libraries(war1tool ${war1tool_LIBS})
-install(TARGETS war1tool DESTINATION "bin")
+install(TARGETS war1tool DESTINATION ${BINDIR})
 
 # Launcher
 
 find_package(Stratagus)
 if(STRATAGUS_FOUND)
-  set(BINDIR "bin" CACHE PATH "Where to install user binaries")
   set(GAMEDIR "games" CACHE PATH "Where to install games binaries")
   set(SHAREDIR "share/games/stratagus/war1gus" CACHE PATH "Where to install data files")
   set(DATAROOTDIR "${CMAKE_INSTALL_PREFIX}/share" CACHE PATH "Sets the root of data directories to a non-default location")
@@ -117,7 +117,7 @@ if(STRATAGUS_FOUND)
     set(DATA_PATH "${SHAREDIR}")
   endif()
 
-  include_directories(${X11_INCLUDE_DIR} ${STRATAGUS_INCLUDE_DIR})
+  include_directories(${STRATAGUS_INCLUDE_DIR})
   if (NOT WIN32)
     add_definitions(-DDATA_PATH="${DATA_PATH}")
     add_definitions(-DSCRIPTS_PATH="${DATA_PATH}")
