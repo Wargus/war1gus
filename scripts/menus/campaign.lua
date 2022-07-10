@@ -197,6 +197,8 @@ function Briefing(title, objs, bgImg, mapbg, mapVideo, text, voices)
         end
         listener = LuaActionListener(playEnd)
         menu:addLogicCallback(listener)
+     else
+        menu:stop()
      end
   end
   function action1()
