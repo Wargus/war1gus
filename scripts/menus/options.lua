@@ -283,6 +283,11 @@ function RunPreferencesMenu()
                           end):id("pixelratio")) or
                            LLabel((_("Original pixel ratio") .. " " ..
                                    (preferences.OriginalPixelRatio and _("on") or _("off"))), nil, false)),
+                        LCheckBox(_("Hardware cursor"), function(dd)
+                                       preferences.HardwareCursor = dd:isMarked()
+                                       Preference.HardwareCursor = preferences.HardwareCursor
+                                       SavePreferences()
+                        end):id("hwcursor"),
                   }):withPadding(2),
             }):withPadding(2),
 
@@ -330,6 +335,7 @@ function RunPreferencesMenu()
    menu.trainingqueue:setMarked(preferences.TrainingQueue)
    menu.PlayIntro:setMarked(preferences.PlayIntro or true)
    menu.showdmg:setMarked(preferences.ShowDamage)
+   menu.hwcursor:setMarked(preferences.HardwareCursor)
 
    menu.ckey:setMarked(UI.ButtonPanel.ShowCommandKey)
    menu.fullscreen:setMarked(Video.FullScreen)

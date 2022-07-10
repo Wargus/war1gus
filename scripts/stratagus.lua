@@ -445,6 +445,7 @@ Preference.SimplifiedAutoTargeting = preferences.SimplifiedAutoTargeting
 SetFieldOfViewType(preferences.FieldOfViewType)
 SetFogOfWarType(preferences.FogOfWarType)
 SetFogOfWarBilinear(preferences.FogOfWarBilinear)
+Preference.HardwareCursor = preferences.HardwareCursor or false
 
 if preferences.PlayIntro == true then
    if file_exists("videos", "hintro.ogv") and file_exists("videos", "ointro.ogv") and file_exists("videos", "cave.ogv") and file_exists("videos", "title.ogv") then
