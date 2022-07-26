@@ -147,7 +147,7 @@ function Briefing(title, objs, bgImg, mapbg, mapVideo, text, voices)
   local t = LoadBuffer(text)
   local sw = ScrollingWidget(0.7 * 320, 0.6 * 200)
   sw:setBackgroundColor(Color(0,0,0,0))
-  sw:setSpeed(0.28)
+  sw:setSpeed(0.12)
 
   local listener
   local l = MultiLineLabel(t)
