@@ -1211,7 +1211,7 @@ DefineDependency("upgrade-human-barding2", { "upgrade-human-barding1"} )
 -----------------------------------------------------------------------
 
 local orcLightArmorIcon1 = CIcon:New("icon-orc-LightArmor1")
-orcLightArmorIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-Light-Armor1.png", 27, 19)
+orcLightArmorIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-light-armor1.png", 27, 19)
 orcLightArmorIcon1.Frame = 0
 
 local orcLightArmorUpgrade1 = CUpgrade:New("upgrade-orc-LightArmor1")
@@ -1234,7 +1234,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-LightArmor1",
   ForUnit = {"unit-orc-blacksmith"} } )
 
 local orcLightArmorIcon2 = CIcon:New("icon-orc-LightArmor2")
-orcLightArmorIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-Light-Armor2.png", 27, 19)
+orcLightArmorIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/orc/icon-orc-light-armor2.png", 27, 19)
 orcLightArmorIcon2.Frame = 0
 
 local orcLightArmorUpgrade2 = CUpgrade:New("upgrade-orc-LightArmor2")
@@ -1263,7 +1263,7 @@ DefineDependency("upgrade-orc-LightArmor2", { "upgrade-orc-LightArmor1"} )
 -----------------------------------------------------------------------
 
 local humanLightArmorIcon1 = CIcon:New("icon-human-LightArmor1")
-humanLightArmorIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-Light-Armor1.png", 27, 19)
+humanLightArmorIcon1.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-light-armor1.png", 27, 19)
 humanLightArmorIcon1.Frame = 0
 
 local humanLightArmorUpgrade1 = CUpgrade:New("upgrade-human-LightArmor1")
@@ -1286,7 +1286,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-LightArmor1",
   ForUnit = {"unit-human-blacksmith"} } )
 
 local humanLightArmorIcon2 = CIcon:New("icon-human-LightArmor2")
-humanLightArmorIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-Light-Armor2.png", 27, 19)
+humanLightArmorIcon2.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-human-light-armor2.png", 27, 19)
 humanLightArmorIcon2.Frame = 0
 
 local humanLightArmorUpgrade2 = CUpgrade:New("upgrade-human-LightArmor2")
