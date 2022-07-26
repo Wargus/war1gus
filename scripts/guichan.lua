@@ -718,7 +718,6 @@ function BuildProgramStartMenu()
 end
 
 function RunDemo()
-  Video:ResizeScreen(1024, 768)
   Load("scripts/ui.lua")
   local prefix = "campaigns/orc/"
   currentRace = "orc"
@@ -765,9 +764,36 @@ function RunDemo()
   local OldGetThisPlayer = GetThisPlayer
   function GetThisPlayer() return 1 end
   AddTrigger(function() return GameCycle > 5000 end, function() return ActionDraw() end)
-  AddTrigger(function()
-    return CenterMap(32, 32) end,
-    function() return false end)
+  AddTrigger(
+     function()
+        if currentRace == "human" then
+           CreateUnit("unit-warlock", 1, {56, 56})
+           CreateUnit("unit-raider", 1, {56, 56})
+           CreateUnit("unit-raider", 1, {56, 56})
+           CreateUnit("unit-necrolyte", 1, {56, 56})
+           CreateUnit("unit-grunt", 1, {56, 56})
+           CreateUnit("unit-grunt", 1, {56, 56})
+           CreateUnit("unit-spearman", 1, {56, 56})
+           CreateUnit("unit-spearman", 1, {56, 56})
+           CreateUnit("unit-spearman", 1, {56, 56})
+           CreateUnit("unit-spearman", 1, {56, 56})
+           CenterMap(56, 56)
+        else
+           CreateUnit("unit-conjurer", 1, {16, 16})
+           CreateUnit("unit-knight", 1, {16, 16})
+           CreateUnit("unit-knight", 1, {16, 16})
+           CreateUnit("unit-cleric", 1, {16, 16})
+           CreateUnit("unit-footman", 1, {16, 16})
+           CreateUnit("unit-footman", 1, {16, 16})
+           CreateUnit("unit-archer", 1, {16, 16})
+           CreateUnit("unit-archer", 1, {16, 16})
+           CreateUnit("unit-archer", 1, {16, 16})
+           CreateUnit("unit-archer", 1, {16, 16})
+           CenterMap(16, 16)
+        end
+        return true
+     end,
+     function() return false end)
   StartMap(prefix .. "12.smp")
   war1gus.InCampaign = false
   Player = OldDemoPlayer
@@ -777,7 +803,6 @@ function RunDemo()
   Load("scripts/ui.lua")
   ResetColorSchemes()
   InitGameSettings()
-  SetDefaultRaceView()
 end
 
 LoadGameFile = nil
