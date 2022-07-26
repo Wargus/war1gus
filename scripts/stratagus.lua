@@ -218,6 +218,9 @@ Preference.GrayscaleIcons = true
 
 SetFontCodePage(20127) -- 7-bit ascii only
 
+-- Set this if the game renders too slow to render only every second frame
+-- Preference.FrameSkip = 1
+
 -------------------------------------------------------------------------------
 
 --  Define default resources
