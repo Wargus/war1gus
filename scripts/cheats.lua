@@ -39,6 +39,30 @@ function HandleCheats(str)
   if (str == "corwin of amber") then
      AddMessage("Cheats enabled you wascally wabbit")
      cheatenabled = true
+  elseif str == "qc" then
+     AddMessage("QUALITY CONTROL")
+     SetSpeedBuild(GetThisPlayer(), 1000)
+     SetSpeedTrain(GetThisPlayer(), 1000)
+     SetSpeedUpgrade(GetThisPlayer(), 1000)
+     SetSpeedResearch(GetThisPlayer(), 1000)
+     for idx,res in ipairs(resources) do
+        SetSpeedResourcesHarvest(GetThisPlayer(), res, 100)
+        SetSpeedResourcesReturn(GetThisPlayer(), res, 100)
+     end
+     RevealMap("explored")
+     SetPlayerData(GetThisPlayer(), "Resources", "gold",
+                   GetPlayerData(GetThisPlayer(), "Resources", "gold") + 100000)
+     SetPlayerData(GetThisPlayer(), "Resources", "wood",
+                   GetPlayerData(GetThisPlayer(), "Resources", "wood") + 100000)
+     AddTrigger(
+        function()
+           return GameCycle > 5000
+        end,
+        function()
+           AddMessage("GOD")
+           return SetGodMode(true)
+        end
+     )
   elseif cheatenabled then
      done  = true
      if (str == "eye of newt") then
