@@ -3,14 +3,14 @@
 require "pp"
 
 STRINGS = {
-  version: "3.2.1",
+  version: "3.3.0",
   homepage: "https://github.com/wargus/war1gus",
   license: "GPL v2",
-  copyright: "(c) 1998-2021 by The Stratagus Project",
+  copyright: "(c) 1998-2022 by The Stratagus Project",
   authors: "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 }
 
-FILES = %w[war1gus.rc war1gus.nsi war1tool.c war1gus.cpp mac/Info.plist scripts/stratagus.lua debian/copyright]
+FILES = %w[war1gus.rc war1gus.nsi war1tool.cpp war1gus.cpp mac/Info.plist scripts/stratagus.lua debian/copyright]
 FILES << __FILE__
 
 begin

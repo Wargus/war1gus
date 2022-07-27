@@ -1,8 +1,333 @@
-war1gus (3.2.1-1) UNRELEASED; urgency=medium
+war1gus (3.3.0-1) focal; urgency=medium
 
-  * 
+  [ Lagi7 ]
+  * change wood and gold position in UI top bar
+  * default scroll speed increase
+  * increase worker time inside goldmine
+  * balancing after game with TaShadan
 
- -- Tim Felgentreff <timfelgentreff@gmail.com>  Sat, 25 Dec 2021 06:46:58 +0100
+  [ Tim Felgentreff ]
+  * when reloading buttons and buildings while rebalancing is active, also reload rebalancing script
+  * use password field for online password
+  * restart immediately on balancing changes
+  * update caption when downloading map data
+  * refresh chat on events
+  * add orc watch tower
+  * add townhall salvage button
+  * update watch tower construction graphic
+  * add kennel/stable upgrades
+
+  [ Lagi7 ]
+  * Delete orc-watch-tower-UC.png
+  * Delete orc-watch-tower-icon-forest.png
+  * Delete orc-watch-tower-icon-swamp.png
+  * Delete orc-watch-tower.png
+  * Create buildings
+  * Delete buildings
+  * Create dm
+  * Add files via upload
+  * Delete dm
+  * Add files via upload
+  * Delete human-barding-stable.png
+  * Delete human-barding-stable1.png
+  * Delete salvage-th-human.png
+  * Add files via upload
+  * Delete orc-saliva-kennel.png
+  * Delete orc-saliva-kennel2.png
+  * Delete salvage-th-orc.png
+  * Add files via upload
+  * balancing lua to use the new graphics
+  * more space between stats in unit description
+  * there is no attack ground in vanilla warcraft1
+  * there is no attack ground in vanilla warcraft1 part 2 for orc
+  * longer projectile effects
+
+  [ Tim Felgentreff ]
+  * collect tileset change callbacks into a function list for modding
+
+  [ Lagi7 ]
+  * enable catapult attack ground
+  * remove blacksmith requirment from Knights/Riders
+  * add Play intro option to menu - part1/2
+  * add Play intro option to menu - part2/2
+  * elemental blast attack 1/2
+  * elemental blast 2/2
+
+  [ Tim Felgentreff ]
+  * fix play intro select
+
+  [ Lagi7 ]
+  * new icons
+  * new orc icons
+  * cat
+  * cat
+  * draw effect on top of units, slow projectile
+  * mana balance, AoE more deadly
+  * balance and stufff
+  * map fix
+  * map fix
+  * dont work
+  * dont work
+  * dont work
+  * spell keys adjust
+  * spell key adjust
+  * change default preferences
+  * put dungeons map into folder - to not clutter list
+  * click
+  * click
+  * graphic click
+  * web for spiders
+  * web missile code
+  * spider shooting webs
+
+  [ Tim Felgentreff ]
+  * set ascii only codepage
+
+  [ Lagi7 ]
+  * fix unholy button  clash
+
+  [ Tim Felgentreff ]
+  * refactor how we do speed
+
+  [ Lagi7 ]
+  * fix path
+  * stop droping wood
+
+  [ Tim Felgentreff ]
+  * refactored move animation
+
+  [ Lagi7 ]
+  * speed adjust 1
+  * speed adjust 2
+  * speed adjust 3
+  * speed adjust 2
+  * speed adjust 4
+  * faster click animation & spell effects definition
+  * spell-skill for spiders to slow down
+  * decoration for web skill
+  * button for spider web skill
+  * spider web skill
+
+  [ Tim Felgentreff ]
+  * use animated sprite for unholy armor
+  * add invisibility deco
+  * add poison (but no way to do it)
+
+  [ Lagi7 ]
+  * icons for spider and scorpion skills
+  * poison 1
+  * poison 2
+  * poison 3
+  * poison 4
+  * green web
+
+  [ Tim Felgentreff ]
+  * add first town hall with fast build and less supply
+  * attempt fix for "first town hall" change
+
+  [ Lagi7 ]
+  * safety wood check for salvage
+  * web icon not display - typo
+  * food icon
+  * code for food display
+
+  [ Tim Felgentreff ]
+  * no wounds on buildings
+
+  [ Lagi7 ]
+  * blood sprites
+  * bleeding missiles
+  * bleeding
+  * impact blood
+  * spell balance - little cost upgrade for summons, shorter Unholy armor
+  * not organic catapults
+  * lets disable wound icons
+
+  [ Tim Felgentreff ]
+  * formatting
+  * another idea for wounded deco
+
+  [ Lagi7 ]
+  * bleed when moving
+  * bleeding walk
+  * bleeding when unit move
+  * building upgrades
+  * build upgr
+  * upgrades building and cat speed
+  * reduce spiders spell web range
+  * brackets
+  * fix towersbenefit from aroows upgr
+  * add tim map with 5x more gold in starting mines
+
+  [ Tim Felgentreff ]
+  * override preference to indicate damage
+
+  [ Lagi7 ]
+  * bleeding animation frequence
+  * Rearange the help list, and add some tips
+  * poison cloud animation to last longer
+  * adjust wizards area spells
+  * idle workers counter
+  * faster by 2 points archer and spearman attack
+  * archer 1 point faster only
+
+  [ Tim Felgentreff ]
+  * fix a bunch of multiplayer menu problems
+  * updates for editor help and randomize map feature
+  * add a random skirmish option
+  * use some fancy scripting to get better random maps
+  * nicer free workers icon
+
+  [ Lagi7 ]
+  * adjust idle worker position
+  * more expensive town hall and longer build time
+  * upgrade salavage safety switch
+  * town hall further away from gold mine
+  * Twist random generator arguments
+  * 5x starting workers for random scenario
+  * starting resource, and 5 workers
+  * rename option
+  * magma rift
+  * slime pond structure
+  * windmill
+  * ruined house
+  * icons
+  * dungeon entrance icon
+  * 4x neutral buildings
+  * new buildings + organise the icons
+  * fix dungeon entrance issue in editor
+  * modify solo scenario menu sizes and text position
+  * random tiles set
+  * background to stone
+  * txt adjust
+  * remove copies of dunegeon maps
+  * dungeon entrance 2x3
+  * 2x3 dungeon entrance
+  * collapse entrance lua
+  * collapsed dungeon entrance
+  * default wood inside dungeon entrance
+  * add dungeon map with working dungeon entrances
+  * from start access to barrack
+  * stable need blacksmith
+  * balance
+  * unholy armor more mana
+  * add new upgrades and tower for AI script
+  * faster tech, use towers
+  * fix
+  * ffix
+  * 4fix
+  * entry23
+  * e23
+
+  [ Tim Felgentreff ]
+  * don't allow diagonal road connections
+  * copy new network menu from wargus
+  * support team customization
+
+  [ Lagi7 ]
+  * dungeon road
+  * rr
+
+  [ Tim Felgentreff ]
+  * fix GameSettings numbers to use -1 for defaults
+  * fix menu button locations in multiplayer
+  * various fixes for replays and game setup
+  * don't allow roads on top of roads
+  * keep war1gus.InCampaign false by default
+  * cleanup extra unit allowance for campaign
+  * delete commented road rules
+  * add MapLoadedFuncs
+  * re-indent
+  * store shared settings when resetting gamesettings
+  * no longer need to redefne walls/roads
+  * flip default for AllowMultipleTownhalls
+  * fix roads and walls directions
+  * refactor dungeon tileset to use treasure
+  * add some "deco" tiles to dungeon
+  * just make piles of gold be the treasure in dungeon
+  * treasure chests or piles of gold ... it's all good
+
+  [ Lagi7 ]
+  * add 3x shades of earth
+  * fix
+
+  [ Tim Felgentreff ]
+  * add some decorative buildings in dungeon
+
+  [ Lagi7 ]
+  * dungeon decoration 2x2
+  * dungeon decoration 2x2 editeor
+  * dungeon fixx
+
+  [ Tim Felgentreff ]
+  * add hiring of ogres/brigands
+  * add changing allegiance windmill
+  * periodically spawn slimes and fireelementals
+  * minor tweaks to neutral buildings
+  * improve replays of campaign missions
+  * fast fow by default
+
+  [ Lagi7 ]
+  * resize neutral buildings
+  * minor fix
+  * ogre and brigand 2
+  * ogre and brigand 3
+  * brigand and ogre 1.01
+  * wall decorations not passable
+  * position on menu fix
+  * map editor stop exiting the program all time
+
+  [ Tim Felgentreff ]
+  * add popups for brigands and ogres
+  * extract palette swapped brigand graphics
+  * better fix for editor closing
+  * don't change vanilla ogre attack speed
+  * patch palette for poison cloud. fixes #259
+  * do the palette trick for tilesets, units, and missiles
+  * move code to fix palettes, make water elemental always blue
+  * don't recolor daemon, fix gold icons
+  * make % complete show on progress bar
+  * set custom color cycle speed
+  * use very small scroll margins in editor
+
+  [ Lagi7 ]
+  * mixer fix to be buildable
+
+  [ Tim Felgentreff ]
+  * ship external midi player
+  * attract screen for war1gus
+
+  [ Lagi7 ]
+  * map fix
+  * mapfix2
+  * longer wood gathering in dungeon
+  * map fix usable ruins
+  * fix dungeon heat map
+  * add 5 starting workers
+  * 5x starting workers on map east and west
+
+  [ Tim Felgentreff ]
+  * example: let conjurer loose his hat when damaged
+  * palette swap some icons when they get low on health
+
+  [ Lagi7 ]
+  * cat
+  * cat
+
+  [ Tim Felgentreff ]
+  * Fix 64bit installer string
+  * minor cleanup for installation of war1tool
+  * remove unised X11_INCLUDE_DIRS from cmakelist
+  * fix launching into campaign without ogg support
+  * add option for hardware cursor
+  * fix filenames in balancing.lua
+  * slower scroll speed in campaign briefing
+  * add frameskip preference
+  * "quality control" cheat
+  * cooler attract screen
+  * fix loading of human mission 4
+
+ -- Tim Felgentreff <timfelgentreff@gmail.com>  Wed, 27 Jul 2022 15:51:27 +0200
 
 war1gus (3.2.0-1) focal; urgency=medium
 
