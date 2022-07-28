@@ -55,6 +55,7 @@
 #include <png.h>
 #include <zlib.h>
 
+#include <iomanip>
 #include <string>
 #include <regex>
 #include <sstream>
@@ -1624,7 +1625,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 	fs::directory_iterator videosDir(fs::path(Dir) / VIDEO_PATH);
 	std::regex pattern("[a-zA-Z0-9]+\\-([0-9]+)");
 	for(auto& direntry: fs::directory_iterator(fs::path(Dir) / VIDEO_PATH)) {
-		if (direntry.is_regular_file()) {
+		if (fs::is_regular_file(fs::status(direntry))) {
 			auto& direntry_path = direntry.path();
 			if (direntry_path.extension() == ".png") {
 				std::smatch sm;
@@ -1687,7 +1688,7 @@ void EncodeFLC(flcfile *file, const char *iflc, int speed, int stillImage, int u
 	}
 	
 	for(auto& direntry: fs::directory_iterator(fs::path(Dir) / VIDEO_PATH)) {
-		if (direntry.is_regular_file() && direntry.path().extension() == ".png") {
+		if (fs::is_regular_file(fs::status(direntry)) && direntry.path().extension() == ".png") {
 			fs::remove(direntry);
 		}
 	}
