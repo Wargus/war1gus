@@ -8,3 +8,6 @@ compile_commands.json
 *.exe
 *.zip
 *.log
+*.h.*.idx
+*.cpp.*.idx
+*.c.*.idx
