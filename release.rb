@@ -3,7 +3,7 @@
 require "pp"
 
 STRINGS = {
-  version: "3.3.1",
+  version: "3.3.2",
   homepage: "https://github.com/wargus/war1gus",
   license: "GPL v2",
   copyright: "(c) 1998-2022 by The Stratagus Project",
