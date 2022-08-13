@@ -34,7 +34,7 @@
 --  Includes
 ----------------------------------------------------------------------------*/
 
-#define VERSION "3.3.2" // Version of extractor wartool
+#define VERSION "3.3.3" // Version of extractor wartool
 #define AUTHORS "Lutz Sammer, Nehal Mistry, Jimmy Salmon, Pali Rohar, and Tim Felgentreff."
 #define COPYRIGHT "1998-2022 by The Stratagus Project"
 
