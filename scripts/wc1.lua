@@ -152,7 +152,7 @@ function DefinePlayerTypes(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p1
 	  local p = {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15}
 	  local foundperson = false
 	  local nump = GameSettings.Opponents
-	  if (nump == 0) then nump = 15 end
+	  if (nump == -1) then nump = 15 else nump = nump + 1 end
 
 	  for i=1,15 do
 		if (p[i] == "person" or p[i] == "computer") then
@@ -192,4 +192,9 @@ function DefinePlayerTypes(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p1
 		return OldDefinePlayerTypes(plrsnmb[1], plrsnmb[2], plrsnmb[3], plrsnmb[4], plrsnmb[5], plrsnmb[6], plrsnmb[7], plrsnmb[8],
 			plrsnmb[9], plrsnmb[10], plrsnmb[11], plrsnmb[12], plrsnmb[13], plrsnmb[14], plrsnmb[15])
 	end
+end
+
+function CleanGame_Lua()
+	print("game ends")
+	ReInitAiGameData()	
 end
