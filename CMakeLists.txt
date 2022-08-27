@@ -26,6 +26,14 @@ if(EXISTS ${WIN32_CMAKE_PREFIX_PATH})
 	message("Using prefix path ${CMAKE_PREFIX_PATH}")
 endif()
 
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/third-party/CMakeLists.txt")
+  add_subdirectory(third-party)
+else()
+  message(WARNING "Third-party directory not populated, cannot vendor any dependencies.")
+endif()
+
+option(ENABLE_VENDORED_LIBS OFF)
+
 file(GLOB war1tool_SRCS
   "scripts/*.lua"
   "scripts/**/*.lua"
@@ -40,8 +48,13 @@ file(GLOB war1tool_SRCS
 
 set(war1tool_HDRS xmi2mid.h scale2x.h)
 
-find_package(PNG REQUIRED)
-find_package(ZLIB REQUIRED)
+if(ENABLE_VENDORED_LIBS)
+  vendored_png()
+  vendored_zlib()
+else()
+  find_package(PNG REQUIRED)
+  find_package(ZLIB REQUIRED)
+endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUC)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -ggdb")
@@ -167,6 +180,11 @@ if(STRATAGUS_FOUND)
   target_link_libraries(war1gus ${war1gus_LIBS})
   set(GAMEDIR "games" CACHE PATH "Where to install games binaries")
   install(TARGETS war1gus DESTINATION ${GAMEDIR})
+endif()
+
+if(ENABLE_VENDORED_LIBS)
+  add_dependencies(war1gus png zlib)
+  add_dependencies(war1tool png zlib)
 endif()
 
 # uninstall target
