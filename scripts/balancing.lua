@@ -793,7 +793,7 @@ OnTilesetChangeFunctions:add(DefineOrcTowerIcon)
 DefineAnimations(
    "animations-orc-watch-tower", 
    {Still = {"frame 0", "wait 5"},
-    Attack = {"frame 0", "attack", "wait 95"}, -- attack speed
+    Attack = {"unbreakable begin", "frame 0", "attack", "wait 95", "frame 0", "unbreakable end", "wait 1",}, -- attack speed
     Death = {"frame 0", "wait 1"}}
 )
 
@@ -937,7 +937,7 @@ OnTilesetChangeFunctions:add(DefineHumanTowerIcon)
 DefineAnimations(
    "animations-human-guard-tower", 
    {Still = {"frame 0", "wait 5"},
-    Attack = {"frame 0", "attack", "wait 95"}, -- attack speed
+    Attack = {"unbreakable begin", "frame 0", "attack", "wait 95", "frame 0", "unbreakable end", "wait 1",}, -- attack speed
     Death = {"frame 0", "wait 1"}}
 )
 
