@@ -13,7 +13,6 @@ cd "`dirname "$0"`"
 rm -rf War1gus.app
 mkdir -p War1gus.app/Contents/Resources
 mkdir -p War1gus.app/Contents/MacOS
-mkdir -p War1gus.app/Contents/libs
 
 # Copy launchscript and info.plist
 cp Info.plist War1gus.app/Contents/
@@ -37,17 +36,7 @@ mv war1gus.icns War1gus.app/Contents/Resources/
 # Bundle resources
 cp -R ../campaigns ../contrib ../maps ../shaders ../scripts War1gus.app/Contents/Resources/
 
-# Bundle binaries and their dependencies
-rm -rf macdylibbundler
-git clone https://github.com/auriamg/macdylibbundler
-cd macdylibbundler
-make
-cd ..
-
 cp ../build/war1tool War1gus.app/Contents/MacOS/
 cp ../build/war1gus War1gus.app/Contents/MacOS/
 cp "$STRATAGUS" War1gus.app/Contents/MacOS/stratagus
-cp "$(dirname "$STRATAGUS")"/../libs/* War1gus.app/Contents/libs/
 
-macdylibbundler/dylibbundler -cd -of -b -x ./War1gus.app/Contents/MacOS/war1tool -d ./War1gus.app/Contents/libs/
-macdylibbundler/dylibbundler -cd -of -b -x ./War1gus.app/Contents/MacOS/war1gus -d ./War1gus.app/Contents/libs/
