@@ -12,6 +12,4 @@ Nightly builds are available:
 - Ubuntu/Debian Packages: https://launchpad.net/~stratagus/+archive/ubuntu/ppa
 - OS X App Bundle: https://github.com/Wargus/stratagus/wiki/osx/War1gus.app.tar.gz
 
-
-<img width="900" alt="game_scale2x" src="https://cloud.githubusercontent.com/assets/46235/11292816/5f24263c-8f53-11e5-802d-e9bb4cafffc9.PNG">
-<img width="900" alt="menu_scale2x" src="https://cloud.githubusercontent.com/assets/46235/11292821/5f3c3fa6-8f53-11e5-91b0-3ca7b89b9ce4.PNG">
+<img width="900" src="https://user-images.githubusercontent.com/93911529/157967177-0eab04af-a704-415d-8f6f-294d0e5aaed0.png">
