@@ -268,7 +268,7 @@ local function BuildDeathAnimation(frames)
       "unbreakable begin" }
    for i = 1, #frames do
       res[1 + #res] = "frame " .. frames[i]
-      res[1 + #res] = "wait 3"
+      res[1 + #res] = "wait 11"
    end
    res[#res] = "wait 101" -- overwrite last value
    res[1 + #res] = "unbreakable end"
