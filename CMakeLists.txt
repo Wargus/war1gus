@@ -144,8 +144,8 @@ if(STRATAGUS_FOUND)
       "${PROJECT_SOURCE_DIR}/war1gus.desktop.in"
       "${PROJECT_BINARY_DIR}/war1gus.desktop"
     )
-    install(FILES "${PROJECT_BINARY_DIR}/war1gus.png" DESTINATION ${ICONDIR})
-    install(FILES "${PROJECT_BINARY_DIR}/war1gus.xpm" DESTINATION ${ICONDIR})
+    install(FILES "war1gus.png" DESTINATION ${ICONDIR})
+    install(FILES "war1gus.xpm" DESTINATION ${ICONDIR})
     install(FILES "${PROJECT_BINARY_DIR}/war1gus.desktop" DESTINATION ${DESKTOPDIR})
     install(DIRECTORY campaigns contrib maps scripts shaders DESTINATION ${SHAREDIR})
   elseif (WIN32)
