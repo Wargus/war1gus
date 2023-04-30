@@ -136,6 +136,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-spear3",
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-shadow-spear",
   Action = "attack",
   Key = "a", Hint = "SHADOW SPEAR ~!ATTACK",
+  Description = "Ignore armor", 
   ForUnit = {"unit-necrolyte"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-raise-dead",
@@ -161,6 +162,7 @@ DefineButton( { Pos = 6, Level = 0, Icon = "icon-unholy-armor",
 DefineButton( { Pos = 3, Level = 0, Icon = "icon-fireball",
   Action = "attack",
   Key = "a", Hint = "FIREBALL ~!ATTACK",
+  Description = "Ignore armor", 
   ForUnit = {"unit-warlock", "unit-medivh"} } )
 
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-spider",
@@ -254,6 +256,7 @@ DefineButton( { Pos = 1, Level = 2, Icon = "icon-orc-blacksmith",
 DefineButton( { Pos = 2, Level = 2, Icon = "icon-orc-temple",
   Action = "build", Value = "unit-orc-temple",
   Key = "t", Hint = "BUILD ~!TEMPLE",
+  Description = "Regenerate Units Health in ~<2~> tiles radious",
   ForUnit = {"unit-peon"} } )
 
 DefineButton( { Pos = 3, Level = 2, Icon = "icon-orc-kennel",
@@ -317,36 +320,42 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-axe2",
   Action = "research", Value = "upgrade-axe1",
   Allowed = "check-single-research",
   Key = "a", Hint = "UPGRADE ~!AXE STRENGTH",
+  Description = "Increase Grunts and Riders damage by ~<1~>", 
   ForUnit = {"unit-orc-blacksmith"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-axe3",
   Action = "research", Value = "upgrade-axe2",
   Allowed = "check-single-research",
   Key = "a", Hint = "UPGRADE ~!AXE STRENGTH",
+  Description = "Increase Grunts and Riders damage by ~<1~>", 
   ForUnit = {"unit-orc-blacksmith"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield2",
   Action = "research", Value = "upgrade-orc-shield1",
   Allowed = "check-single-research",
   Key = "s", Hint = "UPGRADE ~!SHIELD STRENGTH",
+  Description = "Increase Grunts and Riders armor by ~<1~>", 
   ForUnit = {"unit-orc-blacksmith"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-shield3",
   Action = "research", Value = "upgrade-orc-shield2",
   Allowed = "check-single-research",
   Key = "s", Hint = "UPGRADE ~!SHIELD STRENGTH",
+  Description = "Increase Grunts and Riders armor by ~<1~>", 
   ForUnit = {"unit-orc-blacksmith"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear2",
   Action = "research", Value = "upgrade-spear1",
   Allowed = "check-single-research",
   Key = "a", Hint = "UPGRADE SPE~!AR STRENGTH",
+  Description = "Increase Spearman and Towers armor by ~<1~>", 
   ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear3",
   Action = "research", Value = "upgrade-spear2",
   Allowed = "check-single-research",
   Key = "a", Hint = "UPGRADE SPE~!AR STRENGTH",
+  Description = "Increase Spearman and Towers armor by ~<1~>", 
   ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-wolves1",
