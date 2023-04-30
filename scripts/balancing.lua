@@ -2170,6 +2170,13 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/catapult-alt-mask.png"), t
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/catapult-alt-pin.png"))
 DefineUnitType("unit-human-catapult", {Image = {"alt-file", "contrib/graphics/units/catapult-alt.png"}})
 DefineUnitType("unit-orc-catapult", {Image = {"alt-file", "contrib/graphics/units/catapult-alt.png"}})
+
+local g = CPlayerColorGraphic:New("contrib/graphics/units/footman-alt.png", 48, 48)
+g:OverlayGraphic(CGraphic:New("human/units/footman.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-noshield.png"))
+DefineUnitType("unit-footman", {Image = {"alt-file", "contrib/graphics/units/footman-alt.png"}})
+
 -----------------------------------------------------------------------
 -- Low health icons
 -----------------------------------------------------------------------
