@@ -628,10 +628,10 @@ if (wc1.preferences.ShowButtonPopups) then
             { 	Margin = {1, 1}, Condition = {HasDescription = true},
                 More = {"Line", {Width = 0, Height = 1, Color = PopupBorderColor}}
             },
-            { 	Condition = {HasDescription = true}, Margin = {1, 1}, HighlightColor = "red",
+            { 	Condition = {HasDescription = true}, Margin = {1, 1}, TextColor = "yellow", HighlightColor = "cyan",
                 More = {"ButtonInfo", {InfoType = "Description", MaxWidth = Video.Width / 5, Font = PopupFont}}
             },
-
+	
          }
    })
 end
