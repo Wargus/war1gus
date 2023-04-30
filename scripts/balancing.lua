@@ -1064,7 +1064,7 @@ DefineButton( { Pos = 1, Level = 1, Icon = "icon-orc-town-hall-salvage",
                       GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-orc-town-hall", "Costs", "gold"))
    end,
    Allowed = "check-units-or", AllowArg = {"unit-peon"},
-   Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEON!",
+   Description = "Confirm salvaging of this Town Hall. ~<YOU NEED AT LEAST 1 PEON!~>",
    Key = "s", Hint = "~!SALVAGE CONFIRM",
    ForUnit = {"unit-orc-town-hall", "unit-orc-blackrock-spire"} } )
 
@@ -1096,7 +1096,7 @@ DefineButton( { Pos = 1, Level = 1, Icon = "icon-human-town-hall-salvage",
                         GetPlayerData(GetThisPlayer(), "Resources", "gold") + GetUnitTypeData("unit-human-town-hall", "Costs", "gold"))
    end,
    Allowed = "check-units-or", AllowArg = {"unit-peasant"},
-   Description = "Confirm salvaging of this Town Hall. YOU NEED AT LEAST 1 PEASANT!",
+   Description = "Confirm salvaging of this Town Hall. ~<YOU NEED AT LEAST 1 PEASANT!~>",
    Key = "s", Hint = "~!SALVAGE CONFIRM",
    ForUnit = {"unit-human-town-hall", "unit-human-stormwind-keep"} } )
 
@@ -1126,6 +1126,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-saliva1",
   Action = "research", Value = "upgrade-orc-saliva1",
   Allowed = "check-single-research",
   Key = "h", Hint = "RESEARCH ~!HEALING SALIVA",
+  Description = "Regenerate Riders Health",
   ForUnit = {"unit-orc-kennel"} } )
 
 local orcSalivaIcon2 = CIcon:New("icon-orc-saliva2")
@@ -1150,6 +1151,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-saliva2",
    Action = "research", Value = "upgrade-orc-saliva2",
    Allowed = "check-upgrade", AllowArg = {"upgrade-orc-saliva1"},
    Key = "h", Hint = "RESEARCH ~!HEALING SALIVA",
+   Description = "Riders regeneration is ~<50%~> faster",
    ForUnit = {"unit-orc-kennel"} } )
 
 DefineDependency("upgrade-orc-saliva2", { "upgrade-orc-saliva1"} )
@@ -1179,6 +1181,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-barding1",
   Action = "research", Value = "upgrade-human-barding1",
   Allowed = "check-single-research",
   Key = "r", Hint = "~!RESEARCH BARDING",
+  Description = "Increase Knights armor by ~<1~>",
   ForUnit = {"unit-human-stable"} } )
 
 local humanBardingIcon2 = CIcon:New("icon-human-barding2")
@@ -1202,6 +1205,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-barding2",
    Action = "research", Value = "upgrade-human-barding2",
    Allowed = "check-upgrade", AllowArg = {"upgrade-human-barding1"},
    Key = "r", Hint = "~!RESEARCH BARDING",
+   Description = "Increase Knights armor by ~<1~>",
    ForUnit = {"unit-human-stable"} } )
 
 DefineDependency("upgrade-human-barding2", { "upgrade-human-barding1"} )
@@ -1231,6 +1235,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-LightArmor1",
   Action = "research", Value = "upgrade-orc-LightArmor1",
   Allowed = "check-single-research",
   Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
+  Description = "Increase Spearman, Necrolyte and Warlock armor by ~<1~>",
   ForUnit = {"unit-orc-blacksmith"} } )
 
 local orcLightArmorIcon2 = CIcon:New("icon-orc-LightArmor2")
@@ -1254,6 +1259,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-orc-LightArmor2",
    Action = "research", Value = "upgrade-orc-LightArmor2",
    Allowed = "check-upgrade", AllowArg = {"upgrade-orc-LightArmor1"},
    Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
+   Description = "Increase Spearman, Necrolyte and Warlock armor by ~<1~>",
    ForUnit = {"unit-orc-blacksmith"} } )
 
 DefineDependency("upgrade-orc-LightArmor2", { "upgrade-orc-LightArmor1"} )
@@ -1283,6 +1289,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-LightArmor1",
   Action = "research", Value = "upgrade-human-LightArmor1",
   Allowed = "check-single-research",
   Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
+  Description = "Increase Archer, Cleric and Conjurer armor by ~<1~>",
   ForUnit = {"unit-human-blacksmith"} } )
 
 local humanLightArmorIcon2 = CIcon:New("icon-human-LightArmor2")
@@ -1306,6 +1313,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-LightArmor2",
    Action = "research", Value = "upgrade-human-LightArmor2",
    Allowed = "check-upgrade", AllowArg = {"upgrade-human-LightArmor1"},
    Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
+   Description = "Increase Archer, Cleric and Conjurer armor by ~<1~>",
    ForUnit = {"unit-human-blacksmith"} } )
 
 DefineDependency("upgrade-human-LightArmor2", { "upgrade-human-LightArmor1"} )
@@ -1335,6 +1343,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-human-CatapultAmmo1",
   Action = "research", Value = "upgrade-human-CatapultAmmo1",
   Allowed = "check-single-research",
   Key = "e", Hint = "RESEARCH ST~!EEL SHRAPNELS",
+  Description = "Increase Catapul damage by ~<20~>",
   ForUnit = {"unit-human-blacksmith"} } )
 
 
@@ -1363,6 +1372,7 @@ DefineButton( { Pos = 3, Level = 0, Icon = "icon-orc-CatapultAmmo1",
   Action = "research", Value = "upgrade-orc-CatapultAmmo1",
   Allowed = "check-single-research",
   Key = "b", Hint = "RESEARCH ~!BURNING OIL",
+  Description = "Increase Catapul damage by ~<20~>",
   ForUnit = {"unit-orc-blacksmith"} } )
 
 -----------------------------------------------------------------------
@@ -1452,6 +1462,7 @@ orcStandground.Frame = 0
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-web",
   Action = "cast-spell", Value = "spell-slow", 
   Key = "w", Hint = "ENTANGLE IN ~!WEB",
+  Description = "Slow down the target",
   ForUnit = {"unit-spider"} } )
   
 -----------------------------------------------------------------------
@@ -1465,6 +1476,7 @@ orcHoldfire.Frame = 0
 DefineButton( { Pos = 4, Level = 0, Icon = "icon-venom",
   Action = "cast-spell", Value = "spell-poison", 
   Key = "v", Hint = "~!VENOM",
+  Description = "Poison target dealing damage over time",
   ForUnit = {"unit-scorpion"} } )
     
 -----------------------------------------------------------------------
@@ -1572,6 +1584,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-BuildingArmor1",
   Action = "research", Value = "upgrade-human-BuildingArmor1",
   Allowed = "check-single-research",
   Key = "r", Hint = "UPG~!RADE ROOFS",
+  Description = "Increase buildings armor by ~<4~>",
   ForUnit = {"unit-human-lumber-mill"} } )
 
 ---
@@ -1596,6 +1609,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-human-BuildingArmor2",
    Action = "research", Value = "upgrade-human-BuildingArmor2",
    Allowed = "check-upgrade", AllowArg = {"upgrade-human-BuildingArmor1"},
    Key = "r", Hint = "UPG~!RADE WALLS",
+   Description = "Increase buildings armor by ~<4~>",
    ForUnit = {"unit-human-lumber-mill"} } )
 
 DefineDependency("upgrade-human-BuildingArmor2", { "upgrade-human-BuildingArmor1"} )
@@ -1625,6 +1639,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-BuildingArmor1",
   Action = "research", Value = "upgrade-orc-BuildingArmor1",
   Allowed = "check-single-research",
   Key = "r", Hint = "UPG~!RADE BUILDINGS FIRE SUPPRESION",
+  Description = "Increase buildings armor by ~<4~>",
   ForUnit = {"unit-orc-lumber-mill"} } )
 
 ---
@@ -1649,6 +1664,7 @@ DefineButton( { Pos = 2, Level = 0, Icon = "icon-orc-BuildingArmor2",
    Action = "research", Value = "upgrade-orc-BuildingArmor2",
    Allowed = "check-upgrade", AllowArg = {"upgrade-orc-BuildingArmor1"},
    Key = "r", Hint = "UPG~!RADE WALLS",
+   Description = "Increase buildings armor by ~<4~>",
    ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineDependency("upgrade-orc-BuildingArmor2", { "upgrade-orc-BuildingArmor1"} )
@@ -2121,6 +2137,7 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-brigand",
    Popup = "popup-brigand",
    Action = "cast-spell", Value = "spell-hire-brigand",
    Key = "b", Hint = "HIRE ~!BRIGAND",
+   Description = "Brigand is a bit faster, and can outrun units",
    ForUnit = {"unit-ruin"} } )
 
 DefineButton( { Pos = 2, Level = 0, Icon = "icon-ogre",
@@ -2163,6 +2180,12 @@ g:OverlayGraphic(CGraphic:New("human/units/conjurer.png"))
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-mask.png"), true)
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-hair.png"))
 DefineUnitType("unit-conjurer", {Image = {"alt-file", "contrib/graphics/units/conjurer-alt.png"}})
+
+local g = CPlayerColorGraphic:New("contrib/graphics/units/footman-alt.png", 48, 48)
+g:OverlayGraphic(CGraphic:New("human/units/footman.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-noshield.png"))
+DefineUnitType("unit-footman", {Image = {"alt-file", "contrib/graphics/units/footman-alt.png"}})
 
 local g = CPlayerColorGraphic:New("contrib/graphics/units/catapult-alt.png", 32, 32)
 g:OverlayGraphic(CGraphic:New("human/units/catapult.png"))
