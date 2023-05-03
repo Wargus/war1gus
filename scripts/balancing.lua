@@ -2200,6 +2200,18 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-mask.png"), tr
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-noshield.png"))
 DefineUnitType("unit-footman", {Image = {"alt-file", "contrib/graphics/units/footman-alt.png"}})
 
+local g = CPlayerColorGraphic:New("contrib/graphics/units/warlock-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("orc/units/warlock.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/warlock-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/warlock-alt-nohood.png"))
+DefineUnitType("unit-warlock", {Image = {"alt-file", "contrib/graphics/units/warlock-alt.png"}})
+
+local g = CPlayerColorGraphic:New("contrib/graphics/units/necrolyte-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("orc/units/necrolyte.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/necrolyte-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/necrolyte-alt-nohood.png"))
+DefineUnitType("unit-necrolyte", {Image = {"alt-file", "contrib/graphics/units/necrolyte-alt.png"}})
+
 -----------------------------------------------------------------------
 -- Low health icons
 -----------------------------------------------------------------------
