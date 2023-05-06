@@ -2224,6 +2224,11 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/necrolyte-alt-mask.png"), 
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/necrolyte-alt-nohood.png"))
 DefineUnitType("unit-necrolyte", {Image = {"alt-file", "contrib/graphics/units/necrolyte-alt.png"}})
 
+local g = CPlayerColorGraphic:New("contrib/graphics/units/raider-alt.png", 48, 48)
+g:OverlayGraphic(CGraphic:New("orc/units/raider.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/raider-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/raider-alt-nobrass.png"))
+DefineUnitType("unit-raider", {Image = {"alt-file", "contrib/graphics/units/raider-alt.png"}})
 -----------------------------------------------------------------------
 -- Low health icons
 -----------------------------------------------------------------------
