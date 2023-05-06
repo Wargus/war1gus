@@ -2181,6 +2181,12 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-mask.png"), t
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-hair.png"))
 DefineUnitType("unit-conjurer", {Image = {"alt-file", "contrib/graphics/units/conjurer-alt.png"}})
 
+local g = CPlayerColorGraphic:New("contrib/graphics/units/knight-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("human/units/knight.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/knight-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/knight-alt-nohelmet.png"))
+DefineUnitType("unit-knight", {Image = {"alt-file", "contrib/graphics/units/knight-alt.png"}})
+
 local g = CPlayerColorGraphic:New("contrib/graphics/units/footman-alt.png", 48, 48)
 g:OverlayGraphic(CGraphic:New("human/units/footman.png"))
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-mask.png"), true)
