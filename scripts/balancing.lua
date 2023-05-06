@@ -2224,6 +2224,12 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/necrolyte-alt-mask.png"), 
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/necrolyte-alt-nohood.png"))
 DefineUnitType("unit-necrolyte", {Image = {"alt-file", "contrib/graphics/units/necrolyte-alt.png"}})
 
+local g = CPlayerColorGraphic:New("contrib/graphics/units/grunt-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("orc/units/grunt.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/grunt-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/grunt-alt-shield.png"))
+DefineUnitType("unit-grunt", {Image = {"alt-file", "contrib/graphics/units/grunt-alt.png"}})
+
 local g = CPlayerColorGraphic:New("contrib/graphics/units/raider-alt.png", 48, 48)
 g:OverlayGraphic(CGraphic:New("orc/units/raider.png"))
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/raider-alt-mask.png"), true)
