@@ -2193,6 +2193,12 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-mask.png"), tr
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-noshield.png"))
 DefineUnitType("unit-footman", {Image = {"alt-file", "contrib/graphics/units/footman-alt.png"}})
 
+local g = CPlayerColorGraphic:New("contrib/graphics/units/cleric-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("human/units/cleric.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/cleric-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/cleric-alt-nostick.png"))
+DefineUnitType("unit-cleric", {Image = {"alt-file", "contrib/graphics/units/cleric-alt.png"}})
+
 local g = CPlayerColorGraphic:New("contrib/graphics/units/catapult-alt.png", 32, 32)
 g:OverlayGraphic(CGraphic:New("human/units/catapult.png"))
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/catapult-alt-mask.png"), true)
