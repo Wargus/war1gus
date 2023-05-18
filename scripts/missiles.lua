@@ -108,15 +108,19 @@ DefineMissileType("missile-web",
     DrawLevel = 200, ImpactSound = "fireball attack",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 2, Range = 0 } )
 
-DefineMissileType("missile-shadow",
+	DefineMissileType("missile-shadow",
   { File = "contrib/graphics/missiles/shadow_spear.png", Size = {32, 32}, Frames = 5, NumDirections = 9,
     DrawLevel = 200, ImpactSound = "fireball attack",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 2, Range = 0 } )
 
-DefineMissileType("missile-iceshard",
+	DefineMissileType("missile-iceshard",
   { File = "contrib/graphics/missiles/ice-shard.png", Size = {32, 32}, Frames = 5, NumDirections = 9,
     DrawLevel = 200, ImpactSound = "fireball attack",
     Class = "missile-class-point-to-point", Sleep = 1, Speed = 2, Range = 0 } )
+
+DefineMissileType("missile-hail",
+  { File = "contrib/graphics/missiles/hail.png", Size = {32, 32}, Frames = 4, NumDirections = 1,
+  DrawLevel = 200, Class = "missile-class-flame-shield", Sleep = 6, Speed = 14, Range = 1 } )
 
 DefineMissileType("missile-unholy",
   { File = "contrib/graphics/missiles/unholy.png", Size = {20, 20}, Frames = 4, NumDirections = 1,
