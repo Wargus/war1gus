@@ -33,6 +33,11 @@
 --
 
 local units = {
+   {Names = {neutral = "Sorceress"},
+    HitPoints = 40,
+    Armor = 4,
+    PiercingDamage = 1,
+    BasicDamage = 9},
    {Names = {neutral = "Brigand"},
     HitPoints = 40,
     Armor = 4,
