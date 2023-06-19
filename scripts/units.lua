@@ -225,7 +225,7 @@ local units = {
           "spell-dark-vision",
           "spell-unholy-armor" } },
     PiercingDamage = 6,
-    Missile = "missile-magic-fireball",
+    Missile = {orc = "missile-shadow", human = "missile-magic-fireball"},
     BasicDamage = 0,
     MaxAttackRange = {orc = 2, human = 1}},
 

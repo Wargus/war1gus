@@ -2181,11 +2181,23 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-mask.png"), t
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/conjurer-alt-hair.png"))
 DefineUnitType("unit-conjurer", {Image = {"alt-file", "contrib/graphics/units/conjurer-alt.png"}})
 
+local g = CPlayerColorGraphic:New("contrib/graphics/units/knight-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("human/units/knight.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/knight-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/knight-alt-nohelmet.png"))
+DefineUnitType("unit-knight", {Image = {"alt-file", "contrib/graphics/units/knight-alt.png"}})
+
 local g = CPlayerColorGraphic:New("contrib/graphics/units/footman-alt.png", 48, 48)
 g:OverlayGraphic(CGraphic:New("human/units/footman.png"))
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-mask.png"), true)
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/footman-alt-noshield.png"))
 DefineUnitType("unit-footman", {Image = {"alt-file", "contrib/graphics/units/footman-alt.png"}})
+
+local g = CPlayerColorGraphic:New("contrib/graphics/units/cleric-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("human/units/cleric.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/cleric-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/cleric-alt-nostick.png"))
+DefineUnitType("unit-cleric", {Image = {"alt-file", "contrib/graphics/units/cleric-alt.png"}})
 
 local g = CPlayerColorGraphic:New("contrib/graphics/units/catapult-alt.png", 32, 32)
 g:OverlayGraphic(CGraphic:New("human/units/catapult.png"))
@@ -2212,6 +2224,17 @@ g:OverlayGraphic(CGraphic:New("contrib/graphics/units/necrolyte-alt-mask.png"), 
 g:OverlayGraphic(CGraphic:New("contrib/graphics/units/necrolyte-alt-nohood.png"))
 DefineUnitType("unit-necrolyte", {Image = {"alt-file", "contrib/graphics/units/necrolyte-alt.png"}})
 
+local g = CPlayerColorGraphic:New("contrib/graphics/units/grunt-alt.png", 32, 32)
+g:OverlayGraphic(CGraphic:New("orc/units/grunt.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/grunt-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/grunt-alt-shield.png"))
+DefineUnitType("unit-grunt", {Image = {"alt-file", "contrib/graphics/units/grunt-alt.png"}})
+
+local g = CPlayerColorGraphic:New("contrib/graphics/units/raider-alt.png", 48, 48)
+g:OverlayGraphic(CGraphic:New("orc/units/raider.png"))
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/raider-alt-mask.png"), true)
+g:OverlayGraphic(CGraphic:New("contrib/graphics/units/raider-alt-nobrass.png"))
+DefineUnitType("unit-raider", {Image = {"alt-file", "contrib/graphics/units/raider-alt.png"}})
 -----------------------------------------------------------------------
 -- Low health icons
 -----------------------------------------------------------------------
@@ -2278,3 +2301,129 @@ for idx,icon in ipairs(icons) do
       end
    end
 end
+
+-----------------------------------------------------------------------
+-- Human sorceress
+-----------------------------------------------------------------------
+
+local humanSorceress = CIcon:New("icon-sorceress")
+humanSorceress.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-sorceress.png", 27, 19)
+humanSorceress.Frame = 0
+
+local humanIceShard = CIcon:New("icon-sorceress-attack")
+humanIceShard.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-sorceress-attack.png", 27, 19)
+humanIceShard.Frame = 0
+
+local humanFreeze = CIcon:New("icon-freeze")
+humanFreeze.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-freeze.png", 27, 19)
+humanFreeze.Frame = 0
+
+local humanHail = CIcon:New("icon-sorceress-hail")
+humanHail.G = CPlayerColorGraphic:New("contrib/graphics/ui/human/icon-sorceress-hail.png", 27, 19)
+humanHail.Frame = 0
+
+DefineButton( { Pos = 2, Level = 0, Icon = "icon-sorceress",
+   Action = "train-unit", Value = "unit-sorceress",
+   Key = "s", Hint = "TRAIN ~!SORCERESS",
+   ForUnit = {"unit-human-church"} } )
+
+DefineButton( { Pos = 3, Level = 0, Icon = "icon-sorceress-attack",
+  Action = "attack",
+  Key = "a", Hint = "ICE SH~!ARD",
+  Description = "cannot attack in close range", 
+  ForUnit = {"unit-sorceress"} } )
+
+local humanHailUpgrade = CUpgrade:New("upgrade-hail")
+humanHailUpgrade.Icon = humanHail
+humanHailUpgrade.Costs[0] = 100 -- time 100
+humanHailUpgrade.Costs[1] = 750 -- gold
+humanHailUpgrade.Costs[2] = 0 -- wood
+
+DefineAllow("upgrade-hail", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-sorceress-hail",
+  Action = "research", Value = "upgrade-hail",
+  Allowed = "check-single-research",
+  Key = "d", Hint = "RESEARCH HAIL SHIEL~!D",
+  Description = "Harmfull hail orbit target",
+  ForUnit = {"unit-human-church"} } )
+ 
+ DefineButton( { Pos = 5, Level = 0, Icon = "icon-sorceress-hail",
+  Action = "cast-spell", Value = "spell-hail",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-hail"},
+  Key = "d", Hint = "HAIL SHIEL~!D",
+  Description = "Harmfull hail orbit target",
+  ForUnit = {"unit-sorceress"} } )
+ 
+local humanFreezeUpgrade = CUpgrade:New("upgrade-freeze")
+humanFreezeUpgrade.Icon = humanHail
+humanFreezeUpgrade.Costs[0] = 150 -- time 100
+humanFreezeUpgrade.Costs[1] = 1500 -- gold
+humanFreezeUpgrade.Costs[2] = 0 -- wood
+
+DefineAllow("upgrade-freeze", "AAAAAAAAAAAAAAAA")
+
+DefineButton( { Pos = 5, Level = 0, Icon = "icon-freeze",
+  Action = "research", Value = "upgrade-freeze",
+  Allowed = "check-single-research",
+  Key = "z", Hint = "RESEARCH FREE~!ZE",
+  Description = "Slow down target",
+  ForUnit = {"unit-human-tower"} } )
+
+ DefineButton( { Pos = 4, Level = 0, Icon = "icon-freeze",
+  Action = "cast-spell", Value = "spell-freeze",
+  Allowed = "check-upgrade", AllowArg = {"upgrade-freeze"},
+  Key = "f", Hint = "~!FREEZE",
+  Description = "Slow down target", 
+  ForUnit = {"unit-sorceress"} } )
+ 
+ --reposition of church healing research icon to look nicer with sorceress (unit on top etc.)
+ DefineButton( { Pos = 6, Level = 0, Icon = "icon-healing",
+  Action = "research", Value = "upgrade-healing",
+  Allowed = "check-single-research",
+  Key = "e", Hint = "RESEARCH H~!EALING",
+  ForUnit = {"unit-human-church"} } )
+  
+DefineUnitType("unit-sorceress", 
+               { Name = "Sorceress",
+			     Costs = {"time", 250 , "gold", 450, "wood", 75}, --250
+                 Image = {"file", "contrib/graphics/units/sorceress.png", "size", {32, 32}},
+                 Icon = "icon-sorceress",
+                 DrawLevel = 60,
+                 TileSize = { 1, 1 },
+                 BoxSize = {15, 15},
+                 Type = "land", 
+				 organic = true,
+				 CanAttack = true,
+                 LandUnit = true,
+				 Sounds = {
+					"attack", "human acknowledge",
+					"selected", "human selected",
+					"acknowledge", "human acknowledge",
+					"ready", "human ready",
+					"help", "human help 3",
+					"dead", "human dead"
+				 },				 
+ 				 SelectableByRectangle = true,
+                 Animations = "animations-cleric",
+				-- Corpse = "unit-human-dead-body" --why this cause errors?
+				 Coward = false,				 
+                 Speed = 4,
+				 HitPoints = 35,
+				 MinAttackRange = 3,
+				 MaxAttackRange = 4,
+				 Missile = "missile-iceshard",
+                 PiercingDamage = 0,
+                 BasicDamage = 7,
+				 AnnoyComputerFactor = 180,
+                 Armor = 0,
+				 Demand = 1, 
+                 CanTargetLand = true, 
+                 SightRange = 5, 
+				 Mana = {Max = 100, Enable = true},
+				 AnnoyComputerFactor = 180,
+				CanCastSpell = {  
+				"spell-freeze", "spell-hail"}
+})
+
+DefineAllow("unit-sorceress", "AAAAAAAAAAAAAAAA")

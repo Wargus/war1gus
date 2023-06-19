@@ -369,3 +369,40 @@ DefineSpell("spell-poison",
 	"autocast", {"range", 10, "condition", {"Coward", "false", "opponent", "only"}},
 	"ai-cast", {"range", 10, "combat", "only", "condition", {"Coward", "false", "opponent", "only"}}
 )
+
+DefineSpell("spell-freeze",
+	"showname", _("Slow"),
+	"manacost", 35,
+	"range", 5,
+	"target", "unit",
+	 "cooldown", 150,
+	"action", {{"adjust-variable", {Slow = 800, Haste = 0}},
+		{"spawn-missile", "missile", "missile-iceshard",
+			"start-point", {"base", "target"}}},
+	"condition", {
+		"Building", "false",
+		"Slow", {ExactValue = 0}},
+	"sound-when-cast", "raise dead", 
+	"autocast", {"range", 10, "condition", {"Coward", "false", "opponent", "only"}},
+	"ai-cast", {"range", 10, "combat", "only", "condition", {"Coward", "false", "opponent", "only"}}
+)
+
+DefineSpell("spell-hail",
+	"showname", _("flame shield"),
+	"manacost", 30,
+	"range", 6,
+	"target", "unit",
+	"action", {
+		{"spawn-missile", "missile", "missile-hail", "ttl", 600, "damage", 2},
+		{"spawn-missile", "missile", "missile-hail", "ttl", 607, "damage", 0},
+		{"spawn-missile", "missile", "missile-hail", "ttl", 614, "damage", 0},
+		{"spawn-missile", "missile", "missile-hail", "ttl", 621, "damage", 0},
+		{"spawn-missile", "missile", "missile-hail", "ttl", 628, "damage", 0}
+	},
+	-- I think it's better if we can cast it multiple times and the effects stack.
+	-- Can be casted, and is effective on both allies and enemies
+	"condition", {"Building", "false", "AirUnit", "false"},
+	"sound-when-cast", "raise dead", 
+	--"depend-upgrade", "upgrade-flame-shield",
+	"autocast", {"range", 6, "attacker", "only", "condition", {"Coward", "false"}}
+)

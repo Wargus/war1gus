@@ -173,10 +173,15 @@ DefinePanelContents(
 )
 
 DefineSprites({Name = "web", File = "contrib/graphics/missiles/missile-web.png", Offset = {0, 0}, Size = {32, 32}})
+DefineSprites({Name = "freeze", File = "contrib/graphics/missiles/freeze.png", Offset = {0, -1}, Size = {20, 20}})
 
 DefineDecorations({Index = "Slow", ShowOpponent = true,
-  Offset = {-8, -8}, Method = {"static-sprite", {"web", 4}}
+  Offset = {0, 0}, Method = {"static-sprite", {"freeze", 4}}
 })
+-- I cannot make 2x different Slow graphic effect, so here is old web for spiders
+--DefineDecorations({Index = "Slow", ShowOpponent = true,
+--  Offset = {-8, -8}, Method = {"static-sprite", {"web", 4}}
+--})
 
 DefineSprites({
    Name = "sprite-invisible",
@@ -203,13 +208,13 @@ DefineDecorations({
          "animated-sprite", {"sprite-unholy", 8}
       }
 })
-DefineSprites({Name = "venom", File = "contrib/graphics/ui/icon-poison.png", Offset = {0, 0}, Size = {4,6}})
+DefineSprites({Name = "venom", File = "contrib/graphics/missiles/poison.png", Offset = {0, 0}, Size = {10,10}})
 
 DefineDecorations({
    Index = "Poison", ShowOpponent = true,
-   Offset = {7, 2},
+   Offset = {3, 1},
    Method = 
-      {"static-sprite", {"venom", 0}}  
+      {"animated-sprite", {"venom", 12}}  
 })
 
 DefineSprites({Name = "woundmarker", File = "contrib/graphics/ui/icon-wound.png", Offset = {0, -7}, Size = {5, 6}})
