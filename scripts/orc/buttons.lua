@@ -348,14 +348,14 @@ DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear2",
   Action = "research", Value = "upgrade-spear1",
   Allowed = "check-single-research",
   Key = "a", Hint = "UPGRADE SPE~!AR STRENGTH",
-  Description = "Increase Spearman and Towers armor by ~<1~>", 
+  Description = "Increase Spearman and Towers damage by ~<1~>", 
   ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-spear3",
   Action = "research", Value = "upgrade-spear2",
   Allowed = "check-single-research",
   Key = "a", Hint = "UPGRADE SPE~!AR STRENGTH",
-  Description = "Increase Spearman and Towers armor by ~<1~>", 
+  Description = "Increase Spearman and Towers damage by ~<1~>", 
   ForUnit = {"unit-orc-lumber-mill"} } )
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-wolves1",
