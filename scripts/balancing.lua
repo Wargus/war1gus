@@ -2356,7 +2356,7 @@ DefineButton( { Pos = 5, Level = 0, Icon = "icon-sorceress-hail",
   ForUnit = {"unit-sorceress"} } )
  
 local humanFreezeUpgrade = CUpgrade:New("upgrade-freeze")
-humanFreezeUpgrade.Icon = humanHail
+humanFreezeUpgrade.Icon = humanFreeze
 humanFreezeUpgrade.Costs[0] = 150 -- time 100
 humanFreezeUpgrade.Costs[1] = 1500 -- gold
 humanFreezeUpgrade.Costs[2] = 0 -- wood
