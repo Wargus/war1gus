@@ -176,7 +176,7 @@ DefineSprites({Name = "web", File = "contrib/graphics/missiles/missile-web.png",
 DefineSprites({Name = "freeze", File = "contrib/graphics/missiles/freeze.png", Offset = {0, -1}, Size = {20, 20}})
 
 DefineDecorations({Index = "Slow", ShowOpponent = true,
-  Offset = {0, 0}, Method = {"static-sprite", {"freeze", 4}}
+  Offset = {0, 0}, Method = {"static-sprite", {"freeze", 0}}
 })
 -- I cannot make 2x different Slow graphic effect, so here is old web for spiders
 --DefineDecorations({Index = "Slow", ShowOpponent = true,
