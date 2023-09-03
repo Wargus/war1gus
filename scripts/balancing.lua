@@ -60,13 +60,13 @@ DefineUnitType("unit-water-elemental",	{SightRange = 6})
 -- Cost Rebalancing Buildings
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-human-town-hall",		{Costs = {"time", 500, "gold", 1000,	"wood", 700},Armor = 10, Supply = 3})
-DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 500, "gold", 1000,	"wood", 700},Armor = 10, Supply = 3})
+DefineUnitType("unit-human-town-hall",		{Costs = {"time", 500, "gold", 1000,	"wood", 700},Armor = 0, Supply = 3, HitPoints = 1500})
+DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 500, "gold", 1000,	"wood", 700},Armor = 0, Supply = 3, HitPoints = 1500})
 
 DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
 DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
-DefineUnitType("unit-human-barracks",		{Costs = {"time", 400, "gold", 600, 	"wood", 500},Armor = 10})
-DefineUnitType("unit-orc-barracks",			{Costs = {"time", 400, "gold", 600, 	"wood", 500},Armor = 10})
+DefineUnitType("unit-human-barracks",		{Costs = {"time", 400, "gold", 600, 	"wood", 500},Armor = 0})
+DefineUnitType("unit-orc-barracks",			{Costs = {"time", 400, "gold", 600, 	"wood", 500},Armor = 0})
 DefineUnitType("unit-human-lumber-mill",	{Costs = {"time", 250, "gold", 600, 	"wood", 150},Armor = 0})
 DefineUnitType("unit-orc-lumber-mill",		{Costs = {"time", 250, "gold", 600, 	"wood", 150},Armor = 0})
 
@@ -75,10 +75,10 @@ DefineUnitType("unit-orc-kennel",			{Costs = {"time", 300, "gold", 1000, 	"wood"
 DefineUnitType("unit-human-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},Armor = 0})
 DefineUnitType("unit-orc-blacksmith",		{Costs = {"time", 300, "gold", 900, 	"wood", 400},Armor = 0})
 
-DefineUnitType("unit-human-church",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},Armor = 5})
-DefineUnitType("unit-orc-temple",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},Armor = 5})
-DefineUnitType("unit-human-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 5})
-DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 5})
+DefineUnitType("unit-human-church",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},Armor = 0})
+DefineUnitType("unit-orc-temple",			{Costs = {"time", 300, "gold", 700, 	"wood", 500},Armor = 0})
+DefineUnitType("unit-human-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 0})
+DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood", 300},Armor = 0})
 
 DefineUnitType("unit-wall",					{Costs = {"time", 30,  "gold", 0,		"wood", 50}, Armor = 20})
 
