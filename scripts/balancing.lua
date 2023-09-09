@@ -60,8 +60,8 @@ DefineUnitType("unit-water-elemental",	{SightRange = 6})
 -- Cost Rebalancing Buildings
 -----------------------------------------------------------------------
 
-DefineUnitType("unit-human-town-hall",		{Costs = {"time", 500, "gold", 1000,	"wood", 700},Armor = 0, Supply = 3, HitPoints = 1500})
-DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 500, "gold", 1000,	"wood", 700},Armor = 0, Supply = 3, HitPoints = 1500})
+DefineUnitType("unit-human-town-hall",		{Costs = {"time", 50, "gold", 400,	"wood", 400},Armor = 0, Supply = 3, HitPoints = 1500}) --this is AI town hall, normal for player is fast town hall 1483 line
+DefineUnitType("unit-orc-town-hall",		{Costs = {"time", 50, "gold", 400,	"wood", 400},Armor = 0, Supply = 3, HitPoints = 1500})
 
 DefineUnitType("unit-human-farm",			{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
 DefineUnitType("unit-orc-farm",				{Costs = {"time", 200, "gold", 500,		"wood", 300},Armor = 0})
@@ -82,7 +82,7 @@ DefineUnitType("unit-orc-tower",			{Costs = {"time", 400, "gold", 1400, 	"wood",
 
 DefineUnitType("unit-wall",					{Costs = {"time", 30,  "gold", 0,		"wood", 50}, Armor = 20})
 
-DefineUnitType("unit-gold-mine",			{MaxOnBoard = 2})
+DefineUnitType("unit-gold-mine",			{MaxOnBoard = 3})
 
 DefineDependency("unit-human-stable", { "unit-human-blacksmith"} )
 DefineDependency("unit-orc-kennel", { "unit-orc-blacksmith"} )
@@ -1482,7 +1482,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-venom",
   ForUnit = {"unit-scorpion"} } )
     
 -----------------------------------------------------------------------
--- Fast first townhall
+-- player not 1st town hall
 ----------------------------------------------------------------------- 
 
 CopyUnitType("unit-human-town-hall", "unit-human-first-town-hall")
@@ -1490,7 +1490,7 @@ CopyUnitType("unit-human-town-hall", "unit-human-first-town-hall")
 UnitTypeFiles["unit-human-first-town-hall"] = UnitTypeFiles["unit-human-town-hall"]
 DefineUnitType("unit-human-first-town-hall", {
    Name = "Town hall",
-   Costs = {"time", 10, "gold", 1000, "wood", 700},
+   Costs = {"time", 500, "gold", 1000, "wood", 700},
    AiBuildingRules = townHallBuildingRules,
    BuildingRules = townHallBuildingRules,
    OnReady = function (unit)
@@ -1504,16 +1504,9 @@ DefineUnitType("unit-human-first-town-hall", {
 
 DefineButton( { Pos = 4, Level = 1, Icon = "icon-human-town-hall",
     Action = "build", Value = "unit-human-first-town-hall",
-    Allowed = "check-units-nor", AllowArg = {
+    Allowed = "check-units-or", AllowArg = {
       "unit-human-first-town-hall",
-      "unit-human-town-hall",
-      "unit-human-farm",
-      "unit-human-barracks",
-      "unit-human-lumber-mill",
-      "unit-human-stable",
-      "unit-human-blacksmith",
-      "unit-human-church",
-      "unit-human-tower"},
+      "unit-human-town-hall"},
     Key = "t", Hint = "ESTABLISH ~!TOWN",
     ForUnit = {"unit-peasant"} } )
 
@@ -1528,7 +1521,7 @@ CopyUnitType("unit-orc-town-hall", "unit-orc-first-town-hall")
 UnitTypeFiles["unit-orc-first-town-hall"] = UnitTypeFiles["unit-orc-town-hall"]
 DefineUnitType("unit-orc-first-town-hall", {
    Name = "Town hall",
-   Costs = {"time", 10, "gold", 1000, "wood", 700},
+   Costs = {"time", 500, "gold", 1000, "wood", 700},
    AiBuildingRules = townHallBuildingRules,
    BuildingRules = townHallBuildingRules,
    OnReady = function (unit)
@@ -1542,16 +1535,9 @@ DefineUnitType("unit-orc-first-town-hall", {
 
 DefineButton( { Pos = 4, Level = 1, Icon = "icon-orc-town-hall",
     Action = "build", Value = "unit-orc-first-town-hall",
-    Allowed = "check-units-nor", AllowArg = {
+    Allowed = "check-units-or", AllowArg = {
        "unit-orc-first-town-hall",
-       "unit-orc-town-hall",
-       "unit-orc-farm",
-       "unit-orc-barracks",
-       "unit-orc-lumber-mill",
-       "unit-orc-kennel",
-       "unit-orc-blacksmith",
-       "unit-orc-temple",
-       "unit-orc-tower"},
+       "unit-orc-town-hall"},
     Key = "t", Hint = "ESTABLISH ~!TOWN",
     ForUnit = {"unit-peon"} } )
 
