@@ -135,11 +135,11 @@ local editor_types = {
   "unit-windmill",
   "unit-ruin",
   "", "",
-  "unit-pentagram",
-  "unit-north-wall",
-  "unit-wall-wardrobe",
-  "unit-wall-cupboard",
-  "unit-wall-barrels",
+--  "unit-pentagram",
+--  "unit-north-wall",
+--  "unit-wall-wardrobe",
+--  "unit-wall-cupboard",
+--  "unit-wall-barrels",
 
 -- Placing this unit-types on map is not (yet?) supported.
 --  "unit-dead-body",
