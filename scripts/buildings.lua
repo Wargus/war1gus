@@ -193,6 +193,69 @@ for idx,building in ipairs(buildings) do
    DefineBuildingFromSpec(building)
 end
 
+DefineAnimations(
+"collapse",
+   {Death = {"unbreakable begin", "frame 0", "wait 600", "label loop",
+    "wait 100", "exact-frame 0", "goto loop", "unbreakable end", "wait 1"}})
+
+DefineUnitType("unit-destroyed-entrance",
+{
+	Name = "destroyed-entrance",
+	Image = {"size", {32, 48},
+	   "file", "contrib/graphics/buildings/entrance_collapse_2x3.png"},
+	Animations = "collapse",
+	Icon = "icon-peasant",
+	Speed = 0,
+	HitPoints = 255,
+	DrawLevel = 10,
+	TileSize = {2, 3}, BoxSize = {34, 50},
+	SightRange = 0,
+	Indestructible = 1,
+	IsNotSelectable = true,
+	ComputerReactionRange = 0,
+	PersonReactionRange = 0,
+	AnnoyComputerFactor = -100,
+	AiAdjacentRange = 0,
+	Revealer = false,
+	Decoration = true,
+	BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+	Priority = 0,
+	Type = "land",
+	Building = true,
+	VisibleUnderFog = true,
+	Sounds = {} 
+} )
+
+DefineUnitType(
+   "unit-start-location",
+   { Name = "Start Location",
+     Image = {"size", {15, 11},
+              "file", "graphics/ui/cursors/yellow_crosshair.png"},
+     Animations = "animations-building",
+     Priority = 0,
+     HitPoints = 1,
+     Icon = "icon-cancel",
+     TileSize = {1, 1}, BoxSize = {1, 1},
+     SightRange = 1,
+     Indestructible = 1,
+     DrawLevel = 0,
+     IsNotSelectable = true,
+     NonSolid = true,
+     Type = "land", Building = true,
+     VisibleUnderFog = true })
+
+UnitTypeFiles["unit-road"] = {
+  forest = "tilesets/forest/neutral/buildings/road.png",
+  swamp = "tilesets/swamp/neutral/buildings/road.png",
+  dungeon = "contrib/graphics/buildings/dungeon_road.png",
+  dungeon_campaign = "contrib/graphics/buildings/dungeon_road.png",
+  forest_campaign = "tilesets/forest/neutral/buildings/road.png",
+  swamp_campaign = "tilesets/swamp/neutral/buildings/road.png"
+}
+DefineConstruction(
+   "construction-none",
+   {Constructions = {{Percent = 0, File = "main", Frame = 0}}})
+
 UnitTypeFiles["unit-gold-mine"] = {
   forest = "tilesets/forest/neutral/buildings/gold_mine.png",
   swamp = "tilesets/swamp/neutral/buildings/gold_mine.png",
@@ -266,69 +329,8 @@ DefineUnitType(
     "dead", "building destroyed",
 }} )
 
-DefineAnimations(
-"collapse",
-   {Death = {"unbreakable begin", "frame 0", "wait 600", "label loop",
-    "wait 100", "exact-frame 0", "goto loop", "unbreakable end", "wait 1"}})
-
-DefineUnitType("unit-destroyed-entrance",
-{
-	Name = "destroyed-entrance",
-	Image = {"size", {32, 48},
-	   "file", "contrib/graphics/buildings/entrance_collapse_2x3.png"},
-	Animations = "collapse",
-	Icon = "icon-peasant",
-	Speed = 0,
-	HitPoints = 255,
-	DrawLevel = 10,
-	TileSize = {2, 3}, BoxSize = {34, 50},
-	SightRange = 0,
-	Indestructible = 1,
-	IsNotSelectable = true,
-	ComputerReactionRange = 0,
-	PersonReactionRange = 0,
-	AnnoyComputerFactor = -100,
-	AiAdjacentRange = 0,
-	Revealer = false,
-	Decoration = true,
-	BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
-	Priority = 0,
-	Type = "land",
-	Building = true,
-	VisibleUnderFog = true,
-	Sounds = {} 
-} )
 
 DefineUnitType(
-   "unit-start-location",
-   { Name = "Start Location",
-     Image = {"size", {15, 11},
-              "file", "graphics/ui/cursors/yellow_crosshair.png"},
-     Animations = "animations-building",
-     Priority = 0,
-     HitPoints = 1,
-     Icon = "icon-cancel",
-     TileSize = {1, 1}, BoxSize = {1, 1},
-     SightRange = 1,
-     Indestructible = 1,
-     DrawLevel = 0,
-     IsNotSelectable = true,
-     NonSolid = true,
-     Type = "land", Building = true,
-     VisibleUnderFog = true })
-
-UnitTypeFiles["unit-road"] = {
-  forest = "tilesets/forest/neutral/buildings/road.png",
-  swamp = "tilesets/swamp/neutral/buildings/road.png",
-  dungeon = "contrib/graphics/buildings/dungeon_road.png",
-  dungeon_campaign = "contrib/graphics/buildings/dungeon_road.png",
-  forest_campaign = "tilesets/forest/neutral/buildings/road.png",
-  swamp_campaign = "tilesets/swamp/neutral/buildings/road.png"
-}
-DefineConstruction(
-   "construction-none",
-   {Constructions = {{Percent = 0, File = "main", Frame = 0}}})
-   DefineUnitType(
    "unit-road",
    { Name = "Road",
    Image = {"size", {16, 16}},
