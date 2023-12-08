@@ -37,6 +37,7 @@
 --
 
 -- general commands -- almost all", "units have it -------------------------------
+DefineUnitType("unit-human-catapult-noattack", {})
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peasant",
   Action = "move",

@@ -105,11 +105,12 @@ function DefineAllowExtraUnits(allowWalls)
    if allowWalls then
       DefineAllow("unit-wall",                "AAAAAAAAAAAAAAAA")
    end
-   DefineAllow("unit-dead-body",           "AAAAAAAAAAAAAAAA")
-   DefineAllow("unit-destroyed-1x1-place",	"AAAAAAAAAAAAAAAA")
-   DefineAllow("unit-destroyed-2x2-place",	"AAAAAAAAAAAAAAAA")
-   DefineAllow("unit-destroyed-3x3-place",	"AAAAAAAAAAAAAAAA")
-   DefineAllow("unit-destroyed-4x4-place",	"AAAAAAAAAAAAAAAA")
+   DefineAllow("unit-human-dead-body",     "AAAAAAAAAAAAAAAA")
+   DefineAllow("unit-orc-dead-body",       "AAAAAAAAAAAAAAAA")
+   DefineAllow("unit-destroyed-1x1-place", "AAAAAAAAAAAAAAAA")
+   DefineAllow("unit-destroyed-2x2-place", "AAAAAAAAAAAAAAAA")
+   DefineAllow("unit-destroyed-3x3-place", "AAAAAAAAAAAAAAAA")
+   DefineAllow("unit-destroyed-4x4-place", "AAAAAAAAAAAAAAAA")
 end
 
 DefineAllowExtraUnits(true)

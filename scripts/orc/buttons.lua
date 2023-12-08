@@ -36,6 +36,8 @@
 --
 
 -- general commands -- almost all", "units have it -------------------------------
+DefineUnitType("unit-orc-catapult-noattack", {})
+DefineUnitType("unit-griselda", {})
 
 DefineButton( { Pos = 1, Level = 0, Icon = "icon-move-peon",
   Action = "move",
