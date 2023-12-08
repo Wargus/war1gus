@@ -130,7 +130,6 @@ function DefineBuildingFromSpec(building)
             Costs = building.Costs,
             RepairHp = 4,
             RepairCosts = { "gold", 1, "wood", 1 },
-            Construction = "construction-" .. fullname,
             HitPoints = building.HitPoints,
             DrawLevel = 20,
             TileSize = { size[1] / 16 - 1, size[2] / 16 - 1 },
@@ -181,6 +180,9 @@ function DefineBuildingFromSpec(building)
                 "dead","building destroyed"
             }
         }
+        if not building.NotConstructable then
+            unitType.Construction = "construction-" .. fullname
+        end
 
         for k, v in pairs(building) do
             if unitType[k] then
