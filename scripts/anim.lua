@@ -442,6 +442,10 @@ DefineAnimations("animations-cleric",
 		 BuildAnimations(frameNumbers_5_5_4_3,
 				 {attacksound = "fireball attack"}))
 
+DefineAnimations("animations-sorceress",
+		 BuildAnimations(frameNumbers_5_5_4_3,
+				 {attacksound = "fireball attack"}))
+
 DefineAnimations("animations-necrolyte",
 		 BuildAnimations(frameNumbers_5_5_5_4,
 				 {attacksound = "fireball attack"}))

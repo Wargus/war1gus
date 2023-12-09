@@ -52,6 +52,7 @@ for i=1,4,1 do
 	  swamp_campaign = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
 	  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
 	  dungeon_campaign = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png"}
+	DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (i - 1), {})
 	DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place", {
 	  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place",
 	  Image = {"size", {i * 16, i * 16}},
@@ -89,6 +90,7 @@ for i=1,4,1 do
 		  swamp_campaign = "tilesets/swamp/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
 		  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
 		  dungeon_campaign = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png"}
+	  DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (j - 1), {})
 	  DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j, {
 		  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j,
 		  Image = {"size", {j * 16, j * 16}},
@@ -419,7 +421,7 @@ table.insert(wc1_buildings["orc"], "unit-wall")
 table.insert(wc1_buildings["human"], "unit-wall")
 
 -- dungeon decoration
-
+--[[
 DefineUnitType(
    "unit-pentagram",
    { Name = "Pentagram",
@@ -540,3 +542,4 @@ DefineUnitType(
   Type = "land",
   Building = true, VisibleUnderFog = true,
 } )
+--]]

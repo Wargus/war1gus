@@ -622,6 +622,8 @@ DefineButton({ Pos = 5, Level = 0, Icon = "icon-cancel",
 -----------------------------------------------------------------------
 -- Upgrades Rebalancing
 -----------------------------------------------------------------------
+DefineUnitType("unit-orc-watch-tower", {})
+DefineUnitType("unit-human-guard-tower", {})
 
 local upgrades = {
    {orc = {"axe1", {"grunt", "raider"}, "axe2"},
@@ -635,12 +637,12 @@ local upgrades = {
 	modifier = {"PiercingDamage", -1},
     },
 
-   {orc = {"spear1", {"spearman", "watch-tower"}, "spear2"},
-    human = {"arrow1", {"archer", "guard-tower"}, "arrow2"},
+   {orc = {"spear1", {"spearman", "orc-watch-tower"}, "spear2"},
+    human = {"arrow1", {"archer", "human-guard-tower"}, "arrow2"},
     cost = {   1400,   750,		400,     0,     0,     0,     0},
     },
-   {orc = {"spear2", {"spearman", "watch-tower"}, "spear3"},
-    human = {"arrow2", {"archer", "guard-tower"}, "arrow3"},
+   {orc = {"spear2", {"spearman", "orc-watch-tower"}, "spear3"},
+    human = {"arrow2", {"archer", "human-guard-tower"}, "arrow3"},
     cost = {   1400,   1500,     800,     0,     0,     0,     0},
     },
 

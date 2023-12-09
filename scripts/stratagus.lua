@@ -347,7 +347,7 @@ DefaultPreference("FogOfWarType", "fast")      -- "enhanced", "tiled" or "fast".
 DefaultPreference("FogOfWarBilinear", false)       -- Enable/Disable bilinear filtration for fog of war
 DefaultPreference("DungeonSightBlocking", true)    -- Enable/Disable sight blocking in the dungeons
 DefaultPreference("FieldOfViewType", "simple-radial")    -- default field of view type (possibe values: "simple-radial" and "shadow-casting" )
-DefaultPreference("RebalancedStats", true)
+DefaultPreference("RebalancedStats", false)
 DefaultPreference("OriginalPixelRatio", true)
 
 wc1.preferences = preferences
