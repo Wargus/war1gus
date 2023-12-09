@@ -34,6 +34,7 @@
 
 local units = {
    {Names = {neutral = "Sorceress"},
+    Image = {"file", "contrib/graphics/units/sorceress.png", "size", {32, 32}},
     HitPoints = 40,
     Armor = 4,
     PiercingDamage = 1,
