@@ -421,7 +421,6 @@ table.insert(wc1_buildings["orc"], "unit-wall")
 table.insert(wc1_buildings["human"], "unit-wall")
 
 -- dungeon decoration
---[[
 DefineUnitType(
    "unit-pentagram",
    { Name = "Pentagram",
@@ -542,4 +541,3 @@ DefineUnitType(
   Type = "land",
   Building = true, VisibleUnderFog = true,
 } )
---]]
