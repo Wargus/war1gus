@@ -131,21 +131,24 @@ local editor_types = {
 
   "", "","",
   "unit-sorceress",
---  "unit-slime-pond",
---  "unit-magma-rift",
---  "unit-windmill",
---  "unit-ruin",
   "", "",
---  "unit-pentagram",
---  "unit-north-wall",
---  "unit-wall-wardrobe",
---  "unit-wall-cupboard",
---  "unit-wall-barrels",
+  "unit-pentagram",
+  "unit-north-wall",
+  "unit-wall-wardrobe",
+  "unit-wall-cupboard",
+  "unit-wall-barrels",
 
 -- Placing this unit-types on map is not (yet?) supported.
 --  "unit-dead-body",
 
 }
+
+if preferences.RebalancedStats then
+  editor_types[#editor_types + 1] = "unit-slime-pond"
+  editor_types[#editor_types + 1] = "unit-magma-rift"
+  editor_types[#editor_types + 1] = "unit-windmill"
+  editor_types[#editor_types + 1] = "unit-ruin"
+end
 
 Editor.UnitTypes:clear()
 for key,value in ipairs(editor_types) do
