@@ -1829,7 +1829,7 @@ void MuxAllIntroVideos() {
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "hintro2.avi");
 	#endif
 	fclose(mylist);
-	const char* cmd1v = "ffmpeg -y -f concat -safe 0 -i %s "
+	const char* cmd1v = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
 		"-codec:v huffyuv %s/%s/hintro_v.avi";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
@@ -1846,7 +1846,7 @@ void MuxAllIntroVideos() {
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_2.wav");
 	#endif
 	fclose(mylist);
-	const char* cmd1a = "ffmpeg -y -f concat -safe 0 -i %s "
+	const char* cmd1a = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
 		" %s/%s/hintro_a.wav";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, listfileSound, Dir, SOUND_PATH);
 	system(cmd);
@@ -1869,7 +1869,7 @@ void MuxAllIntroVideos() {
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "ointro2.avi");
 	#endif
 	fclose(mylist);
-	const char* cmd2v = "ffmpeg -y -f concat -safe 0 -i %s "
+	const char* cmd2v = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
 		"-codec:v huffyuv %s/%s/ointro_v.avi";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
@@ -1894,7 +1894,7 @@ void MuxAllIntroVideos() {
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "cave2.avi");
 	#endif
 	fclose(mylist);
-	const char* cmd3v = "ffmpeg -y -f concat -safe 0 -i %s "
+	const char* cmd3v = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
 		"-codec:v huffyuv %s/%s/cave_v.avi";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
@@ -1911,7 +1911,7 @@ void MuxAllIntroVideos() {
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, SOUND_PATH, "intro_4.wav");
 	#endif
 	fclose(mylist);
-	const char* cmd3a = "ffmpeg -y -f concat -safe 0 -i %s "
+	const char* cmd3a = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
 		"%s/%s/cave_a.wav";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, listfileSound, Dir, SOUND_PATH);
 	system(cmd);
@@ -1944,7 +1944,7 @@ void MuxAllIntroVideos() {
 	fprintf(mylist, "file '%s/%s/%s'\n", Dir, VIDEO_PATH, "title_s.avi");
 	#endif
 	fclose(mylist);
-	const char* cmd4v = "ffmpeg -y -f concat -safe 0 -i %s "
+	const char* cmd4v = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
 		"-codec:v huffyuv %s/%s/title_v.avi";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
