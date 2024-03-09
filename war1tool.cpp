@@ -1912,7 +1912,7 @@ void MuxAllIntroVideos() {
 	#endif
 	fclose(mylist);
 	const char* cmd3a = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
-		"%s/%s/cave_a.wav";
+		"\"%s/%s/cave_a.wav\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, listfileSound, Dir, SOUND_PATH);
 	system(cmd);
 
