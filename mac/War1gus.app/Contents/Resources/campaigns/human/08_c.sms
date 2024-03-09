@@ -1,0 +1,20 @@
+LoadTileModels("scripts/tilesets/dungeon_campaign.lua")
+local oldcu = CreateUnit
+function CreateUnit(name, player, pos)
+  if (name == "unit-medivh") then
+    return oldcu(name, player+1, pos)
+  else
+    return oldcu(name, player, pos)
+  end  
+end
+Load("campaigns/human/08.sms")
+CreateUnit = oldcu
+
+AddTrigger(
+  function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+SetStartView(0, 4, 20)

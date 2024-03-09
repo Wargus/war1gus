@@ -1830,7 +1830,7 @@ void MuxAllIntroVideos() {
 	#endif
 	fclose(mylist);
 	const char* cmd1v = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
-		"-codec:v huffyuv %s/%s/hintro_v.avi";
+		"-codec:v huffyuv \"%s/%s/hintro_v.avi\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -1847,12 +1847,12 @@ void MuxAllIntroVideos() {
 	#endif
 	fclose(mylist);
 	const char* cmd1a = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
-		" %s/%s/hintro_a.wav";
+		" \"%s/%s/hintro_a.wav\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1a, listfileSound, Dir, SOUND_PATH);
 	system(cmd);
 
-	const char* cmd1 = "ffmpeg -y -i %s/%s/hintro_v.avi -i %s/%s/hintro_a.wav "
-		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 %s/%s/hintro.ogv";
+	const char* cmd1 = "ffmpeg -y -i \"%s/%s/hintro_v.avi\" -i \"%s/%s/hintro_a.wav\" "
+		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 \"%s/%s/hintro.ogv\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd1, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -1870,12 +1870,12 @@ void MuxAllIntroVideos() {
 	#endif
 	fclose(mylist);
 	const char* cmd2v = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
-		"-codec:v huffyuv %s/%s/ointro_v.avi";
+		"-codec:v huffyuv \"%s/%s/ointro_v.avi\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd2 = "ffmpeg -y -i %s/%s/ointro_v.avi -i %s/%s/intro_3.wav "
-		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 %s/%s/ointro.ogv";
+	const char* cmd2 = "ffmpeg -y -i \"%s/%s/ointro_v.avi\" -i \"%s/%s/intro_3.wav\" "
+		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 \"%s/%s/ointro.ogv\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd2, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -1895,7 +1895,7 @@ void MuxAllIntroVideos() {
 	#endif
 	fclose(mylist);
 	const char* cmd3v = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
-		"-codec:v huffyuv %s/%s/cave_v.avi";
+		"-codec:v huffyuv \"%s/%s/cave_v.avi\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -1916,8 +1916,8 @@ void MuxAllIntroVideos() {
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3a, listfileSound, Dir, SOUND_PATH);
 	system(cmd);
 
-	const char* cmd3 = "ffmpeg -y -i %s/%s/cave_v.avi -i %s/%s/cave_a.wav "
-		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 %s/%s/cave.ogv";
+	const char* cmd3 = "ffmpeg -y -i \"%s/%s/cave_v.avi\" -i \"%s/%s/cave_a.wav\" "
+		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15 \"%s/%s/cave.ogv\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd3, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 
@@ -1926,8 +1926,8 @@ void MuxAllIntroVideos() {
 	const char* cmd4t = "ffmpeg -i %s/%s/title.avi -codec:v huffyuv "
 	    "%s/%s/title_s.avi"; // video filter crop not supported on windows
 	#else
-	const char* cmd4t = "ffmpeg -i %s/%s/title.avi -codec:v huffyuv "
-		"-vf 'crop=640:288:0:0' %s/%s/title_s.avi";
+	const char* cmd4t = "ffmpeg -i \"%s/%s/title.avi\" -codec:v huffyuv "
+		"-vf 'crop=640:288:0:0' \"%s/%s/title_s.avi\"";
 	#endif
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4t, Dir, VIDEO_PATH, Dir, VIDEO_PATH);
 	system(cmd);
@@ -1945,12 +1945,12 @@ void MuxAllIntroVideos() {
 	#endif
 	fclose(mylist);
 	const char* cmd4v = "ffmpeg -y -f concat -safe 0 -i \"%s\" "
-		"-codec:v huffyuv %s/%s/title_v.avi";
+		"-codec:v huffyuv \"%s/%s/title_v.avi\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4v, listfile, Dir, VIDEO_PATH);
 	system(cmd);
 
-	const char* cmd4 = "ffmpeg -y -i %s/%s/title_v.avi -i %s/%s/intro_5.wav "
-		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15  %s/%s/title.ogv";
+	const char* cmd4 = "ffmpeg -y -i \"%s/%s/title_v.avi\" -i \"%s/%s/intro_5.wav\" "
+		"-codec:v libtheora -qscale:v 31 -pix_fmt yuv420p -vb 4000k -codec:a libvorbis -qscale:a 15  \"%s/%s/title.ogv\"";
 	snprintf(cmd, STATIC_CMD_SIZE - 1, cmd4, Dir, VIDEO_PATH, Dir, SOUND_PATH, Dir, VIDEO_PATH);
 	system(cmd);
 

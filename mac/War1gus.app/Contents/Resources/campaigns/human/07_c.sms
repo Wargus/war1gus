@@ -1,0 +1,11 @@
+LoadTileModels("scripts/tilesets/forest_campaign.lua")
+Load("campaigns/human/07.sms")
+
+AddTrigger(
+  function() return (GetPlayerData(4, "UnitTypesCount", "unit-peasant") == 0 and GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+SetStartView(0, 5, 10)

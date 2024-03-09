@@ -1,0 +1,11 @@
+LoadTileModels("scripts/tilesets/forest_campaign.lua")
+Load("campaigns/orc/03.sms")
+
+AddTrigger(
+  function() return (GetNumOpponents(GetThisPlayer()) == 0) end,
+  function() return ActionVictory() end)
+AddTrigger(
+  function() return (GetPlayerData(GetThisPlayer(), "TotalNumUnits") == 0) end,
+  function() return ActionDefeat() end)
+
+SetStartView(0, 0, 4)
