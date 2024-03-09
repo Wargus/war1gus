@@ -1923,8 +1923,8 @@ void MuxAllIntroVideos() {
 
 	// Title sequence
 	#ifdef WIN32
-	const char* cmd4t = "ffmpeg -i %s/%s/title.avi -codec:v huffyuv "
-	    "%s/%s/title_s.avi"; // video filter crop not supported on windows
+	const char* cmd4t = "ffmpeg -i \"%s/%s/title.avi\" -codec:v huffyuv "
+	    "\"%s/%s/title_s.avi\""; // video filter crop not supported on windows
 	#else
 	const char* cmd4t = "ffmpeg -i \"%s/%s/title.avi\" -codec:v huffyuv "
 		"-vf 'crop=640:288:0:0'\" %s/%s/title_s.avi\" ";
