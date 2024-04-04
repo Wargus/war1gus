@@ -75,6 +75,17 @@ function AiWorker()
 end
 
 --
+--  Farm of the current race.
+--
+function AiFarm()
+   if (AiGetRace() == race1) then
+      return "unit-human-farm"
+   else
+      return "unit-orc-farm"
+   end
+end
+
+--
 --  Lumber mill of the current race.
 --
 function AiLumberMill()
