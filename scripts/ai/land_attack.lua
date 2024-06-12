@@ -168,7 +168,7 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiNeed(AiBarracks()) end,
 	  function() return AiNeed(AiLumberMill()) end,
 	  function() return AiWait(AiBarracks()) end,
-      function() return AiForce(0, {AiSoldier(), 2}) end,
+      --function() return AiForce(0, {AiSoldier(), 2}) end,
       --function() return AiForce(1, {AiSoldier(), 1}) end,
       --function() return AiWaitForce(1) end,
       --function() return AiAttackWithForce(1) end,
@@ -177,25 +177,25 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function () return GenerateRoads(true, false) end,
 
       function() return AiSet(AiWorker(), 9) end,
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiNeed(AiBlacksmith()) end,
 	  function() return AiWait(AiWorker()) end,
 	  function() return AiWait(AiLumberMill()) end, 
       function() return AiNeed(AiTower()) end,
-      function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1}) end,
+      --function() return AiForce(0, {AiSoldier(), 2, AiShooter(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 2, AiShooter(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
 	  function() return AiNeed(AiTower()) end,
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
 
       function () return GenerateRoads(true, true) end,
 
-	  function() return AiWait(AiBlacksmith()) end,
-      function() return AiResearch(AiUpgradeWeapon1()) end,
-      function() return AiResearch(AiUpgradeArmor1()) end,
-      function() return AiResearch(AiUpgradeMissile1()) end,
+	--  function() return AiWait(AiBlacksmith()) end,
+      --function() return AiResearch(AiUpgradeWeapon1()) end,
+      --function() return AiResearch(AiUpgradeArmor1()) end,
+      --function() return AiResearch(AiUpgradeMissile1()) end,
       --function() return AiResearch(AiUpgradeWeapon2()) end,
       --function() return AiResearch(AiUpgradeArmor2()) end,
       --function() return AiResearch(AiUpgradeMissile2()) end,
@@ -204,25 +204,25 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function () return GenerateRoads(true, true) end,
 
-      function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
+      --function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiSleep(600) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+     -- function() return AiSleep(500) end,
       function() return AiSet(AiWorker(), 15) end,
-      function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
+      --function() return AiForce(0, {AiSoldier(), 3, AiShooter(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiAttackWithForce(1) end,
 
       function () return GenerateRoads(true, true) end,
 
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
 
       function() return AiForce(1, {AiSoldier(), 3, AiShooter(), 1, AiCatapult(), 1}) end,
       function() return AiWaitForce(1) end,
@@ -230,77 +230,86 @@ function CreateAiLandAttack(sleep_factor, max_force)
 
       function () return GenerateRoads(true, true) end,
 
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiNeed(AiStables()) end,
-      function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1}) end,
+      function() return AiWait(AiStables()) end,
+      --function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
       
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiNeed(AiBarracks()) end,
       function() return AiSet(AiWorker(), 19) end,
 
-      function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1}) end,
+      --function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
       function () return GenerateRoads(true, true) end,
 
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiNeed(AiTemple()) end,
       function() return AiResearch(AiMageSpell2()) end,
       function() return AiResearch(AiMageSpell3()) end,
 
       function () return GenerateRoads(true, true) end,
 
-      function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiMage(), 1, AiCatapult(), 1}) end,
+      --function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiMage(), 1, AiCatapult(), 1}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiMage(), 1, AiCatapult(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
       function () return GenerateRoads(true, true) end,
 
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiNeed(AiMageTower()) end,
       function() return AiResearch(AiSummonerSpell1()) end,
       function() return AiResearch(AiSummonerSpell3()) end,
 
-      function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
+      --function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 3, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiResearch(AiSummonerSpell2()) end,
 
       function () return GenerateRoads(true, true) end,
 
-      function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
+      --function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
       function () return GenerateRoads(true, true) end,
 
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
 
-      function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
+      --function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 2}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
-      function() return AiWaitForce(0) end,
+      --function() return AiWaitForce(0) end,
       function() return AiWaitForce(1) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
 
       function () return GenerateRoads(true, true) end,
 
+      --function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
+      function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
+      --function() return AiWaitForce(0) end,
+      function() return AiWaitForce(1) end,
+      --function() return AiAttackWithForce(0) end,
+      function() return AiAttackWithForce(1) end,
+
+      --function() return AiSleep(500) end,
       function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
       function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
       function() return AiWaitForce(0) end,
@@ -308,17 +317,9 @@ function CreateAiLandAttack(sleep_factor, max_force)
       function() return AiAttackWithForce(0) end,
       function() return AiAttackWithForce(1) end,
 
-      function() return AiSleep(500) end,
-      function() return AiForce(0, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 3, AiCatapult(), 1, AiMage(), 2, AiSummoner(), 5}) end,
-      function() return AiForce(1, {AiSoldier(), 1, AiShooter(), 2, AiCavalry(), 2, AiCatapult(), 1, AiMage(), 1, AiSummoner(), 1}) end,
-      function() return AiWaitForce(0) end,
-      function() return AiWaitForce(1) end,
-      function() return AiAttackWithForce(0) end,
-      function() return AiAttackWithForce(1) end,
-
       function () return GenerateRoads(true, true) end,
 
-      function() return AiSleep(500) end,
+      --function() return AiSleep(500) end,
       function() return AiSet(AiWorker(), 25) end,
 
       -- Everything researched...
