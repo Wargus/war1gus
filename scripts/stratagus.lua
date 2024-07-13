@@ -456,22 +456,17 @@ if preferences.PlayIntro == true then
          {Image = "ui/logo.png",
           Music = "sounds/logo.wav",
           Timeout = 3},
-         {Image = "videos/hintro.ogv",
-          Iterations = 1},
-         {Image = "videos/ointro.ogv",
-          Iterations = 1},
-         {Image = "videos/cave.ogv",
-          Iterations = 1},
-         {Image = "videos/title.ogv",
-          Iterations = 1}
+         {Image = "videos/hintro.ogv"},
+         {Image = "videos/ointro.ogv"},
+         {Image = "videos/cave.ogv"},
+         {Image = "videos/title.ogv"}
       )
    elseif file_exists("videos", "intro.ogv") then
       SetTitleScreens(
          {Image = "ui/logo.png",
           Music = "sounds/logo.wav",
           Timeout = 3},
-         {Image = "videos/intro.ogv",
-          Iterations = 1}
+         {Image = "videos/intro.ogv"}
       )
    else
       SetTitleScreens(
