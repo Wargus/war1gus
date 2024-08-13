@@ -31,95 +31,93 @@
 townHallBuildingRules = nil
 if (preferences.AllowMultipleTownHalls) then
   townHallBuildingRules = {
-     { "distance", { Distance = 4, DistanceType = ">", Type = "unit-gold-mine" },
-       "distance", { Distance = 4, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
+    { "distance", { Distance = 4, DistanceType = ">", Type = "unit-gold-mine" },
+      "distance", { Distance = 4, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
 else
   townHallBuildingRules = {
-          { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
-            "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
-	    "has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
-	    "has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
-            "distance", { Distance = 4, DistanceType = ">", Type = "unit-gold-mine" },
-            "distance", { Distance = 4, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
+    { "has-unit", { Type = "unit-human-town-hall", Count = 0, CountType = "=" },
+      "has-unit", { Type = "unit-orc-town-hall", Count = 0, CountType = "=" },
+      "has-unit", { Type = "unit-human-stormwind-keep", Count = 0, CountType = "=" },
+      "has-unit", { Type = "unit-orc-blackrock-spire", Count = 0, CountType = "=" },
+      "distance", { Distance = 4, DistanceType = ">", Type = "unit-gold-mine" },
+      "distance", { Distance = 4, DistanceType = ">", Type = "unit-dungeon-entrance" } } }
 end
 
-
 for i=1,4,1 do
-	UnitTypeFiles["unit-destroyed-" .. i .. "x" .. i .. "-place"] = {
-	  forest = "tilesets/forest/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
-	  swamp = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
-	  forest_campaign = "tilesets/forest/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
-	  swamp_campaign = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
-	  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
-	  dungeon_campaign = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png"}
-	DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (i - 1), {})
-	DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place", {
-	  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place",
-	  Image = {"size", {i * 16, i * 16}},
-	  Animations = "animations-ruins",
-	  Icon = "icon-peasant",
-	  Speed = 0,
-	  HitPoints = 0,
-	  DrawLevel = 10,
-	  TileSize = {i, i}, BoxSize = {i * 16 - 1, i * 16 - 1},
-	  SightRange = 0,
-          Indestructible = 1,
-          IsNotSelectable = true,
-          NonSolid = true,
-	  -- as good as neutral
-	  ComputerReactionRange = 0,
-	  PersonReactionRange = 0,
-	  AnnoyComputerFactor = -100,
-	  AiAdjacentRange = 0,
-	  Revealer = false,
-	  Decoration = true,
-	  BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
-	  Priority = 0,
-	  Type = "land",
-	  Building = true,
-	  VisibleUnderFog = true,
-	  Corpse = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (i - 1),
-	  Vanishes = (i == 1),
-	  Sounds = {} } )
-	local j = i
-	for j=i,1,-1 do
-	  UnitTypeFiles["unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j] = {
-		  forest = "tilesets/forest/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
-		  swamp = "tilesets/swamp/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
-		  forest_campaign = "tilesets/forest/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
-		  swamp_campaign = "tilesets/swamp/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
-		  dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
-		  dungeon_campaign = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png"}
-	  DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (j - 1), {})
-	  DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j, {
-		  Name = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j,
-		  Image = {"size", {j * 16, j * 16}},
-		  Animations = "animations-ruins",
-		  Icon = "icon-peasant",
-		  Speed = 0,
-		  HitPoints = 255,
-		  DrawLevel = 10,
-		  TileSize = {i, i}, BoxSize = {i * 16 - 1, i * 16 - 1},
-		  SightRange = 0,
-		  Indestructible = 1,
-		  IsNotSelectable = true,
-		  NonSolid = true,
-		  -- as good as neutral
-		  ComputerReactionRange = 0,
-		  PersonReactionRange = 0,
-		  AnnoyComputerFactor = -100,
-		  AiAdjacentRange = 0,
-		  Revealer = false,
-		  Decoration = true,
-		  BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
-		  Priority = 0,
-		  Type = "land",
-		  Building = true,
-		  VisibleUnderFog = true,
-		  Corpse = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (j - 1),
-		  Vanishes = (j == 1),
-		  Sounds = {} } )
-	end
+  for j=1,i,1 do
+    UnitTypeFiles["unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j] = {
+      forest = "tilesets/forest/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
+      swamp = "tilesets/swamp/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
+      forest_campaign = "tilesets/forest/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
+      swamp_campaign = "tilesets/swamp/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
+      dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png",
+      dungeon_campaign = "tilesets/dungeon/neutral/buildings/ruins_" .. j .. "x" .. j .. ".png"}
+    DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j, {
+      Name = "unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. j,
+      Image = {"size", {j * 16, j * 16}},
+      Animations = "animations-ruins",
+      Icon = "icon-peasant",
+      Speed = 0,
+      HitPoints = 255,
+      DrawLevel = 10,
+      TileSize = {i, i}, BoxSize = {i * 16 - 1, i * 16 - 1},
+      SightRange = 0,
+      Indestructible = 1,
+      IsNotSelectable = true,
+      NonSolid = true,
+      -- as good as neutral
+      ComputerReactionRange = 0,
+      PersonReactionRange = 0,
+      AnnoyComputerFactor = -100,
+      AiAdjacentRange = 0,
+      Revealer = false,
+      Decoration = true,
+      BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+      Priority = 0,
+      Type = "land",
+      Building = true,
+      VisibleUnderFog = true,
+      Corpse = (j ~= 1 and ("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (j - 1))) or nil,
+      Vanishes = (j == 1),
+      Sounds = {} } )
+  end
+
+  UnitTypeFiles["unit-destroyed-" .. i .. "x" .. i .. "-place"] = {
+    forest = "tilesets/forest/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
+    swamp = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
+    forest_campaign = "tilesets/forest/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
+    swamp_campaign = "tilesets/swamp/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
+    dungeon = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png",
+    dungeon_campaign = "tilesets/dungeon/neutral/buildings/ruins_" .. i .. "x" .. i .. ".png"}
+
+  DefineUnitType("unit-destroyed-" .. i .. "x" .. i .. "-place", {
+    Name = "unit-destroyed-" .. i .. "x" .. i .. "-place",
+    Image = {"size", {i * 16, i * 16}},
+    Animations = "animations-ruins",
+    Icon = "icon-peasant",
+    Speed = 0,
+    HitPoints = 0,
+    DrawLevel = 10,
+    TileSize = {i, i}, BoxSize = {i * 16 - 1, i * 16 - 1},
+    SightRange = 0,
+    Indestructible = 1,
+    IsNotSelectable = true,
+    NonSolid = true,
+    -- as good as neutral
+    ComputerReactionRange = 0,
+    PersonReactionRange = 0,
+    AnnoyComputerFactor = -100,
+    AiAdjacentRange = 0,
+    Revealer = false,
+    Decoration = true,
+    BasicDamage = 0, PiercingDamage = 0, Missile = "missile-none",
+    Priority = 0,
+    Type = "land",
+    Building = true,
+    VisibleUnderFog = true,
+    Corpse = (i ~= 1 and ("unit-destroyed-" .. i .. "x" .. i .. "-place-reduced-to-" .. (i - 1))) or nil,
+    Vanishes = (i == 1),
+    Sounds = {} } )
 end
 
 local buildings = {
@@ -143,7 +141,7 @@ local buildings = {
    {Names = {orc = "Barracks", human = "Barracks"},
     Costs = {"time", 150, "gold", 600, "wood", 500},
     HitPoints = 800,
-	AnnoyComputerFactor = 50,
+    AnnoyComputerFactor = 50,
     Size = {64, 64}},
 
    {Names = {orc = "Lumber Mill", human = "Lumber Mill"},
@@ -168,14 +166,14 @@ local buildings = {
    {Names = {human = "Church", orc = "Temple"},
     Costs = {"time", 200, "gold", 800, "wood", 500},
     HitPoints = 700,
-	AnnoyComputerFactor = 60,
+    AnnoyComputerFactor = 60,
     Size = {64, 64},
     Dependency = {orc = "lumber-mill", human = "lumber-mill"}},
 
    {Names = {orc = "Tower", human = "Tower"},
     Costs = {"time", 200, "gold", 1400, "wood", 300},
     HitPoints = 900,
-	AnnoyComputerFactor = 60,
+    AnnoyComputerFactor = 60,
     Size = {48, 48},
     Dependency = {orc = "blacksmith", human = "blacksmith"},
     Corpse = "unit-destroyed-2x2-place"},
@@ -196,15 +194,14 @@ for idx,building in ipairs(buildings) do
 end
 
 DefineAnimations(
-"collapse",
-   {Death = {"unbreakable begin", "frame 0", "wait 600", "label loop",
+  "collapse",
+  {Death = {"unbreakable begin", "frame 0", "wait 600", "label loop",
     "wait 100", "exact-frame 0", "goto loop", "unbreakable end", "wait 1"}})
 
 DefineUnitType("unit-destroyed-entrance",
 {
 	Name = "destroyed-entrance",
-	Image = {"size", {32, 48},
-	   "file", "contrib/graphics/buildings/entrance_collapse_2x3.png"},
+	Image = {"size", {32, 48}, "file", "contrib/graphics/buildings/entrance_collapse_2x3.png"},
 	Animations = "collapse",
 	Icon = "icon-peasant",
 	Speed = 0,
@@ -225,7 +222,7 @@ DefineUnitType("unit-destroyed-entrance",
 	Type = "land",
 	Building = true,
 	VisibleUnderFog = true,
-	Sounds = {} 
+	Sounds = {}
 } )
 
 DefineUnitType(
@@ -384,12 +381,12 @@ UnitTypeFiles["unit-wall"] = {
   dungeon_campaign = "tilesets/dungeon/neutral/buildings/wall.png"
 }
 local wallconstructionfiles = {
-	 forest = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
-	 swamp = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
-	 forest_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
-	 swamp_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
-     dungeon = "tilesets/dungeon/neutral/buildings/wall_1x1.png",
-     dungeon_campaign = "tilesets/dungeon/neutral/buildings/wall_1x1.png" }
+  forest = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
+  swamp = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
+  forest_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
+  swamp_campaign = ("tilesets/forest/neutral/buildings/wall_1x1.png"),
+  dungeon = "tilesets/dungeon/neutral/buildings/wall_1x1.png",
+  dungeon_campaign = "tilesets/dungeon/neutral/buildings/wall_1x1.png" }
 DefineConstruction(
    "construction-wall",
    {Files = { File = wallconstructionfiles[war1gus.tileset], Size = {16, 16} },
