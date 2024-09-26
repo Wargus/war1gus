@@ -1283,7 +1283,7 @@ humanLightArmorUpgrade1.Costs[2] = 400 -- wood
 DefineModifier("upgrade-human-LightArmor1",
   {"Level", 1},
   {"Armor", 1},
-  {"apply-to", "unit-archer"}, {"apply-to", "unit-cleric"}, {"apply-to", "unit-conjurer"})
+  {"apply-to", "unit-archer"}, {"apply-to", "unit-cleric"}, {"apply-to", "unit-conjurer"}, {"apply-to", "unit-sorceress"})
 
 DefineAllow("upgrade-human-LightArmor1", "AAAAAAAAAAAAAAAA")
 
@@ -1291,7 +1291,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-LightArmor1",
   Action = "research", Value = "upgrade-human-LightArmor1",
   Allowed = "check-single-research",
   Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
-  Description = "Increase Archer, Cleric and Conjurer armor by ~<1~>",
+  Description = "Increase Archer, Cleric, Conjurer and Sorceress armor by ~<1~>",
   ForUnit = {"unit-human-blacksmith"} } )
 
 local humanLightArmorIcon2 = CIcon:New("icon-human-LightArmor2")
@@ -1307,7 +1307,7 @@ humanLightArmorUpgrade2.Costs[2] = 400 -- wood
 DefineModifier("upgrade-human-LightArmor2",
    {"Level", 1},
    {"Armor", 1},
-   {"apply-to", "unit-archer"}, {"apply-to", "unit-cleric"}, {"apply-to", "unit-conjurer"})
+   {"apply-to", "unit-archer"}, {"apply-to", "unit-cleric"}, {"apply-to", "unit-conjurer"}, {"apply-to", "unit-sorceress"})
 
 DefineAllow("upgrade-human-LightArmor2", "AAAAAAAAAAAAAAAA")
 
@@ -1315,7 +1315,7 @@ DefineButton( { Pos = 4, Level = 0, Icon = "icon-human-LightArmor2",
    Action = "research", Value = "upgrade-human-LightArmor2",
    Allowed = "check-upgrade", AllowArg = {"upgrade-human-LightArmor1"},
    Key = "r", Hint = "UPGRADE LIGHT A~!RMOR",
-   Description = "Increase Archer, Cleric and Conjurer armor by ~<1~>",
+   Description = "Increase Archer, Cleric, Conjurer and Sorceress armor by ~<1~>",
    ForUnit = {"unit-human-blacksmith"} } )
 
 DefineDependency("upgrade-human-LightArmor2", { "upgrade-human-LightArmor1"} )
