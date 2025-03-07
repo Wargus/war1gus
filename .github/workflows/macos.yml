@@ -1,0 +1,108 @@
+name: macos-arm64
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**'
+      - '!.github/**'
+      - '!**.yml'
+      - '.github/workflows/macos.yml'
+      - '!**.md'
+      - '!.vscode/**'
+      - '!doc/**'
+
+  pull_request:
+    paths:
+      - '**'
+      - '!.github/**'
+      - '!**.yml'
+      - '.github/workflows/macos.yml'
+      - '!**.md'
+      - '!.vscode/**'
+      - '!doc/**'
+
+jobs:
+  macos:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout War1gus
+      uses: actions/checkout@v4
+      with:
+        repository: Wargus/war1gus
+        submodules: recursive
+        path: war1gus
+    
+    - name: Checkout Stratagus
+      uses: actions/checkout@v4
+      with: 
+        repository: Wargus/stratagus
+        submodules: recursive
+        path: stratagus
+
+    - name: Install dependencies
+      run: brew install dylibbundler sdl2 sdl2_mixer sdl2_image lua ffmpeg
+
+    - name: cmake --version
+      run: cmake --version
+
+    - name: Build Stratagus
+      run: |
+        cmake stratagus -B stratagus/build \ -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_VENDORED_LUA=ON \
+        -DBUILD_VENDORED_SDL=OFF \
+        -DBUILD_VENDORED_MEDIA_LIBS=OFF \
+        -DBUILD_TESTING=1
+        cmake --build stratagus/build --config Release
+    
+    - name: Build War1gus
+      run: |
+        cmake war1gus -B war1gus/build \
+        -DSTRATAGUS_INCLUDE_DIR=../stratagus/gameheaders \
+        -DSTRATAGUS=../stratagus/build/stratagus 
+        cmake --build war1gus/build --config Release
+
+    - name: Create War1gus app bundle
+      run: |
+        rm -rf War1gus.app
+        mkdir -p War1gus.app/Contents/Resources
+        mkdir -p War1gus.app/Contents/MacOS
+        
+        cp war1gus/mac/Info.plist War1gus.app/Contents/
+        
+        mkdir war1gus.iconset
+        sips -z 16 16     war1gus/war1gus.png --out war1gus.iconset/icon_16x16.png
+        sips -z 32 32     war1gus/war1gus.png --out war1gus.iconset/icon_16x16@2x.png
+        sips -z 32 32     war1gus/war1gus.png --out war1gus.iconset/icon_32x32.png
+        sips -z 64 64     war1gus/war1gus.png --out war1gus.iconset/icon_32x32@2x.png
+        sips -z 128 128   war1gus/war1gus.png --out war1gus.iconset/icon_128x128.png
+        sips -z 256 256   war1gus/war1gus.png --out war1gus.iconset/icon_128x128@2x.png
+        sips -z 256 256   war1gus/war1gus.png --out war1gus.iconset/icon_256x256.png
+        sips -z 512 512   war1gus/war1gus.png --out war1gus.iconset/icon_256x256@2x.png
+        sips -z 512 512   war1gus/war1gus.png --out war1gus.iconset/icon_512x512.png
+        sips -z 1024 1024   war1gus/war1gus.png --out war1gus.iconset/icon_512x512@2x.png
+        iconutil -c icns war1gus.iconset
+        rm -R war1gus.iconset
+        mv war1gus.icns War1gus.app/Contents/Resources/
+        
+        cp -R war1gus/shaders war1gus/campaigns war1gus/contrib war1gus/maps war1gus/scripts War1gus.app/Contents/MacOS/
+        
+        cp war1gus/build/war1tool War1gus.app/Contents/MacOS/
+        cp war1gus/build/war1gus War1gus.app/Contents/MacOS/
+        cp stratagus/build/stratagus War1gus.app/Contents/MacOS/stratagus
+        
+        dylibbundler -of -cd -b -x War1gus.app/Contents/MacOS/stratagus -d War1gus.app/Contents/libs/
+        dylibbundler -of -cd -b -x War1gus.app/Contents/MacOS/war1tool -d War1gus.app/Contents/libs/
+        
+        codesign --force --deep --sign - War1gus.app
+        
+    - name: Create dmg
+      run: hdiutil create -volname "War1gus" -srcfolder "War1gus.app" "War1gus-arm64"
+    
+    - name: Upload artifacts - macOS arm64
+      uses: actions/upload-artifact@v4
+      with:
+        name: War1gus-macOS-arm64
+        path: War1gus-arm64.dmg
+        if-no-files-found: error
