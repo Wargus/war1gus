@@ -1,6 +1,6 @@
 # About War1gus
 
-<img src="./ico_alt.svg" width="200" align="right" />
+<img src="./war1gus.png" width="100" align="right" />
 
 War1gus is a re-implementation of **Warcraft: Orcs & Humans** that that can be played on modern platforms with the [Stratagus engine](https://github.com/Wargus/stratagus). The game uses graphics and sounds from the original Warcraft, but improves the gameplay mechanisms with many modern conveniences that the Stratagus engine allows, such as modern mouse controls, named groups, larger group selection, more player factions in multiplayer games, a map editor, and multiple towns. 
 
