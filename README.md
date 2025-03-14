@@ -12,7 +12,7 @@ These are builds from our CI runs. Since they are built every time a commit is m
 
 - [Windows Installer](https://github.com/Wargus/war1gus/releases/tag/master-builds)
 - [Ubuntu/Debian Packages](https://launchpad.net/~stratagus/+archive/ubuntu/ppa) 
-- macOS: [Apple Silicon](https://github.com/Wargus/war1gus/actions/workflows/macos.yml?query=branch%3Amaster)
+- [macOS App Bundles](https://github.com/Wargus/war1gus/actions/workflows/macos.yml?query=branch%3Amaster)
 
 ### Extracting data for macOS
 
