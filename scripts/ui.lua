@@ -505,10 +505,10 @@ UI.NetworkDiplomacyButton:SetCallback(function() RunDiplomacyMenu() end)
 UI.EditorSettingsAreaTopLeft.x = UI.InfoPanel.X
 UI.EditorSettingsAreaTopLeft.y = UI.InfoPanel.Y
 UI.EditorSettingsAreaBottomRight.x = UI.MapArea.X
-UI.EditorSettingsAreaBottomRight.y = UI.ButtonPanel.Y
+UI.EditorSettingsAreaBottomRight.y = UI.ButtonPanel.Y + 70
 
 UI.EditorButtonAreaTopLeft.x = UI.ButtonPanel.X
-UI.EditorButtonAreaTopLeft.y = UI.ButtonPanel.Y
+UI.EditorButtonAreaTopLeft.y = UI.EditorSettingsAreaBottomRight.y
 UI.EditorButtonAreaBottomRight.x = UI.MapArea.X
 UI.EditorButtonAreaBottomRight.y = UI.MenuButton.Y
 
