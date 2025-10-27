@@ -90,7 +90,7 @@ jobs:
       run: hdiutil create -volname "War1gus" -srcfolder "war1gus/mac/War1gus.app" "War1gus-${{ matrix.suffix }}"
     
     - name: Upload artifacts - macOS ${{ matrix.suffix }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: War1gus-macOS-${{ matrix.suffix }}
         path: War1gus-${{ matrix.suffix }}.dmg
