@@ -17,6 +17,12 @@ function int2bool(int)
   end
 end
 
+local function FlushStdout()
+  if io and io.stdout then
+    io.stdout:flush()
+  end
+end
+
 function ErrorMenu(errmsg)
   local menu = WarMenu(nil, panel(4), false)
   menu:setSize(144, 64)
@@ -87,7 +93,15 @@ joincounter = 0
 
 function RunJoiningMapMenu(optRace, optReady)
    -- Security: The map name is checked by the stratagus engine.
+   if optReady then
+      print("PYTEST_WAR1_JOINING_MAP_MENU " .. NetworkMapName)
+      FlushStdout()
+   end
    Load(NetworkMapName)
+   if optReady then
+      print("PYTEST_WAR1_JOINING_MAP_LOADED")
+      FlushStdout()
+   end
    local numplayers = 0
    for i,v in ipairs(Map.Info.PlayerType) do
       if v == PlayerPerson then
@@ -99,14 +113,17 @@ function RunJoiningMapMenu(optRace, optReady)
    
    local joincounter = 0
    local delay = 4
+   local lastState = -1
+   local settingsRestored = false
    local function listen()
       NetworkProcessClientRequest()
       menu:updateOptions()
-      RestoreSharedSettingsFromBits(ServerSetupState.ServerGameSettings, function(s)
-         ErrorMenu(s)
-         menu:stop()
-      end)
       state = GetNetworkState()
+      if optReady and lastState ~= state then
+         print("PYTEST_WAR1_JOINING_MAP_STATE " .. state)
+         FlushStdout()
+         lastState = state
+      end
       -- FIXME: don't use numbers
       if delay > 0 then
          delay = delay - 1
@@ -122,8 +139,23 @@ function RunJoiningMapMenu(optRace, optReady)
          end
       end
       if (state == 15) then -- ccs_started, server started the game
+         if not settingsRestored then
+            settingsRestored = true
+            RestoreSharedSettingsFromBits(ServerSetupState.ServerGameSettings, function(s)
+               if optReady then
+                  print("PYTEST_WAR1_JOINING_MAP_SETTINGS_ERROR " .. s)
+                  FlushStdout()
+               end
+               ErrorMenu(s)
+               menu:stop()
+            end)
+         end
          joincounter = joincounter + 1
          if (joincounter == 30) then
+            if optReady then
+               print("PYTEST_WAR1_JOINING_MAP_RUN")
+               FlushStdout()
+            end
             NetworkGamePrepareGameSettings()
             RunMap(NetworkMapName)
             menu:stop()
@@ -139,16 +171,23 @@ function RunJoiningMapMenu(optRace, optReady)
    if optReady then
       LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(true)
       menu.checkbox_ready:setMarked(true)
+      print("PYTEST_WAR1_JOINING_MAP_READY")
+      FlushStdout()
    end
    
    menu:run()
 end 
 
-function RunJoiningGameMenu(s)
-  local menu = WarMenu(nil, panel(4), false)
-  menu:setSize(144, 64)
-  menu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
-  menu:setDrawMenusUnder(true)
+function RunJoiningGameMenu(optRace, optReady)
+  local menu = nil
+  if (optRace and optReady) then
+    menu = WarMenu(_("Joining Game"))
+  else
+    menu = WarMenu(nil, panel(4), false)
+    menu:setSize(144, 64)
+    menu:setPosition((Video.Width - 144) / 2, (Video.Height - 64) / 2)
+    menu:setDrawMenusUnder(true)
+  end
 
   menu:addLabel("Connecting to server", 72, 5)
 
@@ -160,15 +199,22 @@ function RunJoiningGameMenu(s)
   menu:add(sb, 7, 19)
   sb:setBackgroundColor(dark)
 
+  local lastState = -1
+  local runMapMenu = false
   local function checkconnection()
     NetworkProcessClientRequest()
     percent = percent + 100 / (24 * GetGameSpeed()) -- 24 seconds * fps
     sb:setPercent(percent)
     local state = GetNetworkState()
+      if optReady and lastState ~= state then
+         print("PYTEST_WAR1_JOINING_GAME_STATE " .. state)
+         FlushStdout()
+         lastState = state
+    end
     -- FIXME: do not use numbers
     if (state == 3) then -- ccs_mapinfo
       -- got ICMMap => load map
-      RunJoiningMapMenu()
+      runMapMenu = true
       menu:stop(0)
     elseif (state == 4) then -- ccs_badmap
       ErrorMenu("Map not available")
@@ -200,6 +246,9 @@ function RunJoiningGameMenu(s)
     function() menu:stop(1) end)
 
   menu:run()
+  if runMapMenu then
+    RunJoiningMapMenu(optRace, optReady)
+  end
 end
 
 function RunJoinIpMenu()
@@ -243,7 +292,11 @@ function RunJoinIpMenu()
           serverText = servers[idx]
         end
       end
-      local ip = string.match(serverText, "[0-9\.]+")
+      local ip = serverText and string.match(serverText, "[0-9%.]+") or nil
+      if ip == nil then
+        ErrorMenu("Invalid server name")
+        return
+      end
       if (NetworkSetupServerAddress(ip) ~= 0) then
         ErrorMenu("Invalid server name")
         return
@@ -475,7 +528,7 @@ function CreateOnlineLobby(map, numplayers, isserver)
                      ServerSetupState.Race[0] = dd:getSelected() - 1
                      NetworkServerResyncClients()
                   else
-                     LocalSetupState.Race[Hosts[NetLocalHostsSlot].PlyNr] = race:getSelected() - 1
+                     LocalSetupState.Race[Hosts[NetLocalHostsSlot].PlyNr] = dd:getSelected() - 1
                   end
                end):id("option_race"):withWidth(120),
             }),
@@ -581,6 +634,7 @@ function RunServerMultiGameMenu(map, description, numplayers, options)
    local optDedicated = options.dedicated
    
    NetworkInitServerConnect(numplayers)
+   StoreSharedSettingsInBits(ServerSetupState.ServerGameSettings)
    
    ServerSetupState.FogOfWar = 1
    ServerSetupState.Opponents = optAiPlayerNum
@@ -625,8 +679,8 @@ function RunServerMultiGameMenu(map, description, numplayers, options)
             menu.option_units.callback(menu.option_units)
             optUnits= ""
          elseif (options.fow == 0) then
-            menu.option_fow:setMarked(options.fow)
-            menu.option_fow.callback(options.fow)
+            menu.option_fow:setMarked(false)
+            menu.option_fow.callback(menu.option_fow)
             options.fow = -1
          elseif options.revealmap and options.revealmap ~= -1 then
             menu.option_terrain:setSelected(options.revealmap)
@@ -639,9 +693,10 @@ function RunServerMultiGameMenu(map, description, numplayers, options)
                else
                   startIn = startIn - 1
                   if (startIn == 0) then
-                     startFunc()
+                     menu.button_start_game.callback()
                   end
                end
+               menu.button_start_game:setEnabled(true)
                menu.button_start_game:setCaption("Start in " .. startIn / 2)
                print("Starting in " .. startIn / 2)
             end
