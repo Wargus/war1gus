@@ -1,0 +1,2 @@
+DefinePlayerTypes("person", "person")
+PresentMap("Pytest Sync Stress", 2, 32, 32, 1)
