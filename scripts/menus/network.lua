@@ -17,7 +17,11 @@ function int2bool(int)
   end
 end
 
-local function FlushStdout()
+local function log(message)
+  if not (os and os.getenv and os.getenv("STRATAGUS_UNBUFFERED_STDIO")) then
+    return
+  end
+  print(message)
   if io and io.stdout then
     io.stdout:flush()
   end
@@ -94,13 +98,11 @@ joincounter = 0
 function RunJoiningMapMenu(optRace, optReady)
    -- Security: The map name is checked by the stratagus engine.
    if optReady then
-      print("PYTEST_WAR1_JOINING_MAP_MENU " .. NetworkMapName)
-      FlushStdout()
+      log("PYTEST_WAR1_JOINING_MAP_MENU " .. NetworkMapName)
    end
    Load(NetworkMapName)
    if optReady then
-      print("PYTEST_WAR1_JOINING_MAP_LOADED")
-      FlushStdout()
+      log("PYTEST_WAR1_JOINING_MAP_LOADED")
    end
    local numplayers = 0
    for i,v in ipairs(Map.Info.PlayerType) do
@@ -120,8 +122,7 @@ function RunJoiningMapMenu(optRace, optReady)
       menu:updateOptions()
       state = GetNetworkState()
       if optReady and lastState ~= state then
-         print("PYTEST_WAR1_JOINING_MAP_STATE " .. state)
-         FlushStdout()
+         log("PYTEST_WAR1_JOINING_MAP_STATE " .. state)
          lastState = state
       end
       -- FIXME: don't use numbers
@@ -143,8 +144,7 @@ function RunJoiningMapMenu(optRace, optReady)
             settingsRestored = true
             RestoreSharedSettingsFromBits(ServerSetupState.ServerGameSettings, function(s)
                if optReady then
-                  print("PYTEST_WAR1_JOINING_MAP_SETTINGS_ERROR " .. s)
-                  FlushStdout()
+                  log("PYTEST_WAR1_JOINING_MAP_SETTINGS_ERROR " .. s)
                end
                ErrorMenu(s)
                menu:stop()
@@ -153,8 +153,7 @@ function RunJoiningMapMenu(optRace, optReady)
          joincounter = joincounter + 1
          if (joincounter == 30) then
             if optReady then
-               print("PYTEST_WAR1_JOINING_MAP_RUN")
-               FlushStdout()
+               log("PYTEST_WAR1_JOINING_MAP_RUN")
             end
             NetworkGamePrepareGameSettings()
             RunMap(NetworkMapName)
@@ -171,8 +170,7 @@ function RunJoiningMapMenu(optRace, optReady)
    if optReady then
       LocalSetupState.Ready[NetLocalHostsSlot] = bool2int(true)
       menu.checkbox_ready:setMarked(true)
-      print("PYTEST_WAR1_JOINING_MAP_READY")
-      FlushStdout()
+      log("PYTEST_WAR1_JOINING_MAP_READY")
    end
    
    menu:run()
@@ -207,8 +205,7 @@ function RunJoiningGameMenu(optRace, optReady)
     sb:setPercent(percent)
     local state = GetNetworkState()
       if optReady and lastState ~= state then
-         print("PYTEST_WAR1_JOINING_GAME_STATE " .. state)
-         FlushStdout()
+         log("PYTEST_WAR1_JOINING_GAME_STATE " .. state)
          lastState = state
     end
     -- FIXME: do not use numbers

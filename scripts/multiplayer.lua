@@ -5,6 +5,9 @@ SetTitleScreens({})
 CustomStartup = function() end
 
 local function log(message)
+  if not (os and os.getenv and os.getenv("STRATAGUS_UNBUFFERED_STDIO")) then
+    return
+  end
   print(message)
   if io and io.stdout then
     io.stdout:flush()
