@@ -1,0 +1,93 @@
+-- War1gus network sync stress map for Wargus/stratagus#569.
+local function log(message)
+  if not (os and os.getenv and os.getenv("STRATAGUS_UNBUFFERED_STDIO")) then
+    return
+  end
+  print(message)
+  if io and io.stdout then
+    io.stdout:flush()
+  end
+end
+
+log("PYTEST_WAR1_SYNC_STRESS_LOADED")
+
+SetStartView(0, 8, 8)
+SetPlayerData(0, "Resources", "gold", 2000)
+SetPlayerData(0, "Resources", "wood", 2000)
+SetPlayerData(0, "Resources", "lumber", 0)
+SetPlayerData(0, "RaceName", "human")
+
+SetStartView(1, 22, 22)
+SetPlayerData(1, "Resources", "gold", 2000)
+SetPlayerData(1, "Resources", "wood", 2000)
+SetPlayerData(1, "Resources", "lumber", 0)
+SetPlayerData(1, "RaceName", "orc")
+
+SetPlayerData(15, "RaceName", "human")
+log("PYTEST_WAR1_SYNC_STRESS_PLAYERS_READY")
+
+LoadTileModels("scripts/tilesets/forest.lua")
+for y = 0, 31 do
+  for x = 0, 31 do
+    SetTile(80, x, y, 0)
+  end
+end
+log("PYTEST_WAR1_SYNC_STRESS_TILES_READY")
+
+for i = 0, 1 do
+  SetSpeedResourcesHarvest(i, "gold", 1000)
+  SetSpeedResourcesReturn(i, "gold", 1000)
+end
+
+if (MapUnitsInit ~= nil) then MapUnitsInit() end
+log("PYTEST_WAR1_SYNC_STRESS_MAP_UNITS_INIT_READY")
+
+CreateUnit("unit-human-town-hall", 0, {3, 24})
+CreateUnit("unit-orc-town-hall", 1, {24, 24})
+log("PYTEST_WAR1_SYNC_STRESS_HALLS_READY")
+
+local shared_mine = CreateUnit("unit-gold-mine", 15, {14, 5})
+SetResourcesHeld(shared_mine, 300)
+log("PYTEST_WAR1_SYNC_STRESS_MINE_READY")
+
+CreateUnit("unit-peasant", 0, {9, 6})
+CreateUnit("unit-peasant", 0, {9, 7})
+CreateUnit("unit-peasant", 0, {9, 8})
+CreateUnit("unit-peon", 1, {22, 6})
+CreateUnit("unit-peon", 1, {22, 7})
+CreateUnit("unit-peon", 1, {22, 8})
+
+CreateUnit("unit-footman", 0, {13, 14})
+CreateUnit("unit-footman", 0, {13, 16})
+CreateUnit("unit-grunt", 1, {17, 14})
+CreateUnit("unit-grunt", 1, {17, 16})
+log("PYTEST_WAR1_SYNC_STRESS_UNITS_READY")
+
+AddTrigger(
+  function() return GameCycle == 5 end,
+  function()
+    log("PYTEST_WAR1_SYNC_STRESS_OPENING_ORDERS")
+    SetDiplomacy(0, "enemy", 1)
+    SetDiplomacy(1, "enemy", 0)
+    OrderUnit(0, "unit-peasant", {8, 5, 10, 9}, {14, 5, 16, 7}, "resource")
+    OrderUnit(1, "unit-peon", {21, 5, 23, 9}, {14, 5, 16, 7}, "resource")
+    OrderUnit(0, "unit-footman", {12, 13, 14, 17}, {17, 13, 19, 17}, "attack")
+    OrderUnit(1, "unit-grunt", {16, 13, 18, 17}, {12, 13, 14, 17}, "attack")
+    return true
+  end)
+
+AddTrigger(
+  function() return GameCycle == 90 end,
+  function()
+    log("PYTEST_WAR1_SYNC_STRESS_BLOCKER_BUILD_ORDERS")
+    OrderUnit(0, "unit-peasant", {9, 6}, {12, 6}, "build", "unit-human-farm")
+    OrderUnit(1, "unit-peon", {22, 6}, {19, 6}, "build", "unit-orc-farm")
+    return true
+  end)
+
+AddTrigger(
+  function() return GameCycle > 100 and GetUnitVariable(shared_mine, "ResourcesHeld") <= 0 end,
+  function()
+    log("PYTEST_WAR1_SYNC_STRESS_GOLD_EXHAUSTED")
+    return false
+  end)

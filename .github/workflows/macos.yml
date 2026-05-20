@@ -87,7 +87,18 @@ jobs:
         codesign --force --deep --sign - war1gus/mac/War1gus.app
         
     - name: Create dmg
-      run: hdiutil create -volname "War1gus" -srcfolder "war1gus/mac/War1gus.app" "War1gus-${{ matrix.suffix }}"
+      run: |
+        output="War1gus-${{ matrix.suffix }}"
+        rm -f "$output" "$output.dmg"
+        for attempt in 1 2 3; do
+          hdiutil detach "/Volumes/War1gus" -force || true
+          if hdiutil create -volname "War1gus" -srcfolder "war1gus/mac/War1gus.app" "$output"; then
+            exit 0
+          fi
+          rm -f "$output" "$output.dmg"
+          sleep $((attempt * 10))
+        done
+        hdiutil create -volname "War1gus" -srcfolder "war1gus/mac/War1gus.app" "$output"
     
     - name: Upload artifacts - macOS ${{ matrix.suffix }}
       uses: actions/upload-artifact@v7

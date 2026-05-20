@@ -874,6 +874,11 @@ if SetShader then
   SetShader(wc1.preferences.VideoShader)
 end
 
+if (CustomStartup) then
+  CustomStartup()
+  return
+end
+
 CStartEditor = StartEditor
 function StartEditor(mapname)
   SetColorScheme()
