@@ -1,3 +1,4 @@
+Load("campaigns/orc/12_c2.sms")
 LoadTileModels("scripts/tilesets/forest_campaign.lua")
 local oldcu = CreateUnit
 function CreateUnit(name, player, pos)
@@ -17,3 +18,4 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 SetStartView(0, 0, 15)
+SetColorScheme()

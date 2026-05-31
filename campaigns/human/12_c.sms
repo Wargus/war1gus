@@ -1,3 +1,4 @@
+Load("campaigns/human/12_c2.sms")
 LoadTileModels("scripts/tilesets/swamp_campaign.lua")
 local oldcu = CreateUnit
 function CreateUnit(name, player, pos)
@@ -18,3 +19,4 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 SetStartView(0, 53, 57)
+SetColorScheme()

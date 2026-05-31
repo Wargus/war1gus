@@ -1,3 +1,5 @@
+Load("campaigns/orc/08_prerun.lua")
+Load("campaigns/orc/08_c2.sms")
 LoadTileModels("scripts/tilesets/dungeon_campaign.lua")
 local oldcu = CreateUnit
 function CreateUnit(name, player, pos)
@@ -22,3 +24,4 @@ AddTrigger(
 
 unit = CreateUnit("unit-start-location", 0, {33, 61})
 SetStartView(0, 32, 60)
+SetColorScheme()

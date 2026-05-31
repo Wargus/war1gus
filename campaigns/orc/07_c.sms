@@ -1,3 +1,4 @@
+Load("campaigns/orc/07_c2.sms")
 LoadTileModels("scripts/tilesets/swamp_campaign.lua")
 Load("campaigns/orc/07.sms")
 
@@ -10,3 +11,4 @@ AddTrigger(
 
 SetPlayerData(1, "RaceName", "orc")
 SetStartView(0, 45, 50)
+SetColorScheme()

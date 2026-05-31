@@ -1,3 +1,5 @@
+Load("campaigns/orc/04_prerun.lua")
+Load("campaigns/orc/04_c2.sms")
 LoadTileModels("scripts/tilesets/dungeon_campaign.lua")
 Load("campaigns/orc/04.sms")
 
@@ -9,3 +11,4 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 SetStartView(0, 37, 0)
+SetColorScheme()

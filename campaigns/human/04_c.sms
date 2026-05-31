@@ -1,3 +1,4 @@
+Load("campaigns/human/04_c2.sms")
 LoadTileModels("scripts/tilesets/dungeon_campaign.lua")
 Load("campaigns/human/04.sms")
 
@@ -62,3 +63,4 @@ else
 end
 
 SetStartView(0, 60, 0)
+SetColorScheme()
