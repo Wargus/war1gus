@@ -1,3 +1,5 @@
+Load("campaigns/human/08_prerun.lua")
+Load("campaigns/human/08_c2.sms")
 LoadTileModels("scripts/tilesets/dungeon_campaign.lua")
 local oldcu = CreateUnit
 function CreateUnit(name, player, pos)
@@ -18,3 +20,4 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 SetStartView(0, 4, 20)
+SetColorScheme()

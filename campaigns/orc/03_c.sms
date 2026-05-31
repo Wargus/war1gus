@@ -1,3 +1,4 @@
+Load("campaigns/orc/03_c2.sms")
 LoadTileModels("scripts/tilesets/forest_campaign.lua")
 Load("campaigns/orc/03.sms")
 
@@ -9,3 +10,4 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 SetStartView(0, 0, 4)
+SetColorScheme()

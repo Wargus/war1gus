@@ -1,3 +1,4 @@
+Load("campaigns/human/10_c2.sms")
 LoadTileModels("scripts/tilesets/swamp_campaign.lua")
 Load("campaigns/human/10.sms")
 
@@ -10,3 +11,4 @@ AddTrigger(
 
 SetStartView(0, 50, 40)
 SetAiType(1, "ai-passive")
+SetColorScheme()

@@ -1,3 +1,4 @@
+Load("campaigns/human/01_c2.sms")
 LoadTileModels("scripts/tilesets/swamp_campaign.lua")
 Load("campaigns/human/03.sms")
 
@@ -9,3 +10,4 @@ AddTrigger(
   function() return ActionDefeat() end)
 
 SetStartView(0, 58, 48)
+SetColorScheme()
