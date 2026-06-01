@@ -42,7 +42,6 @@ icons = {
   {"icon-archer", 10, humanPaletteSwap},
   {"icon-spearman", 11, orcPaletteSwap},
   {"icon-cleric", 12, humanPaletteSwap},
-  {"icon-sorceress", 12, humanPaletteSwap},
   {"icon-necrolyte", 13, orcPaletteSwap},
   {"icon-human-farm", 14},
   {"icon-orc-farm", 15},
@@ -200,4 +199,5 @@ local DefineIcons = function()
   end
 end
 DefineIcons()
+CIcon:New("icon-sorceress") -- forward definition, see balancing.lua
 OnTilesetChangeFunctions:add(DefineIcons)
