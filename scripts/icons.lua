@@ -194,7 +194,8 @@ local DefineIcons = function()
     icon.G = CPlayerColorGraphic:New(iconname, 27, 19)
     icon.Frame = icons[i][2]
     if icons[i][3] then
-      DefinePaletteSwap(icons[i][1], icons[i][3])
+      -- color swap may not be defined anymore when balancing lua was toggled
+      pcall(DefinePaletteSwap, icons[i][1], icons[i][3])
     end
   end
 end
