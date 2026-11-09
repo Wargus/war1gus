@@ -394,6 +394,10 @@ function RunCampaignSubmenu(race)
   currentRace = race
   SetPlayerData(GetThisPlayer(), "RaceName", currentRace)
 
+  if not IsMusicPlaying() then
+    MusicStopped()
+  end
+
   local menu = WarMenu()
   local offx = (Video.Width - 320) / 2
   local offy = (Video.Height - 200) / 2
