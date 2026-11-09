@@ -555,6 +555,7 @@ function LoadUI(race, screen_width, screen_height)
                           }
                     }
    }
+   SetDefaultTextColors(UI.NormalFontColor, UI.ReverseFontColor)
 end
 
 -- Popups
