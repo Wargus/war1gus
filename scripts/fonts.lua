@@ -31,6 +31,7 @@
 CFont:New("small", CGraphic:New("contrib/fonts/3x5.png", 4, 6))
 CFont:New("game", CGraphic:New("contrib/fonts/5x8.png", 5, 8))
 CFont:New("large", CGraphic:New("contrib/fonts/6x8_espruino.png", 6, 8))
+CFont:New("briefing", CGraphic:New("contrib/fonts/briefing.png", 9, 12))
 CFont:New("small-title", CGraphic:New("contrib/fonts/6x12_espruino.png", 6, 12))
 CFont:New("title", CGraphic:New("contrib/fonts/7x17_espruino.png", 8, 17))
 CFont:New("large-title", CGraphic:New("contrib/fonts/large.png", 14, 14))
