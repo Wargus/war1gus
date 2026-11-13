@@ -1,0 +1,80 @@
+name: ubuntu
+
+on:
+  workflow_dispatch:
+    inputs:
+      stratagus_ref:
+        description: 'Stratagus branch, tag or commit to build against'
+        required: false
+        default: 'master'
+  # Rebuilt when the engine or the shared dependencies move, and nightly so a
+  # broken engine is caught even without a dispatch token. See the
+  # "Downstream builds" workflow in Wargus/stratagus.
+  repository_dispatch:
+    types: [engine-update]
+  schedule:
+    - cron: '23 4 * * *'
+  push:
+    paths:
+      - '**'
+      - '!.github/**'
+      - '!**.yml'
+      - '.github/workflows/ubuntu.yml'
+      - '!**.md'
+      - '!.vscode/**'
+      - '!doc/**'
+
+  pull_request:
+    paths:
+      - '**'
+      - '!.github/**'
+      - '!**.yml'
+      - '.github/workflows/ubuntu.yml'
+      - '!**.md'
+      - '!.vscode/**'
+      - '!doc/**'
+
+env:
+  build_type: Release
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout War1gus
+      uses: actions/checkout@v7
+      with:
+        submodules: recursive
+        path: war1gus
+
+    - name: Checkout Stratagus
+      uses: actions/checkout@v7
+      with:
+        repository: Wargus/stratagus
+        ref: ${{ inputs.stratagus_ref || 'master' }}
+        submodules: recursive
+        path: stratagus
+
+    # Nothing is installed for the game itself: png and zlib come from the shared
+    # dependencies submodule. Only the engine brings in what it cannot vendor,
+    # which is the same set its own Linux jobs rely on.
+    - name: build Stratagus
+      run: |
+        cmake -S stratagus -B stratagus/build -DCMAKE_BUILD_TYPE=$build_type -DBUILD_VENDORED_LUA=ON -DBUILD_VENDORED_SDL=ON -DBUILD_VENDORED_MEDIA_LIBS=ON -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+        cmake --build stratagus/build --config $build_type
+
+    - name: build War1gus
+      run: |
+        cmake -S war1gus -B war1gus/build -DCMAKE_BUILD_TYPE=$build_type -DSTRATAGUS=$GITHUB_WORKSPACE/stratagus/build/stratagus -DSTRATAGUS_INCLUDE_DIR=$GITHUB_WORKSPACE/stratagus/gameheaders
+        cmake --build war1gus/build --config $build_type
+
+    - name: upload binaries
+      uses: actions/upload-artifact@v7
+      with:
+        name: War1gus-Linux
+        path: |
+          war1gus/build/war1gus
+          war1gus/build/war1tool
+        retention-days: 90
+        if-no-files-found: error
