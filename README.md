@@ -25,9 +25,9 @@ It will not be needed in the future when the built-in extractor is fixed.
 
 ### Build status
 
-Windows: <a href="https://ci.appveyor.com/project/timfel/war1gus"><img width="100" src="https://ci.appveyor.com/api/projects/status/github/Wargus/war1gus?branch=master&svg=true"></a>
+Windows: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/windows.yml/badge.svg)
 
-Linux: [![Build Status](https://travis-ci.org/Wargus/war1gus.svg?branch=master)](https://travis-ci.org/Wargus/war1gus)
+Linux: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/ubuntu.yml/badge.svg)
 
 macOS: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/macos.yml/badge.svg)
 

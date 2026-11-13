@@ -28,11 +28,16 @@ endif()
 
 if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/third-party/CMakeLists.txt")
   add_subdirectory(third-party)
+  set(have_vendored_deps ON)
 else()
   message(WARNING "Third-party directory not populated, cannot vendor any dependencies.")
+  set(have_vendored_deps OFF)
 endif()
 
-option(ENABLE_VENDORED_LIBS OFF)
+# War1gus ships the libraries it needs from the shared dependencies submodule, so
+# a plain build does not depend on which versions a distribution happens to
+# install. Packagers that insist on the system libraries can still turn this off.
+option(ENABLE_VENDORED_LIBS "Build the dependencies from third-party instead of finding them on the system" ${have_vendored_deps})
 
 file(GLOB war1tool_SRCS
   "scripts/*.lua"
