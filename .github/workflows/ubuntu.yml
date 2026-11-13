@@ -90,13 +90,3 @@ jobs:
       run: |
         cmake -S war1gus -B war1gus/build -DCMAKE_BUILD_TYPE=$build_type -DSTRATAGUS=$GITHUB_WORKSPACE/stratagus/build/stratagus -DSTRATAGUS_INCLUDE_DIR=$GITHUB_WORKSPACE/stratagus/gameheaders
         cmake --build war1gus/build --config $build_type
-
-    - name: upload binaries
-      uses: actions/upload-artifact@v7
-      with:
-        name: War1gus-Linux
-        path: |
-          war1gus/build/war1gus
-          war1gus/build/war1tool
-        retention-days: 90
-        if-no-files-found: error
