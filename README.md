@@ -6,13 +6,15 @@ War1gus is a re-implementation of **Warcraft: Orcs & Humans** that that can be p
 
 You can find more details at [stratagus.com](https://stratagus.com/war1gus.html) 
 
-### Nightly builds
+### Downloads
 
-These are builds from our CI runs. Since they are built every time a commit is made, they may be unstable. 
+Every release of War1gus comes with a Windows installer, a macOS `dmg` and a
+Linux AppImage:
 
-- [Windows Installer](https://github.com/Wargus/war1gus/releases/tag/master-builds)
-- [Ubuntu/Debian Packages](https://launchpad.net/~stratagus/+archive/ubuntu/ppa) 
-- [macOS App Bundles](https://github.com/Wargus/war1gus/actions/workflows/macos.yml?query=branch%3Amaster)
+- [Latest stable release](https://github.com/Wargus/war1gus/releases/latest)
+- [Latest unstable build](https://github.com/Wargus/war1gus/releases/tag/master-builds) — rebuilt for every push to `master`, so it is the newest development build rather than a tested release
+
+Older releases are in the [release list](https://github.com/Wargus/war1gus/releases), and [stratagus.com](https://stratagus.com/war1gus.html) explains how to install and where to get the game data from.
 
 ### Extracting data for macOS
 
@@ -25,11 +27,13 @@ It will not be needed in the future when the built-in extractor is fixed.
 
 ### Build status
 
-Windows: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/windows.yml/badge.svg)
+![Build Status](https://github.com/Wargus/war1gus/actions/workflows/build.yml/badge.svg)
 
-Linux: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/ubuntu.yml/badge.svg)
-
-macOS: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/macos.yml/badge.svg)
+The build makes the artifacts of all three platforms at once, the Windows
+installer, the Linux AppImage and the macOS `dmg`; pushing a version tag creates
+the release with those artifacts, and pushes to `master` update the
+`master-builds` release.
+`RELEASING.md` describes how a release is made.
 
 
 ### Join the community
