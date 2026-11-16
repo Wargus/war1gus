@@ -80,8 +80,12 @@
 
 ; Installer for x86-64 systems
 !ifdef x86_64
+!ifdef PORTABLE
+${redefine} INSTALLER "${NAME}-portable-${VERSION}-x86_64.exe"
+!else
 ${redefine} INSTALLER "${NAME}-${VERSION}-x86_64.exe"
 ${redefine} INSTALLDIR "$PROGRAMFILES64\${NAME}\"
+!endif
 ${redefine} NAME "War1gus (64 bit)"
 ${redefine} STRATAGUS_NAME "Stratagus (64 bit)"
 ${redefine} VCREDIST "vc_redist.x64.exe"

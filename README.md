@@ -1,18 +1,20 @@
 # About War1gus
 
+![Build Status](https://github.com/Wargus/war1gus/actions/workflows/build.yml/badge.svg)
+
 <img src="./war1gus.png" width="100" align="right" />
 
-War1gus is a re-implementation of **Warcraft: Orcs & Humans** that that can be played on modern platforms with the [Stratagus engine](https://github.com/Wargus/stratagus). The game uses graphics and sounds from the original Warcraft, but improves the gameplay mechanisms with many modern conveniences that the Stratagus engine allows, such as modern mouse controls, named groups, larger group selection, more player factions in multiplayer games, a map editor, and multiple towns. 
+War1gus is a re-implementation of **Warcraft: Orcs & Humans** that that can be played on modern platforms with the [Stratagus engine](https://github.com/Wargus/stratagus).
+The game uses graphics and sounds from the original Warcraft, but improves the gameplay mechanisms with many modern conveniences that the Stratagus engine allows, such as modern mouse controls, named groups, larger group selection, more player factions in multiplayer games, a map editor, and multiple towns.
 
 You can find more details at [stratagus.com](https://stratagus.com/war1gus.html) 
 
-### Nightly builds
+### Downloads
 
-These are builds from our CI runs. Since they are built every time a commit is made, they may be unstable. 
+Every release of War1gus comes with a Windows installer, a macOS `dmg` and a Linux AppImage:
 
-- [Windows Installer](https://github.com/Wargus/war1gus/releases/tag/master-builds)
-- [Ubuntu/Debian Packages](https://launchpad.net/~stratagus/+archive/ubuntu/ppa) 
-- [macOS App Bundles](https://github.com/Wargus/war1gus/actions/workflows/macos.yml?query=branch%3Amaster)
+- [Latest stable release](https://github.com/Wargus/war1gus/releases/latest)
+- [Latest unstable build](https://github.com/Wargus/war1gus/releases/tag/master-builds)
 
 ### Extracting data for macOS
 
@@ -22,15 +24,6 @@ In order to play War1gus you first need to extract the game data from your Warcr
 Run the script in the same folder as your game data and the War1gus app. **It only needs to be run once**. 
 
 It will not be needed in the future when the built-in extractor is fixed. 
-
-### Build status
-
-Windows: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/windows.yml/badge.svg)
-
-Linux: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/ubuntu.yml/badge.svg)
-
-macOS: ![Build Status](https://github.com/Wargus/war1gus/actions/workflows/macos.yml/badge.svg)
-
 
 ### Join the community
 [![Join the chat at https://gitter.im/Wargus](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Wargus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
